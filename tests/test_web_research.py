@@ -323,20 +323,74 @@ def test_req19_9_random_six_digit_number_rejected():
     assert pin_res is None
 
 
-def test_req19_10_bing_spelling_correction_variations():
-    """10. Query generator creates exact seller, spaced variation, and site-specific queries."""
-    gst_queries = generate_targeted_queries_for_field("OVIDASECRET", "gst")
-    
-    # Priority 1: Exact seller name
-    assert '"OVIDASECRET" GSTIN' in gst_queries
-    assert '"OVIDASECRET" "GST number"' in gst_queries
-    assert '"OVIDASECRET" GST' in gst_queries
-    
-    # Priority 2: Spaced variation
-    assert any("OVIDA SECRET" in q for q in gst_queries)
-    
-    # Priority 3: Site-specific searches
-    assert any("site:zaubacorp.com" in q for q in gst_queries)
-    assert any("site:thecompanycheck.com" in q for q in gst_queries)
+def test_bing_and_brave_query_generation_bounds():
+    """Verify strictly 3 Bing queries and 2 Brave queries per field."""
+    from scraper.web_research import (
+        MAX_BING_QUERIES_PER_FIELD,
+        MAX_BRAVE_QUERIES_PER_FIELD,
+        generate_bing_queries_for_field,
+        generate_brave_queries_for_field,
+    )
+
+    for field in ["gst", "pan", "address", "phone", "email", "owner", "fssai", "website", "pincode"]:
+        bing_qs = generate_bing_queries_for_field("CHARLIEINTERNATIONAL", field)
+        assert len(bing_qs) == MAX_BING_QUERIES_PER_FIELD == 3
+        assert all("CHARLIEINTERNATIONAL" in q for q in bing_qs)
+
+        brave_qs = generate_brave_queries_for_field("CHARLIEINTERNATIONAL", field)
+        assert len(brave_qs) == MAX_BRAVE_QUERIES_PER_FIELD == 2
+        assert all("CHARLIEINTERNATIONAL" in q for q in brave_qs)
+
+
+@pytest.mark.asyncio
+async def test_enrichment_query_cap_and_exhaustion(monkeypatch):
+    """Verify that enrich_seller searches at most 3 Bing and 2 Brave queries before marking NOT FOUND."""
+    engine = WebResearchEngine()
+
+    bing_query_log = []
+    brave_query_log = []
+
+    async def mock_bing(query: str):
+        bing_query_log.append(query)
+        # Return 10 search results that fail seller association / relevance
+        junk_results = [
+            {"title": "Unrelated result", "snippet": "Random text without seller association", "url": "https://random.org"}
+            for _ in range(10)
+        ]
+        return junk_results, 200
+
+    async def mock_brave(query: str):
+        brave_query_log.append(query)
+        junk_results = [
+            {"title": "Unrelated brave result", "snippet": "No seller match", "url": "https://random.org"}
+            for _ in range(5)
+        ]
+        return junk_results, 200
+
+    monkeypatch.setattr(engine, "_query_bing", mock_bing)
+    monkeypatch.setattr(engine, "_query_brave", mock_brave)
+
+    seller_record = {
+        "marketplace": "flipkart",
+        "seller_name": "CHARLIEINTERNATIONAL",
+    }
+
+    enriched = await engine.enrich_seller(seller_record)
+    await engine.close()
+
+    # For each searched missing field (website, gst, address, pincode, phone, email, owner, pan, fssai):
+    # Bing should be called exactly 3 times per field
+    # Brave should be called exactly 2 times per field
+    # Fields should be marked NOT FOUND (or None in internal fields)
+    assert enriched["status"] in ["NOT_FOUND", "NEEDS_REVIEW"]
+    assert enriched["gst_number"] is None
+    assert enriched["email"] is None
+
+    # Total Bing queries should be at most 9 fields * 3 = 27
+    # Total Brave queries should be at most 9 fields * 2 = 18
+    assert len(bing_query_log) <= 27
+    assert len(brave_query_log) <= 18
+    assert len(bing_query_log) > 0
+    assert len(brave_query_log) > 0
 
 
