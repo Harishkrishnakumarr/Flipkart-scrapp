@@ -4,6 +4,7 @@ import asyncio
 import logging
 import random
 import re
+import time
 import urllib.parse
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
@@ -11,6 +12,7 @@ from typing import Any, Dict, List, Optional, Set
 from playwright.async_api import Browser, BrowserContext, Page, async_playwright
 
 from scraper.config import (
+    BLOCKED_RESOURCE_TYPES,
     DEBUG_DIR,
     DEFAULT_HEADERS,
     FLIPKART_BASE_URL,
@@ -19,6 +21,10 @@ from scraper.config import (
     MAX_PRODUCTS_PER_CATEGORY,
     MAX_RETRIES,
     MIN_DELAY_SECONDS,
+    PRODUCT_MAX_RETRIES,
+    PRODUCT_NAVIGATION_TIMEOUT,
+    PRODUCT_REQUIRED_SELECTOR,
+    PRODUCT_SELECTOR_TIMEOUT,
     USER_AGENTS,
 )
 from scraper.product_parser import parse_product_page
@@ -113,6 +119,14 @@ class FlipkartSearchScraper:
         self.playwright: Optional[Any] = None
         self.browser: Optional[Browser] = None
         self.context: Optional[BrowserContext] = None
+        self.stats: Dict[str, Any] = {
+            "products_discovered": 0,
+            "products_processed": 0,
+            "successful_product_pages": 0,
+            "failed_product_pages": 0,
+            "navigation_timeouts": 0,
+            "fetch_durations": [],
+        }
 
     async def _ensure_connected(self) -> None:
         """Ensure Playwright browser and context are active and connected."""
@@ -263,6 +277,7 @@ class FlipkartSearchScraper:
                             if len(collected_urls) >= max_products:
                                 break
 
+                    self.stats["products_discovered"] += new_count
                     logger.info(
                         f"Page {page_num}: Found {new_count} new product URLs. "
                         f"Total unique collected: {len(collected_urls)}/{max_products}"
@@ -294,6 +309,11 @@ class FlipkartSearchScraper:
     ) -> Dict[str, Any]:
         """Navigate to a product page and extract generic seller record.
 
+        Uses an optimized fast navigation strategy (wait_until="commit" with
+        PRODUCT_NAVIGATION_TIMEOUT), resource-blocking for images/media/fonts,
+        checks for partially loaded usable DOM content on timeout, and retries
+        up to PRODUCT_MAX_RETRIES (default 2) without hanging.
+
         Args:
             product_url: Direct URL to the Flipkart product.
             input_row: Optional context from input row.
@@ -303,28 +323,97 @@ class FlipkartSearchScraper:
         """
         await self._ensure_connected()
 
-        page: Optional[Page] = None
-        attempts = 0
+        self.stats["products_processed"] += 1
+        fetch_start_time = time.time()
         product_id = product_url.split("/p/")[-1].split("?")[0] if "/p/" in product_url else "unknown"
 
-        while attempts < MAX_RETRIES:
-            attempts += 1
+        for attempt in range(1, PRODUCT_MAX_RETRIES + 1):
+            page: Optional[Page] = None
+            nav_timed_out = False
+            response = None
             try:
                 await self._ensure_connected()
                 page = await self.context.new_page()
-                response = await page.goto(
-                    product_url,
-                    wait_until="domcontentloaded",
-                    timeout=30000,
-                )
-                await self._random_delay()
+
+                # Resource Optimization: block images, media, fonts, and tracking scripts
+                async def _route_filter(route, request):
+                    if request.resource_type in BLOCKED_RESOURCE_TYPES:
+                        await route.abort()
+                    elif any(
+                        tracker in request.url.lower()
+                        for tracker in [
+                            "google-analytics",
+                            "doubleclick",
+                            "clarity.ms",
+                            "googletagmanager",
+                            "adservice",
+                        ]
+                    ):
+                        await route.abort()
+                    else:
+                        await route.continue_()
+
+                await page.route("**/*", _route_filter)
+
+                logger.info("-" * 40)
+                logger.info("PRODUCT FETCH")
+                logger.info("-" * 40)
+                logger.info(f"Product: {product_url}")
+                logger.info(f"Attempt: {attempt}/{PRODUCT_MAX_RETRIES}")
+                logger.info(f"Navigation timeout: {PRODUCT_NAVIGATION_TIMEOUT}ms")
+
+                # Navigate with fast commit strategy
+                try:
+                    response = await page.goto(
+                        product_url,
+                        wait_until="commit",
+                        timeout=PRODUCT_NAVIGATION_TIMEOUT,
+                    )
+                    logger.info("Navigation: SUCCESS")
+                except Exception as nav_err:
+                    err_str = str(nav_err).lower()
+                    if "timeout" in err_str:
+                        nav_timed_out = True
+                        self.stats["navigation_timeouts"] += 1
+                        logger.info("Navigation: TIMEOUT")
+                        logger.info("Checking partially loaded page...")
+                    else:
+                        logger.warning(f"Navigation error on attempt {attempt}/{PRODUCT_MAX_RETRIES}: {nav_err}")
+
+                # If navigation completed normally, wait briefly for required seller/product selector
+                if not nav_timed_out:
+                    try:
+                        await page.wait_for_selector(
+                            PRODUCT_REQUIRED_SELECTOR,
+                            timeout=PRODUCT_SELECTOR_TIMEOUT,
+                        )
+                        logger.info("Required content: FOUND")
+                    except Exception:
+                        logger.debug("Selector wait timed out or selector not yet in DOM, checking available content...")
+
+                # Scroll slightly to trigger hydration or lazy rendering
+                try:
+                    await page.evaluate("window.scrollBy(0, 400);")
+                    await asyncio.sleep(0.3)
+                except Exception:
+                    pass
+
+                # Inspect current page content and URL
+                html_content = ""
+                try:
+                    html_content = await page.content()
+                except Exception:
+                    pass
 
                 http_status = response.status if response else 200
-                final_url = page.url
+                final_url = page.url if page else product_url
 
                 # Check if page was redirected away from a product page
                 if final_url and "/p/" not in final_url and "/p/" in product_url:
                     logger.warning(f"Product page redirected from {product_url} to {final_url}")
+                    self.stats["failed_product_pages"] += 1
+                    duration = time.time() - fetch_start_time
+                    self.stats["fetch_durations"].append(duration)
                     return {
                         "marketplace": "flipkart",
                         "seller_name": "",
@@ -338,65 +427,90 @@ class FlipkartSearchScraper:
                         "extraction_status": "REDIRECTED",
                     }
 
-                # Scroll down slightly to trigger seller widget rendering
-                await page.evaluate("window.scrollBy(0, 500);")
-                await asyncio.sleep(0.5)
-
-                html_content = await page.content()
-                parsed_data = parse_product_page(html_content, page_url=product_url, http_status=http_status)
-
+                parsed_data = parse_product_page(html_content, page_url=product_url, http_status=http_status) if html_content else {}
                 seller_name = parsed_data.get("seller_name", "")
+                page_status = parsed_data.get("page_status", "PRODUCT_PAGE")
                 fulfillment_by = parsed_data.get("fulfilled_by_seller") or parsed_data.get("fulfillment_by")
                 star_rating = parsed_data.get("star_rating")
                 product_rating = parsed_data.get("product_rating")
                 seller_confidence = parsed_data.get("seller_confidence", 0.95)
                 seller_source_type = parsed_data.get("seller_source") or "flipkart_product"
-                page_status = parsed_data.get("page_status", "PRODUCT_PAGE")
 
-                # If seller extraction failed on a valid product page, capture screenshot for debugging
-                if not seller_name and page_status == "PRODUCT_PAGE":
-                    try:
-                        DEBUG_DIR.mkdir(parents=True, exist_ok=True)
-                        sanitized_id = re.sub(r"[^\w\-]", "_", product_id)[:50]
-                        screenshot_path = DEBUG_DIR / f"product_{sanitized_id}.png"
-                        await page.screenshot(path=str(screenshot_path), full_page=True)
-                        logger.debug(f"Saved debug screenshot to {screenshot_path}")
-                    except Exception as ss_err:
-                        logger.debug(f"Failed to capture debug screenshot: {ss_err}")
+                # If navigation timed out, check if partial content is usable
+                if nav_timed_out:
+                    is_usable = bool(seller_name or (page_status == "PRODUCT_PAGE" and len(html_content) > 3000))
+                    if is_usable:
+                        logger.info("Partial page usable: YES")
+                        logger.info("Continuing extraction")
+                    else:
+                        logger.info("Partial page usable: NO")
+                        if attempt < PRODUCT_MAX_RETRIES:
+                            logger.info("Retrying...")
+                            await asyncio.sleep(1.0)
+                            continue
 
-                # Build generic seller record
-                cat_hierarchy = input_row.get("category_hierarchy", []) if input_row else []
-                category = cat_hierarchy[0] if len(cat_hierarchy) > 0 else None
-                sub_cat = cat_hierarchy[1] if len(cat_hierarchy) > 1 else None
-                sub_sub_cat = cat_hierarchy[2] if len(cat_hierarchy) > 2 else None
-                sub_sub_sub_cat = cat_hierarchy[3] if len(cat_hierarchy) > 3 else None
+                # Check if we have a valid product page or seller
+                if seller_name or page_status == "PRODUCT_PAGE":
+                    logger.info(
+                        f"PRODUCT PAGE LOADED\n"
+                        f"Product: {product_url}\n"
+                        f"Seller data: {'FOUND' if seller_name else 'NOT FOUND'}"
+                    )
+                    self.stats["successful_product_pages"] += 1
+                    duration = time.time() - fetch_start_time
+                    self.stats["fetch_durations"].append(duration)
 
-                return {
-                    "marketplace": "flipkart",
-                    "seller_name": seller_name,
-                    "fulfillment_by": fulfillment_by,
-                    "fulfilled_by_seller": fulfillment_by,
-                    "seller_values_found": parsed_data.get("seller_values_found", []),
-                    "product_url": product_url,
-                    "seller_source_url": product_url,
-                    "seller_source_type": seller_source_type,
-                    "category": category,
-                    "sub_category": sub_cat,
-                    "sub_sub_category": sub_sub_cat,
-                    "sub_sub_subcategory": sub_sub_sub_cat,
-                    "product_rating": product_rating,
-                    "seller_rating": star_rating,
-                    "star_rating": star_rating,
-                    "seller_confidence": seller_confidence,
-                    "rating_confidence": parsed_data.get("rating_confidence", 0.0),
-                    "extraction_status": page_status,
-                }
+                    # Debug screenshot if seller not found on a valid product page
+                    if not seller_name and page_status == "PRODUCT_PAGE":
+                        try:
+                            DEBUG_DIR.mkdir(parents=True, exist_ok=True)
+                            sanitized_id = re.sub(r"[^\w\-]", "_", product_id)[:50]
+                            screenshot_path = DEBUG_DIR / f"product_{sanitized_id}.png"
+                            await page.screenshot(path=str(screenshot_path), full_page=True)
+                            logger.debug(f"Saved debug screenshot to {screenshot_path}")
+                        except Exception as ss_err:
+                            logger.debug(f"Failed to capture debug screenshot: {ss_err}")
+
+                    # Build generic seller record
+                    cat_hierarchy = input_row.get("category_hierarchy", []) if input_row else []
+                    category = cat_hierarchy[0] if len(cat_hierarchy) > 0 else None
+                    sub_cat = cat_hierarchy[1] if len(cat_hierarchy) > 1 else None
+                    sub_sub_cat = cat_hierarchy[2] if len(cat_hierarchy) > 2 else None
+                    sub_sub_sub_cat = cat_hierarchy[3] if len(cat_hierarchy) > 3 else None
+
+                    return {
+                        "marketplace": "flipkart",
+                        "seller_name": seller_name,
+                        "fulfillment_by": fulfillment_by,
+                        "fulfilled_by_seller": fulfillment_by,
+                        "seller_values_found": parsed_data.get("seller_values_found", []),
+                        "product_url": product_url,
+                        "seller_source_url": product_url,
+                        "seller_source_type": seller_source_type,
+                        "category": category,
+                        "sub_category": sub_cat,
+                        "sub_sub_category": sub_sub_cat,
+                        "sub_sub_subcategory": sub_sub_sub_cat,
+                        "product_rating": product_rating,
+                        "seller_rating": star_rating,
+                        "star_rating": star_rating,
+                        "seller_confidence": seller_confidence,
+                        "rating_confidence": parsed_data.get("rating_confidence", 0.0),
+                        "extraction_status": page_status,
+                    }
+
+                # If content was empty or invalid and we have remaining attempts, retry
+                if attempt < PRODUCT_MAX_RETRIES:
+                    logger.info("Retrying...")
+                    await asyncio.sleep(1.0)
+                    continue
 
             except Exception as e:
                 logger.warning(
-                    f"Attempt {attempts}/{MAX_RETRIES} failed fetching product {product_url}: {e}"
+                    f"Attempt {attempt}/{PRODUCT_MAX_RETRIES} failed fetching product {product_url}: {e}"
                 )
-                await asyncio.sleep(2.0 * attempts)
+                if attempt < PRODUCT_MAX_RETRIES:
+                    await asyncio.sleep(1.0)
             finally:
                 if page:
                     try:
@@ -404,6 +518,18 @@ class FlipkartSearchScraper:
                     except Exception:
                         pass
 
+        # All attempts failed
+        logger.info(
+            f"PRODUCT FETCH FAILED\n"
+            f"Attempts: {PRODUCT_MAX_RETRIES}\n"
+            f"Reason: navigation timeout\n"
+            f"Moving to next product"
+        )
+        self.stats["failed_product_pages"] += 1
+        duration = time.time() - fetch_start_time
+        self.stats["fetch_durations"].append(duration)
+
+        cat_hierarchy = input_row.get("category_hierarchy", []) if input_row else []
         return {
             "marketplace": "flipkart",
             "seller_name": "",
@@ -411,8 +537,45 @@ class FlipkartSearchScraper:
             "product_url": product_url,
             "seller_source_url": product_url,
             "seller_source_type": "flipkart_product",
+            "category": cat_hierarchy[0] if len(cat_hierarchy) > 0 else None,
+            "sub_category": cat_hierarchy[1] if len(cat_hierarchy) > 1 else None,
+            "sub_sub_category": cat_hierarchy[2] if len(cat_hierarchy) > 2 else None,
+            "sub_sub_subcategory": cat_hierarchy[3] if len(cat_hierarchy) > 3 else None,
             "star_rating": None,
             "product_rating": None,
             "seller_confidence": 0.0,
             "extraction_status": "REQUEST_FAILED",
         }
+
+    def get_product_fetch_summary(self) -> Dict[str, Any]:
+        """Return diagnostic metrics dictionary for product fetching."""
+        durations = self.stats["fetch_durations"]
+        avg_time = sum(durations) / len(durations) if durations else 0.0
+        max_time = max(durations) if durations else 0.0
+        return {
+            "products_discovered": self.stats["products_discovered"],
+            "products_processed": self.stats["products_processed"],
+            "successful_product_pages": self.stats["successful_product_pages"],
+            "failed_product_pages": self.stats["failed_product_pages"],
+            "navigation_timeouts": self.stats["navigation_timeouts"],
+            "average_fetch_time": round(avg_time, 2),
+            "max_fetch_time": round(max_time, 2),
+        }
+
+    def log_product_fetch_summary(self) -> None:
+        """Log structured product fetch performance diagnostics."""
+        summary = self.get_product_fetch_summary()
+        summary_msg = (
+            f"\n========================================\n"
+            f"PRODUCT FETCH SUMMARY\n"
+            f"========================================\n"
+            f"Products discovered: {summary['products_discovered']}\n"
+            f"Products processed: {summary['products_processed']}\n"
+            f"Successful product pages: {summary['successful_product_pages']}\n"
+            f"Failed product pages: {summary['failed_product_pages']}\n"
+            f"Navigation timeouts: {summary['navigation_timeouts']}\n"
+            f"Average product fetch time: {summary['average_fetch_time']:.2f}s\n"
+            f"Maximum product fetch time: {summary['max_fetch_time']:.2f}s\n"
+            f"========================================"
+        )
+        logger.info(summary_msg)

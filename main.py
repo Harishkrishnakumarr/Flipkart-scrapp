@@ -463,6 +463,7 @@ class ScraperPipeline:
                     f"========================================"
                 )
                 self.logger.info(summary_diag_msg)
+                self.search_scraper.log_product_fetch_summary()
 
             # Check if any remaining pending or all sellers exist in data/sellers.json
             if self.force_enrich:

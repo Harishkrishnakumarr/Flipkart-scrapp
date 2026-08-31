@@ -86,6 +86,16 @@ MAX_RETRIES = 3
 MIN_DELAY_SECONDS = 2.0
 MAX_DELAY_SECONDS = 5.0
 
+# Product Page Navigation & Timeout Settings
+PRODUCT_NAVIGATION_TIMEOUT = int(os.environ.get("FLIPKART_PRODUCT_NAV_TIMEOUT", 10000))
+PRODUCT_SELECTOR_TIMEOUT = int(os.environ.get("FLIPKART_PRODUCT_SEL_TIMEOUT", 10000))
+PRODUCT_MAX_RETRIES = int(os.environ.get("FLIPKART_PRODUCT_MAX_RETRIES", 2))
+PRODUCT_REQUIRED_SELECTOR = (
+    "#sellerName, div._1RLSqn, div.G6XhRU, div._25U9Qn, div.vR3XkF, div._2Yx7Pp, "
+    "div._1k45bO, div[data-testid*='seller'], div[class*='sellerName'], span[class*='sellerName']"
+)
+BLOCKED_RESOURCE_TYPES = ["image", "media", "font"]
+
 # User-Agent list for rotation and stealth headers
 USER_AGENTS: List[str] = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
