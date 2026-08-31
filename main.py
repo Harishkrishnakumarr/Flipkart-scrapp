@@ -26,6 +26,7 @@ from scraper.config import (
     LOG_FILE,
     LOGS_DIR,
     MAX_PRODUCTS_PER_CATEGORY,
+    MAX_ROWS_PER_RUN,
     OUTPUT_FILE,
     SELLERS_FILE,
     STATUS_ENRICHMENT_PENDING,
@@ -92,7 +93,9 @@ class ScraperPipeline:
         input_file: Path = INPUT_FILE,
         google_sheet: Optional[str] = None,
         output_file: Path = OUTPUT_FILE,
+        sellers_file: Path = SELLERS_FILE,
         max_products_per_cat: int = MAX_PRODUCTS_PER_CATEGORY,
+        max_rows_per_run: int = MAX_ROWS_PER_RUN,
         headless: bool = True,
         resume: bool = True,
         force_enrich: bool = False,
@@ -103,7 +106,9 @@ class ScraperPipeline:
             input_file: Path to input Excel hierarchy / URLs.
             google_sheet: Google Sheets URL for input categories / products.
             output_file: Path to output Excel report.
+            sellers_file: Path to sellers JSON repository file.
             max_products_per_cat: Number of products to sample per search query.
+            max_rows_per_run: Maximum number of pending rows to process per run.
             headless: Run browser in headless mode.
             resume: Resume from previous progress checkpoint if available.
             force_enrich: Re-enrich all sellers even if previously completed.
@@ -111,12 +116,14 @@ class ScraperPipeline:
         self.input_file = input_file
         self.google_sheet = google_sheet
         self.output_file = output_file
+        self.sellers_file = sellers_file
         self.max_products_per_cat = max_products_per_cat
+        self.max_rows_per_run = max_rows_per_run or MAX_ROWS_PER_RUN
         self.headless = headless
         self.resume = resume
         self.force_enrich = force_enrich
 
-        self.seller_repo = SellerRepository(SELLERS_FILE)
+        self.seller_repo = SellerRepository(self.sellers_file)
         self.search_scraper = FlipkartSearchScraper(headless=self.headless)
         self.research_engine = WebResearchEngine()
         self.excel_manager = LiveExcelManager(output_path=self.output_file)
@@ -238,22 +245,54 @@ class ScraperPipeline:
                 # STEP 1: Read Input from Google Sheets or Excel File
                 if self.google_sheet:
                     self.logger.info(f"\n--- STEP 1: Reading Input from Google Sheet ({self.google_sheet}) ---")
-                    tasks = read_categories_from_google_sheet(self.google_sheet, resume=self.resume)
+                    all_tasks = read_categories_from_google_sheet(self.google_sheet, resume=False)
+                    pending_tasks = read_categories_from_google_sheet(self.google_sheet, resume=self.resume)
                 else:
                     self.logger.info(f"\n--- STEP 1: Reading Existing Flipkart Input ({self.input_file}) ---")
-                    tasks = read_categories_from_excel(self.input_file, resume=self.resume)
+                    all_tasks = read_categories_from_excel(self.input_file, resume=False)
+                    pending_tasks = read_categories_from_excel(self.input_file, resume=self.resume)
 
-                if not tasks and not self.seller_repo.get_all_pending_sellers():
-                    self.logger.warning("No new tasks to process and no existing pending sellers.")
+                total_input_rows = len(all_tasks)
+                pending_before_limit = len(pending_tasks)
+                already_completed = total_input_rows - pending_before_limit
+                selected_for_this_run = min(pending_before_limit, self.max_rows_per_run)
+                remaining_after_selection = pending_before_limit - selected_for_this_run
+                tasks_for_this_run = pending_tasks[:selected_for_this_run]
+
+                # Run Limit Startup Diagnostics
+                limit_diag_msg = (
+                    f"\n========================================\n"
+                    f"FLIPKART RUN LIMIT\n"
+                    f"========================================\n"
+                    f"Configured maximum rows per run: {self.max_rows_per_run}\n"
+                    f"Total input rows: {total_input_rows}\n"
+                    f"Already completed: {already_completed}\n"
+                    f"Pending before limit: {pending_before_limit}\n"
+                    f"Selected for this run: {selected_for_this_run}\n"
+                    f"Remaining after selection: {remaining_after_selection}\n"
+                    f"========================================"
+                )
+                self.logger.info(limit_diag_msg)
+
+                # Edge case: No pending rows
+                if pending_before_limit == 0:
+                    self.logger.info("NO_PENDING_ROWS: All input rows have already been completed.")
+                    if not self.seller_repo.get_all_pending_sellers():
+                        return
+
+                rows_selected = len(tasks_for_this_run)
+                rows_completed = 0
+                rows_failed = 0
 
                 # STEP 2-9: Collect Sellers, Save Initial Row, Run Enrichment & Update Excel Row Immediately
-                if tasks:
+                if tasks_for_this_run:
+                    self.logger.info(f"Processing rows 1–{selected_for_this_run} of pending queue")
                     self.logger.info("\n--- STEP 2-9: Real-Time Collection & Live Enrichment ---")
                     await self.search_scraper.start()
 
                     completed_sellers_set = set(self.progress.get("completed_sellers", []))
 
-                    for task in tasks:
+                    for task in tasks_for_this_run:
                         if self._interrupted:
                             break
 
@@ -267,142 +306,163 @@ class ScraperPipeline:
                         sub_sub_cat = hierarchy[2] if len(hierarchy) > 2 else None
                         sub_sub_sub_cat = hierarchy[3] if len(hierarchy) > 3 else None
 
-                        # If product URL already provided, use it directly (skip search!)
-                        if direct_url:
-                            self.logger.info(f"\n[Row {row_idx}] Direct Product URL: {direct_url}")
-                            product_urls = [direct_url]
-                        elif query:
-                            self.logger.info(f"\n[Row {row_idx}] Searching Query: {query}")
-                            product_urls = await self.search_scraper.search_and_collect_product_urls(
-                                query, max_products=self.max_products_per_cat
-                            )
-                        else:
-                            continue
-
-                        # Process each product URL
-                        for p_url in product_urls:
-                            if self._interrupted:
-                                break
-
-                            seller_info = await self.search_scraper.extract_seller_from_product_url(
-                                p_url, input_row=task
-                            )
-                            seller_name = seller_info.get("seller_name")
-                            fulfillment_by = seller_info.get("fulfillment_by")
-                            star_rating = seller_info.get("star_rating")
-                            product_rating = seller_info.get("product_rating")
-                            source_type = seller_info.get("seller_source_type")
-
-                            if not seller_name:
+                        try:
+                            # If product URL already provided, use it directly (skip search!)
+                            if direct_url:
+                                self.logger.info(f"\n[Row {row_idx}] Direct Product URL: {direct_url}")
+                                product_urls = [direct_url]
+                            elif query:
+                                self.logger.info(f"\n[Row {row_idx}] Searching Query: {query}")
+                                product_urls = await self.search_scraper.search_and_collect_product_urls(
+                                    query, max_products=self.max_products_per_cat
+                                )
+                            else:
                                 continue
 
-                            canonical_id = seller_key(seller_name)
-                            storage_key = f"flipkart::{canonical_id}"
+                            # Process each product URL
+                            for p_url in product_urls:
+                                if self._interrupted:
+                                    break
 
-                            # 1. Update Seller Repository
-                            self.seller_repo.add_or_update_seller(
-                                raw_seller_name=seller_name,
-                                product_url=p_url,
-                                category_hierarchy=hierarchy,
-                                star_rating=star_rating,
-                                fulfillment_by=fulfillment_by,
-                                marketplace="flipkart",
-                                product_rating=product_rating,
-                                seller_source_type=source_type,
-                            )
+                                seller_info = await self.search_scraper.extract_seller_from_product_url(
+                                    p_url, input_row=task
+                                )
+                                seller_name = seller_info.get("seller_name")
+                                fulfillment_by = seller_info.get("fulfillment_by")
+                                star_rating = seller_info.get("star_rating")
+                                product_rating = seller_info.get("product_rating")
+                                source_type = seller_info.get("seller_source_type")
 
-                            # 2. Check if this seller was already enriched in a previous run
-                            if self.resume and canonical_id in completed_sellers_set:
-                                cached = self.seller_repo.sellers.get(storage_key, {}).get("enriched_data") or self.research_engine.cache.get(f"enriched::{storage_key}")
-                                if cached:
-                                    self.logger.info(f"Seller '{seller_name}' already enriched (Skipping re-enrichment).")
+                                if not seller_name:
                                     continue
 
-                            # 3. Immediately write initial record to Excel (Status: ENRICHMENT_PENDING)
-                            initial_excel_data = {
-                                "seller_name": seller_name,
-                                "fulfillment_by": fulfillment_by,
-                                "marketplace": "flipkart",
-                                "status": STATUS_ENRICHMENT_PENDING,
-                                "product_url": p_url,
-                                "category": cat,
-                                "sub_category": sub_cat,
-                                "sub_sub_category": sub_sub_cat,
-                                "sub_sub_subcategory": sub_sub_sub_cat,
-                                "product_rating": product_rating,
-                                "seller_rating": star_rating,
-                                "star_rating": star_rating,
-                                "seller_source_url": p_url,
-                                "seller_source_type": source_type or "flipkart_product",
-                            }
+                                canonical_id = seller_key(seller_name)
+                                storage_key = f"flipkart::{canonical_id}"
 
-                            row_num = self.excel_manager.write_or_update_seller(initial_excel_data)
-                            init_verified, init_vmsg = self.excel_manager.verify_saved_row(row_num, initial_excel_data)
-                            if init_verified:
-                                self.logger.info(f"Initial record saved to Excel | Seller: {seller_name} | Row: {row_num} | Status: {STATUS_ENRICHMENT_PENDING}")
-                            else:
-                                self.logger.warning(f"Initial Excel save verification issue: {init_vmsg}")
+                                # 1. Update Seller Repository
+                                self.seller_repo.add_or_update_seller(
+                                    raw_seller_name=seller_name,
+                                    product_url=p_url,
+                                    category_hierarchy=hierarchy,
+                                    star_rating=star_rating,
+                                    fulfillment_by=fulfillment_by,
+                                    marketplace="flipkart",
+                                    product_rating=product_rating,
+                                    seller_source_type=source_type,
+                                )
 
-                            # 4. IMMEDIATELY RUN GENERIC ENRICHMENT WATERFALL
-                            self.logger.info(f"Starting enrichment for: '{seller_name}'...")
-                            generic_record = {
-                                "marketplace": "flipkart",
-                                "seller_name": seller_name,
-                                "fulfillment_by": fulfillment_by,
-                                "product_url": p_url,
-                                "seller_source_url": p_url,
-                                "seller_source_type": source_type or "flipkart_product",
-                                "category": cat or "E-Commerce Retail",
-                                "sub_category": sub_cat,
-                                "sub_sub_category": sub_sub_cat,
-                                "sub_sub_subcategory": sub_sub_sub_cat,
-                                "star_rating": star_rating,
-                                "product_rating": product_rating,
-                                "seller_confidence": seller_info.get("seller_confidence", 0.95),
-                            }
+                                # 2. Check if this seller was already enriched in a previous run
+                                if self.resume and canonical_id in completed_sellers_set:
+                                    cached = self.seller_repo.sellers.get(storage_key, {}).get("enriched_data") or self.research_engine.cache.get(f"enriched::{storage_key}")
+                                    if cached:
+                                        self.logger.info(f"Seller '{seller_name}' already enriched (Skipping re-enrichment).")
+                                        continue
 
-                            enriched_data = await self.enrich_seller(generic_record)
+                                # 3. Immediately write initial record to Excel (Status: ENRICHMENT_PENDING)
+                                initial_excel_data = {
+                                    "seller_name": seller_name,
+                                    "fulfillment_by": fulfillment_by,
+                                    "marketplace": "flipkart",
+                                    "status": STATUS_ENRICHMENT_PENDING,
+                                    "product_url": p_url,
+                                    "category": cat,
+                                    "sub_category": sub_cat,
+                                    "sub_sub_category": sub_sub_cat,
+                                    "sub_sub_subcategory": sub_sub_sub_cat,
+                                    "product_rating": product_rating,
+                                    "seller_rating": star_rating,
+                                    "star_rating": star_rating,
+                                    "seller_source_url": p_url,
+                                    "seller_source_type": source_type or "flipkart_product",
+                                }
 
-                            # Debug log enriched record JSON
-                            self.logger.debug(
-                                "ENRICHED RECORD:\n%s",
-                                json.dumps(enriched_data, indent=2, default=str),
-                            )
+                                row_num = self.excel_manager.write_or_update_seller(initial_excel_data)
+                                init_verified, init_vmsg = self.excel_manager.verify_saved_row(row_num, initial_excel_data)
+                                if init_verified:
+                                    self.logger.info(f"Initial record saved to Excel | Seller: {seller_name} | Row: {row_num} | Status: {STATUS_ENRICHMENT_PENDING}")
+                                else:
+                                    self.logger.warning(f"Initial Excel save verification issue: {init_vmsg}")
 
-                            # 5. IMMEDIATELY UPDATE THE SAME ROW IN EXCEL AND VERIFY DISK PERSISTENCE
-                            updated_row = self.excel_manager.write_or_update_seller(enriched_data)
-                            save_verified, verify_msg = self.excel_manager.verify_saved_row(updated_row, enriched_data)
+                                # 4. IMMEDIATELY RUN GENERIC ENRICHMENT WATERFALL
+                                self.logger.info(f"Starting enrichment for: '{seller_name}'...")
+                                generic_record = {
+                                    "marketplace": "flipkart",
+                                    "seller_name": seller_name,
+                                    "fulfillment_by": fulfillment_by,
+                                    "product_url": p_url,
+                                    "seller_source_url": p_url,
+                                    "seller_source_type": source_type or "flipkart_product",
+                                    "category": cat or "E-Commerce Retail",
+                                    "sub_category": sub_cat,
+                                    "sub_sub_category": sub_sub_cat,
+                                    "sub_sub_subcategory": sub_sub_sub_cat,
+                                    "star_rating": star_rating,
+                                    "product_rating": product_rating,
+                                    "seller_confidence": seller_info.get("seller_confidence", 0.95),
+                                }
 
-                            # 6. Log structured summary
-                            self._log_seller_summary(
-                                seller_name=seller_name,
-                                fulfillment_by=fulfillment_by,
-                                product_url=p_url,
-                                enriched_data=enriched_data,
-                                row_num=updated_row,
-                                save_verified=save_verified,
-                                verify_msg=verify_msg,
-                            )
+                                enriched_data = await self.enrich_seller(generic_record)
 
-                            # 7. Update repository and progress cache
-                            self.seller_repo.mark_enriched(storage_key, enriched_data)
-                            self.research_engine.cache.set(f"enriched::{storage_key}", enriched_data)
+                                # Debug log enriched record JSON
+                                self.logger.debug(
+                                    "ENRICHED RECORD:\n%s",
+                                    json.dumps(enriched_data, indent=2, default=str),
+                                )
 
-                            if canonical_id not in self.progress["completed_sellers"]:
-                                self.progress["completed_sellers"].append(canonical_id)
-                                completed_sellers_set.add(canonical_id)
+                                # 5. IMMEDIATELY UPDATE THE SAME ROW IN EXCEL AND VERIFY DISK PERSISTENCE
+                                updated_row = self.excel_manager.write_or_update_seller(enriched_data)
+                                save_verified, verify_msg = self.excel_manager.verify_saved_row(updated_row, enriched_data)
+
+                                # 6. Log structured summary
+                                self._log_seller_summary(
+                                    seller_name=seller_name,
+                                    fulfillment_by=fulfillment_by,
+                                    product_url=p_url,
+                                    enriched_data=enriched_data,
+                                    row_num=updated_row,
+                                    save_verified=save_verified,
+                                    verify_msg=verify_msg,
+                                    )
+
+                                # 7. Update repository and progress cache
+                                self.seller_repo.mark_enriched(storage_key, enriched_data)
+                                self.research_engine.cache.set(f"enriched::{storage_key}", enriched_data)
+
+                                if canonical_id not in self.progress["completed_sellers"]:
+                                    self.progress["completed_sellers"].append(canonical_id)
+                                    completed_sellers_set.add(canonical_id)
+
+                                self.progress["last_updated"] = datetime.now(timezone.utc).isoformat()
+                                save_progress(self.progress)
+
+                            # Mark query task complete
+                            if query and query not in self.progress["completed_queries"]:
+                                self.progress["completed_queries"].append(query)
+                            if row_idx not in self.progress["completed_rows"]:
+                                self.progress["completed_rows"].append(row_idx)
 
                             self.progress["last_updated"] = datetime.now(timezone.utc).isoformat()
                             save_progress(self.progress)
+                            rows_completed += 1
 
-                        # Mark query task complete
-                        if query and query not in self.progress["completed_queries"]:
-                            self.progress["completed_queries"].append(query)
-                        if row_idx not in self.progress["completed_rows"]:
-                            self.progress["completed_rows"].append(row_idx)
+                        except Exception as row_err:
+                            self.logger.error(f"Error processing row {row_idx}: {row_err}", exc_info=True)
+                            rows_failed += 1
 
-                        self.progress["last_updated"] = datetime.now(timezone.utc).isoformat()
-                        save_progress(self.progress)
+                # FLIPKART RUN SUMMARY DIAGNOSTICS
+                rows_still_pending = max(0, pending_before_limit - rows_completed)
+                summary_diag_msg = (
+                    f"\n========================================\n"
+                    f"FLIPKART RUN SUMMARY\n"
+                    f"========================================\n"
+                    f"Rows selected: {rows_selected}\n"
+                    f"Rows successfully completed: {rows_completed}\n"
+                    f"Rows failed: {rows_failed}\n"
+                    f"Rows still pending: {rows_still_pending}\n"
+                    f"Run limit: {self.max_rows_per_run}\n"
+                    f"========================================"
+                )
+                self.logger.info(summary_diag_msg)
 
             # Check if any remaining pending or all sellers exist in data/sellers.json
             if self.force_enrich:
@@ -547,6 +607,12 @@ def parse_args() -> argparse.Namespace:
         help=f"Max products per category (default: {MAX_PRODUCTS_PER_CATEGORY})",
     )
     parser.add_argument(
+        "--max-rows",
+        type=int,
+        default=None,
+        help=f"Maximum pending rows to process in this run (default: {MAX_ROWS_PER_RUN})",
+    )
+    parser.add_argument(
         "--headless",
         action="store_true",
         default=None,
@@ -610,12 +676,14 @@ def main() -> None:
 
     input_file = args.input or INPUT_FILE
     google_sheet = args.google_sheet
+    max_rows = args.max_rows if args.max_rows is not None else MAX_ROWS_PER_RUN
 
     pipeline = ScraperPipeline(
         input_file=input_file,
         google_sheet=google_sheet,
         output_file=args.output,
         max_products_per_cat=args.max_products,
+        max_rows_per_run=max_rows,
         headless=headless,
         resume=not args.no_resume,
         force_enrich=args.force_enrich,

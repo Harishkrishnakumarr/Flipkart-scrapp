@@ -1,5 +1,6 @@
 """Configuration settings and constants for the Flipkart Seller Scraper."""
 
+import os
 from pathlib import Path
 from typing import Dict, List
 
@@ -70,6 +71,10 @@ STATUS_PARTIALLY_VERIFIED = "PARTIALLY_VERIFIED"
 STATUS_NEEDS_REVIEW = "NEEDS_REVIEW"
 STATUS_NOT_FOUND = "NOT_FOUND"
 STATUS_ENRICHMENT_PENDING = "ENRICHMENT_PENDING"
+
+# Batch Execution Run Limit
+DEFAULT_MAX_ROWS_PER_RUN: int = 2000
+MAX_ROWS_PER_RUN: int = int(os.environ.get("FLIPKART_MAX_ROWS_PER_RUN", DEFAULT_MAX_ROWS_PER_RUN))
 
 # Scraping Settings
 FLIPKART_BASE_URL = "https://www.flipkart.com"
