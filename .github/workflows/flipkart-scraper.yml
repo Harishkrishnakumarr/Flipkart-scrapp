@@ -3,10 +3,21 @@ name: Flipkart Playwright Scraper
 on:
   workflow_dispatch:
     inputs:
+      start_row:
+        description: 'Start input Excel row'
+        required: true
+        default: '1'
+        type: string
+      end_row:
+        description: 'End input Excel row'
+        required: true
+        default: '2000'
+        type: string
       max_rows:
         description: "Maximum pending rows to process in this run"
         required: false
         default: "2000"
+        type: string
   schedule:
     - cron: "30 3 * * *"  # 09:00 IST daily (GitHub cron is UTC)
 

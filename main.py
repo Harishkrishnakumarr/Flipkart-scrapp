@@ -17,6 +17,7 @@ import json
 import logging
 import signal
 import sys
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
@@ -99,6 +100,8 @@ class ScraperPipeline:
         headless: bool = True,
         resume: bool = True,
         force_enrich: bool = False,
+        start_row: Optional[int] = None,
+        end_row: Optional[int] = None,
     ) -> None:
         """Initialize pipeline with paths and configurations.
 
@@ -119,6 +122,17 @@ class ScraperPipeline:
         self.sellers_file = sellers_file
         self.max_products_per_cat = max_products_per_cat
         self.max_rows_per_run = max_rows_per_run or MAX_ROWS_PER_RUN
+        # Initialize start/end row from parameters or environment variables
+        if start_row is not None:
+            self.start_row = int(start_row)
+        else:
+            env_start = os.getenv('FLIPKART_START_ROW')
+            self.start_row = int(env_start) if env_start and env_start.isdigit() else None
+        if end_row is not None:
+            self.end_row = int(end_row)
+        else:
+            env_end = os.getenv('FLIPKART_END_ROW')
+            self.end_row = int(env_end) if env_end and env_end.isdigit() else None
         self.headless = headless
         self.resume = resume
         self.force_enrich = force_enrich
@@ -255,6 +269,18 @@ class ScraperPipeline:
                 total_input_rows = len(all_tasks)
                 pending_before_limit = len(pending_tasks)
                 already_completed = total_input_rows - pending_before_limit
+                # Apply manual row range filter if specified
+                if self.start_row is not None or self.end_row is not None:
+                    start = self.start_row if self.start_row is not None else 1
+                    end = self.end_row if self.end_row is not None else total_input_rows
+                    if start < 1:
+                        raise ValueError('start_row must be >= 1')
+                    if end < start:
+                        raise ValueError('end_row must be >= start_row')
+                    original_len = pending_before_limit
+                    pending_tasks = [t for t in pending_tasks if start <= t["row_index"] <= end]
+                    pending_before_limit = len(pending_tasks)
+                    self.logger.info(f"\n--- Applying row range filter: start={start}, end={end} (filtered {original_len - pending_before_limit} tasks) ---")
                 selected_for_this_run = min(pending_before_limit, self.max_rows_per_run)
                 remaining_after_selection = pending_before_limit - selected_for_this_run
                 tasks_for_this_run = pending_tasks[:selected_for_this_run]
