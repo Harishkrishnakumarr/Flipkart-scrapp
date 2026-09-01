@@ -281,8 +281,8 @@ class LiveExcelManager:
             if col_name == "seller_name" and not val:
                 val = seller_name
 
-            # If updating and new value is None, do not overwrite existing valid cell content
-            if is_update and val is None:
+            # If updating and new value is None or placeholder, do not overwrite existing valid cell content
+            if is_update and (val is None or val in ("", "NOT FOUND", "N/A")):
                 continue
 
             # Convert list (e.g. source) to string

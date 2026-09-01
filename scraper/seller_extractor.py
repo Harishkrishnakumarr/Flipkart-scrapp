@@ -148,40 +148,37 @@ class SellerRepository:
                 seller.get("star_rating") is None or star_rating > seller["star_rating"]
             ):
                 seller["star_rating"] = star_rating
-            if fulfillment_by and not seller.get("fulfillment_by"):
-                seller["fulfillment_by"] = fulfillment_by
-            seller["last_seen"] = now_iso
-        else:
-            self.sellers[storage_key] = {
-                "seller_name": display_name,
-                "canonical_id": canonical_key,
-                "marketplace": marketplace,
-                "fulfillment_by": fulfillment_by,
-                "product_urls": [product_url] if product_url else [],
-                "categories": [category_str] if category_str else [],
-                "star_rating": star_rating,
-                "product_rating": product_rating,
-                "seller_source_type": seller_source_type or f"{marketplace}_product",
-                "seller_confidence": seller_confidence,
-                "enrichment_status": "pending",
-                "first_seen": now_iso,
-                "last_seen": now_iso,
-            }
-
-        self.save()
-        return self.sellers[storage_key]
-
-    def mark_enriched(self, storage_key: str, enriched_data: Dict[str, Any]) -> None:
-        """Mark seller as enriched and store timestamp."""
-        if storage_key in self.sellers:
-            self.sellers[storage_key]["enrichment_status"] = "completed"
-            self.sellers[storage_key]["last_enriched"] = datetime.now(timezone.utc).isoformat()
-            self.sellers[storage_key]["enriched_data"] = enriched_data
-            self.save()
+        
 
     def get_all_sellers(self) -> List[Dict[str, Any]]:
         """Get list of all seller dictionaries in repository."""
         return list(self.sellers.values())
+
+    def mark_enriched(self, storage_key: str, enriched_data: Dict[str, Any]) -> None:
+        """Mark seller as enriched and store timestamp, merging enriched fields safely."""
+        if storage_key in self.sellers:
+            # Retrieve any existing enriched data
+            existing = self.sellers[storage_key].get("enriched_data", {}) or {}
+            merged: Dict[str, Any] = {}
+            for k, new_val in enriched_data.items():
+                # Determine if the new value is considered valid
+                is_valid = new_val is not None and new_val != "" and new_val != "NOT FOUND" and new_val != "N/A"
+                old_val = existing.get(k)
+                old_valid = old_val is not None and old_val != "" and old_val != "NOT FOUND" and old_val != "N/A"
+                if is_valid:
+                    # Prefer new valid value only if there is no existing valid value
+                    if not old_valid:
+                        merged[k] = new_val
+                    else:
+                        merged[k] = old_val
+                else:
+                    # New value not valid – keep existing if it is valid
+                    merged[k] = old_val if old_valid else new_val
+            self.sellers[storage_key]["enrichment_status"] = "completed"
+            self.sellers[storage_key]["last_enriched"] = datetime.now(timezone.utc).isoformat()
+            self.sellers[storage_key]["enriched_data"] = merged
+            logger.debug(f"Merged enriched data for {storage_key}: {merged}")
+            self.save()
 
     def get_all_pending_sellers(self) -> List[Tuple[str, Dict[str, Any]]]:
         """Get all sellers with pending enrichment."""
