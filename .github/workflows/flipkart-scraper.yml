@@ -90,24 +90,32 @@ jobs:
           echo "===== GIT OBJECTS ====="
           git count-objects -vH
 
-      - name: Commit and push updated progress and data
+            - name: Commit and push updated progress and data
         if: always()
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          echo "===== GIT STATUS ====="
+          echo "=== Git status before commit ==="
           git status --short
 
-          git add output/flipkart_sellers.xlsx data/
+          # Get latest remote information
+          git fetch origin main
 
-          if ! git diff --cached --quiet; then
-            git commit -m "Auto-update Flipkart scraper progress & data [skip ci]"
-            git pull --rebase origin main
-            git push
-          else
+          # Stage scraper output
+          git add output/flipkart_sellers.xlsx
+          git add data/
+
+          # Commit if there are changes
+          if git diff --cached --quiet; then
             echo "No changes to commit."
+            exit 0
           fi
+
+          git commit -m "Auto-update Flipkart scraper progress & data [skip ci]"
+
+          # Push the newly created commit
+          git push origin HEAD:main
 
       - name: Upload scraper output
         if: always()
