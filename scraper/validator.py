@@ -466,3 +466,288 @@ def determine_seller_status(
         return STATUS_NEEDS_REVIEW
 
     return STATUS_NOT_FOUND
+
+
+# ---------------------------------------------------------------------------
+# SOURCE TYPE CLASSIFICATION ENGINE
+# ---------------------------------------------------------------------------
+
+# Source type priority weights (higher = better source)
+SOURCE_TYPE_WEIGHTS: Dict[str, int] = {
+    "GOVERNMENT": 100,
+    "COMPANY_REGISTRY": 95,
+    "OFFICIAL_WEBSITE": 90,
+    "BUSINESS_DIRECTORY": 80,
+    "MARKETPLACE": 50,
+    "SOCIAL_PROFILE": 40,
+    "NEWS": 35,
+    "BLOG": 20,
+    "BLOG_FORUM": 15,
+    "FORUM": 15,
+    "JOB_PORTAL": 10,
+    "WIKIPEDIA": 5,
+    "TOOL_OR_UTILITY": 0,
+    "RECIPE": 0,
+    "UNRELATED_COMPANY": 0,
+    "UNKNOWN": 10,
+}
+
+# Domains mapped directly to their source type
+_DISALLOWED_DOMAIN_MAP: Dict[str, str] = {
+    # Tools / translate
+    "translate.google.com": "TOOL_OR_UTILITY",
+    "translate.google.co.in": "TOOL_OR_UTILITY",
+    "google.com": "TOOL_OR_UTILITY",
+    "play.google.com": "TOOL_OR_UTILITY",
+    "bing.com": "TOOL_OR_UTILITY",
+    "yahoo.com": "TOOL_OR_UTILITY",
+    "duckduckgo.com": "TOOL_OR_UTILITY",
+    "wolfram.com": "TOOL_OR_UTILITY",
+    # US/non-India government — unrelated to Indian business registration
+    "uscourts.gov": "UNRELATED_COMPANY",
+    "pacer.uscourts.gov": "UNRELATED_COMPANY",
+    # Wikipedia-like
+    "wikipedia.org": "WIKIPEDIA",
+    "wikimedia.org": "WIKIPEDIA",
+    "wikidata.org": "WIKIPEDIA",
+    # Major unrelated tech / corporate companies
+    "logitech.com": "UNRELATED_COMPANY",
+    "apple.com": "UNRELATED_COMPANY",
+    "microsoft.com": "UNRELATED_COMPANY",
+    "samsung.com": "UNRELATED_COMPANY",
+    "sony.com": "UNRELATED_COMPANY",
+    "intel.com": "UNRELATED_COMPANY",
+    "nvidia.com": "UNRELATED_COMPANY",
+    "adobe.com": "UNRELATED_COMPANY",
+    "oracle.com": "UNRELATED_COMPANY",
+    "ibm.com": "UNRELATED_COMPANY",
+    # Forums / social
+    "reddit.com": "FORUM",
+    "quora.com": "FORUM",
+    "stackoverflow.com": "FORUM",
+    "stackexchange.com": "FORUM",
+    # Job portals
+    "naukri.com": "JOB_PORTAL",
+    "indeed.com": "JOB_PORTAL",
+    "glassdoor.com": "JOB_PORTAL",
+    "linkedin.com": "JOB_PORTAL",
+    "shine.com": "JOB_PORTAL",
+    "monster.com": "JOB_PORTAL",
+    "foundit.in": "JOB_PORTAL",
+    "apna.co": "JOB_PORTAL",
+    # Social media / video
+    "facebook.com": "SOCIAL_PROFILE",
+    "instagram.com": "SOCIAL_PROFILE",
+    "twitter.com": "SOCIAL_PROFILE",
+    "x.com": "SOCIAL_PROFILE",
+    "youtube.com": "SOCIAL_PROFILE",
+    "pinterest.com": "SOCIAL_PROFILE",
+    "snapchat.com": "SOCIAL_PROFILE",
+    # E-commerce marketplaces
+    "amazon.in": "MARKETPLACE",
+    "amazon.com": "MARKETPLACE",
+    "flipkart.com": "MARKETPLACE",
+    "myntra.com": "MARKETPLACE",
+    "snapdeal.com": "MARKETPLACE",
+    "meesho.com": "MARKETPLACE",
+    "ajio.com": "MARKETPLACE",
+    "shopclues.com": "MARKETPLACE",
+    "paytmmall.com": "MARKETPLACE",
+    # Developer / code
+    "github.com": "TOOL_OR_UTILITY",
+    "gitlab.com": "TOOL_OR_UTILITY",
+    "pypi.org": "TOOL_OR_UTILITY",
+    "npmjs.com": "TOOL_OR_UTILITY",
+    # Blogging platforms
+    "medium.com": "BLOG",
+    "blogspot.com": "BLOG",
+    "wordpress.com": "BLOG",
+    "tumblr.com": "BLOG",
+    # Document sharing
+    "scribd.com": "BLOG",
+    "slideshare.net": "BLOG",
+    # Misc irrelevant
+    "zhihu.com": "UNKNOWN",
+    "slotdemoindonesia.com": "TOOL_OR_UTILITY",
+    "slot-demo.com": "TOOL_OR_UTILITY",
+}
+
+# High-authority Indian business registries / government portals
+_REGISTRY_DOMAINS = {
+    "mca.gov.in", "gst.gov.in", "incometax.gov.in", "fssai.gov.in",
+    "zaubacorp.com", "quickcompany.in", "tofler.in", "thecompanycheck.com",
+    "mastersindia.co", "zauba.com", "vakilsearch.com",
+}
+
+# Keywords in URL path signalling recipe content
+_RECIPE_PATH_SIGNALS = {"/recipe", "/recipes", "/food", "/cuisine", "/cook", "/dish", "/ingredient", "/menu"}
+_RECIPE_TITLE_SIGNALS = {"recipe", "ingredients", "cooking", "bake", "grill", "cuisine", "chef", "dish"}
+
+# Keywords signalling job portal content
+_JOB_PATH_SIGNALS = {"/job", "/jobs", "/career", "/careers", "/vacancy", "/vacancies", "/hiring", "/apply"}
+_JOB_TITLE_SIGNALS = {"job opening", "career opportunity", "vacancy", "hiring", "apply now", "job description"}
+
+# Utility / gambling / unrelated title signals
+_UTILITY_TITLE_SIGNALS = {
+    "translate", "calculator", "converter", "free pdf", "download",
+    "slot demo", "casino", "gambling", "gacor", "betting", "lottery",
+    "cpu benchmark", "gpu benchmark",
+}
+
+# Domain fragments for forums
+_FORUM_DOMAIN_SIGNALS = {"forum", "discuss", "community", "talk.", "boards.", "answers."}
+
+
+def classify_source_type(url: str, title: str, snippet: str) -> Tuple[str, int]:
+    """Classify the type and quality weight of a search result source.
+
+    Args:
+        url: Search result URL.
+        title: Search result title text.
+        snippet: Search result snippet text.
+
+    Returns:
+        Tuple of (source_type_string, quality_weight 0-100).
+    """
+    import urllib.parse
+    try:
+        parsed = urllib.parse.urlparse(url.lower() if url else "")
+        domain = parsed.netloc.replace("www.", "").strip()
+        path = parsed.path.lower()
+    except Exception:
+        domain = ""
+        path = ""
+
+    title_lower = title.lower() if title else ""
+    snippet_lower = snippet.lower() if snippet else ""
+
+    # 1. Exact disallowed domain map check
+    for d_key, d_type in _DISALLOWED_DOMAIN_MAP.items():
+        if d_key in domain:
+            return d_type, SOURCE_TYPE_WEIGHTS.get(d_type, 0)
+
+    # 2. Indian government / company registry
+    for g_dom in _REGISTRY_DOMAINS:
+        if g_dom in domain:
+            if any(s in domain for s in ("zaubacorp", "tofler", "thecompanycheck", "quickcompany", "mastersindia", "zauba")):
+                return "COMPANY_REGISTRY", SOURCE_TYPE_WEIGHTS["COMPANY_REGISTRY"]
+            return "GOVERNMENT", SOURCE_TYPE_WEIGHTS["GOVERNMENT"]
+
+    # 3. General .gov.in detection
+    if domain.endswith(".gov.in") or domain == "gov.in":
+        return "GOVERNMENT", SOURCE_TYPE_WEIGHTS["GOVERNMENT"]
+
+    # 4. Recipe detection
+    url_is_recipe = any(sig in path for sig in _RECIPE_PATH_SIGNALS)
+    title_is_recipe = any(sig in title_lower for sig in _RECIPE_TITLE_SIGNALS)
+    if url_is_recipe or (title_is_recipe and "company" not in title_lower and "seller" not in title_lower):
+        return "RECIPE", SOURCE_TYPE_WEIGHTS["RECIPE"]
+
+    # 5. Job portal detection
+    url_is_job = any(sig in path for sig in _JOB_PATH_SIGNALS)
+    title_is_job = any(sig in title_lower for sig in _JOB_TITLE_SIGNALS)
+    if url_is_job or title_is_job:
+        return "JOB_PORTAL", SOURCE_TYPE_WEIGHTS["JOB_PORTAL"]
+
+    # 6. Utility / gambling / unrelated title
+    if any(sig in title_lower for sig in _UTILITY_TITLE_SIGNALS):
+        return "TOOL_OR_UTILITY", SOURCE_TYPE_WEIGHTS["TOOL_OR_UTILITY"]
+
+    # 7. Forum detection by domain fragments
+    if any(sig in domain for sig in _FORUM_DOMAIN_SIGNALS):
+        return "BLOG_FORUM", SOURCE_TYPE_WEIGHTS["BLOG_FORUM"]
+
+    # 8. News outlets
+    _news_domains = {
+        "ndtv.com", "thehindu.com", "hindustantimes.com", "economictimes",
+        "businessstandard", "livemint.com", "moneycontrol.com", "inc42.com",
+        "techcrunch.com", "reuters.com", "bbc.com", "timesofindia",
+    }
+    if any(nd in domain for nd in _news_domains):
+        return "NEWS", SOURCE_TYPE_WEIGHTS["NEWS"]
+
+    # 9. Blog platforms
+    if any(s in domain for s in ("blogspot", "wordpress", "substack", "medium")):
+        return "BLOG", SOURCE_TYPE_WEIGHTS["BLOG"]
+
+    # 10. Default UNKNOWN — may be an official website; let seller match decide
+    return "UNKNOWN", SOURCE_TYPE_WEIGHTS["UNKNOWN"]
+
+
+def is_disallowed_source(
+    source_type: str,
+    seller_match_score: int,
+    seller_name: str,
+    url: str,
+) -> Tuple[bool, str]:
+    """Determine if a search result should be hard-rejected BEFORE any HTTP fetch.
+
+    Args:
+        source_type: Classified source type string.
+        seller_match_score: Seller match score 0-100.
+        seller_name: Target seller name.
+        url: Result URL string.
+
+    Returns:
+        Tuple of (should_reject: bool, reject_reason: str).
+    """
+    import urllib.parse
+    try:
+        domain = urllib.parse.urlparse(url.lower()).netloc.replace("www.", "")
+    except Exception:
+        domain = ""
+
+    seller_slug = re.sub(r"[^a-z0-9]", "", seller_name.lower())
+
+    if source_type == "TOOL_OR_UTILITY":
+        # Allow only if seller slug is clearly in the domain
+        if seller_slug and len(seller_slug) >= 4 and seller_slug in domain.replace(".", ""):
+            return False, ""
+        return True, "DISALLOWED_SOURCE_TYPE"
+
+    if source_type == "RECIPE":
+        return True, "UNRELATED_DOMAIN"
+
+    if source_type == "UNRELATED_COMPANY":
+        if seller_match_score >= 70:
+            return False, ""
+        return True, "UNRELATED_COMPANY"
+
+    if source_type in ("FORUM", "BLOG_FORUM"):
+        if seller_match_score >= 70:
+            return False, ""
+        return True, "DISALLOWED_SOURCE_TYPE"
+
+    if source_type == "BLOG":
+        if seller_match_score >= 70:
+            return False, ""
+        return True, "DISALLOWED_SOURCE_TYPE"
+
+    if source_type == "JOB_PORTAL":
+        if seller_match_score >= 80:
+            return False, ""
+        return True, "DISALLOWED_SOURCE_TYPE"
+
+    if source_type == "WIKIPEDIA":
+        return True, "DISALLOWED_SOURCE_TYPE"
+
+    if source_type == "MARKETPLACE":
+        # Accept only seller-specific pages (slug in URL path)
+        if seller_slug and len(seller_slug) >= 4 and seller_slug in url.lower():
+            return False, ""
+        return True, "DISALLOWED_SOURCE_TYPE"
+
+    if source_type == "SOCIAL_PROFILE":
+        if seller_match_score >= 60:
+            return False, ""
+        return True, "SELLER_MISMATCH"
+
+    # OFFICIAL_WEBSITE, COMPANY_REGISTRY, GOVERNMENT, BUSINESS_DIRECTORY, NEWS, UNKNOWN
+    if seller_match_score >= 50:
+        return False, ""
+
+    # Final check: seller slug literally in domain
+    if seller_slug and len(seller_slug) >= 4 and seller_slug in domain.replace(".", ""):
+        return False, ""
+
+    return True, "SELLER_MISMATCH"

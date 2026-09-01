@@ -56,8 +56,10 @@ from scraper.validator import (
     PINCODE_REGEX,
     calculate_field_confidence,
     calculate_seller_match_score,
+    classify_source_type,
     cross_check_seller_data,
     determine_seller_status,
+    is_disallowed_source,
     normalize_seller_name_for_matching,
     validate_email,
     validate_fssai,
@@ -1094,31 +1096,61 @@ def evaluate_result_candidate(
     r: Dict[str, str],
     gst_number: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Inspect search result title, URL, snippet, extract candidate, and evaluate scores before decision."""
+    """Inspect a search result and evaluate it as a candidate for a given seller field.
+
+    Pipeline:
+      1. Classify source type (OFFICIAL_WEBSITE, TOOL_OR_UTILITY, RECIPE, FORUM, etc.)
+      2. Hard-reject disallowed sources BEFORE extracting any candidate.
+      3. Calculate seller match score.
+      4. Calculate field relevance score.
+      5. Extract and validate candidate value from title + snippet.
+      6. Compute composite confidence score.
+      7. Return structured diagnostic dict for logging.
+    """
     title = r.get("title", "").strip()
     url = r.get("url", "").strip()
     snippet = r.get("snippet", "").strip()
     text = f"{title} {snippet}"
     combined = f"{text} {url}".lower()
+    url_lower = url.lower()
 
-    # 1. Seller Match Score
+    # 1. Source Type Classification
+    source_type, source_quality_score = classify_source_type(url, title, snippet)
+
+    # 2. Seller Match Score
     seller_match_score, match_reason, matched_var = calculate_seller_match_score(seller_name, text, url)
 
-    # 2. Field Relevance Score
+    # 3. Hard Rejection (pre-fetch) — reject before candidate extraction / URL fetch
+    should_reject, reject_reason_early = is_disallowed_source(source_type, seller_match_score, seller_name, url)
+    if should_reject:
+        return {
+            "title": title,
+            "url": url,
+            "snippet": snippet,
+            "source_type": source_type,
+            "seller_match_score": seller_match_score,
+            "match_reason": match_reason,
+            "matched_var": matched_var or seller_name,
+            "field_relevance_score": 0,
+            "candidate_validity_score": 0,
+            "source_quality_score": source_quality_score,
+            "total_confidence": 0,
+            "raw_candidate": None,
+            "valid_candidate_val": None,
+            "decision": "REJECT",
+            "reject_reason": reject_reason_early,
+        }
+
+    # 4. Field Relevance Score
     kw_list = FIELD_KEYWORDS.get(field_attr, [])
     has_field_kw = any(re.search(r"\b" + re.escape(kw) + r"\b", combined) for kw in kw_list) if kw_list else True
     field_relevance_score = 90 if has_field_kw else 10
 
-    # 3. Source Quality Score
-    url_lower = url.lower()
+    # Boost source quality for registry/government
     if any(d in url_lower for d in DIRECTORY_DOMAINS):
-        source_quality_score = 90
-    elif any(d in url_lower for d in EXCLUDED_WEBSITE_DOMAINS):
-        source_quality_score = 40
-    else:
-        source_quality_score = 80
+        source_quality_score = max(source_quality_score, 90)
 
-    # 4. Extract Candidate & Validity Score
+    # 5. Extract Candidate & Validity Score
     raw_candidate = None
     valid_candidate_val = None
     candidate_validity_score = 0
@@ -1154,26 +1186,35 @@ def evaluate_result_candidate(
                 candidate_validity_score = 100
     elif field_attr == "owner_name":
         owner_m = re.search(
-            r"(?i)(?:director|owner|proprietor|founder|promoter|managing\s+director)\s*[:\-]?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})",
+            r"(?i)(?:owner|founder|director|proprietor|promoter|partner|managing\s+director)[:\-\s]+([A-Z][a-zA-Z\s]{2,40})",
             text,
         )
         if owner_m:
             raw_candidate = owner_m.group(1).strip()
-            if raw_candidate.lower() not in {"flipkart", "amazon", "india", "pvt ltd", "limited", "company", "privacy policy", "terms of use"}:
+            if len(raw_candidate) >= 3 and not any(
+                w in raw_candidate.lower()
+                for w in ["flipkart", "amazon", "contact", "service", "policy", "terms"]
+            ):
                 valid_candidate_val = raw_candidate
-                candidate_validity_score = 90
+                candidate_validity_score = 80
     elif field_attr == "contact_number":
-        matches = PHONE_REGEX.findall(text)
-        if matches:
-            raw_candidate = matches[0]
+        ph_m = re.search(
+            r"(?:(?:\+|0{0,2})91[\s\-]*)?(?:[0]?[6-9]\d{9}|\b[6-9]\d{9}\b)",
+            text,
+        )
+        if ph_m:
+            raw_candidate = ph_m.group(0)
             valid_ph = validate_phone(raw_candidate)
             if valid_ph:
                 valid_candidate_val = valid_ph
                 candidate_validity_score = 100
     elif field_attr == "email":
-        matches = EMAIL_REGEX.findall(text)
-        if matches:
-            raw_candidate = matches[0]
+        em_m = re.search(
+            r"\b[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}\b",
+            text,
+        )
+        if em_m:
+            raw_candidate = em_m.group(0)
             valid_em = validate_email(raw_candidate)
             if valid_em:
                 valid_candidate_val = valid_em
@@ -1207,7 +1248,7 @@ def evaluate_result_candidate(
                 valid_candidate_val = parsed.get("billing_address")
                 candidate_validity_score = 75
     elif field_attr == "website_url":
-        if url and url.startswith("http") and not any(ed in url_lower for ed in EXCLUDED_WEBSITE_DOMAINS):
+        if url and url.startswith("http") and source_type not in ("TOOL_OR_UTILITY", "RECIPE", "UNRELATED_COMPANY", "MARKETPLACE"):
             try:
                 parsed_u = urllib.parse.urlparse(url)
                 root_u = f"{parsed_u.scheme}://{parsed_u.netloc}"
@@ -1217,7 +1258,7 @@ def evaluate_result_candidate(
             except Exception:
                 pass
 
-    # 5. Composite Confidence Score
+    # 6. Composite Confidence Score
     total_confidence = int(
         seller_match_score * 0.40
         + field_relevance_score * 0.20
@@ -1225,7 +1266,7 @@ def evaluate_result_candidate(
         + source_quality_score * 0.15
     )
 
-    # 6. Decision & Reject Reason
+    # 7. Decision & Reject Reason
     if not raw_candidate:
         decision = "REJECT"
         reject_reason = "NO_CANDIDATE"
@@ -1249,6 +1290,7 @@ def evaluate_result_candidate(
         "title": title,
         "url": url,
         "snippet": snippet,
+        "source_type": source_type,
         "seller_match_score": seller_match_score,
         "match_reason": match_reason,
         "matched_var": matched_var or seller_name,
@@ -2084,18 +2126,25 @@ class WebResearchEngine:
                 # Inspect ALL organic results before making accept/reject decision
                 for idx, r_item in enumerate(raw_results, start=1):
                     eval_res = evaluate_result_candidate(seller_name, field_attr, r_item, gst_number=merged.get("gst_number"))
-                    
+
                     logger.info(
-                        f"  Result #{idx}\n"
-                        f"  Title: {eval_res['title']}\n"
-                        f"  URL: {eval_res['url']}\n"
-                        f"  Snippet: {eval_res['snippet']}\n"
-                        f"  Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
-                        f"  Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
-                        f"  Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
-                        f"  Score: {eval_res['total_confidence']}\n"
-                        f"  Decision: {eval_res['decision']}\n"
-                        f"  Reject Reason: {eval_res['reject_reason']}"
+                        f"\n----------------------------------------\n"
+                        f"SEARCH RESULT\n"
+                        f"----------------------------------------\n"
+                        f"Seller: {seller_name}\n"
+                        f"Field: {field_display_name}\n"
+                        f"Provider: Bing\n"
+                        f"Result: {idx}\n"
+                        f"Title: {eval_res['title']}\n"
+                        f"URL: {eval_res['url']}\n"
+                        f"Snippet: {eval_res['snippet'][:200]}\n"
+                        f"Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
+                        f"Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
+                        f"Source Type: {eval_res.get('source_type', 'UNKNOWN')}\n"
+                        f"Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
+                        f"Decision: {eval_res['decision']}\n"
+                        f"Reject Reason: {eval_res['reject_reason']}\n"
+                        f"----------------------------------------"
                     )
 
                     if eval_res["decision"] == "ACCEPT" and not accepted_candidate:
@@ -2162,18 +2211,25 @@ class WebResearchEngine:
 
                     for idx, r_item in enumerate(raw_results, start=1):
                         eval_res = evaluate_result_candidate(seller_name, field_attr, r_item, gst_number=merged.get("gst_number"))
-                        
+
                         logger.info(
-                            f"  Result #{idx}\n"
-                            f"  Title: {eval_res['title']}\n"
-                            f"  URL: {eval_res['url']}\n"
-                            f"  Snippet: {eval_res['snippet']}\n"
-                            f"  Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
-                            f"  Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
-                            f"  Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
-                            f"  Score: {eval_res['total_confidence']}\n"
-                            f"  Decision: {eval_res['decision']}\n"
-                            f"  Reject Reason: {eval_res['reject_reason']}"
+                            f"\n----------------------------------------\n"
+                            f"SEARCH RESULT\n"
+                            f"----------------------------------------\n"
+                            f"Seller: {seller_name}\n"
+                            f"Field: {field_display_name}\n"
+                            f"Provider: Brave\n"
+                            f"Result: {idx}\n"
+                            f"Title: {eval_res['title']}\n"
+                            f"URL: {eval_res['url']}\n"
+                            f"Snippet: {eval_res['snippet'][:200]}\n"
+                            f"Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
+                            f"Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
+                            f"Source Type: {eval_res.get('source_type', 'UNKNOWN')}\n"
+                            f"Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
+                            f"Decision: {eval_res['decision']}\n"
+                            f"Reject Reason: {eval_res['reject_reason']}\n"
+                            f"----------------------------------------"
                         )
 
                         if eval_res["decision"] == "ACCEPT" and not accepted_candidate:
