@@ -14,9 +14,82 @@
     "product_rating": null,
     "seller_source_type": "flipkart_product",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-29T13:55:02.930130+00:00",
-    "last_seen": "2026-08-31T11:55:35.220378+00:00"
+    "last_seen": "2026-08-31T11:55:35.220378+00:00",
+    "last_enriched": "2026-09-01T18:33:44.299605+00:00",
+    "enriched_data": {
+      "seller_name": "Boat Lifestyle",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/boat-airdopes-131-bluetooth-headset/p/itm123",
+      "seller_source_url": "https://www.flipkart.com/boat-airdopes-131-bluetooth-headset/p/itm123",
+      "seller_source_type": "flipkart_product",
+      "category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": null,
+      "seller_rating": 4.5,
+      "star_rating": 4.5,
+      "business_model": "B2C / Retail",
+      "business_category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "& Achievements CONTACT US Nampa 2175 N. Samantha CT. Nampa, ID 83687 208-459-7777 Burley 2165 Overland Ave. Burley, ID 833318 208-678-5869",
+      "shipping_address": "& Achievements CONTACT US Nampa 2175 N. Samantha CT. Nampa, ID 83687 208-459-7777 Burley 2165 Overland Ave. Burley, ID 833318 208-678-5869",
+      "city": null,
+      "state": null,
+      "pincode": "833318",
+      "country": "India",
+      "website_url": "https://idahowatersports.com",
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://idahowatersports.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "& Achievements CONTACT US Nampa 2175 N. Samantha CT. Nampa, ID 83687 208-459-7777 Burley 2165 Overland Ave. Burley, ID 833318 208-678-5869",
+          "confidence": 0.85,
+          "source": "company_website"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::reoutlook": {
     "seller_name": "Reoutlook",
@@ -403,9 +476,82 @@
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T13:15:43.457696+00:00",
-    "last_seen": "2026-08-31T13:15:54.728818+00:00"
+    "last_seen": "2026-08-31T13:15:54.728818+00:00",
+    "last_enriched": "2026-09-01T18:33:57.695694+00:00",
+    "enriched_data": {
+      "seller_name": "Bhavay",
+      "marketplace": "flipkart",
+      "fulfillment_by": "BHAVAY",
+      "product_url": "https://www.flipkart.com/9lkha-striped-men-three-fourths/p/itm1c204321e2c77?pid=TFHHNHJCHDC9YCGR",
+      "seller_source_url": "https://www.flipkart.com/9lkha-striped-men-three-fourths/p/itm1c204321e2c77?pid=TFHHNHJCHDC9YCGR",
+      "seller_source_type": "fulfillment_label",
+      "category": "Three-Fourths",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.3,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Three-Fourths",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::outflits": {
     "seller_name": "Outflits",
@@ -1161,9 +1307,82 @@
     "product_rating": 3.6,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T13:38:38.096841+00:00",
-    "last_seen": "2026-08-31T13:38:38.096841+00:00"
+    "last_seen": "2026-08-31T13:38:38.096841+00:00",
+    "last_enriched": "2026-09-01T18:34:11.776373+00:00",
+    "enriched_data": {
+      "seller_name": "Munnz",
+      "marketplace": "flipkart",
+      "fulfillment_by": "Munnz",
+      "product_url": "https://www.flipkart.com/munnz-solid-men-three-fourths/p/itme83472b57b005?pid=TFHH2YB66XPKJH2G",
+      "seller_source_url": "https://www.flipkart.com/munnz-solid-men-three-fourths/p/itme83472b57b005?pid=TFHH2YB66XPKJH2G",
+      "seller_source_type": "fulfillment_label",
+      "category": "Three-Fourths",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.6,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Three-Fourths",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::bikrom garments": {
     "seller_name": "Bikrom Garments",
@@ -1180,9 +1399,82 @@
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T13:38:49.226861+00:00",
-    "last_seen": "2026-08-31T13:38:49.226861+00:00"
+    "last_seen": "2026-08-31T13:38:49.226861+00:00",
+    "last_enriched": "2026-09-01T18:34:25.630196+00:00",
+    "enriched_data": {
+      "seller_name": "Bikrom Garments",
+      "marketplace": "flipkart",
+      "fulfillment_by": "BIKROM GARMENTS",
+      "product_url": "https://www.flipkart.com/bikrom-garments-solid-men-three-fourths/p/itm9c3b3c49c3335?pid=TFHG36PT4RBE2MCS",
+      "seller_source_url": "https://www.flipkart.com/bikrom-garments-solid-men-three-fourths/p/itm9c3b3c49c3335?pid=TFHG36PT4RBE2MCS",
+      "seller_source_type": "fulfillment_label",
+      "category": "Three-Fourths",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.0,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Three-Fourths",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::cosvos": {
     "seller_name": "Cosvos",
@@ -1391,9 +1683,82 @@
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T13:45:32.623023+00:00",
-    "last_seen": "2026-08-31T13:45:32.623023+00:00"
+    "last_seen": "2026-08-31T13:45:32.623023+00:00",
+    "last_enriched": "2026-09-01T18:34:40.700042+00:00",
+    "enriched_data": {
+      "seller_name": "Sportspal",
+      "marketplace": "flipkart",
+      "fulfillment_by": "SPORTSPAL",
+      "product_url": "https://www.flipkart.com/wmx-solid-men-black-tights/p/itm02a71e13fbcb0?pid=TGTGNZEHUN6RZSDH",
+      "seller_source_url": "https://www.flipkart.com/wmx-solid-men-black-tights/p/itm02a71e13fbcb0?pid=TGTGNZEHUN6RZSDH",
+      "seller_source_type": "fulfillment_label",
+      "category": "Tights",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Tights",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::poojaran saree": {
     "seller_name": "Poojaran Saree",
@@ -1503,9 +1868,82 @@
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T13:48:59.808671+00:00",
-    "last_seen": "2026-08-31T13:48:59.808671+00:00"
+    "last_seen": "2026-08-31T13:48:59.808671+00:00",
+    "last_enriched": "2026-09-01T18:34:54.304275+00:00",
+    "enriched_data": {
+      "seller_name": "Ninq",
+      "marketplace": "flipkart",
+      "fulfillment_by": "NINQ",
+      "product_url": "https://www.flipkart.com/ninq-solid-men-black-tights/p/itm9fd6dec67ba75?pid=TGTGXJP3E86U5RZR",
+      "seller_source_url": "https://www.flipkart.com/ninq-solid-men-black-tights/p/itm9fd6dec67ba75?pid=TGTGXJP3E86U5RZR",
+      "seller_source_type": "fulfillment_label",
+      "category": "Tights",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Tights",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::centuryindia": {
     "seller_name": "Centuryindia",
@@ -1987,9 +2425,82 @@
     "product_rating": 3.5,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T14:05:56.387305+00:00",
-    "last_seen": "2026-08-31T14:53:07.484188+00:00"
+    "last_seen": "2026-08-31T14:53:07.484188+00:00",
+    "last_enriched": "2026-09-01T18:35:09.404492+00:00",
+    "enriched_data": {
+      "seller_name": "Cmfashion",
+      "marketplace": "flipkart",
+      "fulfillment_by": "Cmfashion",
+      "product_url": "https://www.flipkart.com/ckfashion-solid-men-waistcoat/p/itm40c156a915a14?pid=WSCGRK7ZPHDHHTPW",
+      "seller_source_url": "https://www.flipkart.com/ckfashion-solid-men-waistcoat/p/itm40c156a915a14?pid=WSCGRK7ZPHDHHTPW",
+      "seller_source_type": "fulfillment_label",
+      "category": "Blazers, Waistcoats & Suits > Suits",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.5,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Blazers, Waistcoats & Suits > Suits",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::arshiafashions": {
     "seller_name": "Arshiafashions",
@@ -2289,9 +2800,82 @@
     "product_rating": 3.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T14:15:49.785739+00:00",
-    "last_seen": "2026-08-31T14:15:49.785739+00:00"
+    "last_seen": "2026-08-31T14:15:49.785739+00:00",
+    "last_enriched": "2026-09-01T18:35:24.440742+00:00",
+    "enriched_data": {
+      "seller_name": "Carcolaritailnet",
+      "marketplace": "flipkart",
+      "fulfillment_by": "CARCOLARITAILNET",
+      "product_url": "https://www.flipkart.com/dhyey-self-design-men-waistcoat/p/itmbca14b4f45d6b?pid=WSCGWK53WUUWHXAG",
+      "seller_source_url": "https://www.flipkart.com/dhyey-self-design-men-waistcoat/p/itmbca14b4f45d6b?pid=WSCGWK53WUUWHXAG",
+      "seller_source_type": "fulfillment_label",
+      "category": "Blazers, Waistcoats & Suits > Suits",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.8,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Blazers, Waistcoats & Suits > Suits",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::hsatlastradefashion": {
     "seller_name": "Hsatlastradefashion",
@@ -2315,9 +2899,82 @@
     "product_rating": 3.6,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T14:16:01.118571+00:00",
-    "last_seen": "2026-08-31T18:14:07.004316+00:00"
+    "last_seen": "2026-08-31T18:14:07.004316+00:00",
+    "last_enriched": "2026-09-01T18:35:38.799370+00:00",
+    "enriched_data": {
+      "seller_name": "Hsatlastradefashion",
+      "marketplace": "flipkart",
+      "fulfillment_by": "HSAtlastradeFashion",
+      "product_url": "https://www.flipkart.com/peter-england-2-piece-suit-solid-men/p/itm6705071169790?pid=SUIGFXFCWKU5NZGZ",
+      "seller_source_url": "https://www.flipkart.com/peter-england-2-piece-suit-solid-men/p/itm6705071169790?pid=SUIGFXFCWKU5NZGZ",
+      "seller_source_type": "fulfillment_label",
+      "category": "Blazers, Waistcoats & Suits > Suits",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.6,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Blazers, Waistcoats & Suits > Suits",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::fourfolds": {
     "seller_name": "Fourfolds",
@@ -2520,9 +3177,82 @@
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T14:22:51.274609+00:00",
-    "last_seen": "2026-08-31T14:22:51.274609+00:00"
+    "last_seen": "2026-08-31T14:22:51.274609+00:00",
+    "last_enriched": "2026-09-01T18:35:53.165743+00:00",
+    "enriched_data": {
+      "seller_name": "Clothifyusha",
+      "marketplace": "flipkart",
+      "fulfillment_by": "ClothifyUsha",
+      "product_url": "https://www.flipkart.com/clothify-3-piece-coat-pant-set-wedding-party-wear-suit-three-piece-solid-men/p/itmd98ee55fbd593?pid=SUIHZYB6Q9HCMEWG",
+      "seller_source_url": "https://www.flipkart.com/clothify-3-piece-coat-pant-set-wedding-party-wear-suit-three-piece-solid-men/p/itmd98ee55fbd593?pid=SUIHZYB6Q9HCMEWG",
+      "seller_source_type": "fulfillment_label",
+      "category": "Blazers, Waistcoats & Suits > Suits",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.0,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Blazers, Waistcoats & Suits > Suits",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::maksudenterprise": {
     "seller_name": "Maksudenterprise",
@@ -2542,9 +3272,82 @@
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T14:23:02.411178+00:00",
-    "last_seen": "2026-08-31T14:45:49.754131+00:00"
+    "last_seen": "2026-08-31T14:45:49.754131+00:00",
+    "last_enriched": "2026-09-01T18:36:09.574411+00:00",
+    "enriched_data": {
+      "seller_name": "Maksudenterprise",
+      "marketplace": "flipkart",
+      "fulfillment_by": "MAKSUDENTERPRISE",
+      "product_url": "https://www.flipkart.com/maksud-enterprise-solid-men-waistcoat/p/itm3adc5f0a02d50?pid=WSCGGFF9BHECP78U",
+      "seller_source_url": "https://www.flipkart.com/maksud-enterprise-solid-men-waistcoat/p/itm3adc5f0a02d50?pid=WSCGGFF9BHECP78U",
+      "seller_source_type": "fulfillment_label",
+      "category": "Blazers, Waistcoats & Suits > Suits",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Blazers, Waistcoats & Suits > Suits",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::justshop1912": {
     "seller_name": "Justshop1912",
@@ -3496,9 +4299,82 @@
     "product_rating": 4.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T14:56:38.660536+00:00",
-    "last_seen": "2026-08-31T15:14:02.587674+00:00"
+    "last_seen": "2026-08-31T15:14:02.587674+00:00",
+    "last_enriched": "2026-09-01T18:36:24.494626+00:00",
+    "enriched_data": {
+      "seller_name": "Rntradingco",
+      "marketplace": "flipkart",
+      "fulfillment_by": "RNTRADINGCO",
+      "product_url": "https://www.flipkart.com/paryushnam-boys-festive-party-wedding-blazer-pant-set/p/itm08079d754fc42?pid=KETHQ9E6BJZYGZNQ",
+      "seller_source_url": "https://www.flipkart.com/paryushnam-boys-festive-party-wedding-blazer-pant-set/p/itm08079d754fc42?pid=KETHQ9E6BJZYGZNQ",
+      "seller_source_type": "fulfillment_label",
+      "category": "Suit Jackets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.8,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Suit Jackets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::jsrsenterprises": {
     "seller_name": "Jsrsenterprises",
@@ -4167,9 +5043,82 @@
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T15:20:46.392740+00:00",
-    "last_seen": "2026-08-31T15:20:46.392740+00:00"
+    "last_seen": "2026-08-31T15:20:46.392740+00:00",
+    "last_enriched": "2026-09-01T18:36:39.457023+00:00",
+    "enriched_data": {
+      "seller_name": "Sbs1Enterprises",
+      "marketplace": "flipkart",
+      "fulfillment_by": "SBS1ENTERPRISES",
+      "product_url": "https://www.flipkart.com/shreekshinsa-embroidered-kurta-trouser-pant-dupatta-set/p/itm784881ab05038?pid=SWDHPG535FPFRCBN",
+      "seller_source_url": "https://www.flipkart.com/shreekshinsa-embroidered-kurta-trouser-pant-dupatta-set/p/itm784881ab05038?pid=SWDHPG535FPFRCBN",
+      "seller_source_type": "fulfillment_label",
+      "category": "Suit Trousers",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": null,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Suit Trousers",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::bhagvati88": {
     "seller_name": "Bhagvati88",
@@ -5111,9 +6060,82 @@
     "product_rating": 4.2,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T15:52:05.614996+00:00",
-    "last_seen": "2026-08-31T16:41:47.619430+00:00"
+    "last_seen": "2026-08-31T16:41:47.619430+00:00",
+    "last_enriched": "2026-09-01T18:36:55.209671+00:00",
+    "enriched_data": {
+      "seller_name": "Retailnet",
+      "marketplace": "flipkart",
+      "fulfillment_by": "RetailNet",
+      "product_url": "https://www.flipkart.com/indo-era-women-kurta-pant-dupatta-set/p/itm2735cc0b2568b?pid=ETHHYY36KVRDNWXG",
+      "seller_source_url": "https://www.flipkart.com/indo-era-women-kurta-pant-dupatta-set/p/itm2735cc0b2568b?pid=ETHHYY36KVRDNWXG",
+      "seller_source_type": "fulfillment_label",
+      "category": "Suit Trousers",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.2,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Suit Trousers",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::loomscart": {
     "seller_name": "Loomscart",
@@ -8295,9 +9317,82 @@
     "product_rating": 4.2,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T17:34:14.820143+00:00",
-    "last_seen": "2026-08-31T17:48:01.278647+00:00"
+    "last_seen": "2026-08-31T17:48:01.278647+00:00",
+    "last_enriched": "2026-09-01T18:37:10.413758+00:00",
+    "enriched_data": {
+      "seller_name": "Ravr India",
+      "marketplace": "flipkart",
+      "fulfillment_by": "RAVR India",
+      "product_url": "https://www.flipkart.com/navy-sport-men-mid-calf-crew/p/itmef016217af0c3?pid=SOCFX6P6G2KMZDFJ",
+      "seller_source_url": "https://www.flipkart.com/navy-sport-men-mid-calf-crew/p/itmef016217af0c3?pid=SOCFX6P6G2KMZDFJ",
+      "seller_source_type": "fulfillment_label",
+      "category": "Sportswear > Athletic Socks",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.2,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Sportswear > Athletic Socks",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::krizadivethnics": {
     "seller_name": "Krizadivethnics",
@@ -9889,9 +10984,82 @@
     "product_rating": 3.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T18:30:34.850532+00:00",
-    "last_seen": "2026-08-31T19:00:20.278133+00:00"
+    "last_seen": "2026-08-31T19:00:20.278133+00:00",
+    "last_enriched": "2026-09-01T18:37:26.735343+00:00",
+    "enriched_data": {
+      "seller_name": "Tribhuvanapparels",
+      "marketplace": "flipkart",
+      "fulfillment_by": "TribhuvanApparels",
+      "product_url": "https://www.flipkart.com/sportz-fit-solid-men-polo-neck-blue-t-shirt/p/itm627ad8bdefee6?pid=TSHHGS6JC9HWHFVR",
+      "seller_source_url": "https://www.flipkart.com/sportz-fit-solid-men-polo-neck-blue-t-shirt/p/itm627ad8bdefee6?pid=TSHHGS6JC9HWHFVR",
+      "seller_source_type": "fulfillment_label",
+      "category": "Sports T-Shirts & Jerseys",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.3,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Sports T-Shirts & Jerseys",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::ricpolesports": {
     "seller_name": "Ricpolesports",
@@ -10463,9 +11631,82 @@
     "product_rating": 3.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T18:49:35.883162+00:00",
-    "last_seen": "2026-08-31T18:59:57.942529+00:00"
+    "last_seen": "2026-08-31T18:59:57.942529+00:00",
+    "last_enriched": "2026-09-01T18:37:43.007372+00:00",
+    "enriched_data": {
+      "seller_name": "Menrocks",
+      "marketplace": "flipkart",
+      "fulfillment_by": "MenRocks",
+      "product_url": "https://www.flipkart.com/eyebogler-colorblock-men-zip-neck-black-grey-t-shirt/p/itm874c7bbf24f9d?pid=TSHHNVDMEFAFXBYG",
+      "seller_source_url": "https://www.flipkart.com/eyebogler-colorblock-men-zip-neck-black-grey-t-shirt/p/itm874c7bbf24f9d?pid=TSHHNVDMEFAFXBYG",
+      "seller_source_type": "fulfillment_label",
+      "category": "Sports T-Shirts & Jerseys",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.8,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Sports T-Shirts & Jerseys",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::jjtees": {
     "seller_name": "Jjtees",
@@ -10946,9 +12187,82 @@
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T19:07:21.330736+00:00",
-    "last_seen": "2026-08-31T19:07:32.298285+00:00"
+    "last_seen": "2026-08-31T19:07:32.298285+00:00",
+    "last_enriched": "2026-09-01T18:37:58.251264+00:00",
+    "enriched_data": {
+      "seller_name": "Tripr",
+      "marketplace": "flipkart",
+      "fulfillment_by": "TRIPR",
+      "product_url": "https://www.flipkart.com/tripr-full-sleeve-solid-men-sweatshirt/p/itmd3bad93b1345a?pid=SWSHQKDERZUHHWBN",
+      "seller_source_url": "https://www.flipkart.com/tripr-full-sleeve-solid-men-sweatshirt/p/itmd3bad93b1345a?pid=SWSHQKDERZUHHWBN",
+      "seller_source_type": "fulfillment_label",
+      "category": "Sweatshirts & Hoodies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": null,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Sweatshirts & Hoodies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::flyind": {
     "seller_name": "Flyind",
@@ -11057,8 +12371,81 @@
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-08-31T19:10:53.199577+00:00",
-    "last_seen": "2026-08-31T19:10:53.199577+00:00"
+    "last_seen": "2026-08-31T19:10:53.199577+00:00",
+    "last_enriched": "2026-09-01T18:38:13.731444+00:00",
+    "enriched_data": {
+      "seller_name": "Fabrrinityfashion",
+      "marketplace": "flipkart",
+      "fulfillment_by": "FabrrinityFashion",
+      "product_url": "https://www.flipkart.com/speed-horse-full-sleeve-graphic-print-boys-sweatshirt/p/itm61c4631fb78f9?pid=SWSHNZZRCHCGQHGM",
+      "seller_source_url": "https://www.flipkart.com/speed-horse-full-sleeve-graphic-print-boys-sweatshirt/p/itm61c4631fb78f9?pid=SWSHNZZRCHCGQHGM",
+      "seller_source_type": "fulfillment_label",
+      "category": "Sweatshirts & Hoodies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": null,
+      "seller_rating": null,
+      "star_rating": null,
+      "business_model": "B2C / Retail",
+      "business_category": "Sweatshirts & Hoodies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NOT_FOUND",
+      "source": [
+        "search_query"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   }
 }
