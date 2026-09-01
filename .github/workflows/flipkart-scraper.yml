@@ -4,22 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       start_row:
-        description: 'Start input Excel row'
+        description: "Start input Excel row"
         required: true
-        default: '1'
+        default: "1"
         type: string
+
       end_row:
-        description: 'End input Excel row'
+        description: "End input Excel row"
         required: true
-        default: '2000'
+        default: "2000"
         type: string
+
       max_rows:
         description: "Maximum pending rows to process in this run"
         required: false
         default: "2000"
         type: string
+
   schedule:
-    - cron: "30 3 * * *"  # 09:00 IST daily (GitHub cron is UTC)
+    - cron: "30 3 * * *"
 
 permissions:
   contents: write
@@ -58,34 +61,48 @@ jobs:
         run: |
           python "main.py"
 
-            - name: Commit and push updated progress
+      - name: Diagnose generated files
+        if: always()
+        run: |
+          echo "===== DISK ====="
+          df -h
+
+          echo "===== OUTPUT SIZE ====="
+          du -sh output/ 2>/dev/null || true
+
+          echo "===== DATA SIZE ====="
+          du -sh data/ 2>/dev/null || true
+
+          echo "===== LOGS SIZE ====="
+          du -sh logs/ 2>/dev/null || true
+
+          echo "===== FILE COUNT ====="
+          find output data logs -type f 2>/dev/null | wc -l
+
+          echo "===== TOP 30 LARGEST FILES ====="
+          find output data logs -type f -printf '%s %p\n' 2>/dev/null \
+            | sort -nr \
+            | head -30
+
+          echo "===== XLSX FILE ====="
+          ls -lh output/*.xlsx 2>/dev/null || true
+
+          echo "===== GIT OBJECTS ====="
+          git count-objects -vH
+
+      - name: Commit and push updated progress and data
         if: always()
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          echo "=== Output size ==="
-          du -sh output/ 2>/dev/null || true
-
-          echo "=== Data size ==="
-          du -sh data/ 2>/dev/null || true
-
-          echo "=== Largest files ==="
-          find output data -type f -printf '%s %p\n' 2>/dev/null \
-            | sort -nr | head -20
-
-          echo "=== Git status ==="
+          echo "===== GIT STATUS ====="
           git status --short
 
-          # Add only files that should actually be stored in Git.
-          git add output/flipkart_sellers.xlsx
-
-          # Add your progress/state file here if you have one.
-          # Example:
-          # git add data/progress.json
+          git add output/flipkart_sellers.xlsx data/
 
           if ! git diff --cached --quiet; then
-            git commit -m "Auto-update Flipkart scraper progress [skip ci]"
+            git commit -m "Auto-update Flipkart scraper progress & data [skip ci]"
             git pull --rebase origin main
             git push
           else
@@ -101,9 +118,5 @@ jobs:
             output/flipkart_sellers.xlsx
             data/
             logs/
-            **/*.xlsx
-            **/*.csv
-            **/*.json
-            **/logs/**
           if-no-files-found: warn
           retention-days: 7
