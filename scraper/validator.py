@@ -215,16 +215,119 @@ def validate_fssai(fssai_str: Optional[str]) -> Optional[str]:
     return None
 
 
+def normalize_seller_name_for_matching(name: str) -> Dict[str, Any]:
+    """Normalize seller name for flexible fuzzy and token-based matching.
+
+    Args:
+        name: Raw or display seller name.
+
+    Returns:
+        Dict with 'clean', 'compact', 'tokens', and 'variations'.
+    """
+    if not name:
+        return {"clean": "", "compact": "", "tokens": [], "variations": []}
+
+    raw = str(name).lower().strip()
+    raw = raw.replace("&", "and")
+    # Remove business entity suffixes
+    raw_cleaned = re.sub(
+        r"\b(pvt|private|ltd|limited|inc|co|corp|corporation|llp|enterprises|enterprise|retail|retails|store|stores|traders|trader|trading|ind|india)\b",
+        "",
+        raw,
+        flags=re.IGNORECASE,
+    )
+    clean = re.sub(r"[^\w\s]", " ", raw_cleaned).strip()
+    clean = re.sub(r"\s+", " ", clean)
+
+    compact = re.sub(r"[^\w]", "", raw)
+    compact_stripped = re.sub(r"[^\w]", "", clean)
+
+    # Token breakdown (camelCase split e.g. SNAttire -> SN Attire -> sn, attire)
+    camel_split = re.sub(r"([a-z])([A-Z])", r"\1 \2", name)
+    camel_tokens = [w.lower() for w in re.split(r"[^\w]+", camel_split) if w]
+    tokens = list(set([w for w in re.split(r"[^\w]+", clean) if w] + camel_tokens))
+
+    variations = set([raw, clean, compact, compact_stripped])
+    if " " in clean:
+        variations.add(clean.replace(" ", ""))
+    for t in tokens:
+        if len(t) >= 3:
+            variations.add(t)
+
+    return {
+        "clean": clean,
+        "compact": compact,
+        "compact_stripped": compact_stripped,
+        "tokens": tokens,
+        "variations": list(variations),
+    }
+
+
+def calculate_seller_match_score(
+    seller_name: str, candidate_text: str, source_url: str = ""
+) -> Tuple[int, str, str]:
+    """Calculate seller matching score (0 to 100) and details against candidate text or URL.
+
+    Args:
+        seller_name: Target marketplace seller name.
+        candidate_text: Snippet, title, or webpage text.
+        source_url: Result URL.
+
+    Returns:
+        Tuple of (score: int, match_reason: str, matched_variation: str)
+    """
+    if not seller_name or not (candidate_text or source_url):
+        return 0, "NO_TEXT", ""
+
+    norm = normalize_seller_name_for_matching(seller_name)
+    combined = f"{candidate_text} {source_url}".lower()
+    combined_compact = re.sub(r"[^\w]", "", combined)
+    url_compact = re.sub(r"[^\w]", "", source_url.lower()) if source_url else ""
+
+    # 1. Exact compact match in text or URL (e.g. snattire in snattire.in or 'sn attire')
+    if norm["compact_stripped"] and len(norm["compact_stripped"]) >= 4:
+        if norm["compact_stripped"] in combined_compact:
+            return 100, "EXACT_COMPACT_MATCH", norm["compact_stripped"]
+        if norm["compact_stripped"] in url_compact:
+            return 95, "URL_COMPACT_MATCH", norm["compact_stripped"]
+
+    if norm["compact"] and len(norm["compact"]) >= 4:
+        if norm["compact"] in combined_compact:
+            return 95, "EXACT_COMPACT_MATCH", norm["compact"]
+
+    # 2. Check all variations
+    for var in norm["variations"]:
+        if not var or len(var) < 3:
+            continue
+        v_pattern = r"\b" + re.escape(var) + r"\b"
+        if re.search(v_pattern, combined, re.IGNORECASE):
+            return 90, "VARIATION_EXACT_MATCH", var
+
+    # 3. Token coverage check (e.g. "sn" and "attire" both present)
+    valid_tokens = [t for t in norm["tokens"] if len(t) >= 2]
+    if valid_tokens:
+        matched_tokens = [
+            t for t in valid_tokens
+            if re.search(r"\b" + re.escape(t) + r"\b", combined, re.IGNORECASE) or t in combined_compact
+        ]
+        coverage = len(matched_tokens) / len(valid_tokens)
+        if coverage >= 1.0:
+            return 85, "FULL_TOKEN_MATCH", " ".join(matched_tokens)
+        elif coverage >= 0.5 and len(matched_tokens) >= 1:
+            return 60, "PARTIAL_TOKEN_MATCH", " ".join(matched_tokens)
+
+    return 0, "SELLER_MISMATCH", ""
+
+
 def validate_seller_association(
     seller_name: str, candidate_text: str, source_url: str = ""
 ) -> bool:
     """Validate that candidate snippet or page is authentically associated with the seller name.
 
     Supports controlled normalized matching:
-      - Spaces, punctuation, and case normalization.
-      - Singular and plural variations (e.g., TEAMEXPORTS <-> TEAMEXPORT, REEPREECREATION <-> REEPREECREATIONS).
-      - Business context awareness (GST, PAN, Owner, Address, Wholesale, Retail, etc.).
-      - Distinctive token matching with stop word removal.
+      - Flexible compact & token matching (e.g. SNAttire <-> SN Attire <-> snattire).
+      - Suffix stripping (Pvt Ltd, Enterprises, Retail, etc.).
+      - Business context awareness.
 
     Args:
         seller_name: Target marketplace seller name.
@@ -232,99 +335,10 @@ def validate_seller_association(
         source_url: URL of the webpage.
 
     Returns:
-        True if seller association is verified, False otherwise.
+        True if seller association score >= 60, False otherwise.
     """
-    if not seller_name or not (candidate_text or source_url):
-        return False
-
-    combined = f"{candidate_text} {source_url}".lower()
-    combined_compact = re.sub(r"[^\w]", "", combined)
-
-    # Business context indicators
-    business_context_keywords = {
-        "gst", "gstin", "pan", "fssai", "proprietor", "owner", "director", "founder", "promoter",
-        "registered", "registration", "office", "address", "pincode", "postal", "wholesale", "retail",
-        "manufacturer", "supplier", "company", "firm", "business", "tax", "cin", "din", "msme",
-        "tirupur", "noida", "delhi", "mumbai", "bengaluru", "surat", "jaipur", "ahmedabad", "chennai",
-    }
-    has_business_context = any(k in combined for k in business_context_keywords)
-
-    generic_words = {
-        "retail", "retails", "enterprises", "enterprise", "creation", "creations", "store", "stores",
-        "shop", "shops", "online", "india", "pvt", "ltd", "limited", "llp", "traders", "trader", "trading",
-        "exports", "export", "imports", "import", "textiles", "textile", "garments", "garment", "clothing",
-        "cloth", "collection", "collections", "fashion", "fashions", "screenart", "industries", "industry",
-    }
-
-    # 1. Generate normalized variations of the seller name
-    clean_seller = re.sub(r"[^\w\s]", " ", seller_name.lower()).strip()
-    compact_seller = re.sub(r"\s+", "", clean_seller)
-
-    variations = [clean_seller, compact_seller]
-
-    # Singular / Plural normalization (e.g. teamexports -> teamexport, creation -> creations)
-    if compact_seller.endswith("s") and len(compact_seller) > 4:
-        variations.append(compact_seller[:-1])
-    else:
-        variations.append(compact_seller + "s")
-
-    # Suffix removal and expansion
-    suffixes = [
-        "limited", "ltd", "pvtltd", "pvt", "llp", "industries", "industry", "footwear",
-        "footwears", "creation", "creations", "collection", "collections", "enterprises",
-        "enterprise", "exports", "export", "imports", "import", "retail", "retails",
-        "cloth", "clothing", "cloths", "fashion", "fashions", "traders", "trader", "trading",
-        "store", "stores", "boutique", "textile", "textiles", "garments", "garment",
-        "secret", "secrets", "doll", "dolls", "wear", "wears", "mart", "hub", "zone",
-        "house", "studio", "shoppe", "craft", "crafts", "trends", "trend", "care", "beauty",
-    ]
-    for suf in suffixes:
-        if compact_seller.endswith(suf) and len(compact_seller) > len(suf) + 2:
-            pref = compact_seller[: -len(suf)]
-            variations.append(pref)
-            variations.append(f"{pref} {suf}")
-            if suf.endswith("s"):
-                variations.append(f"{pref}{suf[:-1]}")
-                variations.append(f"{pref} {suf[:-1]}")
-            else:
-                variations.append(f"{pref}{suf}s")
-                variations.append(f"{pref} {suf}s")
-            break
-
-    # 1. Direct word-boundary match of any seller variation
-    for v in variations:
-        v_lower = v.lower()
-        pattern = r"\b" + re.escape(v_lower) + r"\b"
-        if re.search(pattern, combined):
-            if " " in v_lower:
-                if has_business_context or (source_url and v_lower in source_url.lower()):
-                    return True
-            else:
-                if len(v_lower) >= 5:
-                    return True
-
-    # 2. Compact normalized match in text or URL when business context is present
-    if len(compact_seller) >= 5 and compact_seller in combined_compact and has_business_context:
-        return True
-
-    # 3. Check compact match in URL (e.g. boat-lifestyle.com, teamexport.in, nightdoll.in)
-    if source_url:
-        clean_url = re.sub(r"[^\w]", "", source_url.lower())
-        for v in variations:
-            v_clean = re.sub(r"[^\w]", "", v.lower())
-            if len(v_clean) >= 5 and v_clean in clean_url:
-                return True
-
-    # 4. Distinctive token matching with business context
-    words = [w for w in clean_seller.split() if len(w) >= 3]
-    distinctive_tokens = [w for w in words if w not in generic_words]
-    tokens_to_check = distinctive_tokens if distinctive_tokens else words
-
-    if tokens_to_check and (has_business_context or (source_url and any(w in source_url.lower() for w in tokens_to_check))):
-        if all(re.search(r"\b" + re.escape(w) + r"\b", combined) for w in tokens_to_check):
-            return True
-
-    return False
+    score, _, _ = calculate_seller_match_score(seller_name, candidate_text, source_url)
+    return score >= 60
 
 
 def cross_check_seller_data(data: Dict[str, Any]) -> Dict[str, Any]:
