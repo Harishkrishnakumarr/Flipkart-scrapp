@@ -148,7 +148,28 @@ class SellerRepository:
                 seller.get("star_rating") is None or star_rating > seller["star_rating"]
             ):
                 seller["star_rating"] = star_rating
-        
+            if fulfillment_by and not seller.get("fulfillment_by"):
+                seller["fulfillment_by"] = fulfillment_by
+            seller["last_seen"] = now_iso
+        else:
+            self.sellers[storage_key] = {
+                "seller_name": display_name,
+                "canonical_id": canonical_key,
+                "marketplace": marketplace,
+                "fulfillment_by": fulfillment_by,
+                "product_urls": [product_url] if product_url else [],
+                "categories": [category_str] if category_str else [],
+                "star_rating": star_rating,
+                "product_rating": product_rating,
+                "seller_source_type": seller_source_type or f"{marketplace}_product",
+                "seller_confidence": seller_confidence,
+                "enrichment_status": "pending",
+                "first_seen": now_iso,
+                "last_seen": now_iso,
+            }
+
+        self.save()
+        return self.sellers[storage_key]
 
     def get_all_sellers(self) -> List[Dict[str, Any]]:
         """Get list of all seller dictionaries in repository."""

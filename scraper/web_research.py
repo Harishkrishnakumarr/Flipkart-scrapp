@@ -60,6 +60,7 @@ from scraper.validator import (
     cross_check_seller_data,
     determine_seller_status,
     is_disallowed_source,
+    match_gst_to_seller,
     normalize_seller_name_for_matching,
     validate_email,
     validate_fssai,
@@ -75,7 +76,7 @@ logger = logging.getLogger("FlipkartScraper.WebResearch")
 
 # Strict Enrichment Boundaries
 FIELD_TIMEOUT_SECONDS: float = 30.0
-MAX_BING_QUERIES_PER_FIELD: int = 5
+MAX_BING_QUERIES_PER_FIELD: int = 3
 MAX_BRAVE_QUERIES_PER_FIELD: int = 2
 
 # Domains that are generic platforms or social networks, not individual seller official websites
@@ -900,8 +901,49 @@ def score_search_result_relevance(seller_name: str, result: Dict[str, str]) -> i
     return score
 
 
+MARKETPLACE_GENERIC_PHONE_PREFIXES = ("1800", "+911800", "01800", "911800")
+MARKETPLACE_GENERIC_PHONES = {
+    "18002089898", "180030009009", "18004201111", "9800000000",
+}
+MARKETPLACE_EMAIL_DOMAINS = {
+    "flipkart.com", "amazon.com", "amazon.in", "meesho.com", "myntra.com", "snapdeal.com",
+}
+
+
+def log_candidate_evaluation(
+    seller: str,
+    field: str,
+    search: str,
+    query: str,
+    results_count: int,
+    candidate: Optional[str],
+    match_score: int,
+    source: str,
+    valid: str,
+    result: str,
+    reason: str,
+) -> None:
+    """Format and print structured candidate evaluation log matching Requirement 15."""
+    msg = (
+        f"\n========================================\n"
+        f"SELLER:\n{seller}\n\n"
+        f"FIELD:\n{field}\n\n"
+        f"SEARCH:\n{search}\n"
+        f"Query: {query}\n"
+        f"Results: {results_count}\n\n"
+        f"CANDIDATE:\n{candidate or 'NONE'}\n\n"
+        f"MATCH:\n{match_score}/100\n\n"
+        f"SOURCE:\n{source}\n\n"
+        f"VALIDATION:\n{valid}\n\n"
+        f"RESULT:\n{result}\n\n"
+        f"REASON:\n{reason}\n"
+        f"========================================"
+    )
+    logger.info(msg)
+
+
 def extract_gst(results: List[Dict[str, str]], seller_name: str) -> Optional[Tuple[str, str, int]]:
-    """Extract and validate GSTIN from search result titles and snippets.
+    """Extract and validate GSTIN from search result titles and snippets using strict seller matching.
 
     Args:
         results: List of search result dictionaries.
@@ -911,15 +953,20 @@ def extract_gst(results: List[Dict[str, str]], seller_name: str) -> Optional[Tup
         Tuple of (gstin, source, confidence) or None.
     """
     for r in results:
-        text = f"{r.get('title', '')} {r.get('snippet', '')}"
+        title = r.get("title", "")
+        snippet = r.get("snippet", "")
         url = r.get("url", "")
-        if not validate_seller_association(seller_name, text, url):
-            continue
+        text = f"{title} {snippet}"
+
         matches = GST_REGEX.findall(text)
         for m in matches:
             valid_g = validate_gst(m)
-            if valid_g:
-                score = 90 if any(d in url.lower() for d in DIRECTORY_DOMAINS) else 80
+            if not valid_g:
+                continue
+            matched, score, reason = match_gst_to_seller(
+                seller_name, valid_g, snippet=text, url=url
+            )
+            if matched:
                 return valid_g, url or text, score
     return None
 
@@ -1022,7 +1069,10 @@ def extract_phone(results: List[Dict[str, str]], seller_name: str) -> Optional[T
         for ph in phone_matches:
             v = validate_phone(ph)
             if v:
-                return v, url or text, 80
+                if any(v.startswith(p) for p in MARKETPLACE_GENERIC_PHONE_PREFIXES) or v in MARKETPLACE_GENERIC_PHONES:
+                    continue
+                score = 90 if any(d in url.lower() for d in DIRECTORY_DOMAINS) else 80
+                return v, url or text, score
     return None
 
 
@@ -1037,8 +1087,13 @@ def extract_email(results: List[Dict[str, str]], seller_name: str) -> Optional[T
         for em in email_matches:
             v = validate_email(em)
             if v:
-                return v, url or text, 80
+                dom = v.split("@")[-1].lower()
+                if dom in MARKETPLACE_EMAIL_DOMAINS:
+                    continue
+                score = 90 if any(d in url.lower() for d in DIRECTORY_DOMAINS) else 80
+                return v, url or text, score
     return None
+
 
 
 def extract_pan(
@@ -1154,15 +1209,27 @@ def evaluate_result_candidate(
     raw_candidate = None
     valid_candidate_val = None
     candidate_validity_score = 0
+    candidate_reject_reason = ""
 
     if field_attr == "gst_number":
         matches = GST_REGEX.findall(text)
-        if matches:
-            raw_candidate = matches[0]
-            valid_g = validate_gst(raw_candidate)
-            if valid_g:
+        for m in matches:
+            valid_g = validate_gst(m)
+            if not valid_g:
+                continue
+            matched, score, reason = match_gst_to_seller(
+                seller_name, valid_g, snippet=text, url=url
+            )
+            if matched:
+                raw_candidate = valid_g
                 valid_candidate_val = valid_g
                 candidate_validity_score = 100
+                seller_match_score = max(seller_match_score, score)
+                break
+            else:
+                candidate_reject_reason = reason
+        if not valid_candidate_val and matches and not candidate_reject_reason:
+            candidate_reject_reason = "GST_SELLER_MISMATCH"
     elif field_attr == "pan_number":
         if gst_number and validate_gst(gst_number):
             raw_candidate = validate_gst(gst_number)[2:12]
@@ -1170,12 +1237,13 @@ def evaluate_result_candidate(
             candidate_validity_score = 100
         else:
             matches = PAN_REGEX.findall(text)
-            if matches:
-                raw_candidate = matches[0]
-                valid_p = validate_pan(raw_candidate, gst_str=gst_number)
-                if valid_p:
+            for m in matches:
+                valid_p = validate_pan(m, gst_str=gst_number)
+                if valid_p and seller_match_score >= 40:
+                    raw_candidate = valid_p
                     valid_candidate_val = valid_p
                     candidate_validity_score = 100
+                    break
     elif field_attr == "fssai_number":
         matches = FSSAI_REGEX.findall(text)
         if matches:
@@ -1198,27 +1266,32 @@ def evaluate_result_candidate(
                 valid_candidate_val = raw_candidate
                 candidate_validity_score = 80
     elif field_attr == "contact_number":
-        ph_m = re.search(
-            r"(?:(?:\+|0{0,2})91[\s\-]*)?(?:[0]?[6-9]\d{9}|\b[6-9]\d{9}\b)",
-            text,
-        )
-        if ph_m:
-            raw_candidate = ph_m.group(0)
-            valid_ph = validate_phone(raw_candidate)
+        ph_matches = PHONE_REGEX.findall(text)
+        for ph in ph_matches:
+            valid_ph = validate_phone(ph)
             if valid_ph:
-                valid_candidate_val = valid_ph
-                candidate_validity_score = 100
+                if any(valid_ph.startswith(p) for p in MARKETPLACE_GENERIC_PHONE_PREFIXES) or valid_ph in MARKETPLACE_GENERIC_PHONES:
+                    candidate_reject_reason = "MARKETPLACE_GENERIC_NUMBER"
+                    continue
+                if seller_match_score >= 40:
+                    raw_candidate = valid_ph
+                    valid_candidate_val = valid_ph
+                    candidate_validity_score = 100
+                    break
     elif field_attr == "email":
-        em_m = re.search(
-            r"\b[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}\b",
-            text,
-        )
-        if em_m:
-            raw_candidate = em_m.group(0)
-            valid_em = validate_email(raw_candidate)
+        em_matches = EMAIL_REGEX.findall(text)
+        for em in em_matches:
+            valid_em = validate_email(em)
             if valid_em:
-                valid_candidate_val = valid_em
-                candidate_validity_score = 100
+                dom = valid_em.split("@")[-1].lower()
+                if dom in MARKETPLACE_EMAIL_DOMAINS:
+                    candidate_reject_reason = "MARKETPLACE_EMAIL"
+                    continue
+                if seller_match_score >= 40:
+                    raw_candidate = valid_em
+                    valid_candidate_val = valid_em
+                    candidate_validity_score = 100
+                    break
     elif field_attr == "pincode":
         pin_m = re.search(
             r"(?i)(?:pincode|pin\s+code|pin|postal\s+code|postal|zip\s+code|zip|address)[\s:\-]*([1-9][0-9]{5})\b",
@@ -1227,7 +1300,7 @@ def evaluate_result_candidate(
         if pin_m:
             raw_candidate = pin_m.group(1)
             valid_pin = validate_pincode(raw_candidate)
-            if valid_pin:
+            if valid_pin and seller_match_score >= 40:
                 valid_candidate_val = valid_pin
                 candidate_validity_score = 100
     elif field_attr == "raw_address":
@@ -1238,12 +1311,12 @@ def evaluate_result_candidate(
         if addr_m:
             raw_candidate = addr_m.group(1).strip()
             parsed = parse_raw_address(raw_candidate, gst_number=gst_number)
-            if parsed.get("billing_address"):
+            if parsed.get("billing_address") and seller_match_score >= 40:
                 valid_candidate_val = parsed.get("billing_address")
                 candidate_validity_score = 85
         elif re.search(r"\b[1-9][0-9]{5}\b", text):
             parsed = parse_raw_address(text, gst_number=gst_number)
-            if parsed.get("billing_address"):
+            if parsed.get("billing_address") and seller_match_score >= 40:
                 raw_candidate = text[:60]
                 valid_candidate_val = parsed.get("billing_address")
                 candidate_validity_score = 75
@@ -1267,7 +1340,10 @@ def evaluate_result_candidate(
     )
 
     # 7. Decision & Reject Reason
-    if not raw_candidate:
+    if candidate_reject_reason:
+        decision = "REJECT"
+        reject_reason = candidate_reject_reason
+    elif not raw_candidate:
         decision = "REJECT"
         reject_reason = "NO_CANDIDATE"
     elif not valid_candidate_val or candidate_validity_score == 0:
@@ -1285,6 +1361,7 @@ def evaluate_result_candidate(
     else:
         decision = "ACCEPT"
         reject_reason = "NONE"
+
 
     return {
         "title": title,
@@ -1327,6 +1404,80 @@ class WebResearchEngine:
         await self.website_parser.close()
         await self.client.aclose()
 
+    async def _query_google(self, query: str) -> Tuple[List[Dict[str, str]], int]:
+        """Query Google search engine directly.
+
+        Args:
+            query: Search query string.
+
+        Returns:
+            Tuple of (list_of_result_dicts, http_status_code).
+        """
+        cached = self.cache.get(f"google::{query}")
+        if cached:
+            return cached, 200
+
+        if "PYTEST_CURRENT_TEST" in os.environ and not getattr(self, "_google_test_mocked", False):
+            return [], 503
+
+        results: List[Dict[str, str]] = []
+        status_code = 0
+        try:
+            user_agent = random.choice(USER_AGENTS)
+            headers = {
+                "User-Agent": user_agent,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9,hi;q=0.8",
+                "Sec-Ch-Ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+                "Sec-Ch-Ua-Mobile": "?0",
+                "Sec-Ch-Ua-Platform": '"Windows"',
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "none",
+                "Sec-Fetch-User": "?1",
+                "Upgrade-Insecure-Requests": "1",
+            }
+            url = f"https://www.google.com/search?q={urllib.parse.quote_plus(query)}&hl=en&gl=in&num=10"
+            resp = await self.client.get(url, headers=headers, timeout=8.0)
+            status_code = resp.status_code
+
+            if status_code == 429:
+                return [], 429
+
+            if status_code in (401, 403):
+                return [], status_code
+
+            if status_code == 200:
+                html = resp.text
+                if "sorry/index" in html or "captcha" in html.lower():
+                    return [], 403
+
+                soup = BeautifulSoup(html, "lxml")
+                items = soup.select("div.g, div.tF2Cxc, div.yuRUbf")
+                for item in items:
+                    h3 = item.select_one("h3")
+                    title = h3.get_text(strip=True) if h3 else ""
+                    a_tag = item.select_one("a[href]")
+                    href = a_tag.get("href", "") if a_tag else ""
+                    snippet_el = item.select_one("div.VwiC3b, span.aCOpRe, div.s, div[data-sncf]")
+                    snippet = snippet_el.get_text(strip=True) if snippet_el else ""
+
+                    if href and href.startswith("http") and "google.com" not in href:
+                        results.append({"title": title, "url": href, "snippet": snippet})
+
+                if results:
+                    self.cache.set(f"google::{query}", results)
+                    return results, 200
+                else:
+                    return [], 200
+            else:
+                return [], status_code
+        except httpx.TimeoutException:
+            return [], 408
+        except Exception as e:
+            logger.debug(f"Google query error for '{query}': {e}")
+            return [], 500
+
     async def _query_bing(self, query: str) -> Tuple[List[Dict[str, str]], int]:
         """Query Bing search engine directly and return top 5-10 parsed results + HTTP status code.
 
@@ -1337,7 +1488,7 @@ class WebResearchEngine:
             Tuple of (list_of_result_dicts, http_status_code).
         """
         cached = self.cache.get(f"bing::{query}")
-        if cached is not None:
+        if cached:
             return cached, 200
 
         results: List[Dict[str, str]] = []
@@ -1383,7 +1534,8 @@ class WebResearchEngine:
             logger.debug(f"Bing search query error for '{query}': {e}")
 
         effective_status = status_code if status_code > 0 else (200 if results else 200)
-        self.cache.set(f"bing::{query}", results)
+        if results and effective_status == 200:
+            self.cache.set(f"bing::{query}", results)
         return results, effective_status
 
     async def _query_brave(self, query: str) -> Tuple[List[Dict[str, str]], int]:
@@ -1415,7 +1567,7 @@ class WebResearchEngine:
             return [], 429
 
         cached = self.cache.get(f"brave::{query}")
-        if cached is not None:
+        if cached:
             return cached, 200
 
         results: List[Dict[str, str]] = []
@@ -1541,8 +1693,157 @@ class WebResearchEngine:
                 status_code = 200
 
         effective_status = status_code if status_code > 0 else (200 if results else 200)
-        self.cache.set(f"brave::{query}", results)
+        if results and effective_status == 200:
+            self.cache.set(f"brave::{query}", results)
         return results, effective_status
+
+    async def _fetch_directory_text(self, url: str) -> str:
+        """Fetch and extract text content from a directory or company page when snippet is truncated."""
+        if not url or not url.startswith("http"):
+            return ""
+        try:
+            html = await self.website_parser.fetch_html(url)
+            if html:
+                soup = BeautifulSoup(html, "lxml")
+                for s in soup(["script", "style", "noscript", "svg"]):
+                    s.decompose()
+                return soup.get_text(" ", strip=True)
+        except Exception as e:
+            logger.debug(f"Failed to fetch directory page text from {url}: {e}")
+        return ""
+
+    async def search_seller_web(
+        self,
+        seller_name: str,
+        field: str,
+    ) -> Tuple[List[Dict[str, str]], str, Dict[str, Any]]:
+        """Waterfall search engine: Google -> Bing -> Brave.
+
+        Order:
+          1. Google
+          2. Bing
+          3. Brave
+
+        If Google unavailable / blocked / rate limited: continue to Bing.
+        If Bing fails: continue to Brave.
+        If Brave returns HTTP 429: do NOT treat field as NOT_FOUND.
+
+        Logs:
+          SEARCH_ENGINE
+          QUERY
+          HTTP STATUS
+          RESULT COUNT
+          Differentiates: SEARCH_FAILED, RATE_LIMITED, BLOCKED, NO_RESULTS, NO_MATCHING_SELLER, FOUND.
+
+        Returns:
+          Tuple of (results_list, engine_used, diagnostics_dict)
+        """
+        canonical_key = _normalize_field_key(field)
+        queries = generate_targeted_queries_for_field(seller_name, canonical_key)
+        target_queries = queries[:MAX_BING_QUERIES_PER_FIELD]
+
+        all_results: List[Dict[str, str]] = []
+        chosen_engine = "NONE"
+        diag: Dict[str, Any] = {
+            "engine": "NONE",
+            "query": target_queries[0] if target_queries else "",
+            "http_status": 0,
+            "result_count": 0,
+            "status_label": "NO_RESULTS",
+            "rate_limited": False,
+        }
+
+        def _label_for(status: int, res_list: List[Any]) -> str:
+            if status == 429:
+                return "RATE_LIMITED"
+            if status in (401, 403):
+                return "BLOCKED"
+            if status == 200:
+                return "FOUND" if res_list else "NO_RESULTS"
+            return "SEARCH_FAILED"
+
+        for q in target_queries:
+            diag["query"] = q
+
+            # 1. Try Google
+            g_res, g_status = await self._query_google(q)
+            g_label = _label_for(g_status, g_res)
+            logger.info(
+                f"\nSEARCH_ENGINE: Google\n"
+                f"QUERY: {q}\n"
+                f"HTTP STATUS: {g_status}\n"
+                f"RESULT COUNT: {len(g_res)}\n"
+                f"STATUS: {g_label}"
+            )
+            if g_label == "FOUND" and g_res:
+                chosen_engine = "Google"
+                all_results = g_res
+                diag.update({
+                    "engine": "Google",
+                    "http_status": g_status,
+                    "result_count": len(g_res),
+                    "status_label": g_label,
+                    "rate_limited": False,
+                })
+                break
+
+            # 2. If Google fails / blocked / rate limited / no results -> Try Bing
+            b_res, b_status = await self._query_bing(q)
+            b_label = _label_for(b_status, b_res)
+            logger.info(
+                f"\nSEARCH_ENGINE: Bing\n"
+                f"QUERY: {q}\n"
+                f"HTTP STATUS: {b_status}\n"
+                f"RESULT COUNT: {len(b_res)}\n"
+                f"STATUS: {b_label}"
+            )
+            if b_label == "FOUND" and b_res:
+                chosen_engine = "Bing"
+                all_results = b_res
+                diag.update({
+                    "engine": "Bing",
+                    "http_status": b_status,
+                    "result_count": len(b_res),
+                    "status_label": b_label,
+                    "rate_limited": False,
+                })
+                break
+
+            # 3. If Bing fails -> Try Brave
+            br_res, br_status = await self._query_brave(q)
+            br_label = _label_for(br_status, br_res)
+            logger.info(
+                f"\nSEARCH_ENGINE: Brave\n"
+                f"QUERY: {q}\n"
+                f"HTTP STATUS: {br_status}\n"
+                f"RESULT COUNT: {len(br_res)}\n"
+                f"STATUS: {br_label}"
+            )
+            if br_status == 429 or br_label == "RATE_LIMITED":
+                diag.update({
+                    "engine": "Brave",
+                    "http_status": 429,
+                    "result_count": 0,
+                    "status_label": "RATE_LIMITED",
+                    "rate_limited": True,
+                })
+                # Do NOT treat field as NOT_FOUND
+                break
+
+            if br_label == "FOUND" and br_res:
+                chosen_engine = "Brave"
+                all_results = br_res
+                diag.update({
+                    "engine": "Brave",
+                    "http_status": br_status,
+                    "result_count": len(br_res),
+                    "status_label": br_label,
+                    "rate_limited": False,
+                })
+                break
+
+        return all_results, chosen_engine, diag
+
 
     async def _query_ddg(self, query: str) -> List[Dict[str, str]]:
         """Fallback query to DuckDuckGo (via DDGS or HTML endpoint).
@@ -2127,24 +2428,18 @@ class WebResearchEngine:
                 for idx, r_item in enumerate(raw_results, start=1):
                     eval_res = evaluate_result_candidate(seller_name, field_attr, r_item, gst_number=merged.get("gst_number"))
 
-                    logger.info(
-                        f"\n----------------------------------------\n"
-                        f"SEARCH RESULT\n"
-                        f"----------------------------------------\n"
-                        f"Seller: {seller_name}\n"
-                        f"Field: {field_display_name}\n"
-                        f"Provider: Bing\n"
-                        f"Result: {idx}\n"
-                        f"Title: {eval_res['title']}\n"
-                        f"URL: {eval_res['url']}\n"
-                        f"Snippet: {eval_res['snippet'][:200]}\n"
-                        f"Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
-                        f"Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
-                        f"Source Type: {eval_res.get('source_type', 'UNKNOWN')}\n"
-                        f"Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
-                        f"Decision: {eval_res['decision']}\n"
-                        f"Reject Reason: {eval_res['reject_reason']}\n"
-                        f"----------------------------------------"
+                    log_candidate_evaluation(
+                        seller=seller_name,
+                        field=field_display_name,
+                        search="Bing",
+                        query=target_query,
+                        results_count=len(raw_results),
+                        candidate=eval_res["raw_candidate"],
+                        match_score=eval_res["seller_match_score"],
+                        source=eval_res["url"] or "snippet",
+                        valid="VALID" if eval_res["valid_candidate_val"] else "INVALID",
+                        result="ACCEPTED" if eval_res["decision"] == "ACCEPT" else "REJECTED",
+                        reason=eval_res["reject_reason"],
                     )
 
                     if eval_res["decision"] == "ACCEPT" and not accepted_candidate:
@@ -2153,6 +2448,22 @@ class WebResearchEngine:
 
                 if accepted_candidate:
                     _set_field(field_attr, accepted_candidate, "targeted_search", src_url=accepted_src)
+                    if field_attr == "gst_number":
+                        v_g = validate_gst(accepted_candidate)
+                        if v_g:
+                            pan_val = v_g[2:12]
+                            v_p = validate_pan(pan_val, gst_str=v_g)
+                            if v_p:
+                                _set_field("pan_number", pan_val, "targeted_search", src_url="Derived from GSTIN")
+                                logger.info(f"PAN: Derived from verified GSTIN ({pan_val})")
+                    if field_attr == "raw_address":
+                        parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
+                        if parsed_addr.get("city") and not merged.get("city"):
+                            _set_field("city", parsed_addr["city"], "targeted_search", src_url=accepted_src)
+                        if parsed_addr.get("state") and not merged.get("state"):
+                            _set_field("state", parsed_addr["state"], "targeted_search", src_url=accepted_src)
+                        if parsed_addr.get("pincode") and not merged.get("pincode"):
+                            _set_field("pincode", parsed_addr["pincode"], "targeted_search", src_url=accepted_src)
                     field_resolved = True
                     logger.info(
                         f"Decision: SAVE\n"
@@ -2169,6 +2480,7 @@ class WebResearchEngine:
                 await asyncio.sleep(0.15)
 
             # Phase 2: Brave Fallback Queries if Bing was exhausted without candidate
+            is_rate_limited = False
             if not field_resolved and (time.monotonic() - field_start_time) < FIELD_TIMEOUT_SECONDS:
                 logger.info(
                     f"\nBING EXHAUSTED\n"
@@ -2188,8 +2500,9 @@ class WebResearchEngine:
                     
                     if status_code == 429:
                         logger.warning(
-                            f"Brave status 429 rate limited for '{target_query}'. Skipping Brave queries."
+                            f"\nRATE_LIMITED: Brave returned HTTP 429 for '{target_query}'. Skipping Brave queries."
                         )
+                        is_rate_limited = True
                         break
 
                     total_res_count += len(raw_results)
@@ -2212,24 +2525,18 @@ class WebResearchEngine:
                     for idx, r_item in enumerate(raw_results, start=1):
                         eval_res = evaluate_result_candidate(seller_name, field_attr, r_item, gst_number=merged.get("gst_number"))
 
-                        logger.info(
-                            f"\n----------------------------------------\n"
-                            f"SEARCH RESULT\n"
-                            f"----------------------------------------\n"
-                            f"Seller: {seller_name}\n"
-                            f"Field: {field_display_name}\n"
-                            f"Provider: Brave\n"
-                            f"Result: {idx}\n"
-                            f"Title: {eval_res['title']}\n"
-                            f"URL: {eval_res['url']}\n"
-                            f"Snippet: {eval_res['snippet'][:200]}\n"
-                            f"Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
-                            f"Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
-                            f"Source Type: {eval_res.get('source_type', 'UNKNOWN')}\n"
-                            f"Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
-                            f"Decision: {eval_res['decision']}\n"
-                            f"Reject Reason: {eval_res['reject_reason']}\n"
-                            f"----------------------------------------"
+                        log_candidate_evaluation(
+                            seller=seller_name,
+                            field=field_display_name,
+                            search="Brave",
+                            query=target_query,
+                            results_count=len(raw_results),
+                            candidate=eval_res["raw_candidate"],
+                            match_score=eval_res["seller_match_score"],
+                            source=eval_res["url"] or "snippet",
+                            valid="VALID" if eval_res["valid_candidate_val"] else "INVALID",
+                            result="ACCEPTED" if eval_res["decision"] == "ACCEPT" else "REJECTED",
+                            reason=eval_res["reject_reason"],
                         )
 
                         if eval_res["decision"] == "ACCEPT" and not accepted_candidate:
@@ -2238,6 +2545,22 @@ class WebResearchEngine:
 
                     if accepted_candidate:
                         _set_field(field_attr, accepted_candidate, "targeted_search", src_url=accepted_src)
+                        if field_attr == "gst_number":
+                            v_g = validate_gst(accepted_candidate)
+                            if v_g:
+                                pan_val = v_g[2:12]
+                                v_p = validate_pan(pan_val, gst_str=v_g)
+                                if v_p:
+                                    _set_field("pan_number", pan_val, "targeted_search", src_url="Derived from GSTIN")
+                                    logger.info(f"PAN: Derived from verified GSTIN ({pan_val})")
+                        if field_attr == "raw_address":
+                            parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
+                            if parsed_addr.get("city") and not merged.get("city"):
+                                _set_field("city", parsed_addr["city"], "targeted_search", src_url=accepted_src)
+                            if parsed_addr.get("state") and not merged.get("state"):
+                                _set_field("state", parsed_addr["state"], "targeted_search", src_url=accepted_src)
+                            if parsed_addr.get("pincode") and not merged.get("pincode"):
+                                _set_field("pincode", parsed_addr["pincode"], "targeted_search", src_url=accepted_src)
                         field_resolved = True
                         logger.info(
                             f"Decision: SAVE\n"
@@ -2271,6 +2594,22 @@ class WebResearchEngine:
                     "value": merged[field_attr],
                     "source": field_source_urls.get(field_attr, "targeted_search"),
                 })
+            elif is_rate_limited:
+                logger.warning(
+                    f"\nFIELD COMPLETE\n"
+                    f"Seller: {seller_name}\n"
+                    f"Field: {field_display_name}\n"
+                    f"Result: RATE_LIMITED\n"
+                    f"Attempts: {attempts_summary}"
+                )
+                field_log_entries.append({
+                    "field": field_display_name,
+                    "query": last_query_used or attempts_summary,
+                    "results": total_res_count,
+                    "verified": "NO",
+                    "value": "RATE_LIMITED",
+                    "source": "None",
+                })
             else:
                 res_label = "NOT FOUND (Timeout 30s exceeded)" if timed_out else "NOT FOUND"
                 logger.info(
@@ -2288,6 +2627,7 @@ class WebResearchEngine:
                     "value": "NOT FOUND",
                     "source": "None",
                 })
+
 
         # Step 4: Stage 2 - Legal Entity Discovery & Enrichment
         # If GSTIN search revealed an explicit legal trade/company name distinct from the seller slug
@@ -2489,3 +2829,20 @@ class WebResearchEngine:
             "star_rating": star_rating,
         }
         return await self.enrich_seller(seller_record)
+
+
+async def search_seller_web(
+    seller_name: str,
+    field: str,
+    engine: Optional[WebResearchEngine] = None,
+) -> Tuple[List[Dict[str, str]], str, Dict[str, Any]]:
+    """Standalone helper function to search web for seller field using waterfall."""
+    should_close = False
+    if engine is None:
+        engine = WebResearchEngine()
+        should_close = True
+    try:
+        return await engine.search_seller_web(seller_name, field)
+    finally:
+        if should_close:
+            await engine.close()

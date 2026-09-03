@@ -394,3 +394,245 @@ async def test_enrichment_query_cap_and_exhaustion(monkeypatch):
     assert len(brave_query_log) > 0
 
 
+def test_gst_candidate_wrong_company_rejected():
+    """Requirement: Target ABC ENTERPRISES, candidate ABC TRADERS with valid GST must be rejected."""
+    from scraper.validator import match_gst_to_seller
+    from scraper.web_research import extract_gst
+
+    target_seller = "ABC ENTERPRISES"
+    wrong_candidate_gst = "27AABCT1234F1Z5"  # Valid format GST
+    wrong_results = [
+        {
+            "title": "ABC TRADERS GSTIN and Company Profile",
+            "snippet": f"ABC TRADERS registered in Mumbai, Maharashtra. GSTIN is {wrong_candidate_gst}.",
+            "url": "https://www.zaubacorp.com/company/ABC-TRADERS/123",
+        }
+    ]
+
+    matched, score, reason = match_gst_to_seller(
+        target_seller,
+        wrong_candidate_gst,
+        trade_name="ABC TRADERS",
+        snippet=wrong_results[0]["snippet"],
+        url=wrong_results[0]["url"],
+    )
+    assert matched is False
+    assert "CONFLICT" in reason or "MISMATCH" in reason
+
+    extracted = extract_gst(wrong_results, target_seller)
+    assert extracted is None
+
+
+def test_gst_candidate_exact_seller_accepted():
+    """Requirement: Target ABC ENTERPRISES, candidate ABC ENTERPRISES PRIVATE LIMITED with valid GST must be accepted."""
+    from scraper.validator import match_gst_to_seller
+    from scraper.web_research import extract_gst
+
+    target_seller = "ABC ENTERPRISES"
+    valid_gst = "27AAPFU0939F1ZV"
+    correct_results = [
+        {
+            "title": "ABC ENTERPRISES PRIVATE LIMITED GST Details",
+            "snippet": f"The GST number for ABC ENTERPRISES PRIVATE LIMITED in Mumbai, Maharashtra is {valid_gst}.",
+            "url": "https://www.zaubacorp.com/company/ABC-ENTERPRISES-PRIVATE-LIMITED/123",
+        }
+    ]
+
+    matched, score, reason = match_gst_to_seller(
+        target_seller,
+        valid_gst,
+        legal_name="ABC ENTERPRISES PRIVATE LIMITED",
+        snippet=correct_results[0]["snippet"],
+        url=correct_results[0]["url"],
+    )
+    assert matched is True
+    assert score >= 70
+
+    extracted = extract_gst(correct_results, target_seller)
+    assert extracted is not None
+    assert extracted[0] == valid_gst
+
+
+def test_pan_derived_from_verified_gst():
+    """Requirement: Primary PAN must be derived from verified GSTIN (gst[2:12]) without unrelated search."""
+    from scraper.validator import validate_pan
+    from scraper.web_research import extract_pan
+
+    verified_gst = "27AAPFU0939F1ZV"
+    derived_pan = verified_gst[2:12]
+    assert derived_pan == "AAPFU0939F"
+
+    # Validate PAN derived from GST
+    assert validate_pan(derived_pan, gst_str=verified_gst) == "AAPFU0939F"
+
+    # extract_pan immediately derives PAN from verified GSTIN
+    pan_res = extract_pan([], "ABC ENTERPRISES", gst_number=verified_gst)
+    assert pan_res is not None
+    assert pan_res[0] == "AAPFU0939F"
+    assert "GSTIN" in pan_res[1]
+
+
+def test_phone_wrong_company_rejected():
+    """Requirement: Phone candidates from wrong companies or marketplace numbers must be rejected."""
+    from scraper.web_research import extract_phone
+
+    target_seller = "ABC ENTERPRISES"
+    # Case A: Marketplace customer care number
+    marketplace_res = [
+        {
+            "title": "Flipkart Customer Support",
+            "snippet": "Contact Flipkart customer care toll free 18002089898 for order inquiries.",
+            "url": "https://www.flipkart.com/helpcentre",
+        }
+    ]
+    assert extract_phone(marketplace_res, target_seller) is None
+
+    # Case B: Phone number belonging to an unrelated company
+    unrelated_company_res = [
+        {
+            "title": "XYZ Logistics Surat Office",
+            "snippet": "Contact XYZ Logistics at 9876543210 for parcel deliveries in Gujarat.",
+            "url": "https://www.xyzlogistics.com/contact",
+        }
+    ]
+    assert extract_phone(unrelated_company_res, target_seller) is None
+
+
+def test_email_wrong_company_rejected():
+    """Requirement: Email candidates from wrong companies or marketplace domains must be rejected."""
+    from scraper.web_research import extract_email
+
+    target_seller = "ABC ENTERPRISES"
+    # Case A: Marketplace domain email
+    marketplace_res = [
+        {
+            "title": "Flipkart Seller Desk",
+            "snippet": "Email seller support at seller-support@flipkart.com for billing.",
+            "url": "https://seller.flipkart.com",
+        }
+    ]
+    assert extract_email(marketplace_res, target_seller) is None
+
+    # Case B: Email belonging to unrelated company
+    unrelated_res = [
+        {
+            "title": "XYZ Traders Surat",
+            "snippet": "Reach out to XYZ Traders sales team at sales@xyztradersindia.com.",
+            "url": "https://www.xyztradersindia.com/about",
+        }
+    ]
+    assert extract_email(unrelated_res, target_seller) is None
+
+
+def test_address_wrong_company_rejected():
+    """Requirement: Address candidates from wrong companies must be rejected."""
+    from scraper.web_research import extract_address
+
+    target_seller = "ABC ENTERPRISES"
+    unrelated_res = [
+        {
+            "title": "XYZ Industries Office",
+            "snippet": "Address: Plot 44, GIDC Industrial Estate, Surat, Gujarat 395006.",
+            "url": "https://www.xyzindustries.com",
+        }
+    ]
+    assert extract_address(unrelated_res, target_seller) is None
+
+
+@pytest.mark.asyncio
+async def test_google_failure_falls_back_to_bing(monkeypatch):
+    """Requirement: Waterfall search queries Google first; on failure, continues to Bing."""
+    engine = WebResearchEngine()
+
+    google_called = []
+    bing_called = []
+
+    async def mock_google(query: str):
+        google_called.append(query)
+        # Google blocked / fails
+        return [], 500
+
+    async def mock_bing(query: str):
+        bing_called.append(query)
+        return [
+            {"title": "ABC ENTERPRISES GSTIN", "snippet": "GSTIN 27AAPFU0939F1ZV in Mumbai", "url": "https://example.com"}
+        ], 200
+
+    monkeypatch.setattr(engine, "_query_google", mock_google)
+    monkeypatch.setattr(engine, "_query_bing", mock_bing)
+
+    results, engine_used, diag = await engine.search_seller_web("ABC ENTERPRISES", "gst")
+    await engine.close()
+
+    assert len(google_called) > 0
+    assert len(bing_called) > 0
+    assert engine_used == "Bing"
+    assert len(results) == 1
+    assert diag["status_label"] == "FOUND"
+
+
+@pytest.mark.asyncio
+async def test_bing_failure_falls_back_to_brave(monkeypatch):
+    """Requirement: If Bing fails, waterfall search continues to Brave."""
+    engine = WebResearchEngine()
+
+    google_called = []
+    bing_called = []
+    brave_called = []
+
+    async def mock_google(query: str):
+        google_called.append(query)
+        return [], 500
+
+    async def mock_bing(query: str):
+        bing_called.append(query)
+        return [], 500
+
+    async def mock_brave(query: str):
+        brave_called.append(query)
+        return [
+            {"title": "ABC ENTERPRISES GSTIN", "snippet": "GSTIN 27AAPFU0939F1ZV", "url": "https://brave.example.com"}
+        ], 200
+
+    monkeypatch.setattr(engine, "_query_google", mock_google)
+    monkeypatch.setattr(engine, "_query_bing", mock_bing)
+    monkeypatch.setattr(engine, "_query_brave", mock_brave)
+
+    results, engine_used, diag = await engine.search_seller_web("ABC ENTERPRISES", "gst")
+    await engine.close()
+
+    assert len(google_called) > 0
+    assert len(bing_called) > 0
+    assert len(brave_called) > 0
+    assert engine_used == "Brave"
+    assert len(results) == 1
+    assert diag["status_label"] == "FOUND"
+
+
+@pytest.mark.asyncio
+async def test_http_429_is_not_not_found(monkeypatch):
+    """Requirement: If Brave returns HTTP 429, log RATE_LIMITED and do NOT treat as NOT_FOUND."""
+    engine = WebResearchEngine()
+
+    async def mock_google(query: str):
+        return [], 500
+
+    async def mock_bing(query: str):
+        return [], 500
+
+    async def mock_brave(query: str):
+        return [], 429
+
+    monkeypatch.setattr(engine, "_query_google", mock_google)
+    monkeypatch.setattr(engine, "_query_bing", mock_bing)
+    monkeypatch.setattr(engine, "_query_brave", mock_brave)
+
+    results, engine_used, diag = await engine.search_seller_web("ABC ENTERPRISES", "gst")
+    await engine.close()
+
+    assert diag["status_label"] == "RATE_LIMITED"
+    assert diag["rate_limited"] is True
+    assert diag["status_label"] != "NOT_FOUND"
+
+
+
