@@ -144,6 +144,26 @@ SOURCE_PRIORITY: Dict[str, int] = {
     "not_found": 0,
 }
 
+# Field relevance detection keywords
+FIELD_KEYWORDS: Dict[str, List[str]] = {
+    "gst": ["gst", "gstin", "tax", "registration"],
+    "gst_number": ["gst", "gstin", "tax", "registration"],
+    "pan": ["pan", "pancard", "tax", "income"],
+    "pan_number": ["pan", "pancard", "tax", "income"],
+    "fssai": ["fssai", "food", "license"],
+    "fssai_number": ["fssai", "food", "license"],
+    "owner": ["owner", "founder", "proprietor", "director", "promoter", "partner"],
+    "owner_name": ["owner", "founder", "proprietor", "director", "promoter", "partner"],
+    "phone": ["phone", "mobile", "contact", "call", "tel"],
+    "contact_number": ["phone", "mobile", "contact", "call", "tel"],
+    "email": ["email", "mail", "contact", "queries", "support", "sales", "inquiries", "info", "@"],
+    "pincode": ["pincode", "postal", "pin", "zip"],
+    "address": ["address", "office", "street", "road", "nagar", "building", "plot", "city"],
+    "raw_address": ["address", "office", "street", "road", "nagar", "building", "plot", "city"],
+    "website": ["website", "official", "store", "shop", "online"],
+    "website_url": ["website", "official", "store", "shop", "online"],
+}
+
 # Field-Specific Bing Query Templates (Max 5 per field)
 FIELD_BING_QUERIES: Dict[str, List[str]] = {
     "gst": [
@@ -797,6 +817,8 @@ class ResearchCache:
             key: Query string key.
             value: Data to cache.
         """
+        if not value:
+            return
         self.cache[key] = value
         self.save()
 
@@ -1145,65 +1167,153 @@ FIELD_KEYWORDS: Dict[str, List[str]] = {
 }
 
 
+def generate_identity_queries_for_field(
+    seller_name: str,
+    field_key: str,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
+    gst_number: Optional[str] = None,
+) -> List[str]:
+    """Generate prioritized identity-anchored search queries using seller signals.
+
+    Incorporates seller location (city, state, location) and known GSTIN.
+    """
+    canonical_key = _normalize_field_key(field_key)
+    queries: List[str] = []
+
+    # 1. Strongest identifier queries (GSTIN known)
+    if gst_number and validate_gst(gst_number):
+        valid_gst = validate_gst(gst_number)
+        if canonical_key == "email":
+            queries.extend([
+                f'"{seller_name}" "{valid_gst}" email',
+                f'"{valid_gst}" email',
+                f'"{valid_gst}" contact',
+                f'"{valid_gst}" website',
+                f'"{valid_gst}" "{seller_name}" contact',
+            ])
+        elif canonical_key == "phone":
+            queries.extend([
+                f'"{seller_name}" "{valid_gst}" phone',
+                f'"{valid_gst}" phone',
+            ])
+        elif canonical_key == "address":
+            queries.extend([
+                f'"{seller_name}" "{valid_gst}" address',
+                f'"{valid_gst}" address',
+            ])
+        elif canonical_key == "website":
+            queries.extend([
+                f'"{seller_name}" "{valid_gst}" website',
+                f'"{valid_gst}" website',
+            ])
+
+    # 2. Location-anchored queries (City / State / Location known)
+    loc_val = city or location
+    if loc_val:
+        if canonical_key == "gst":
+            queries.append(f'"{seller_name}" "{loc_val}" GST')
+            if state and state.lower() != loc_val.lower():
+                queries.append(f'"{seller_name}" "{state}" GST')
+            queries.append(f'"{seller_name}" "{loc_val}" GSTIN')
+        elif canonical_key == "email":
+            queries.append(f'"{seller_name}" "{loc_val}" email')
+            queries.append(f'"{seller_name}" "{loc_val}" contact email')
+            if state and state.lower() != loc_val.lower():
+                queries.append(f'"{seller_name}" "{state}" contact')
+        elif canonical_key == "phone":
+            queries.append(f'"{seller_name}" "{loc_val}" phone')
+            queries.append(f'"{seller_name}" "{loc_val}" mobile')
+        elif canonical_key == "address":
+            queries.append(f'"{seller_name}" "{loc_val}" address')
+            if state and state.lower() != loc_val.lower():
+                queries.append(f'"{seller_name}" "{state}" address')
+        elif canonical_key == "website":
+            queries.append(f'"{seller_name}" "{loc_val}" official website')
+            queries.append(f'"{seller_name}" "{loc_val}" website')
+
+    # 3. Add base targeted queries
+    base_queries = generate_targeted_queries_for_field(seller_name, canonical_key)
+    for bq in base_queries:
+        if bq not in queries:
+            queries.append(bq)
+
+    return queries
+
+
 def evaluate_result_candidate(
     seller_name: str,
     field_attr: str,
-    r: Dict[str, str],
+    result_item: Dict[str, str],
     gst_number: Optional[str] = None,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
 ) -> Dict[str, Any]:
-    """Inspect a search result and evaluate it as a candidate for a given seller field.
+    """Inspect an individual search result, validate candidates, calculate confidence, and make accept/reject decisions.
 
-    Pipeline:
-      1. Classify source type (OFFICIAL_WEBSITE, TOOL_OR_UTILITY, RECIPE, FORUM, etc.)
-      2. Hard-reject disallowed sources BEFORE extracting any candidate.
-      3. Calculate seller match score.
-      4. Calculate field relevance score.
-      5. Extract and validate candidate value from title + snippet.
-      6. Compute composite confidence score.
-      7. Return structured diagnostic dict for logging.
+    Args:
+        seller_name: Target seller name.
+        field_attr: Target attribute key (e.g. 'gst_number', 'email', 'contact_number', etc.).
+        result_item: Search result dictionary containing 'title', 'snippet', 'url'.
+        gst_number: Optional validated GSTIN for cross-verification.
+        city: Optional known seller city for location matching.
+        state: Optional known seller state for location matching.
+        location: Optional known seller location.
+
+    Returns:
+        Structured dictionary with candidate, score, decision (ACCEPT/REJECT), and reject_reason.
     """
-    title = r.get("title", "").strip()
-    url = r.get("url", "").strip()
-    snippet = r.get("snippet", "").strip()
+    title = result_item.get("title", "").strip()
+    snippet = result_item.get("snippet", "").strip()
+    url = result_item.get("url", "").strip()
     text = f"{title} {snippet}"
     combined = f"{text} {url}".lower()
     url_lower = url.lower()
 
-    # 1. Source Type Classification
+    # 1. Source Classification
     source_type, source_quality_score = classify_source_type(url, title, snippet)
 
-    # 2. Seller Match Score
-    seller_match_score, match_reason, matched_var = calculate_seller_match_score(seller_name, text, url)
+    # 2. Seller Association Matching
+    seller_match_score, match_reason, matched_var = calculate_seller_match_score(
+        seller_name, text, url
+    )
 
-    # 3. Hard Rejection (pre-fetch) — reject before candidate extraction / URL fetch
-    should_reject, reject_reason_early = is_disallowed_source(source_type, seller_match_score, seller_name, url)
-    if should_reject:
+    # 3. Disallowed Source Rejection
+    disallowed, dis_reason = is_disallowed_source(source_type, seller_match_score, seller_name, url)
+    if disallowed:
         return {
             "title": title,
             "url": url,
             "snippet": snippet,
             "source_type": source_type,
-            "seller_match_score": seller_match_score,
-            "match_reason": match_reason,
-            "matched_var": matched_var or seller_name,
+            "seller_match_score": 0,
+            "match_reason": dis_reason,
+            "matched_var": seller_name,
             "field_relevance_score": 0,
             "candidate_validity_score": 0,
-            "source_quality_score": source_quality_score,
+            "source_quality_score": 0,
             "total_confidence": 0,
             "raw_candidate": None,
             "valid_candidate_val": None,
             "decision": "REJECT",
-            "reject_reason": reject_reason_early,
+            "reject_reason": dis_reason,
         }
 
-    # 4. Field Relevance Score
-    kw_list = FIELD_KEYWORDS.get(field_attr, [])
-    has_field_kw = any(re.search(r"\b" + re.escape(kw) + r"\b", combined) for kw in kw_list) if kw_list else True
-    field_relevance_score = 90 if has_field_kw else 10
+    # Normalize field key
+    field_norm = _normalize_field_key(field_attr)
 
-    # Boost source quality for registry/government
+    # 4. Field Keyword Relevance Check
+    kw_list = FIELD_KEYWORDS.get(field_attr, []) or FIELD_KEYWORDS.get(field_norm, [])
+    has_field_kw = any(re.search(r"\b" + re.escape(kw) + r"\b", combined) or kw in combined for kw in kw_list) if kw_list else True
+    field_relevance_score = 90 if has_field_kw else 25
+
+    # Boost source quality for registry/government and official seller domains
     if any(d in url_lower for d in DIRECTORY_DOMAINS):
         source_quality_score = max(source_quality_score, 90)
+    elif seller_match_score >= 80 and not any(d in url_lower for d in EXCLUDED_WEBSITE_DOMAINS):
+        source_quality_score = max(source_quality_score, 85)
 
     # 5. Extract Candidate & Validity Score
     raw_candidate = None
@@ -1211,14 +1321,14 @@ def evaluate_result_candidate(
     candidate_validity_score = 0
     candidate_reject_reason = ""
 
-    if field_attr == "gst_number":
+    if field_norm == "gst":
         matches = GST_REGEX.findall(text)
         for m in matches:
             valid_g = validate_gst(m)
             if not valid_g:
                 continue
             matched, score, reason = match_gst_to_seller(
-                seller_name, valid_g, snippet=text, url=url
+                seller_name, valid_g, snippet=text, url=url, city=city, state=state, location=location
             )
             if matched:
                 raw_candidate = valid_g
@@ -1230,7 +1340,7 @@ def evaluate_result_candidate(
                 candidate_reject_reason = reason
         if not valid_candidate_val and matches and not candidate_reject_reason:
             candidate_reject_reason = "GST_SELLER_MISMATCH"
-    elif field_attr == "pan_number":
+    elif field_norm == "pan":
         if gst_number and validate_gst(gst_number):
             raw_candidate = validate_gst(gst_number)[2:12]
             valid_candidate_val = raw_candidate
@@ -1244,7 +1354,7 @@ def evaluate_result_candidate(
                     valid_candidate_val = valid_p
                     candidate_validity_score = 100
                     break
-    elif field_attr == "fssai_number":
+    elif field_norm == "fssai":
         matches = FSSAI_REGEX.findall(text)
         if matches:
             raw_candidate = matches[0]
@@ -1252,7 +1362,7 @@ def evaluate_result_candidate(
             if valid_f:
                 valid_candidate_val = valid_f
                 candidate_validity_score = 100
-    elif field_attr == "owner_name":
+    elif field_norm == "owner":
         owner_m = re.search(
             r"(?i)(?:owner|founder|director|proprietor|promoter|partner|managing\s+director)[:\-\s]+([A-Z][a-zA-Z\s]{2,40})",
             text,
@@ -1265,7 +1375,7 @@ def evaluate_result_candidate(
             ):
                 valid_candidate_val = raw_candidate
                 candidate_validity_score = 80
-    elif field_attr == "contact_number":
+    elif field_norm == "phone":
         ph_matches = PHONE_REGEX.findall(text)
         for ph in ph_matches:
             valid_ph = validate_phone(ph)
@@ -1278,7 +1388,7 @@ def evaluate_result_candidate(
                     valid_candidate_val = valid_ph
                     candidate_validity_score = 100
                     break
-    elif field_attr == "email":
+    elif field_norm == "email":
         em_matches = EMAIL_REGEX.findall(text)
         for em in em_matches:
             valid_em = validate_email(em)
@@ -1287,12 +1397,15 @@ def evaluate_result_candidate(
                 if dom in MARKETPLACE_EMAIL_DOMAINS:
                     candidate_reject_reason = "MARKETPLACE_EMAIL"
                     continue
+                if any(dom == d or dom.endswith("." + d) for d in DIRECTORY_DOMAINS):
+                    candidate_reject_reason = "DIRECTORY_GENERIC_EMAIL"
+                    continue
                 if seller_match_score >= 40:
                     raw_candidate = valid_em
                     valid_candidate_val = valid_em
                     candidate_validity_score = 100
                     break
-    elif field_attr == "pincode":
+    elif field_norm == "pincode":
         pin_m = re.search(
             r"(?i)(?:pincode|pin\s+code|pin|postal\s+code|postal|zip\s+code|zip|address)[\s:\-]*([1-9][0-9]{5})\b",
             text,
@@ -1303,7 +1416,7 @@ def evaluate_result_candidate(
             if valid_pin and seller_match_score >= 40:
                 valid_candidate_val = valid_pin
                 candidate_validity_score = 100
-    elif field_attr == "raw_address":
+    elif field_norm == "address":
         addr_m = re.search(
             r"(?i)(?:address|registered\s+office|located\s+at)\s*[:\-]?\s*([^.]+?(?:[1-9][0-9]{5}|India))",
             text,
@@ -1320,7 +1433,7 @@ def evaluate_result_candidate(
                 raw_candidate = text[:60]
                 valid_candidate_val = parsed.get("billing_address")
                 candidate_validity_score = 75
-    elif field_attr == "website_url":
+    elif field_norm == "website":
         if url and url.startswith("http") and source_type not in ("TOOL_OR_UTILITY", "RECIPE", "UNRELATED_COMPANY", "MARKETPLACE"):
             try:
                 parsed_u = urllib.parse.urlparse(url)
@@ -1330,6 +1443,9 @@ def evaluate_result_candidate(
                 candidate_validity_score = 90
             except Exception:
                 pass
+
+    if valid_candidate_val:
+        field_relevance_score = max(field_relevance_score, 90)
 
     # 6. Composite Confidence Score
     total_confidence = int(
@@ -1362,7 +1478,6 @@ def evaluate_result_candidate(
         decision = "ACCEPT"
         reject_reason = "NONE"
 
-
     return {
         "title": title,
         "url": url,
@@ -1383,13 +1498,14 @@ def evaluate_result_candidate(
 
 
 class WebResearchEngine:
-    """Performs field-driven fallback Bing searches and deep enrichment for marketplace sellers."""
+    """Performs field-driven fallback multi-engine searches (Google -> Bing -> Brave) and deep enrichment for marketplace sellers."""
 
     def __init__(self) -> None:
         """Initialize research engine with HTTP client, website parser, and cache."""
         self.cache = ResearchCache()
         self.website_parser = WebsiteParser()
         self.seller_enrichment_cache: Dict[str, Dict[str, Any]] = {}
+        self.google_rate_limited_until: float = 0.0
         self.brave_rate_limited_until: float = 0.0
         self.brave_backoff_seconds: float = 30.0
         self.client = httpx.AsyncClient(
@@ -1541,12 +1657,6 @@ class WebResearchEngine:
     async def _query_brave(self, query: str) -> Tuple[List[Dict[str, str]], int]:
         """Query Brave search engine directly as fallback and return top parsed results + HTTP status code.
 
-        Supports:
-          1. Brave Search API (if BRAVE_API_KEY environment variable is set).
-          2. Brave Web Search HTML parser (extracts title, snippet, AI summary / infobox).
-          3. Rate limit backoff tracking (HTTP 429).
-          4. DuckDuckGo fallback if Brave HTML is blocked or returns empty.
-
         Args:
             query: Search query string.
 
@@ -1556,13 +1666,7 @@ class WebResearchEngine:
         if time.monotonic() < self.brave_rate_limited_until:
             rem = int(self.brave_rate_limited_until - time.monotonic())
             logger.warning(
-                f"\n========================================\n"
-                f"BRAVE RATE LIMITED (ACTIVE BACKOFF)\n"
-                f"========================================\n"
-                f"Query: {query}\n"
-                f"Retry-After: {rem}s remaining\n"
-                f"Action: SKIP BRAVE / BACKOFF\n"
-                f"========================================"
+                f"\n[SEARCH ERROR]\nengine=Brave\nerror=429 (rate limited, {rem}s remaining)"
             )
             return [], 429
 
@@ -1590,15 +1694,6 @@ class WebResearchEngine:
                     backoff = float(retry_hdr) if retry_hdr.isdigit() else self.brave_backoff_seconds
                     self.brave_rate_limited_until = time.monotonic() + backoff
                     self.brave_backoff_seconds = min(300.0, self.brave_backoff_seconds * 2.0)
-                    logger.warning(
-                        f"\n========================================\n"
-                        f"BRAVE RATE LIMITED (HTTP 429)\n"
-                        f"========================================\n"
-                        f"Query: {query}\n"
-                        f"Retry-After: {backoff}s\n"
-                        f"Action: SKIP BRAVE / BACKOFF\n"
-                        f"========================================"
-                    )
                     return [], 429
 
                 if resp.status_code == 200:
@@ -1647,21 +1742,10 @@ class WebResearchEngine:
                 backoff = float(retry_hdr) if retry_hdr.isdigit() else self.brave_backoff_seconds
                 self.brave_rate_limited_until = time.monotonic() + backoff
                 self.brave_backoff_seconds = min(300.0, self.brave_backoff_seconds * 2.0)
-                logger.warning(
-                    f"\n========================================\n"
-                    f"BRAVE RATE LIMITED (HTTP 429)\n"
-                    f"========================================\n"
-                    f"Query: {query}\n"
-                    f"Retry-After: {backoff}s\n"
-                    f"Action: SKIP BRAVE / BACKOFF\n"
-                    f"========================================"
-                )
                 return [], 429
 
             if resp.status_code == 200:
                 soup = BeautifulSoup(resp.text, "lxml")
-
-                # Extract Brave AI summary or Knowledge Infobox if present
                 ai_box = soup.select_one("#llm-summary, .infobox, .answer, .knowledge-card, .serp-summary")
                 if ai_box:
                     ai_text = ai_box.get_text(" ", strip=True)
@@ -1696,154 +1780,6 @@ class WebResearchEngine:
         if results and effective_status == 200:
             self.cache.set(f"brave::{query}", results)
         return results, effective_status
-
-    async def _fetch_directory_text(self, url: str) -> str:
-        """Fetch and extract text content from a directory or company page when snippet is truncated."""
-        if not url or not url.startswith("http"):
-            return ""
-        try:
-            html = await self.website_parser.fetch_html(url)
-            if html:
-                soup = BeautifulSoup(html, "lxml")
-                for s in soup(["script", "style", "noscript", "svg"]):
-                    s.decompose()
-                return soup.get_text(" ", strip=True)
-        except Exception as e:
-            logger.debug(f"Failed to fetch directory page text from {url}: {e}")
-        return ""
-
-    async def search_seller_web(
-        self,
-        seller_name: str,
-        field: str,
-    ) -> Tuple[List[Dict[str, str]], str, Dict[str, Any]]:
-        """Waterfall search engine: Google -> Bing -> Brave.
-
-        Order:
-          1. Google
-          2. Bing
-          3. Brave
-
-        If Google unavailable / blocked / rate limited: continue to Bing.
-        If Bing fails: continue to Brave.
-        If Brave returns HTTP 429: do NOT treat field as NOT_FOUND.
-
-        Logs:
-          SEARCH_ENGINE
-          QUERY
-          HTTP STATUS
-          RESULT COUNT
-          Differentiates: SEARCH_FAILED, RATE_LIMITED, BLOCKED, NO_RESULTS, NO_MATCHING_SELLER, FOUND.
-
-        Returns:
-          Tuple of (results_list, engine_used, diagnostics_dict)
-        """
-        canonical_key = _normalize_field_key(field)
-        queries = generate_targeted_queries_for_field(seller_name, canonical_key)
-        target_queries = queries[:MAX_BING_QUERIES_PER_FIELD]
-
-        all_results: List[Dict[str, str]] = []
-        chosen_engine = "NONE"
-        diag: Dict[str, Any] = {
-            "engine": "NONE",
-            "query": target_queries[0] if target_queries else "",
-            "http_status": 0,
-            "result_count": 0,
-            "status_label": "NO_RESULTS",
-            "rate_limited": False,
-        }
-
-        def _label_for(status: int, res_list: List[Any]) -> str:
-            if status == 429:
-                return "RATE_LIMITED"
-            if status in (401, 403):
-                return "BLOCKED"
-            if status == 200:
-                return "FOUND" if res_list else "NO_RESULTS"
-            return "SEARCH_FAILED"
-
-        for q in target_queries:
-            diag["query"] = q
-
-            # 1. Try Google
-            g_res, g_status = await self._query_google(q)
-            g_label = _label_for(g_status, g_res)
-            logger.info(
-                f"\nSEARCH_ENGINE: Google\n"
-                f"QUERY: {q}\n"
-                f"HTTP STATUS: {g_status}\n"
-                f"RESULT COUNT: {len(g_res)}\n"
-                f"STATUS: {g_label}"
-            )
-            if g_label == "FOUND" and g_res:
-                chosen_engine = "Google"
-                all_results = g_res
-                diag.update({
-                    "engine": "Google",
-                    "http_status": g_status,
-                    "result_count": len(g_res),
-                    "status_label": g_label,
-                    "rate_limited": False,
-                })
-                break
-
-            # 2. If Google fails / blocked / rate limited / no results -> Try Bing
-            b_res, b_status = await self._query_bing(q)
-            b_label = _label_for(b_status, b_res)
-            logger.info(
-                f"\nSEARCH_ENGINE: Bing\n"
-                f"QUERY: {q}\n"
-                f"HTTP STATUS: {b_status}\n"
-                f"RESULT COUNT: {len(b_res)}\n"
-                f"STATUS: {b_label}"
-            )
-            if b_label == "FOUND" and b_res:
-                chosen_engine = "Bing"
-                all_results = b_res
-                diag.update({
-                    "engine": "Bing",
-                    "http_status": b_status,
-                    "result_count": len(b_res),
-                    "status_label": b_label,
-                    "rate_limited": False,
-                })
-                break
-
-            # 3. If Bing fails -> Try Brave
-            br_res, br_status = await self._query_brave(q)
-            br_label = _label_for(br_status, br_res)
-            logger.info(
-                f"\nSEARCH_ENGINE: Brave\n"
-                f"QUERY: {q}\n"
-                f"HTTP STATUS: {br_status}\n"
-                f"RESULT COUNT: {len(br_res)}\n"
-                f"STATUS: {br_label}"
-            )
-            if br_status == 429 or br_label == "RATE_LIMITED":
-                diag.update({
-                    "engine": "Brave",
-                    "http_status": 429,
-                    "result_count": 0,
-                    "status_label": "RATE_LIMITED",
-                    "rate_limited": True,
-                })
-                # Do NOT treat field as NOT_FOUND
-                break
-
-            if br_label == "FOUND" and br_res:
-                chosen_engine = "Brave"
-                all_results = br_res
-                diag.update({
-                    "engine": "Brave",
-                    "http_status": br_status,
-                    "result_count": len(br_res),
-                    "status_label": br_label,
-                    "rate_limited": False,
-                })
-                break
-
-        return all_results, chosen_engine, diag
-
 
     async def _query_ddg(self, query: str) -> List[Dict[str, str]]:
         """Fallback query to DuckDuckGo (via DDGS or HTML endpoint).
@@ -1904,40 +1840,157 @@ class WebResearchEngine:
 
         return results
 
-    async def _query_search_engine(self, query: str) -> List[Dict[str, str]]:
-        """Query search engine (Bing primary, Brave/DDG fallback) and return parsed results list.
+    async def _search_waterfall(
+        self, query: str
+    ) -> Tuple[List[Dict[str, str]], str]:
+        """Waterfall search execution: Google -> Bing -> Brave -> DDG.
 
         Args:
             query: Search query string.
 
         Returns:
-            List of search result dicts: [{"title": ..., "snippet": ..., "url": ...}]
+            Tuple of (results_list, engine_used).
         """
+        # 1. Try Google if not currently rate-limited
+        if time.monotonic() < self.google_rate_limited_until:
+            logger.info(f"[SEARCH SKIP]\nengine=Google\nreason=RATE_LIMITED_BACKOFF")
+            logger.info(f"[FALLBACK]\nfrom=Google\nto=Bing")
+        else:
+            logger.info(f"[SEARCH]\nengine=Google\nquery={query}")
+            g_res, g_status = await self._query_google(query)
+            if g_status == 429:
+                self.google_rate_limited_until = time.monotonic() + 60.0
+                logger.warning(f"[SEARCH ERROR]\nengine=Google\nerror=429")
+                logger.info(f"[FALLBACK]\nfrom=Google\nto=Bing")
+            elif g_status in (401, 403):
+                logger.warning(f"[SEARCH ERROR]\nengine=Google\nerror={g_status}")
+                logger.info(f"[FALLBACK]\nfrom=Google\nto=Bing")
+            elif g_status == 200 and g_res:
+                return g_res, "Google"
+            else:
+                logger.info(f"[FALLBACK]\nfrom=Google\nto=Bing")
+
+        # 2. Try Bing
+        logger.info(f"[SEARCH]\nengine=Bing\nquery={query}")
+        b_res, b_status = await self._query_bing(query)
+        if b_status == 429:
+            logger.warning(f"[SEARCH ERROR]\nengine=Bing\nerror=429")
+            logger.info(f"[FALLBACK]\nfrom=Bing\nto=Brave")
+        elif b_status == 200 and b_res:
+            return b_res, "Bing"
+        else:
+            logger.info(f"[FALLBACK]\nfrom=Bing\nto=Brave")
+
+        # 3. Try Brave
+        if time.monotonic() < self.brave_rate_limited_until:
+            logger.warning(f"[SEARCH ERROR]\nengine=Brave\nerror=429")
+            logger.info(f"[FALLBACK]\nfrom=Brave\nto=DuckDuckGo")
+        else:
+            logger.info(f"[SEARCH]\nengine=Brave\nquery={query}")
+            br_res, br_status = await self._query_brave(query)
+            if br_status == 429:
+                logger.warning(f"[SEARCH ERROR]\nengine=Brave\nerror=429")
+                logger.info(f"[FALLBACK]\nfrom=Brave\nto=DuckDuckGo")
+            elif br_status == 200 and br_res:
+                return br_res, "Brave"
+            else:
+                logger.info(f"[FALLBACK]\nfrom=Brave\nto=DuckDuckGo")
+
+        # 4. Try DuckDuckGo
+        logger.info(f"[SEARCH]\nengine=DuckDuckGo\nquery={query}")
+        ddg_res = await self._query_ddg(query)
+        if ddg_res:
+            return ddg_res, "DuckDuckGo"
+
+        return [], "Bing"
+
+    async def search_seller_web(
+        self,
+        seller_name: str,
+        field: str,
+    ) -> Tuple[List[Dict[str, str]], str, Dict[str, Any]]:
+        """Waterfall search engine: Google -> Bing -> Brave -> DDG.
+
+        Returns:
+          Tuple of (results_list, engine_used, diagnostics_dict)
+        """
+        canonical_key = _normalize_field_key(field)
+        queries = generate_targeted_queries_for_field(seller_name, canonical_key)
+        target_queries = queries[:MAX_BING_QUERIES_PER_FIELD]
+
+        all_results: List[Dict[str, str]] = []
+        chosen_engine = "NONE"
+        diag: Dict[str, Any] = {
+            "engine": "NONE",
+            "query": target_queries[0] if target_queries else "",
+            "http_status": 200,
+            "result_count": 0,
+            "status_label": "NO_RESULTS",
+            "rate_limited": False,
+        }
+
+        for q in target_queries:
+            diag["query"] = q
+            # 1. Try Google
+            g_res, g_status = await self._query_google(q)
+            if g_status == 429:
+                self.google_rate_limited_until = time.monotonic() + 60.0
+            elif g_status == 200 and g_res:
+                return g_res, "Google", {
+                    "engine": "Google", "query": q, "http_status": 200,
+                    "result_count": len(g_res), "status_label": "FOUND", "rate_limited": False
+                }
+
+            # 2. Try Bing
+            b_res, b_status = await self._query_bing(q)
+            if b_status == 200 and b_res:
+                return b_res, "Bing", {
+                    "engine": "Bing", "query": q, "http_status": 200,
+                    "result_count": len(b_res), "status_label": "FOUND", "rate_limited": False
+                }
+
+            # 3. Try Brave
+            br_res, br_status = await self._query_brave(q)
+            if br_status == 429:
+                diag.update({
+                    "engine": "Brave",
+                    "http_status": 429,
+                    "result_count": 0,
+                    "status_label": "RATE_LIMITED",
+                    "rate_limited": True,
+                })
+                break
+            if br_status == 200 and br_res:
+                return br_res, "Brave", {
+                    "engine": "Brave", "query": q, "http_status": 200,
+                    "result_count": len(br_res), "status_label": "FOUND", "rate_limited": False
+                }
+
+            # 4. Fallback to DDG
+            ddg_res = await self._query_ddg(q)
+            if ddg_res:
+                return ddg_res, "DuckDuckGo", {
+                    "engine": "DuckDuckGo", "query": q, "http_status": 200,
+                    "result_count": len(ddg_res), "status_label": "FOUND", "rate_limited": False
+                }
+
+        return all_results, diag["engine"], diag
+
+    async def _query_search_engine(self, query: str) -> List[Dict[str, str]]:
+        """Query search engine using waterfall (Google -> Bing -> Brave)."""
         cached = self.cache.get(query)
         if cached:
             return cached
 
-        results, _ = await self._query_bing(query)
-        if not results:
-            results, _ = await self._query_brave(query)
-
-        self.cache.set(query, results)
+        results, _ = await self._search_waterfall(query)
+        if results:
+            self.cache.set(query, results)
         return results
-
 
     def _filter_search_results(
         self, seller_name: str, results: List[Dict[str, str]], min_score: int = 20
     ) -> Tuple[List[Dict[str, str]], List[Dict[str, str]]]:
-        """Filter search results by relevance score and validate seller association.
-
-        Args:
-            seller_name: Target seller name.
-            results: Raw search results list.
-            min_score: Minimum relevance score threshold (default 20).
-
-        Returns:
-            Tuple of (relevant_results, rejected_results).
-        """
+        """Filter search results by relevance score and validate seller association."""
         relevant: List[Dict[str, str]] = []
         rejected: List[Dict[str, str]] = []
 
@@ -1945,10 +1998,8 @@ class WebResearchEngine:
             score = score_search_result_relevance(seller_name, item)
             text = f"{item.get('title', '')} {item.get('snippet', '')}"
             url = item.get("url", "")
-
             has_association = validate_seller_association(seller_name, text, url)
 
-            # Strict Quality Filter: Must pass seller association AND relevance threshold
             if has_association and score >= min_score:
                 relevant.append(item)
             else:
@@ -1959,15 +2010,7 @@ class WebResearchEngine:
     def _extract_from_snippets(
         self, search_results: List[Dict[str, str]], seller_name: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Extract GST, PAN, Phone, Email, Address, Pincode, and Owner clues directly from snippet text.
-
-        Args:
-            search_results: List of search result dictionaries.
-            seller_name: Optional seller name for association verification.
-
-        Returns:
-            Dictionary containing extracted fields and '_sources' mapping.
-        """
+        """Extract GST, PAN, Phone, Email, Address, Pincode, and Owner clues directly from snippet text."""
         data: Dict[str, Any] = {
             "gst_number": None,
             "pan_number": None,
@@ -1982,11 +2025,9 @@ class WebResearchEngine:
             "_sources": {},
         }
         sources: Dict[str, str] = {}
-
         if not seller_name:
             seller_name = ""
 
-        # Use modular extractors
         gst_res = extract_gst(search_results, seller_name)
         if gst_res:
             data["gst_number"] = gst_res[0]
@@ -2043,15 +2084,7 @@ class WebResearchEngine:
     def _identify_candidate_websites(
         self, seller_name: str, search_results: List[Dict[str, str]]
     ) -> List[str]:
-        """Identify candidate official company websites from search results.
-
-        Args:
-            seller_name: Normalized seller name.
-            search_results: List of search results.
-
-        Returns:
-            List of prioritized candidate URLs.
-        """
+        """Identify candidate official company websites from search results."""
         candidates: List[str] = []
         norm = normalize_seller_name_for_matching(seller_name)
         clean_seller_slug = norm["compact_stripped"] or norm["compact"]
@@ -2071,7 +2104,6 @@ class WebResearchEngine:
                 text = f"{item.get('title', '')} {item.get('snippet', '')}"
                 score, _, _ = calculate_seller_match_score(seller_name, text, url)
 
-                # Ensure candidate website has explicit seller association
                 if score >= 50 or (clean_seller_slug and len(clean_seller_slug) >= 4 and clean_seller_slug in domain.replace(".", "")):
                     root_url = f"{parsed.scheme}://{parsed.netloc}"
                     if root_url not in candidates:
@@ -2083,14 +2115,7 @@ class WebResearchEngine:
         return candidates[:3]
 
     async def _inspect_directory_url(self, url: str) -> Dict[str, Any]:
-        """Inspect a high-authority directory page (ZaubaCorp, MastersIndia, Tofler, etc.).
-
-        Args:
-            url: Directory webpage URL.
-
-        Returns:
-            Extracted credentials dictionary.
-        """
+        """Inspect a high-authority directory page."""
         data: Dict[str, Any] = {}
         try:
             html = await self.website_parser.fetch_html(url)
@@ -2102,23 +2127,15 @@ class WebResearchEngine:
         return data
 
     async def enrich_seller(self, seller_record: Dict[str, Any]) -> Dict[str, Any]:
-        """Field-driven Bing enrichment pipeline after seller extraction.
+        """Production seller enrichment pipeline.
 
-        Flow:
-          1. Check seller_enrichment_cache (reuse verified data if seller already researched).
-          2. Find and scrape Official Website first.
-          3. Identify every missing NOT FOUND field.
-          4. For EACH missing field, execute prioritized Bing queries with strict relevance filtering.
-          5. Validate seller association and enforce Source Priority Hierarchy.
-          6. Address normalization (Billing Address, City, State, Pincode, Country).
-          7. Output structured diagnostic BING ENRICHMENT log.
-          8. Cache result and return structured Excel-compatible record.
-
-        Args:
-            seller_record: Generic seller dictionary.
-
-        Returns:
-            Fully enriched seller dictionary matching the 18+ Excel schema.
+        Combines:
+          1. Flipkart seller profile and existing data
+          2. Official website discovery and scraping
+          3. Multi-engine search (Google -> Bing -> Brave -> DDG) with identity queries
+          4. Per-result candidate extraction, validation, and seller matching
+          5. Address parsing and cross-field verification
+          6. Exact 18 Excel columns mapping and output
         """
         seller_name = seller_record.get("seller_name", "").strip()
         marketplace = seller_record.get("marketplace", "flipkart")
@@ -2134,7 +2151,7 @@ class WebResearchEngine:
         product_rating = seller_record.get("product_rating")
         seller_confidence = seller_record.get("seller_confidence", 0.95)
 
-        # In-Memory Cache Check: Reuse verified data if seller was already enriched
+        # In-Memory Cache Check
         cache_key = f"{marketplace}::{seller_name.lower()}"
         if cache_key in self.seller_enrichment_cache:
             logger.info(f"Reusing cached enrichment data for seller: '{seller_name}'")
@@ -2144,12 +2161,31 @@ class WebResearchEngine:
             cached_res["product_rating"] = product_rating or cached_res.get("product_rating")
             return cached_res
 
-        logger.info(f"Starting field-driven Bing enrichment for: '{seller_name}'")
+        logger.info(f"Starting production search enrichment for: '{seller_name}'")
 
         sources_used: Set[str] = set()
         field_sources: Dict[str, str] = {}
         field_source_urls: Dict[str, str] = {}
-        field_log_entries: List[Dict[str, Any]] = []
+
+        # Extract anchor identity signals from seller_record if already present
+        city = seller_record.get("city")
+        state = seller_record.get("state")
+        location = seller_record.get("location") or seller_record.get("seller_location")
+        pincode = seller_record.get("pincode")
+
+        merged: Dict[str, Any] = {
+            "gst_number": seller_record.get("gst_number") or seller_record.get("GST Number"),
+            "pan_number": seller_record.get("pan_number") or seller_record.get("PAN Number"),
+            "fssai_number": seller_record.get("fssai_number") or seller_record.get("FSSAI Number"),
+            "contact_number": seller_record.get("contact_number") or seller_record.get("phone") or seller_record.get("Phone Number"),
+            "email": seller_record.get("email") or seller_record.get("Email Address"),
+            "owner_name": seller_record.get("owner_name") or seller_record.get("Owner Name"),
+            "raw_address": seller_record.get("raw_address") or seller_record.get("billing_address") or seller_record.get("Billing Address"),
+            "website_url": seller_record.get("website_url") or seller_record.get("Website URL"),
+            "pincode": pincode,
+            "city": city,
+            "state": state,
+        }
 
         # Helper to update field respecting source priority hierarchy
         def _set_field(field: str, val: Any, src: str, src_url: Optional[str] = None) -> None:
@@ -2164,287 +2200,145 @@ class WebResearchEngine:
                     field_source_urls[field] = src_url
                 sources_used.add(src)
 
-        # Base record
-        merged: Dict[str, Any] = {
-            "gst_number": None,
-            "pan_number": None,
-            "fssai_number": None,
-            "contact_number": None,
-            "email": None,
-            "owner_name": None,
-            "raw_address": None,
-            "website_url": None,
-            "pincode": None,
-            "city": None,
-            "state": None,
-        }
-
-        # Step 1: Find Official Website First (Max 3 Bing + Max 2 Brave, 30s timeout)
-        web_bing_queries = generate_bing_queries_for_field(seller_name, "website")
-        initial_search_results: List[Dict[str, str]] = []
-        web_start_time = time.monotonic()
-        web_bing_attempts = 0
-        web_brave_attempts = 0
+        # Step 1: Find Official Website First
         candidate_urls: List[str] = []
-
-        for b_idx, b_q in enumerate(web_bing_queries[:MAX_BING_QUERIES_PER_FIELD], start=1):
-            if (time.monotonic() - web_start_time) >= FIELD_TIMEOUT_SECONDS:
-                break
-            web_bing_attempts += 1
-            raw_res, status_code = await self._query_bing(b_q)
-            initial_search_results.extend(raw_res)
-
-            # Evaluate per-result candidates for diagnostics
-            for idx, r_item in enumerate(raw_res, start=1):
-                eval_res = evaluate_result_candidate(seller_name, "website_url", r_item)
-                logger.info(
-                    f"  Result #{idx}\n"
-                    f"  Title: {eval_res['title']}\n"
-                    f"  URL: {eval_res['url']}\n"
-                    f"  Snippet: {eval_res['snippet']}\n"
-                    f"  Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
-                    f"  Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
-                    f"  Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
-                    f"  Score: {eval_res['total_confidence']}\n"
-                    f"  Decision: {eval_res['decision']}\n"
-                    f"  Reject Reason: {eval_res['reject_reason']}"
-                )
-
-            candidate_urls = self._identify_candidate_websites(seller_name, initial_search_results)
-            cand_disp = candidate_urls[0] if candidate_urls else "NONE"
-            decision_str = "SAVE" if candidate_urls else "NEXT QUERY"
-
-            logger.info(
-                f"\n----------------------------------------\n"
-                f"ENRICHMENT SEARCH\n"
-                f"----------------------------------------\n"
-                f"Seller: {seller_name}\n"
-                f"Field: Official Website\n"
-                f"Provider: Bing\n"
-                f"Attempt: {b_idx}/{len(web_bing_queries[:MAX_BING_QUERIES_PER_FIELD])}\n"
-                f"Query: {b_q}\n"
-                f"HTTP Status: {status_code or 200}\n"
-                f"Results: {len(raw_res)}\n"
-                f"Candidate: {cand_disp}\n"
-                f"Decision: {decision_str}\n"
-                f"----------------------------------------"
+        if not merged.get("website_url"):
+            web_bing_queries = generate_identity_queries_for_field(
+                seller_name, "website", city=city, state=state, location=location, gst_number=merged.get("gst_number")
             )
-            if candidate_urls:
-                break
-            await asyncio.sleep(0.15)
-
-        if not candidate_urls and (time.monotonic() - web_start_time) < FIELD_TIMEOUT_SECONDS:
-            logger.info(
-                f"\nBING EXHAUSTED\n"
-                f"Seller: {seller_name}\n"
-                f"Field: Official Website\n"
-                f"Usable candidate: NONE\n"
-                f"Switching to Brave"
-            )
-            web_brave_queries = generate_brave_queries_for_field(seller_name, "website")
-            for br_idx, br_q in enumerate(web_brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD], start=1):
-                if (time.monotonic() - web_start_time) >= FIELD_TIMEOUT_SECONDS:
-                    break
-                web_brave_attempts += 1
-                raw_res, status_code = await self._query_brave(br_q)
-                if status_code == 429:
-                    break
-
-                initial_search_results.extend(raw_res)
-
+            for w_q in web_bing_queries[:MAX_BING_QUERIES_PER_FIELD]:
+                logger.info(f"[SEARCH]\nengine=Bing\nquery={w_q}")
+                raw_res, status_code = await self._query_bing(w_q)
                 for idx, r_item in enumerate(raw_res, start=1):
-                    eval_res = evaluate_result_candidate(seller_name, "website_url", r_item)
-                    logger.info(
-                        f"  Result #{idx}\n"
-                        f"  Title: {eval_res['title']}\n"
-                        f"  URL: {eval_res['url']}\n"
-                        f"  Snippet: {eval_res['snippet']}\n"
-                        f"  Seller Match: {eval_res['seller_match_score']} ({eval_res['matched_var']})\n"
-                        f"  Field Match: {'YES' if eval_res['field_relevance_score'] >= 50 else 'NO'}\n"
-                        f"  Candidate: {eval_res['raw_candidate'] or 'NONE'}\n"
-                        f"  Score: {eval_res['total_confidence']}\n"
-                        f"  Decision: {eval_res['decision']}\n"
-                        f"  Reject Reason: {eval_res['reject_reason']}"
+                    eval_res = evaluate_result_candidate(
+                        seller_name, "website_url", r_item,
+                        gst_number=merged.get("gst_number"), city=city, state=state, location=location
                     )
+                    logger.info(
+                        f"[SEARCH RESULT]\nengine=Bing\nindex={idx}\ntitle={eval_res['title']}\nurl={eval_res['url']}\nsnippet={eval_res['snippet']}"
+                    )
+                    logger.info(
+                        f"[SEARCH CANDIDATE]\nfield=website\nvalue={eval_res['raw_candidate'] or 'NONE'}\nsource={eval_res['url'] or 'snippet'}\nmatch_score={eval_res['seller_match_score']}\nconfidence={eval_res['total_confidence']}"
+                    )
+                    if eval_res["decision"] == "ACCEPT":
+                        logger.info(f"[SEARCH ACCEPTED]\nfield=website\nvalue={eval_res['valid_candidate_val']}\nconfidence=HIGH")
+                    else:
+                        logger.info(f"[SEARCH REJECTED]\nfield=website\nvalue={eval_res['raw_candidate'] or 'NONE'}\nreason={eval_res['reject_reason']}")
 
-                candidate_urls = self._identify_candidate_websites(seller_name, initial_search_results)
-                cand_disp = candidate_urls[0] if candidate_urls else "NONE"
-                decision_str = "SAVE" if candidate_urls else "NEXT QUERY"
-
-                logger.info(
-                    f"\n----------------------------------------\n"
-                    f"ENRICHMENT SEARCH\n"
-                    f"----------------------------------------\n"
-                    f"Seller: {seller_name}\n"
-                    f"Field: Official Website\n"
-                    f"Provider: Brave\n"
-                    f"Attempt: {br_idx}/{len(web_brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD])}\n"
-                    f"Query: {br_q}\n"
-                    f"HTTP Status: {status_code or 200}\n"
-                    f"Results: {len(raw_res)}\n"
-                    f"Candidate: {cand_disp}\n"
-                    f"Decision: {decision_str}\n"
-                    f"----------------------------------------"
-                )
+                candidate_urls = self._identify_candidate_websites(seller_name, raw_res)
                 if candidate_urls:
                     break
-                await asyncio.sleep(0.15)
+
+            if not candidate_urls:
+                logger.info(f"[FALLBACK]\nfrom=Bing\nto=Brave")
+                web_brave_queries = generate_brave_queries_for_field(seller_name, "website")
+                for br_q in web_brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD]:
+                    logger.info(f"[SEARCH]\nengine=Brave\nquery={br_q}")
+                    raw_res, status_code = await self._query_brave(br_q)
+                    if status_code == 429:
+                        logger.warning(f"[SEARCH ERROR]\nengine=Brave\nerror=429")
+                        break
+                    for idx, r_item in enumerate(raw_res, start=1):
+                        eval_res = evaluate_result_candidate(
+                            seller_name, "website_url", r_item,
+                            gst_number=merged.get("gst_number"), city=city, state=state, location=location
+                        )
+                        logger.info(
+                            f"[SEARCH RESULT]\nengine=Brave\nindex={idx}\ntitle={eval_res['title']}\nurl={eval_res['url']}\nsnippet={eval_res['snippet']}"
+                        )
+                        logger.info(
+                            f"[SEARCH CANDIDATE]\nfield=website\nvalue={eval_res['raw_candidate'] or 'NONE'}\nsource={eval_res['url'] or 'snippet'}\nmatch_score={eval_res['seller_match_score']}\nconfidence={eval_res['total_confidence']}"
+                        )
+                        if eval_res["decision"] == "ACCEPT":
+                            logger.info(f"[SEARCH ACCEPTED]\nfield=website\nvalue={eval_res['valid_candidate_val']}\nconfidence=HIGH")
+                        else:
+                            logger.info(f"[SEARCH REJECTED]\nfield=website\nvalue={eval_res['raw_candidate'] or 'NONE'}\nreason={eval_res['reject_reason']}")
+
+                    candidate_urls = self._identify_candidate_websites(seller_name, raw_res)
+                    if candidate_urls:
+                        break
 
         # Step 2: Scrape Official Website if found
-        primary_website_url = None
-        for candidate_url in candidate_urls[:2]:
-            logger.info(f"Inspecting candidate website: {candidate_url}")
-            c_data = await self.website_parser.inspect_website(candidate_url)
-            if any(c_data.get(k) for k in ["gst_number", "email", "contact_number", "address", "owner_name"]):
-                primary_website_url = candidate_url
-                _set_field("website_url", candidate_url, "company_website", src_url=candidate_url)
-                _set_field("gst_number", c_data.get("gst_number"), "company_website", src_url=candidate_url)
-                _set_field("pan_number", c_data.get("pan_number"), "company_website", src_url=candidate_url)
-                _set_field("fssai_number", c_data.get("fssai_number"), "company_website", src_url=candidate_url)
-                _set_field("contact_number", c_data.get("contact_number"), "company_website", src_url=candidate_url)
-                _set_field("email", c_data.get("email"), "company_website", src_url=candidate_url)
-                _set_field("owner_name", c_data.get("owner_name"), "company_website", src_url=candidate_url)
-                _set_field("raw_address", c_data.get("address"), "company_website", src_url=candidate_url)
-                break
+        primary_website_url = merged.get("website_url")
+        if candidate_urls and not primary_website_url:
+            for candidate_url in candidate_urls[:2]:
+                logger.info(f"Inspecting candidate website: {candidate_url}")
+                c_data = await self.website_parser.inspect_website(candidate_url)
+                if any(c_data.get(k) for k in ["gst_number", "email", "contact_number", "address", "owner_name"]):
+                    primary_website_url = candidate_url
+                    _set_field("website_url", candidate_url, "company_website", src_url=candidate_url)
+                    _set_field("gst_number", c_data.get("gst_number"), "company_website", src_url=candidate_url)
+                    _set_field("pan_number", c_data.get("pan_number"), "company_website", src_url=candidate_url)
+                    _set_field("fssai_number", c_data.get("fssai_number"), "company_website", src_url=candidate_url)
+                    _set_field("contact_number", c_data.get("contact_number"), "company_website", src_url=candidate_url)
+                    _set_field("email", c_data.get("email"), "company_website", src_url=candidate_url)
+                    _set_field("owner_name", c_data.get("owner_name"), "company_website", src_url=candidate_url)
+                    _set_field("raw_address", c_data.get("address"), "company_website", src_url=candidate_url)
+                    break
 
-        if primary_website_url:
-            attempts_text = f"Bing {web_bing_attempts}" if not web_brave_attempts else f"Bing {web_bing_attempts} + Brave {web_brave_attempts}"
-            logger.info(
-                f"\nFIELD COMPLETE\n"
-                f"Seller: {seller_name}\n"
-                f"Field: Official Website\n"
-                f"Result: FOUND ({primary_website_url})\n"
-                f"Attempts: {attempts_text}"
-            )
-            field_log_entries.append({
-                "field": "Website",
-                "query": attempts_text,
-                "results": len(initial_search_results),
-                "verified": "YES",
-                "value": primary_website_url,
-                "source": primary_website_url,
-            })
-        else:
-            logger.info(
-                f"\nFIELD COMPLETE\n"
-                f"Seller: {seller_name}\n"
-                f"Field: Official Website\n"
-                f"Result: NOT FOUND\n"
-                f"Attempts: Bing {web_bing_attempts} + Brave {web_brave_attempts}"
-            )
-            field_log_entries.append({
-                "field": "Website",
-                "query": f"Bing {web_bing_attempts} + Brave {web_brave_attempts}",
-                "results": len(initial_search_results),
-                "verified": "NO",
-                "value": "NOT FOUND",
-                "source": "None",
-            })
-
-        # Log fields found from website so far
-        for f_key in ["contact_number", "email", "owner_name", "gst_number", "pan_number", "fssai_number", "raw_address"]:
-            if merged.get(f_key):
-                logger.info(f"{f_key.replace('_', ' ').title()}: FOUND ({merged[f_key]})")
-
-        # Step 3: Field-Driven Fallback Search for missing business attributes
+        # Step 3: Targeted Search for missing fields using Identity Queries
         fields_to_search = [
-            ("gst_number", "GST", "gst"),
-            ("raw_address", "Address", "address"),
+            ("gst_number", "GST Number", "gst"),
+            ("raw_address", "Billing Address", "address"),
             ("pincode", "Pincode", "pincode"),
-            ("contact_number", "Phone", "phone"),
-            ("email", "Email", "email"),
-            ("owner_name", "Owner / Founder", "owner"),
-            ("pan_number", "PAN", "pan"),
-            ("fssai_number", "FSSAI", "fssai"),
+            ("contact_number", "Phone Number", "phone"),
+            ("email", "Email Address", "email"),
+            ("owner_name", "Owner Name", "owner"),
+            ("pan_number", "PAN Number", "pan"),
+            ("fssai_number", "FSSAI Number", "fssai"),
         ]
 
         for field_attr, field_display_name, query_key in fields_to_search:
-            # If already verified from official website or previous steps, skip search
+            # If already confidently filled, skip
             if merged.get(field_attr):
-                field_log_entries.append({
-                    "field": field_display_name,
-                    "query": "N/A (Pre-verified)",
-                    "results": 0,
-                    "verified": "YES",
-                    "value": merged[field_attr],
-                    "source": field_source_urls.get(field_attr, "official_website"),
-                })
                 continue
 
-            # Auto-derive PAN from GST if GSTIN is present
+            # Auto-derive PAN from verified GSTIN
             if field_attr == "pan_number" and merged.get("gst_number"):
                 valid_g = validate_gst(merged["gst_number"])
                 if valid_g:
                     pan_derived = valid_g[2:12]
-                    _set_field("pan_number", pan_derived, field_sources.get("gst_number", "targeted_search"), src_url="Derived from GSTIN")
-                    logger.info(f"PAN: FOUND ({pan_derived} - Derived from GSTIN)")
-                    field_log_entries.append({
-                        "field": field_display_name,
-                        "query": "Derived from GSTIN",
-                        "results": 0,
-                        "verified": "YES",
-                        "value": pan_derived,
-                        "source": "GSTIN State / IT Registry",
-                    })
-                    continue
+                    valid_p = validate_pan(pan_derived, gst_str=valid_g)
+                    if valid_p:
+                        _set_field("pan_number", valid_p, "filing_registry", src_url="Derived from GSTIN")
+                        logger.info(f"PAN: Derived from verified GSTIN ({valid_p})")
+                        continue
 
-            logger.info(f"{field_display_name}: SEARCHING...")
+            # Phase A: Bing queries
+            target_bing_queries = generate_identity_queries_for_field(
+                seller_name, query_key, city=city, state=state, location=location, gst_number=merged.get("gst_number")
+            )
 
-            field_start_time = time.monotonic()
-            bing_attempts = 0
-            brave_attempts = 0
             field_resolved = False
-            last_query_used = ""
-            total_res_count = 0
-
-            # Phase 1: Maximum 5 Bing Queries
-            bing_queries = generate_bing_queries_for_field(seller_name, query_key)
-            for attempt_idx, target_query in enumerate(bing_queries[:MAX_BING_QUERIES_PER_FIELD], start=1):
-                if (time.monotonic() - field_start_time) >= FIELD_TIMEOUT_SECONDS:
-                    break
-
-                bing_attempts += 1
-                last_query_used = target_query
+            for target_query in target_bing_queries[:MAX_BING_QUERIES_PER_FIELD]:
+                logger.info(f"[SEARCH]\nengine=Bing\nquery={target_query}")
                 raw_results, status_code = await self._query_bing(target_query)
-                total_res_count += len(raw_results)
-
                 accepted_candidate = None
                 accepted_src = None
 
-                logger.info(
-                    f"\n----------------------------------------\n"
-                    f"ENRICHMENT SEARCH ATTEMPT\n"
-                    f"----------------------------------------\n"
-                    f"Seller: {seller_name}\n"
-                    f"Field: {field_display_name}\n"
-                    f"Provider: Bing\n"
-                    f"Attempt: {attempt_idx}/{len(bing_queries[:MAX_BING_QUERIES_PER_FIELD])}\n"
-                    f"Query: {target_query}\n"
-                    f"HTTP Status: {status_code or 200}\n"
-                    f"Results: {len(raw_results)}"
-                )
-
-                # Inspect ALL organic results before making accept/reject decision
                 for idx, r_item in enumerate(raw_results, start=1):
-                    eval_res = evaluate_result_candidate(seller_name, field_attr, r_item, gst_number=merged.get("gst_number"))
-
-                    log_candidate_evaluation(
-                        seller=seller_name,
-                        field=field_display_name,
-                        search="Bing",
-                        query=target_query,
-                        results_count=len(raw_results),
-                        candidate=eval_res["raw_candidate"],
-                        match_score=eval_res["seller_match_score"],
-                        source=eval_res["url"] or "snippet",
-                        valid="VALID" if eval_res["valid_candidate_val"] else "INVALID",
-                        result="ACCEPTED" if eval_res["decision"] == "ACCEPT" else "REJECTED",
-                        reason=eval_res["reject_reason"],
+                    eval_res = evaluate_result_candidate(
+                        seller_name, field_attr, r_item,
+                        gst_number=merged.get("gst_number"), city=city, state=state, location=location
+                    )
+                    logger.info(
+                        f"[SEARCH RESULT]\nengine=Bing\nindex={idx}\ntitle={eval_res['title']}\nurl={eval_res['url']}\nsnippet={eval_res['snippet']}"
+                    )
+                    logger.info(
+                        f"[SEARCH CANDIDATE]\nfield={field_display_name}\nvalue={eval_res['raw_candidate'] or 'NONE'}\nsource={eval_res['url'] or 'snippet'}\nmatch_score={eval_res['seller_match_score']}\nconfidence={eval_res['total_confidence']}"
                     )
 
-                    if eval_res["decision"] == "ACCEPT" and not accepted_candidate:
-                        accepted_candidate = eval_res["valid_candidate_val"]
-                        accepted_src = eval_res["url"]
+                    if eval_res["decision"] == "ACCEPT":
+                        logger.info(
+                            f"[SEARCH ACCEPTED]\nfield={field_display_name}\nvalue={eval_res['valid_candidate_val']}\nconfidence=HIGH ({eval_res['total_confidence']})"
+                        )
+                        if not accepted_candidate:
+                            accepted_candidate = eval_res["valid_candidate_val"]
+                            accepted_src = eval_res["url"]
+                    else:
+                        logger.info(
+                            f"[SEARCH REJECTED]\nfield={field_display_name}\nvalue={eval_res['raw_candidate'] or 'NONE'}\nreason={eval_res['reject_reason']}"
+                        )
 
                 if accepted_candidate:
                     _set_field(field_attr, accepted_candidate, "targeted_search", src_url=accepted_src)
@@ -2454,8 +2348,7 @@ class WebResearchEngine:
                             pan_val = v_g[2:12]
                             v_p = validate_pan(pan_val, gst_str=v_g)
                             if v_p:
-                                _set_field("pan_number", pan_val, "targeted_search", src_url="Derived from GSTIN")
-                                logger.info(f"PAN: Derived from verified GSTIN ({pan_val})")
+                                _set_field("pan_number", v_p, "targeted_search", src_url="Derived from GSTIN")
                     if field_attr == "raw_address":
                         parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
                         if parsed_addr.get("city") and not merged.get("city"):
@@ -2465,83 +2358,47 @@ class WebResearchEngine:
                         if parsed_addr.get("pincode") and not merged.get("pincode"):
                             _set_field("pincode", parsed_addr["pincode"], "targeted_search", src_url=accepted_src)
                     field_resolved = True
-                    logger.info(
-                        f"Decision: SAVE\n"
-                        f"Accepted Value: {accepted_candidate}\n"
-                        f"----------------------------------------"
-                    )
                     break
-                else:
-                    logger.info(
-                        f"Decision: NEXT QUERY\n"
-                        f"----------------------------------------"
-                    )
 
                 await asyncio.sleep(0.15)
 
-            # Phase 2: Brave Fallback Queries if Bing was exhausted without candidate
-            is_rate_limited = False
-            if not field_resolved and (time.monotonic() - field_start_time) < FIELD_TIMEOUT_SECONDS:
-                logger.info(
-                    f"\nBING EXHAUSTED\n"
-                    f"Seller: {seller_name}\n"
-                    f"Field: {field_display_name}\n"
-                    f"Usable candidate: NONE\n"
-                    f"Switching to Brave"
-                )
+            # Phase B: Brave fallback queries if Bing was exhausted without accepted candidate
+            if not field_resolved:
+                logger.info(f"[FALLBACK]\nfrom=Bing\nto=Brave")
                 brave_queries = generate_brave_queries_for_field(seller_name, query_key)
-                for attempt_idx, target_query in enumerate(brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD], start=1):
-                    if (time.monotonic() - field_start_time) >= FIELD_TIMEOUT_SECONDS:
-                        break
-
-                    brave_attempts += 1
-                    last_query_used = target_query
+                for target_query in brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD]:
+                    logger.info(f"[SEARCH]\nengine=Brave\nquery={target_query}")
                     raw_results, status_code = await self._query_brave(target_query)
-                    
                     if status_code == 429:
-                        logger.warning(
-                            f"\nRATE_LIMITED: Brave returned HTTP 429 for '{target_query}'. Skipping Brave queries."
-                        )
-                        is_rate_limited = True
+                        logger.warning(f"[SEARCH ERROR]\nengine=Brave\nerror=429")
                         break
 
-                    total_res_count += len(raw_results)
                     accepted_candidate = None
                     accepted_src = None
 
-                    logger.info(
-                        f"\n----------------------------------------\n"
-                        f"ENRICHMENT SEARCH ATTEMPT\n"
-                        f"----------------------------------------\n"
-                        f"Seller: {seller_name}\n"
-                        f"Field: {field_display_name}\n"
-                        f"Provider: Brave\n"
-                        f"Attempt: {attempt_idx}/{len(brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD])}\n"
-                        f"Query: {target_query}\n"
-                        f"HTTP Status: {status_code or 200}\n"
-                        f"Results: {len(raw_results)}"
-                    )
-
                     for idx, r_item in enumerate(raw_results, start=1):
-                        eval_res = evaluate_result_candidate(seller_name, field_attr, r_item, gst_number=merged.get("gst_number"))
-
-                        log_candidate_evaluation(
-                            seller=seller_name,
-                            field=field_display_name,
-                            search="Brave",
-                            query=target_query,
-                            results_count=len(raw_results),
-                            candidate=eval_res["raw_candidate"],
-                            match_score=eval_res["seller_match_score"],
-                            source=eval_res["url"] or "snippet",
-                            valid="VALID" if eval_res["valid_candidate_val"] else "INVALID",
-                            result="ACCEPTED" if eval_res["decision"] == "ACCEPT" else "REJECTED",
-                            reason=eval_res["reject_reason"],
+                        eval_res = evaluate_result_candidate(
+                            seller_name, field_attr, r_item,
+                            gst_number=merged.get("gst_number"), city=city, state=state, location=location
+                        )
+                        logger.info(
+                            f"[SEARCH RESULT]\nengine=Brave\nindex={idx}\ntitle={eval_res['title']}\nurl={eval_res['url']}\nsnippet={eval_res['snippet']}"
+                        )
+                        logger.info(
+                            f"[SEARCH CANDIDATE]\nfield={field_display_name}\nvalue={eval_res['raw_candidate'] or 'NONE'}\nsource={eval_res['url'] or 'snippet'}\nmatch_score={eval_res['seller_match_score']}\nconfidence={eval_res['total_confidence']}"
                         )
 
-                        if eval_res["decision"] == "ACCEPT" and not accepted_candidate:
-                            accepted_candidate = eval_res["valid_candidate_val"]
-                            accepted_src = eval_res["url"]
+                        if eval_res["decision"] == "ACCEPT":
+                            logger.info(
+                                f"[SEARCH ACCEPTED]\nfield={field_display_name}\nvalue={eval_res['valid_candidate_val']}\nconfidence=HIGH ({eval_res['total_confidence']})"
+                            )
+                            if not accepted_candidate:
+                                accepted_candidate = eval_res["valid_candidate_val"]
+                                accepted_src = eval_res["url"]
+                        else:
+                            logger.info(
+                                f"[SEARCH REJECTED]\nfield={field_display_name}\nvalue={eval_res['raw_candidate'] or 'NONE'}\nreason={eval_res['reject_reason']}"
+                            )
 
                     if accepted_candidate:
                         _set_field(field_attr, accepted_candidate, "targeted_search", src_url=accepted_src)
@@ -2551,8 +2408,7 @@ class WebResearchEngine:
                                 pan_val = v_g[2:12]
                                 v_p = validate_pan(pan_val, gst_str=v_g)
                                 if v_p:
-                                    _set_field("pan_number", pan_val, "targeted_search", src_url="Derived from GSTIN")
-                                    logger.info(f"PAN: Derived from verified GSTIN ({pan_val})")
+                                    _set_field("pan_number", v_p, "targeted_search", src_url="Derived from GSTIN")
                         if field_attr == "raw_address":
                             parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
                             if parsed_addr.get("city") and not merged.get("city"):
@@ -2562,141 +2418,19 @@ class WebResearchEngine:
                             if parsed_addr.get("pincode") and not merged.get("pincode"):
                                 _set_field("pincode", parsed_addr["pincode"], "targeted_search", src_url=accepted_src)
                         field_resolved = True
-                        logger.info(
-                            f"Decision: SAVE\n"
-                            f"Accepted Value: {accepted_candidate}\n"
-                            f"----------------------------------------"
-                        )
                         break
-                    else:
-                        logger.info(
-                            f"Decision: NEXT QUERY\n"
-                            f"----------------------------------------"
-                        )
 
                     await asyncio.sleep(0.15)
 
-            timed_out = (time.monotonic() - field_start_time) >= FIELD_TIMEOUT_SECONDS
-            attempts_summary = f"Bing {bing_attempts}" if not brave_attempts else f"Bing {bing_attempts} + Brave {brave_attempts}"
-            if field_resolved and merged.get(field_attr):
-                logger.info(
-                    f"\nFIELD COMPLETE\n"
-                    f"Seller: {seller_name}\n"
-                    f"Field: {field_display_name}\n"
-                    f"Result: FOUND ({merged[field_attr]})\n"
-                    f"Attempts: {attempts_summary}"
-                )
-                field_log_entries.append({
-                    "field": field_display_name,
-                    "query": last_query_used or attempts_summary,
-                    "results": total_res_count,
-                    "verified": "YES",
-                    "value": merged[field_attr],
-                    "source": field_source_urls.get(field_attr, "targeted_search"),
-                })
-            elif is_rate_limited:
-                logger.warning(
-                    f"\nFIELD COMPLETE\n"
-                    f"Seller: {seller_name}\n"
-                    f"Field: {field_display_name}\n"
-                    f"Result: RATE_LIMITED\n"
-                    f"Attempts: {attempts_summary}"
-                )
-                field_log_entries.append({
-                    "field": field_display_name,
-                    "query": last_query_used or attempts_summary,
-                    "results": total_res_count,
-                    "verified": "NO",
-                    "value": "RATE_LIMITED",
-                    "source": "None",
-                })
-            else:
-                res_label = "NOT FOUND (Timeout 30s exceeded)" if timed_out else "NOT FOUND"
-                logger.info(
-                    f"\nFIELD COMPLETE\n"
-                    f"Seller: {seller_name}\n"
-                    f"Field: {field_display_name}\n"
-                    f"Result: {res_label}\n"
-                    f"Attempts: {attempts_summary}"
-                )
-                field_log_entries.append({
-                    "field": field_display_name,
-                    "query": last_query_used or attempts_summary,
-                    "results": total_res_count,
-                    "verified": "NO",
-                    "value": "NOT FOUND",
-                    "source": "None",
-                })
-
-
-        # Step 4: Stage 2 - Legal Entity Discovery & Enrichment
-        # If GSTIN search revealed an explicit legal trade/company name distinct from the seller slug
-        legal_name = None
-        if merged.get("gst_number"):
-            for res_item in initial_search_results:
-                m_title = res_item.get("title", "")
-                m_legal = re.search(r"(?i)(?:details of|gst(?:in)?\s+for|registered as)\s+([A-Z0-9\s]{3,35})(?:\s+is|\s+-|\s+\()", m_title)
-                if m_legal:
-                    cand_l = m_legal.group(1).strip()
-                    if len(cand_l) >= 4 and cand_l.lower() != seller_name.lower():
-                        legal_name = cand_l
-                        break
-
-        if legal_name:
-            logger.info(f"Discovered Legal Business Entity: '{legal_name}'. Running Stage 2 Legal Entity Enrichment...")
-            for field_attr, field_display_name, query_key in fields_to_search:
-                if merged.get(field_attr):
-                    continue
-                legal_bing_queries = generate_bing_queries_for_field(legal_name, query_key)
-                legal_start_time = time.monotonic()
-                for l_query in legal_bing_queries[:MAX_BING_QUERIES_PER_FIELD]:
-                    if (time.monotonic() - legal_start_time) >= FIELD_TIMEOUT_SECONDS:
-                        break
-                    l_raw, _ = await self._query_bing(l_query)
-                    if not l_raw:
-                        continue
-                    l_rel, _ = self._filter_search_results(legal_name, l_raw, min_score=20)
-                    if not l_rel:
-                        continue
-                    if field_attr == "gst_number":
-                        r = extract_gst(l_rel, legal_name)
-                        if r:
-                            _set_field("gst_number", r[0], "filing_registry", src_url=r[1])
-                    elif field_attr == "raw_address":
-                        r = extract_address(l_rel, legal_name, gst_number=merged.get("gst_number"))
-                        if r:
-                            _set_field("raw_address", r[0].get("billing_address"), "filing_registry", src_url=r[1])
-                    elif field_attr == "owner_name":
-                        r = extract_owner(l_rel, legal_name)
-                        if r:
-                            _set_field("owner_name", r[0], "filing_registry", src_url=r[1])
-                    elif field_attr == "contact_number":
-                        r = extract_phone(l_rel, legal_name)
-                        if r:
-                            _set_field("contact_number", r[0], "filing_registry", src_url=r[1])
-                    elif field_attr == "email":
-                        r = extract_email(l_rel, legal_name)
-                        if r:
-                            _set_field("email", r[0], "filing_registry", src_url=r[1])
-                    elif field_attr == "fssai_number":
-                        r = extract_fssai(l_rel, legal_name)
-                        if r:
-                            _set_field("fssai_number", r[0], "filing_registry", src_url=r[1])
-                    if merged.get(field_attr):
-                        break
-
-        # Step 5: Strict Cross-Checking & Harmonization
-
+        # Step 4: Strict Cross-Checking & Harmonization
         merged = cross_check_seller_data(merged)
 
-        # Step 5: Address Normalization
+        # Step 5: Complete Address Normalization
         address_dict = parse_raw_address(merged.get("raw_address"), gst_number=merged.get("gst_number"))
-
-        city = address_dict.get("city") or merged.get("city")
-        state = address_dict.get("state") or merged.get("state")
-        pincode = address_dict.get("pincode") or merged.get("pincode")
-        billing_address = address_dict.get("billing_address")
-        shipping_address = address_dict.get("shipping_address")
+        final_city = address_dict.get("city") or merged.get("city") or city
+        final_state = address_dict.get("state") or merged.get("state") or state
+        final_pincode = address_dict.get("pincode") or merged.get("pincode") or pincode
+        billing_address = address_dict.get("billing_address") or merged.get("raw_address")
         country = address_dict.get("country") or "India"
 
         # Step 6: Business Model & Category resolution
@@ -2715,7 +2449,6 @@ class WebResearchEngine:
         # Step 7: Build Confidence Matrix
         gst_validated = bool(merged.get("gst_number"))
         confidence_dict: Dict[str, Any] = {}
-
         fields_to_score = [
             ("gst_number", merged.get("gst_number"), field_sources.get("gst_number", "search_snippet")),
             ("pan_number", merged.get("pan_number"), field_sources.get("pan_number", "search_snippet")),
@@ -2741,14 +2474,35 @@ class WebResearchEngine:
             "email": merged.get("email"),
             "contact_number": merged.get("contact_number"),
             "website_url": merged.get("website_url"),
-            "city": city,
-            "state": state,
+            "city": final_city,
+            "state": final_state,
             "billing_address": billing_address,
         }
         status = determine_seller_status(partial_record, confidence_dict)
 
-        # Assemble final record matching required Excel schema
+        # Assemble final record with internal keys AND the 18 EXACT required Excel columns
         final_record: Dict[str, Any] = {
+            # 18 Exact Excel Headers
+            "Business Name": seller_name,
+            "Business Model": business_model,
+            "Business Category": business_category,
+            "Owner Name": merged.get("owner_name"),
+            "Phone Number": merged.get("contact_number"),
+            "Email Address": merged.get("email"),
+            "GST Number": merged.get("gst_number"),
+            "PAN Number": merged.get("pan_number"),
+            "FSSAI Number": merged.get("fssai_number"),
+            "Billing Address": billing_address,
+            "x": seller_record.get("x") or seller_record.get("x_coord") or "",
+            "City": final_city,
+            "State": final_state,
+            "Pincode": final_pincode,
+            "Country": country,
+            "Website URL": merged.get("website_url"),
+            "Status": status,
+            "Source rating": star_rating or seller_record.get("Source rating"),
+
+            # Standard internal keys for backward compatibility
             "seller_name": seller_name,
             "marketplace": marketplace,
             "fulfillment_by": fulfillment_by,
@@ -2771,10 +2525,10 @@ class WebResearchEngine:
             "pan_number": merged.get("pan_number"),
             "fssai_number": merged.get("fssai_number"),
             "billing_address": billing_address,
-            "shipping_address": shipping_address,
-            "city": city,
-            "state": state,
-            "pincode": pincode,
+            "shipping_address": billing_address,
+            "city": final_city,
+            "state": final_state,
+            "pincode": final_pincode,
             "country": country,
             "website_url": merged.get("website_url"),
             "status": status,
@@ -2782,25 +2536,6 @@ class WebResearchEngine:
             "confidence": confidence_dict,
             "seller_confidence": seller_confidence,
         }
-
-        # Print structured BING ENRICHMENT log matching Requirement 11
-        log_lines = [
-            "\n----------------------------------------",
-            "BING ENRICHMENT",
-            "----------------------------------------",
-            f"Seller: {seller_name}\n",
-        ]
-        for entry in field_log_entries:
-            log_lines.append(f"Field: {entry['field']}")
-            log_lines.append(f"Query: {entry['query']}")
-            log_lines.append(f"Results: {entry['results']}")
-            log_lines.append(f"Verified: {entry['verified']}")
-            log_lines.append(f"Value: {entry['value']}")
-            if entry["verified"] == "YES":
-                log_lines.append(f"Source: {entry['source']}")
-            log_lines.append("")
-        log_lines.append("----------------------------------------")
-        logger.info("\n".join(log_lines))
 
         # Cache in memory
         self.seller_enrichment_cache[cache_key] = final_record

@@ -67,13 +67,25 @@ def extract_city_from_text(text: str, identified_state: Optional[str] = None) ->
         if re.search(pattern, text_lower):
             return city.title()
 
-    # Regex heuristic for comma-separated tokens before state/pincode
+    # Heuristic: Check comma-separated token immediately before identified state (e.g. "Street, Thoothukudi, Tamil Nadu 628002")
+    if identified_state:
+        state_pattern = r",\s*([A-Za-z\s]+)\s*,\s*" + re.escape(identified_state)
+        match_before_state = re.search(state_pattern, text, re.IGNORECASE)
+        if match_before_state:
+            cand = match_before_state.group(1).strip()
+            if len(cand) > 2 and len(cand.split()) <= 2 and cand.lower() != identified_state.lower():
+                return cand.title()
+
+    # Regex heuristic for comma-separated tokens before pincode
     # e.g., "Road, Sector 5, Salt Lake, Kolkata - 700091"
     match = re.search(r",\s*([A-Za-z\s]+)\s*[-,\s]+\b[1-9][0-9]{5}\b", text)
     if match:
         candidate = match.group(1).strip()
         if len(candidate) > 2 and len(candidate.split()) <= 2:
-            return candidate.title()
+            if identified_state and candidate.lower() == identified_state.lower():
+                pass
+            else:
+                return candidate.title()
 
     return None
 

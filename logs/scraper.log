@@ -52688,3 +52688,8347 @@ Status: NOT_FOUND
 2026-08-29 11:08:57 [INFO] [FlipkartScraper.Pipeline] SUCCESS: Pipeline completed. Excel file updated at E:\sell\Flipkart\output\flipkart_sellers.xlsx
 2026-08-29 11:08:57 [DEBUG] [FlipkartScraper.SellerExtractor] Saved 458 sellers to E:\sell\Flipkart\data\sellers.json
 2026-08-29 11:08:57 [INFO] [FlipkartScraper.Pipeline] Pipeline execution finished.
+2026-09-03 11:02:52 [INFO] [FlipkartScraper.SellerExtractor] Loaded 134 unique sellers from E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\data\sellers.json
+2026-09-03 11:02:53 [INFO] [FlipkartScraper.Exporter] Loaded live Excel from E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\output\flipkart_sellers.xlsx (1116 existing seller rows indexed).
+2026-09-03 11:02:53 [INFO] [FlipkartScraper.Pipeline] ==================================================
+2026-09-03 11:02:53 [INFO] [FlipkartScraper.Pipeline]        FLIPKART SELLER SCRAPER PIPELINE           
+2026-09-03 11:02:53 [INFO] [FlipkartScraper.Pipeline] ==================================================
+2026-09-03 11:02:53 [INFO] [FlipkartScraper.Pipeline] 
+--- STEP 1: Reading Existing Flipkart Input (E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\input.xlsx) ---
+2026-09-03 11:02:53 [INFO] [FlipkartScraper.ExcelReader] Loading input data from E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\input.xlsx
+2026-09-03 11:02:54 [INFO] [FlipkartScraper.ExcelReader] Successfully loaded 7286 tasks from E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\input.xlsx (skipped 0 previously completed queries).
+2026-09-03 11:02:54 [INFO] [FlipkartScraper.ExcelReader] Loading input data from E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\input.xlsx
+2026-09-03 11:02:54 [INFO] [FlipkartScraper.ExcelReader] Successfully loaded 6985 tasks from E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\input.xlsx (skipped 136 previously completed queries).
+2026-09-03 11:02:54 [INFO] [FlipkartScraper.Pipeline] 
+========================================
+FLIPKART RUN LIMIT
+========================================
+Configured maximum rows per run: 2000
+Total input rows: 7286
+Already completed: 301
+Pending before limit: 6985
+Selected for this run: 2000
+Remaining after selection: 4985
+========================================
+2026-09-03 11:02:54 [INFO] [FlipkartScraper.Pipeline] Processing rows 1–2000 of pending queue
+2026-09-03 11:02:54 [INFO] [FlipkartScraper.Pipeline] 
+--- STEP 2-9: Real-Time Collection & Live Enrichment ---
+2026-09-03 11:02:56 [INFO] [FlipkartScraper.Search] Playwright browser instance initialized successfully.
+2026-09-03 11:02:56 [INFO] [FlipkartScraper.Pipeline] 
+[Row 145] Searching Query: Arm Warmers
+2026-09-03 11:02:56 [INFO] [FlipkartScraper.Search] Searching Flipkart (Page 1): https://www.flipkart.com/search?q=Arm+Warmers&page=1
+2026-09-03 11:03:01 [INFO] [FlipkartScraper.Search] Page 1: Found 20 new product URLs. Total unique collected: 20/20
+2026-09-03 11:03:02 [INFO] [FlipkartScraper.Search] ----------------------------------------
+2026-09-03 11:03:02 [INFO] [FlipkartScraper.Search] PRODUCT FETCH
+2026-09-03 11:03:02 [INFO] [FlipkartScraper.Search] ----------------------------------------
+2026-09-03 11:03:02 [INFO] [FlipkartScraper.Search] Product: https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD
+2026-09-03 11:03:02 [INFO] [FlipkartScraper.Search] Attempt: 1/2
+2026-09-03 11:03:02 [INFO] [FlipkartScraper.Search] Navigation timeout: 10000ms
+2026-09-03 11:03:02 [INFO] [FlipkartScraper.Search] Navigation: SUCCESS
+2026-09-03 11:03:12 [DEBUG] [FlipkartScraper.Search] Selector wait timed out or selector not yet in DOM, checking available content...
+2026-09-03 11:03:12 [INFO] [FlipkartScraper.ProductParser] SELLER EXTRACTION
+URL: https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD
+Flipkart Response: PRODUCT_PAGE
+HTTP Status: 200
+Page Length: 1254479
+JSON-LD Found: YES
+NEXT_DATA Found: YES
+Seller JSON Found: NO
+Seller HTML Found: NO
+Extracted Seller: NEWEVASTORE
+Fulfilled By Seller: NEWEVASTORE
+Rating: N/A
+2026-09-03 11:03:12 [INFO] [FlipkartScraper.Search] PRODUCT PAGE LOADED
+Product: https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD
+Seller data: FOUND
+2026-09-03 11:03:13 [DEBUG] [FlipkartScraper.SellerExtractor] Saved 135 sellers to E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\data\sellers.json
+2026-09-03 11:03:13 [INFO] [FlipkartScraper.Pipeline] Initial record saved to Excel | Seller: NEWEVASTORE | Row: 1061 | Status: ENRICHMENT_PENDING
+2026-09-03 11:03:13 [INFO] [FlipkartScraper.Pipeline] Starting enrichment for: 'NEWEVASTORE'...
+2026-09-03 11:03:13 [INFO] [FlipkartScraper.WebResearch] Starting field-driven Bing enrichment for: 'NEWEVASTORE'
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #1
+  Title: Google Translate
+  URL: https://translate.google.com/;anything
+  Snippet: Google's service, offered free of charge, instantly translates words, phrases, and web pages between English and over 100 other …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #2
+  Title: Google Översätt - Google Translate
+  URL: https://www.bing.com/ck/a?!&&p=791260fe860cf281cfc8df90f9f659a44bb3d20d5d8d4ca69500ec9fc5be1180JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly90cmFuc2xhdGUuZ29vZ2xlLmNvbS8_aGw9c3Y&ntb=1
+  Snippet: Med Googles kostnadsfria tjänst kan du översätta ord, fraser och webbsidor från engelska till fler än 100 andra språk direkt.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #3
+  Title: Google Translate
+  URL: https://translate.google.com/m
+  Snippet: Google home Send feedback Privacy and terms Switch to full site
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #4
+  Title: Google Translate - Een persoonlijke tolk op je telefoon of computer
+  URL: https://translate.google.com/intl/nl/about/
+  Snippet: Je wereld begrijpen en communiceren in verschillende talen met Google Translate. Vertaal tekst, spraak, afbeeldingen, documenten, …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #5
+  Title: Google 翻訳 - スマートフォンやパソコンで使える高性能翻訳アプリ
+  URL: https://translate.google.com/intl/ja/about/
+  Snippet: Google 翻訳で世界を理解し、さまざまな言語の人々とコミュニケーションを取りましょう。テキスト、音声、画像、ドキュメント …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #6
+  Title: Google Traductor: Un intérprete personal en tu teléfono o computadora
+  URL: https://translate.google.com/intl/es-419/about/
+  Snippet: Descubre cómo traducir texto, conversaciones, imágenes, documentos, sitios web y mucho más con Google Traductor.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #7
+  Title: 手机或计算机上的个人随身口译工具 - Google Translate
+  URL: https://translate.google.com/intl/zh-CN/about/
+  Snippet: 了解如何利用谷歌翻译服务翻译文本、语音内容、图片、文档、网站和其他内容。
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #8
+  Title: Google Çeviri: Telefon veya Bilgisayarınızdaki Özel Çevirmeniniz
+  URL: https://translate.google.com/intl/tr/about/
+  Snippet: Google Çeviri ile metin, konuşma, resim, doküman, web sitesi ve diğer içerikleri nasıl çevireceğinizi öğrenin.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #9
+  Title: „Google“ vertėjas – asmeninis vertėjas telefone arba kompiuteryje
+  URL: https://translate.google.com/intl/lt/about/
+  Snippet: Sužinokite, kaip išversti tekstus, kalbą, vaizdus, dokumentus, svetaines ir kitokį turinį naudojantis „Google“ vertėjo paslauga.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #10
+  Title: Google преводилац – лични преводилац на вашем телефону или …
+  URL: https://translate.google.com/intl/sr/about/
+  Snippet: Испробајте Google преводилац Почните да користите Google преводилац у прегледачу. Или скенирајте QR кôд у наставку да …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Official Website
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" official website
+HTTP Status: 200
+Results: 10
+Candidate: NONE
+Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #1
+  Title: Sythe - Sell & Trade Game Items | OSRS Gold | ELO
+  URL: https://www.sythe.org/
+  Snippet: 21 Apr, 2026· Sythe.org is a gaming community where you can buy or sell your in-game items and keys, and sometimes get free …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #2
+  Title: Free PAYPAL Account with Money on it - Sythe
+  URL: https://www.sythe.org/threads/free-paypal-account-with-money-on-it/
+  Snippet: 2 Apr, 2010· Free PAYPAL Account with Money on it !, Its got money on it, I dont use it so im giving it away. Post who got it, dont …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #3
+  Title: Merchant login and password for logging in Manager.paypal.com
+  URL: https://www.paypal-community.com/t5/Merchant-services-Archive/Merchant-login-and-password-for-logging-in-Manager-paypal-com/td-p/64921
+  Snippet: How to retrieve Merchant login and password for logging in Manager.paypal.com through existing merchant paypal account? I am …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #4
+  Title: New Login to PayPal email
+  URL: https://www.paypal-community.com/t5/Managing-Account-Archives/New-Login-to-PayPal-email/td-p/2828184
+  Snippet: Shortly after I login into my PayPal account I get an email from PayPal saying New Login to PayPal We noticed a new login with your …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #5
+  Title: about login in into my account - PayPal Community
+  URL: https://www.paypal-community.com/t5/My-Account-Archives/about-login-in-into-my-account/td-p/2697213
+  Snippet: My account has been frozen all day and it keeps telling me to reset password after I changed it 3 times. I have been on hold for 2 hrs …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #6
+  Title: login PP account is possible while traveling - PayPal Community
+  URL: https://www.paypal-community.com/t5/Getting-started/login-PP-account-is-possible-while-traveling/td-p/1243978
+  Snippet: Is it possible to login from another country for traveling purpose. Lets say, I opened my account at Thailand. After few days, I will visit …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #7
+  Title: New Login Issue (Previously described but unresolv ... - PayPal …
+  URL: https://www.paypal-community.com/t5/My-Account-Archives/New-Login-Issue-Previously-described-but-unresolved/td-p/2170723
+  Snippet: We noticed a new login with your PayPal account associated with from a device we don't recognize.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #8
+  Title: Incorrect Phone Number login - PayPal Community
+  URL: https://www.paypal-community.com/t5/My-Account/Incorrect-Phone-Number-login/td-p/2794939
+  Snippet: Incorrect Phone Number shows when just trying to log into account to check Balance. If you want to send a verification code, perhaps …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #9
+  Title: delete a username from login window - PayPal Community
+  URL: https://www.paypal-community.com/t5/My-Account-Archives/delete-a-username-from-login-window/td-p/1514875
+  Snippet: A friend used my laptop to make a paypal payment with her account. Now each time I want to log in I see her username. How can I …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch]   Result #10
+  Title: Account locked due to login with different IP - PayPal Community
+  URL: https://www.paypal-community.com/t5/About-Protections-Archive/Account-locked-due-to-login-with-different-IP/td-p/1091287
+  Snippet: Hello Paypal! This is Saroj Sai (Blanc Casa). Today, I logged into my PayPal with different IP and my account got locked due to …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:14 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Official Website
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" brand website
+HTTP Status: 200
+Results: 10
+Candidate: NONE
+Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #1
+  Title: UP Pension Scheme
+  URL: https://sspy-up.gov.in/HindiPages/index_h.aspx
+  Snippet: UP Pension Scheme- OldAge Pension, Widow Pension and Divyang Pension Scheme
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #2
+  Title: Widow Pension Scheme
+  URL: https://sspy-up.gov.in/HindiPages/widow_h.aspx
+  Snippet: UP Pension Scheme- OldAge Pension, Widow Pension and Divyang Pension Scheme
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #3
+  Title: OldAge Pension Scheme
+  URL: https://sspy-up.gov.in/HindiPages/oldage_h.aspx
+  Snippet: UP Pension Scheme- OldAge Pension, Widow Pension and Divyang Pension Scheme
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #4
+  Title: एकीकृत सामाजिक पेंशन
+  URL: https://www.sspy-up.gov.in/HindiFAQ.html
+  Snippet: Since Pension Yojana is meant for unorganized industry workers like gardeners, drivers, maids, etc, so, users under these …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #5
+  Title: UP Pension Scheme
+  URL: https://www.sspy-up.gov.in/EnglishPages/index_en.aspx
+  Snippet: 16 Mar, 2022· Old Age Pension National Old Age Pension Scheme has been operationalized since the year 1994 with the objective …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #6
+  Title: एकीकृत सामाजिक पेंशन
+  URL: https://www.sspy-up.gov.in/FAQ_OAP.aspx
+  Snippet: Answer: नहीं। किसी भी पेंशन का लाभ उठाने के लिए केवल एक आवेदन भरना है। यदि आवेदक द्वारा अधिक आवेदन भरा जाता है तो आवेदक से …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #7
+  Title: समाज कल्याण विभाग, उत्तर प्रदेश
+  URL: https://www.bing.com/ck/a?!&&p=69db05d376eab1afcadcfd03e72c7f31138a7fc45c17dc30857eeecfaeed5e5cJmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly93d3cuc3NweS11cC5nb3YuaW4vcmVwb3J0bmV3L0RXUmVwb3J0LmFzcHg_cz1PbGRBZ2VQZW5zaW9uXzI0MjU&ntb=1
+  Snippet: कुल लाभार्थी जिनकी पेंशन जारी की गई है वित्तीय वर्ष 2024-25
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: DISALLOWED_SOURCE_TYPE
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #8
+  Title: OldAge Pension - लॉगिन पैनल
+  URL: https://www.sspy-up.gov.in/oap/Default.aspx
+  Snippet: 10 Jul, 2020· अस्वीकरण: इस वेब साइट पर डेटा की सटीकता सुनिश्चित करने के लिए हर संभव प्रयास किया गया है. हालाँकि, इन्हें संबंधित …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #9
+  Title: Integrated Pension Portal | OTP Login
+  URL: https://sspy-up.gov.in/oap/public_new/UserLogin.aspx
+  Snippet: Integrated Pension Yojna,Govt. Of Uttar Pradesh Registered Applicant OTP Based Login
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch]   Result #10
+  Title: Integrated Pension Yojna,Govt. Of Uttar Pradesh
+  URL: https://www.sspy-up.gov.in/oap/public_new/UserUpdateMobileNo.aspx
+  Snippet: Updation of Mobile Number In Existing Old Applications नोट :- यदि कोई लाभार्थी के पास उसका पंजीकरण संख्या एवं बैंक अकाउंट नंबर …
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Official Website
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" online store
+HTTP Status: 200
+Results: 10
+Candidate: NONE
+Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:15 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: Official Website
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:16 [INFO] [FlipkartScraper.WebResearch]   Result #1
+  Title: Rei Ayanami
+  URL: https://evangelion.fandom.com/wiki/Rei_Ayanami
+  Snippet: 
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:16 [INFO] [FlipkartScraper.WebResearch]   Result #2
+  Title: Shinji Ikari
+  URL: https://evangelion.fandom.com/wiki/Shinji_Ikari
+  Snippet: 
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:16 [INFO] [FlipkartScraper.WebResearch]   Result #3
+  Title: Kaworu Nagisa
+  URL: https://evangelion.fandom.com/wiki/Kaworu_Nagisa
+  Snippet: 
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:16 [INFO] [FlipkartScraper.WebResearch]   Result #4
+  Title: Misato Katsuragi
+  URL: https://evangelion.fandom.com/wiki/Misato_Katsuragi
+  Snippet: 
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:16 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Official Website
+Provider: Brave
+Attempt: 1/2
+Query: "NEWEVASTORE" official store website
+HTTP Status: 200
+Results: 4
+Candidate: NONE
+Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch]   Result #1
+  Title: EV Hub - India's Leading Multi-Brand Electric Vehicle Showroom – EV HUB: Your Ultimate Destination for Multi-Branded E-Bikes
+  URL: https://evhub.co.in/
+  Snippet: Discover EV Hub, India's top multi-brand electric vehicle showroom. Explore a wide range of eco-friendly electric scooters, bikes, and loaders. Enjoy exceptional after-sales service, doorstep delivery, and attractive financing options.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch]   Result #2
+  Title: EVICE - The Hybrid Store | Best Hybrid Two-Wheeler Dealership in India
+  URL: https://evice.co.in/
+  Snippet: We aspire to become the most credible and reliable company selling multi-brand vehicles. Read more · At Evice – The Hybrid Store, we bring together petrol and electric vehicles in one place with trusted brands, unbeatable offers, and affordable services. With 20+ franchises across India, we’re growing fast by delivering consistent sales, service, and customer satisfaction.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch]   Result #3
+  Title: Electric Vehicle Marketplace in India | EVINDIA
+  URL: https://evindia.online/
+  Snippet: June 17, 2026 - Greaves Electric Mobility's Ampere has filed a design patent in India for the Xyber, its first electric motorcycle, locking in the futuristic streetfighter silhouette first seen at the Bharat Mobility Global Expo 2025.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch]   Result #4
+  Title: Home - NV Super Mart - India's Largest Retail Grocery Franchise
+  URL: https://nvsupermart.in/
+  Snippet: After launch, we continue to support ... in India. Everything you need to know before starting your NV Shoppe franchise journey · NV Shoppe ek grocery supermarket franchise model hai jahan aap apna khud ka retail store start kar sakte hain with full company suppo...
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch]   Result #5
+  Title: NEVENUE INDIA
+  URL: https://www.nevenue.in/
+  Snippet: Nevenue India does not request any additional payment and never asks for extra charges to deliver your order.
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch]   Result #6
+  Title: Montra Electric | India's Leading Electric Commercial Vehicle Company
+  URL: https://www.montraelectric.com/
+  Snippet: Leading manufacturer of electric commercial vehicles in India. Explore electric trucks, tractors, auto rickshaws & mini trucks. Test drive our EV commercial vehicles today. Published: January 17, 2025
+  Seller Match: 0 (NEWEVASTORE)
+  Field Match: NO
+  Candidate: NONE
+  Score: 0
+  Decision: REJECT
+  Reject Reason: SELLER_MISMATCH
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Official Website
+Provider: Brave
+Attempt: 2/2
+Query: "NEWEVASTORE" company website India
+HTTP Status: 200
+Results: 6
+Candidate: NONE
+Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: Official Website
+Result: NOT FOUND
+Attempts: Bing 3 + Brave 2
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] GST: SEARCHING...
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: GST
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" GST
+HTTP Status: 200
+Results: 7
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GST
+Results: 7
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.justice.gov/eoir/find-immigration-court-and-access-internet-based-hearings
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GST
+Results: 7
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.fifthcircuit.org/searchcases.aspx
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GST
+Results: 7
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.scotusblog.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GST
+Results: 7
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://caselaw.findlaw.com/court/la-court-of-appeal/recent
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GST
+Results: 7
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://dockets.justia.com/browse/state-louisiana/noscat-6
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GST
+Results: 7
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=33f6cc783f9c761188880761ffc2e9b924597acc25d99afa22ee630532311eefJmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9ndWlkZXMubGwuZ2VvcmdldG93bi5lZHUvYy5waHA_Zz0yNzU4MjgmcD0xODM4OTkw&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GST
+Results: 7
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.justsecurity.org/107087/tracker-litigation-legal-challenges-trump-administration/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: GST
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" GSTIN
+HTTP Status: 200
+Results: 6
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GSTIN
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://shodoshima-shokuhin.co.jp/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GSTIN
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://shodoshima-shokuhin.co.jp/company.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GSTIN
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://shodoshima-shokuhin.co.jp/product.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GSTIN
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://shodoshima-shokuhin.co.jp/factory.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GSTIN
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://shodoshima-shokuhin.co.jp/shimanoaji.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" GSTIN
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.shodoshima-shokuhin.co.jp/album.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:22 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: GST
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" "GST number"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://en.wikipedia.org/wiki/Roman_Empire
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://en.wikipedia.org/wiki/History_of_the_Roman_Empire
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://simple.wikipedia.org/wiki/Roman_Empire
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.britannica.com/place/Roman-Republic
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://fr.wikipedia.org/wiki/Empire_romain
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.britannica.com/topic/Roman-religion
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=c23758e6585c49438eb4a6edfb0503bc64e99fb6c598be88d5e861ef2ce22181JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g_dj16M3V2bndCTVRkWQ&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.mpm.edu/research-collections/anthropology/anthropology-collections-research/mediterranean-oil-lamps/roman-empire-brief-history
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.vox.com/world/2018/6/19/17469176/roman-empire-maps-history-explained
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+GST
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "GST number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.worldhistory.org/timeline/empire/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: GST
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:23 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (HTTP 429)
+========================================
+Query: "NEWEVASTORE" GST number India
+Retry-After: 30.0s
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:23 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" GST number India'. Skipping Brave queries.
+2026-09-03 11:03:23 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: GST
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:23 [INFO] [FlipkartScraper.WebResearch] Address: SEARCHING...
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Address
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" address
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://techcommunity.microsoft.com/category/microsoftteams/blog/microsoftteamsblog
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://techcommunity.microsoft.com/discussions/microsoftteams/how-to-completely-delete--unistall-teams/3952438
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://jingyan.baidu.com/article/a948d6514735af4b2ccd2e50.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://jingyan.baidu.com/article/e52e3615b3fabe01c60c51dd.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://techcommunity.microsoft.com/blog/microsoftteamsblog/what%E2%80%99s-new-in-microsoft-teams--july-2026/4542510
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://jingyan.baidu.com/article/f96699bb9e28fdc84e3c1ba0.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://techcommunity.microsoft.com/discussions/microsoftteams/teams-stuck-in-loading-latest-updates--error/4118133
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://jingyan.baidu.com/article/e6c8503cc03108a54f1a18f5.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://techcommunity.microsoft.com/discussions/microsoftteams/get-previous-version-of-microsoft-teams-client-desktop-app-and-its-release-notes/2814091
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" address
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://jingyan.baidu.com/article/00a07f380c970f82d028dc8b.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Address
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" "registered address"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=df7aa0ab0cb3baba3be441f472c21cb6f416e63fc4d338e8d95b519739ba78fbJmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9zdXBwb3J0Lmdvb2dsZS5jb20veW91dHViZS8_aGw9ZW4&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtubetv/?hl=en
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/1903231775980913051
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/7682560?hl=en
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/9158808?hl=en&co=GENIE.Platform%3DDesktop
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/2802168?hl=en
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/2802002?hl=en
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=3b27bb983b7ff9a9eb621c8e7f574918ef312f18fa542cecc293dff7870fc5e2JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9zdXBwb3J0Lmdvb2dsZS5jb20veW91dHViZS9hbnN3ZXIvNjk5NjE_aGw9ZW4&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=c71e572ab863a6ab01d1c6c2bb7122db3fffae2862a8c8f4091553a2e6660f2aJmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9zdXBwb3J0Lmdvb2dsZS5jb20veW91dHViZS9hbnN3ZXIvNzI4NTE_aGw9ZW4mY289R0VOSUUuUGxhdGZvcm0lM0RBbmRyb2lk&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=f40079e21556675c60d9acf3622ca8075f90407c16a03c3e87bc50a84dba7b4cJmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9zdXBwb3J0Lmdvb2dsZS5jb20veW91dHViZS9hbnN3ZXIvMTY0NzUxOTI_aGw9ZW4&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:24 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Address
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" "registered office"
+HTTP Status: 200
+Results: 6
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered office"
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.ten-navi.com/%E7%B4%B0%E8%83%9E%E5%9F%B9%E9%A4%8A%EF%BC%8F%E3%83%86%E3%82%AF%E3%83%8B%E3%82%B7%E3%83%A3%E3%83%B3/443126.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered office"
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.ten-navi.com/%E5%93%81%E8%B3%AA%E7%AE%A1%E7%90%86/440691.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered office"
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.ten-navi.com/%E5%93%81%E8%B3%AA%E7%AE%A1%E7%90%86/280044.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered office"
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.ten-navi.com/%E5%AD%A6%E8%A1%93%EF%BC%8FDI%EF%BC%8F%E7%A0%94%E4%BF%AE/434593.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered office"
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.ten-navi.com/%E5%93%81%E8%B3%AA%E7%AE%A1%E7%90%86/350594.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Address
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "registered office"
+Results: 6
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.ten-navi.com/%E5%89%B5%E8%96%AC%E7%A0%94%E7%A9%B6/383321.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: Address
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:25 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (ACTIVE BACKOFF)
+========================================
+Query: "NEWEVASTORE" company address India
+Retry-After: 28s remaining
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:25 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" company address India'. Skipping Brave queries.
+2026-09-03 11:03:25 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: Address
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] Pincode: SEARCHING...
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Pincode
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" pincode
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://minnaga.com/takumimaru/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://marushot.co.jp/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://marusyou-yonabaru.owst.jp/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://gjfc900.gorp.jp/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+http://marushou-01.com/information
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://tabelog.com/osaka/A2701/A270206/27114272/?msockid=28721088bb77685913640741babc697a
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://rehome-navi.com/shops/6609
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://tabelog.com/tokyo/A1301/A130103/13301639/?msockid=28721088bb77685913640741babc697a
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.rakuten.co.jp/nikushoumarutomi/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" pincode
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+http://marushou-01.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:25 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Pincode
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" "postal code"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/pawa_proleague/pro/19007/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/pawa_proleague/pro/19010/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/pawa_proleague/season_record/2019_20/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/prospi_a_league/2026/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/kokutai/2020/result/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/darvish_yu/2025/generation/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/pawa_proleague/pro/18026/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/pawa_proleague/pro/18020/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/pawa_proleague/pro/18015/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "postal code"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://e-baseball.konami.net/pawa_proleague/pro/19002/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Pincode
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" PIN code India
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://github.com/0xk1h0/ChatGPT_DAN
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://desktop.github.com/download/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.reddit.com/r/AITAH/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/2075903044676315058
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://github.com/karpathy/nanochat
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.reddit.com/r/londonontario/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/2020702567198410280
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://github.com/rasbt/LLMs-from-scratch
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.reddit.com/r/ChatGPT/top/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Pincode
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PIN code India
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://github.com/click33/chatgpt---mirror-station-summary
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: Pincode
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:26 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (ACTIVE BACKOFF)
+========================================
+Query: "NEWEVASTORE" PIN code India
+Retry-After: 27s remaining
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:26 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" PIN code India'. Skipping Brave queries.
+2026-09-03 11:03:26 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: Pincode
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:26 [INFO] [FlipkartScraper.WebResearch] Phone: SEARCHING...
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Phone
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" phone
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.servicesaustralia.gov.au/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=9ebb7e25dec8f0dc381e954c850e6ddaf761ae3a78b6ef082f1fd589b3febd68JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly93d3cuc2VydmljZXNhdXN0cmFsaWEuZ292LmF1L2NlbnRyZWxpbms_Y29udGV4dD0x&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://my.gov.au/en/about/help/mygov-website/sign-in-to-mygov
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://my.gov.au/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://findus.servicesaustralia.gov.au/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+http://centrelink.gov.au/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://findus.servicesaustralia.gov.au/findnearest.asp?groupid=946&OriginSuburbPostcode=Suburb+or+Postcode&EnvironmentID=797&submittopage=locatorresult.asp
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=c797ccf935aaddb9f23990e823f724872190eed459f1e45a18145881e06e0a66JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly93d3cuc2VydmljZXNhdXN0cmFsaWEuZ292LmF1L2NvbnRhY3QtdXM_Y29udGV4dD02NDEwNw&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.servicesaustralia.gov.au/medicare
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" phone
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.servicesaustralia.gov.au/age-pension
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Phone
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" mobile
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.naver.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.naver.co.kr/index.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://map.naver.com/p/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://naverapp.m.naver.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://m.sports.naver.com/index
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://maps.naver.com/p/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://m.comic.naver.com/index
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://flight.naver.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://m.calendar.naver.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" mobile
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://land.naver.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:27 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Phone
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" "contact number"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/Kopitiam
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/topic/5538738
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.microsoft.com/en-us/msoffice/forum/all/random-ms-access-crashes-when-idle/175b8de0-f4c6-482a-986b-9a20acc6437a
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://answers.microsoft.com/el-gr/windows/forum/all/vpn/3649bdf8-2dc6-4ac2-b5a3-37caa51121a6
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/topic/5573643
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/topic/5556449
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/topic/5556445
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/topic/5519991
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/topic/5566080
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Phone
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://forum.lowyat.net/topic/5562126
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: Phone
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:28 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (ACTIVE BACKOFF)
+========================================
+Query: "NEWEVASTORE" phone number India
+Retry-After: 25s remaining
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:28 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" phone number India'. Skipping Brave queries.
+2026-09-03 11:03:28 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: Phone
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] Email: SEARCHING...
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Email
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" email
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/;anything
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=791260fe860cf281cfc8df90f9f659a44bb3d20d5d8d4ca69500ec9fc5be1180JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly90cmFuc2xhdGUuZ29vZ2xlLmNvbS8_aGw9c3Y&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/m
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/intl/nl/about/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/intl/ja/about/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/intl/es-419/about/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/intl/zh-CN/about/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/intl/tr/about/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/intl/lt/about/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" email
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://translate.google.com/intl/sr/about/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:28 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Email
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" "email address"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/252663056
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/14221
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/256227091
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/32122
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/256092616
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/120040159
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/250808546
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/253535891
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/255434930
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "email address"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://discussionskorea.apple.com/thread/256108779
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Email
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" "contact email"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.dafont.com/pt/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.dafont.com/new.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/creator
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/topic/21190111/hot
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.52pojie.cn/thread-2111184-1-1.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.52pojie.cn/thread-996795-1-1.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.dafont.com/top.php
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=9ed4e0bf74643dec00ae6df67dd8326f9ea78ab5d5a7410c9893a4be1a88b76cJmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly93d3cuZGFmb250LmNvbS90aGVtZS5waHA_Y2F0PTExMw&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.dafont.com/es/code39.font
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Email
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "contact email"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.dafont.com/mtheme.php?id=4
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: Email
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:29 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (ACTIVE BACKOFF)
+========================================
+Query: "NEWEVASTORE" official email India
+Retry-After: 24s remaining
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:29 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" official email India'. Skipping Brave queries.
+2026-09-03 11:03:29 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: Email
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:29 [INFO] [FlipkartScraper.WebResearch] Owner / Founder: SEARCHING...
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Owner / Founder
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" owner
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://mustangforums.com/forum/classic-mustangs-tech/523029-vacuum-connections-1966-a.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.reddit.com/r/Mustang/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.reddit.com/r/Guitar/comments/kyhen/opinions_on_fender_mustang_iii_amp/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://mustangforums.com/forum/classic-mustangs-tech/103957-difference-s-between-67-68-69-mustang.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://mustangforums.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://mustangforums.com/forum/4-6l-1996-2004-modular-mustang/170677-2v-mods-and-hp-gains.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://mustangforums.com/forum/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.reddit.com/r/Mustang/comments/14h18mu/mustang_sync_3_upgrade_save_your_money/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://mustangforums.com/forum/classic-mustangs-tech/618430-how-do-you-install-neutral-safety-switch.html
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" owner
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.reddit.com/r/redrising/comments/46g5p3/mustang_in_morning_star_spoilers/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Owner / Founder
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" founder
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/450/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/421/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/511/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/443/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/384/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/402/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/441/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/544/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/372/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" founder
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.hiroomi-tosaka.com/news/970/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:30 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: Owner / Founder
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" proprietor
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/en-us/windows/experience/fileexplorer/file-explorer-in-windows
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/fr-FR/Windows/Experience/FileExplorer/file-explorer-in-windows
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/de-de/windows/experience/fileexplorer/file-explorer-in-windows
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/en-us/windows/experience/storage-filemanagement/free-up-drive-space-in-windows
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/en-us/windows/keyboard-shortcuts-in-windows-dcc61a57-8ff0-cffe-9796-cb9706c75eec
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/es-es/windows/experience/fileexplorer/file-explorer-in-windows
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/en-us/windows/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/en-us/windows/experience/storage-filemanagement/find-the-recycle-bin-in-windows
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/en-us/windows/experience/storage-filemanagement/zip-and-unzip-files
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+Owner / Founder
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" proprietor
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.microsoft.com/en-us/windows/experience/personalization/personalize-your-windows-experience-with-themes
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+UNRELATED_COMPANY
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: Owner / Founder
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:31 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (ACTIVE BACKOFF)
+========================================
+Query: "NEWEVASTORE" proprietor promoter India
+Retry-After: 22s remaining
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:31 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" proprietor promoter India'. Skipping Brave queries.
+2026-09-03 11:03:31 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: Owner / Founder
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] PAN: SEARCHING...
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: PAN
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" PAN
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.google.com/chrome/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.google.com/intl/en_uk/chrome/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/chrome/answer/95346?hl=pt-BR&co=GENIE.Platform%3DDesktop
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://calendar.google.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/chrome/answer/95346?hl=tr&co=GENIE.Platform%3DDesktop
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://chromewebstore.google.com/detail/urban-vpn-proxy/eppiocemhmnlbhjplcgkofciiegomcon
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://chromewebstore.google.com/detail/browsec-vpn-free-vpn-for/omghfjlpggmjjaagoclmmobgdodcjboh
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=6f380642bfc238b1bec79b2cadf4e977a978fb37581e49906b60c9556944a230JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9wYXNzd29yZHMuZ29vZ2xlLmNvbS8_aGw9ZGU&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://play.google.com/store/apps/details?id=com.android.chrome&hl=ar
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" PAN
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://play.google.com/store/apps/details?id=com.android.chrome&hl=hu
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:31 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: PAN
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" "PAN number"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/scripts/getNotifDocument.php?CtgryCd=203/2021&NotifyId=006/2021
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/scripts/getNotifDocument.php?CtgryCd=486/2022&NotifyId=015/2022
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/scripts/getNotifDocument.php?CtgryCd=128/2023&NotifyId=007/2023
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/scripts/getNotifDocument.php?CtgryCd=188/2023&NotifyId=008/2023
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/ViewEQ.php?arg=418/2024
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/scripts/getNotifDocument.php?CtgryCd=368/2021&NotifyId=012/2021
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/scripts/getNotifDocument.php?CtgryCd=596/2022&NotifyId=017/2022
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/ViewEQ.php?arg=705/2024
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/ViewEQ.php?arg=033/2024
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "PAN number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://thulasi.psc.kerala.gov.in/thulasi/scripts/getNotifDocument.php?CtgryCd=594/2022&NotifyId=017/2022
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: PAN
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" "company PAN"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://ewcprez.proboards.com/thread/19058/ewc-north-american-championship
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://ewcprez.proboards.com/thread/57493/paramount-31-winnipeg
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://community.quicken.com/discussions
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://community.quicken.com/discussion/7937575/bank-of-america-ewc-issue
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://ewcprez.proboards.com/thread/10209/ewc-company-information
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://ewcprez.proboards.com/thread/33829/mnb-494-winnipeg
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.ewcprez.proboards.com/thread/29791/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://ewcprez.proboards.com/thread/28643/ngwreborn.boards.net/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://ewcprez.proboards.com/thread/28659/ewc-united-states-championship
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+PAN
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "company PAN"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://ewcprez.proboards.com/thread/59733/vin-havoc
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: PAN
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:32 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (ACTIVE BACKOFF)
+========================================
+Query: "NEWEVASTORE" PAN card number India
+Retry-After: 21s remaining
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:32 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" PAN card number India'. Skipping Brave queries.
+2026-09-03 11:03:32 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: PAN
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:32 [INFO] [FlipkartScraper.WebResearch] FSSAI: SEARCHING...
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: FSSAI
+Provider: Bing
+Attempt: 1/3
+Query: "NEWEVASTORE" FSSAI
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/6308116?hl=ko&co=GENIE.Platform%3DDesktop
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/googleone/?hl=ko
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/3227660?hl=ko&co=GENIE.Platform%3DAndroid
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/6000976?hl=ko
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/3802431?hl=ko&co=GENIE.Platform%3DAndroid
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/7509567?hl=ko&co=GENIE.Platform%3DAndroid
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/6342839?hl=ko
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/7507744?hl=ko&co=GENIE.Platform%3DAndroid
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://support.google.com/youtube/answer/2657964?hl=ko&co=GENIE.Platform%3DDesktop
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" FSSAI
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=17070d4858fca62479e113bbb1a7db3333b81530192a2138ca68d559f46d8ac2JmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9zdXBwb3J0Lmdvb2dsZS5jb20veW91dHViZS9hbnN3ZXIvNTc0MDc_aGw9a28mY289R0VOSUUuUGxhdGZvcm0lM0RBbmRyb2lk&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: FSSAI
+Provider: Bing
+Attempt: 2/3
+Query: "NEWEVASTORE" "FSSAI number"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/20498753
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/2076773014612586660
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/1951273247036380422
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/2074598998380487147
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/1995580558823162273
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/12539849846
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/1934732121529909531
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/1903028279096632276
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/1917375398460781402
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI number"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.zhihu.com/question/1975199818042327496
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:33 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+ENRICHMENT SEARCH ATTEMPT
+----------------------------------------
+Seller: NEWEVASTORE
+Field: FSSAI
+Provider: Bing
+Attempt: 3/3
+Query: "NEWEVASTORE" "FSSAI license"
+HTTP Status: 200
+Results: 10
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.youtube.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.youtube.com/youtube
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.youtube.com/feed/yt+
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.youtube.com/shorts
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://music.youtube.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.bing.com/ck/a?!&&p=df7aa0ab0cb3baba3be441f472c21cb6f416e63fc4d338e8d95b519739ba78fbJmltdHM9MTc4ODMwNzIwMA&ptn=3&ver=2&hsh=4&fclid=28721088-bb77-6859-1364-0741babc697a&u=a1aHR0cHM6Ly9zdXBwb3J0Lmdvb2dsZS5jb20veW91dHViZS8_aGw9ZW4&ntb=1
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://play.google.com/store/apps/details?id=com.google.android.youtube&hl=en-US
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://studio.youtube.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://www.youtubekids.com/
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+SELLER_MISMATCH
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+========================================
+SELLER:
+NEWEVASTORE
+
+FIELD:
+FSSAI
+
+SEARCH:
+Bing
+Query: "NEWEVASTORE" "FSSAI license"
+Results: 10
+
+CANDIDATE:
+NONE
+
+MATCH:
+0/100
+
+SOURCE:
+https://en.wikipedia.org/wiki/YouTube
+
+VALIDATION:
+INVALID
+
+RESULT:
+REJECTED
+
+REASON:
+DISALLOWED_SOURCE_TYPE
+========================================
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] Decision: NEXT QUERY
+----------------------------------------
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+BING EXHAUSTED
+Seller: NEWEVASTORE
+Field: FSSAI
+Usable candidate: NONE
+Switching to Brave
+2026-09-03 11:03:34 [WARNING] [FlipkartScraper.WebResearch] 
+========================================
+BRAVE RATE LIMITED (ACTIVE BACKOFF)
+========================================
+Query: "NEWEVASTORE" FSSAI license number India
+Retry-After: 19s remaining
+Action: SKIP BRAVE / BACKOFF
+========================================
+2026-09-03 11:03:34 [WARNING] [FlipkartScraper.WebResearch] 
+RATE_LIMITED: Brave returned HTTP 429 for '"NEWEVASTORE" FSSAI license number India'. Skipping Brave queries.
+2026-09-03 11:03:34 [WARNING] [FlipkartScraper.WebResearch] 
+FIELD COMPLETE
+Seller: NEWEVASTORE
+Field: FSSAI
+Result: RATE_LIMITED
+Attempts: Bing 3 + Brave 1
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.WebResearch] 
+----------------------------------------
+BING ENRICHMENT
+----------------------------------------
+Seller: NEWEVASTORE
+
+Field: Website
+Query: Bing 3 + Brave 2
+Results: 40
+Verified: NO
+Value: NOT FOUND
+
+Field: GST
+Query: "NEWEVASTORE" GST number India
+Results: 23
+Verified: NO
+Value: RATE_LIMITED
+
+Field: Address
+Query: "NEWEVASTORE" company address India
+Results: 26
+Verified: NO
+Value: RATE_LIMITED
+
+Field: Pincode
+Query: "NEWEVASTORE" PIN code India
+Results: 30
+Verified: NO
+Value: RATE_LIMITED
+
+Field: Phone
+Query: "NEWEVASTORE" phone number India
+Results: 30
+Verified: NO
+Value: RATE_LIMITED
+
+Field: Email
+Query: "NEWEVASTORE" official email India
+Results: 30
+Verified: NO
+Value: RATE_LIMITED
+
+Field: Owner / Founder
+Query: "NEWEVASTORE" proprietor promoter India
+Results: 30
+Verified: NO
+Value: RATE_LIMITED
+
+Field: PAN
+Query: "NEWEVASTORE" PAN card number India
+Results: 30
+Verified: NO
+Value: RATE_LIMITED
+
+Field: FSSAI
+Query: "NEWEVASTORE" FSSAI license number India
+Results: 30
+Verified: NO
+Value: RATE_LIMITED
+
+----------------------------------------
+2026-09-03 11:03:34 [DEBUG] [FlipkartScraper.Pipeline] ENRICHED RECORD:
+{
+  "seller_name": "NEWEVASTORE",
+  "marketplace": "flipkart",
+  "fulfillment_by": "NEWEVASTORE",
+  "product_url": "https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD",
+  "seller_source_url": "https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD",
+  "seller_source_type": "fulfillment_label",
+  "category": "Arm Warmers",
+  "sub_category": null,
+  "sub_sub_category": null,
+  "sub_sub_subcategory": null,
+  "product_rating": 4.3,
+  "seller_rating": null,
+  "star_rating": null,
+  "business_model": "B2C / Retail",
+  "business_category": "Arm Warmers",
+  "owner_name": null,
+  "contact_number": null,
+  "email": null,
+  "gst_number": null,
+  "pan_number": null,
+  "fssai_number": null,
+  "billing_address": null,
+  "shipping_address": null,
+  "city": null,
+  "state": null,
+  "pincode": null,
+  "country": "India",
+  "website_url": null,
+  "status": "NOT_FOUND",
+  "source": [
+    "search_query"
+  ],
+  "confidence": {
+    "gst_number": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "not_found"
+    },
+    "pan_number": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "not_found"
+    },
+    "contact_number": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "not_found"
+    },
+    "email": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "not_found"
+    },
+    "fssai_number": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "not_found"
+    },
+    "website_url": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "not_found"
+    },
+    "address": {
+      "value": null,
+      "confidence": 0.0,
+      "source": "not_found"
+    }
+  },
+  "seller_confidence": 0.85
+}
+2026-09-03 11:03:34 [INFO] [FlipkartScraper.Pipeline] 
+========================================
+FLIPKART SELLER
+========================================
+Seller: NEWEVASTORE
+Fulfilled By: NEWEVASTORE
+Product: https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD
+----------------------------------------
+ENRICHMENT
+----------------------------------------
+Official Website: NOT FOUND
+Business Model: FOUND (B2C / Retail)
+Business Category: FOUND (Arm Warmers)
+Owner: NOT FOUND
+Phone: NOT FOUND
+Email: NOT FOUND
+GST: NOT FOUND
+PAN: NOT FOUND
+FSSAI: NOT FOUND
+Billing Address: NOT FOUND
+Shipping Address: NOT FOUND
+City: NOT FOUND
+State: NOT FOUND
+Pincode: NOT FOUND
+Country: FOUND (India)
+----------------------------------------
+EXCEL
+----------------------------------------
+Excel Row: 1061
+Excel Update: SUCCESS
+Excel Save: SUCCESS
+Status: NOT_FOUND
+========================================
+2026-09-03 11:03:34 [DEBUG] [FlipkartScraper.SellerExtractor] Merged enriched data for flipkart::newevastore: {'seller_name': 'NEWEVASTORE', 'marketplace': 'flipkart', 'fulfillment_by': 'NEWEVASTORE', 'product_url': 'https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD', 'seller_source_url': 'https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD', 'seller_source_type': 'fulfillment_label', 'category': 'Arm Warmers', 'sub_category': None, 'sub_sub_category': None, 'sub_sub_subcategory': None, 'product_rating': 4.3, 'seller_rating': None, 'star_rating': None, 'business_model': 'B2C / Retail', 'business_category': 'Arm Warmers', 'owner_name': None, 'contact_number': None, 'email': None, 'gst_number': None, 'pan_number': None, 'fssai_number': None, 'billing_address': None, 'shipping_address': None, 'city': None, 'state': None, 'pincode': None, 'country': 'India', 'website_url': None, 'status': 'NOT_FOUND', 'source': ['search_query'], 'confidence': {'gst_number': {'value': None, 'confidence': 0.0, 'source': 'not_found'}, 'pan_number': {'value': None, 'confidence': 0.0, 'source': 'not_found'}, 'contact_number': {'value': None, 'confidence': 0.0, 'source': 'not_found'}, 'email': {'value': None, 'confidence': 0.0, 'source': 'not_found'}, 'fssai_number': {'value': None, 'confidence': 0.0, 'source': 'not_found'}, 'website_url': {'value': None, 'confidence': 0.0, 'source': 'not_found'}, 'address': {'value': None, 'confidence': 0.0, 'source': 'not_found'}}, 'seller_confidence': 0.85}
+2026-09-03 11:03:34 [DEBUG] [FlipkartScraper.SellerExtractor] Saved 135 sellers to E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\data\sellers.json
+2026-09-03 11:03:35 [INFO] [FlipkartScraper.Search] ----------------------------------------
+2026-09-03 11:03:35 [INFO] [FlipkartScraper.Search] PRODUCT FETCH
+2026-09-03 11:03:35 [INFO] [FlipkartScraper.Search] ----------------------------------------
+2026-09-03 11:03:35 [INFO] [FlipkartScraper.Search] Product: https://www.flipkart.com/crazy-era-uv-sleeves-cotton-arm-warmer/p/itm25e691083ab55?pid=ARMHZM5WKRBE83DB
+2026-09-03 11:03:35 [INFO] [FlipkartScraper.Search] Attempt: 1/2
+2026-09-03 11:03:35 [INFO] [FlipkartScraper.Search] Navigation timeout: 10000ms
+2026-09-03 11:03:35 [INFO] [FlipkartScraper.Search] Navigation: SUCCESS
+2026-09-03 11:03:42 [WARNING] [FlipkartScraper.Pipeline] Interrupt signal received! Gracefully saving state and progress...
+2026-09-03 11:03:42 [DEBUG] [FlipkartScraper.SellerExtractor] Saved 135 sellers to E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\data\sellers.json
+2026-09-03 11:03:42 [DEBUG] [FlipkartScraper.Search] Selector wait timed out or selector not yet in DOM, checking available content...
+2026-09-03 11:03:42 [INFO] [FlipkartScraper.Search] PRODUCT PAGE LOADED
+Product: https://www.flipkart.com/crazy-era-uv-sleeves-cotton-arm-warmer/p/itm25e691083ab55?pid=ARMHZM5WKRBE83DB
+Seller data: NOT FOUND
+2026-09-03 11:03:42 [DEBUG] [FlipkartScraper.Search] Failed to capture debug screenshot: Page.screenshot: Target page, context or browser has been closed
+2026-09-03 11:03:42 [INFO] [FlipkartScraper.Pipeline] 
+========================================
+FLIPKART RUN SUMMARY
+========================================
+Rows selected: 2000
+Rows successfully completed: 1
+Rows failed: 0
+Rows still pending: 6984
+Run limit: 2000
+========================================
+2026-09-03 11:03:42 [INFO] [FlipkartScraper.Search] 
+========================================
+PRODUCT FETCH SUMMARY
+========================================
+Products discovered: 20
+Products processed: 2
+Successful product pages: 2
+Failed product pages: 0
+Navigation timeouts: 0
+Average product fetch time: 9.55s
+Maximum product fetch time: 11.00s
+========================================
+2026-09-03 11:03:43 [INFO] [FlipkartScraper.Exporter] Committed and verified 135 sellers to E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\output\flipkart_sellers.xlsx
+2026-09-03 11:03:43 [INFO] [FlipkartScraper.Pipeline] Final commit: verified 135 enriched records in E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\output\flipkart_sellers.xlsx
+2026-09-03 11:03:43 [INFO] [FlipkartScraper.Pipeline] SUCCESS: Pipeline completed. Excel file updated at E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\output\flipkart_sellers.xlsx
+2026-09-03 11:03:43 [DEBUG] [FlipkartScraper.SellerExtractor] Saved 135 sellers to E:\Vivimart _data\Flipkart_Playwright_GitHub_Actions_Ready\Flipkart\data\sellers.json
+2026-09-03 11:03:43 [INFO] [FlipkartScraper.Pipeline] Pipeline execution finished.

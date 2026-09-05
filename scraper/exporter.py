@@ -52,6 +52,28 @@ THIN_BORDER = Border(
 )
 
 
+EXCEL_FIELD_MAPPING: Dict[str, List[str]] = {
+    "Business Name": ["Business Name", "seller_name", "business_name", "company_name", "name"],
+    "Business Model": ["Business Model", "business_model"],
+    "Business Category": ["Business Category", "business_category", "category"],
+    "Owner Name": ["Owner Name", "owner_name", "owner", "proprietor_name", "director_name"],
+    "Phone Number": ["Phone Number", "contact_number", "phone_number", "phone", "mobile"],
+    "Email Address": ["Email Address", "email", "email_address", "contact_email"],
+    "GST Number": ["GST Number", "gst_number", "gstin", "gst"],
+    "PAN Number": ["PAN Number", "pan_number", "pan"],
+    "FSSAI Number": ["FSSAI Number", "fssai_number", "fssai"],
+    "Billing Address": ["Billing Address", "billing_address", "address", "raw_address"],
+    "x": ["x", "shipping_address", "fulfillment_by"],
+    "City": ["City", "city"],
+    "State": ["State", "state"],
+    "Pincode": ["Pincode", "pincode", "postal_code", "zip"],
+    "Country": ["Country", "country"],
+    "Website URL": ["Website URL", "website_url", "website", "official_website"],
+    "Status": ["Status", "status"],
+    "Source rating": ["Source rating", "source_rating", "star_rating", "seller_rating"],
+}
+
+
 def _seller_key(name: Optional[str]) -> str:
     """Normalize seller name for indexing and comparison."""
     if not name:
@@ -59,6 +81,25 @@ def _seller_key(name: Optional[str]) -> str:
     val = str(name).lower().strip().replace("&", "and")
     val = re.sub(r"[^\w\s]", "", val)
     return " ".join(val.split())
+
+
+def _extract_column_value(col_name: str, seller_data: Dict[str, Any]) -> Any:
+    """Extract appropriate value for a column from seller data dictionary."""
+    candidate_keys = EXCEL_FIELD_MAPPING.get(col_name, [col_name])
+    for k in candidate_keys:
+        if k in seller_data and seller_data[k] is not None:
+            val = seller_data[k]
+            if str(val).strip() not in ("", "NOT FOUND", "N/A"):
+                return val
+
+    # Defaults
+    if col_name == "Country":
+        return "India"
+    if col_name == "x":
+        return seller_data.get("fulfillment_by") or seller_data.get("shipping_address")
+    if col_name == "Source rating":
+        return seller_data.get("star_rating") or seller_data.get("seller_rating") or seller_data.get("source_rating")
+    return None
 
 
 class LiveExcelManager:
@@ -110,15 +151,7 @@ class LiveExcelManager:
         logger.debug(f"Initialized new live Excel file at {self.output_path}")
 
     def _save_workbook_with_retry(self, max_retries: int = 3, retry_delay: float = 0.5) -> bool:
-        """Save workbook to disk with retries against file locks (e.g. open in Microsoft Excel).
-
-        Args:
-            max_retries: Maximum save attempts.
-            retry_delay: Delay between retries in seconds.
-
-        Returns:
-            True if saved successfully, False if file remains locked.
-        """
+        """Save workbook to disk with retries against file locks."""
         for attempt in range(1, max_retries + 1):
             try:
                 self.workbook.save(filename=self.output_path)
@@ -133,8 +166,7 @@ class LiveExcelManager:
                 else:
                     logger.error(
                         f"PERMISSION ERROR: Unable to save to '{self.output_path}'. "
-                        f"The file is locked by another program (such as Microsoft Excel). "
-                        f"Please close '{self.output_path.name}' in Excel to allow saving."
+                        f"The file is locked by another program. Please close it to allow saving."
                     )
                     return False
             except Exception as e:
@@ -190,15 +222,14 @@ class LiveExcelManager:
                     row_fill = ROW_ALT_FILL if row_idx % 2 == 0 else ROW_DEFAULT_FILL
                     for col_name in OUTPUT_EXCEL_COLUMNS:
                         col_idx = self.header_col_map[col_name]
-                        val = row_dict.get(col_name)
+                        val = _extract_column_value(col_name, row_dict)
                         cell = self.sheet.cell(row=row_idx, column=col_idx, value=val)
                         cell.border = THIN_BORDER
                         cell.font = Font(name="Calibri", size=10)
                         cell.fill = row_fill
                         if col_name in [
-                            "contact_number", "gst_number", "pan_number", "fssai_number",
-                            "pincode", "star_rating", "seller_rating", "product_rating",
-                            "status", "marketplace"
+                            "Phone Number", "GST Number", "PAN Number", "FSSAI Number",
+                            "Pincode", "Source rating", "Status"
                         ]:
                             cell.alignment = Alignment(horizontal="center", vertical="center")
                         else:
@@ -207,10 +238,10 @@ class LiveExcelManager:
                 self._save_workbook_with_retry()
                 logger.info(f"Successfully migrated {len(old_rows_data)} rows to standard schema.")
 
-            # Index existing rows by canonical seller_name (column 1)
-            seller_col_idx = self.header_col_map["seller_name"]
+            # Index existing rows by canonical Business Name (column 1)
+            name_col_idx = self.header_col_map.get("Business Name", 1)
             for row_idx in range(2, self.sheet.max_row + 1):
-                cell_val = self.sheet.cell(row=row_idx, column=seller_col_idx).value
+                cell_val = self.sheet.cell(row=row_idx, column=name_col_idx).value
                 if cell_val:
                     k = _seller_key(str(cell_val))
                     if k:
@@ -232,8 +263,8 @@ class LiveExcelManager:
     def get_completed_sellers(self) -> Set[str]:
         """Return set of canonical seller keys already enriched and present in the Excel."""
         completed: Set[str] = set()
-        status_col_idx = self.header_col_map.get("status", 4)
-        seller_col_idx = self.header_col_map.get("seller_name", 1)
+        status_col_idx = self.header_col_map.get("Status", 17)
+        seller_col_idx = self.header_col_map.get("Business Name", 1)
 
         for row_idx in range(2, self.sheet.max_row + 1):
             s_val = self.sheet.cell(row=row_idx, column=seller_col_idx).value
@@ -255,7 +286,12 @@ class LiveExcelManager:
         Returns:
             Data row number (1-indexed, corresponding to display row, where row 1 is header).
         """
-        seller_name = seller_data.get("seller_name") or seller_data.get("owner_name") or ""
+        seller_name = (
+            seller_data.get("Business Name")
+            or seller_data.get("seller_name")
+            or seller_data.get("owner_name")
+            or ""
+        )
         canonical_key = _seller_key(seller_name)
 
         if not canonical_key:
@@ -275,10 +311,10 @@ class LiveExcelManager:
         # Populate / Update columns
         for col_name in OUTPUT_EXCEL_COLUMNS:
             col_idx = self.header_col_map[col_name]
-            val = seller_data.get(col_name)
+            val = _extract_column_value(col_name, seller_data)
 
-            # Ensure seller_name is always set
-            if col_name == "seller_name" and not val:
+            # Ensure Business Name is always set
+            if col_name == "Business Name" and not val:
                 val = seller_name
 
             # If updating and new value is None or placeholder, do not overwrite existing valid cell content
@@ -296,23 +332,20 @@ class LiveExcelManager:
 
             # Alignment
             if col_name in [
-                "contact_number",
-                "gst_number",
-                "pan_number",
-                "fssai_number",
-                "pincode",
-                "star_rating",
-                "seller_rating",
-                "product_rating",
-                "status",
-                "marketplace",
+                "Phone Number",
+                "GST Number",
+                "PAN Number",
+                "FSSAI Number",
+                "Pincode",
+                "Source rating",
+                "Status",
             ]:
                 cell.alignment = Alignment(horizontal="center", vertical="center")
             else:
                 cell.alignment = Alignment(horizontal="left", vertical="center")
 
             # Status cell special highlight
-            if col_name == "status":
+            if col_name == "Status":
                 status_str = str(val).strip() if val else ""
                 if status_str in STATUS_STYLES:
                     cell.fill = STATUS_STYLES[status_str]["fill"]
@@ -322,7 +355,7 @@ class LiveExcelManager:
         for col_name in OUTPUT_EXCEL_COLUMNS:
             col_idx = self.header_col_map[col_name]
             col_letter = get_column_letter(col_idx)
-            val_str = str(seller_data.get(col_name, "") or "")
+            val_str = str(_extract_column_value(col_name, seller_data) or "")
             current_w = self.sheet.column_dimensions[col_letter].width or (len(col_name) + 4)
             new_w = max(current_w, len(val_str) + 4, len(col_name) + 4, 14)
             self.sheet.column_dimensions[col_letter].width = min(new_w, 60)
@@ -364,36 +397,51 @@ class LiveExcelManager:
                 col_idx = self.header_col_map.get(col_name, 1)
                 saved_values[col_name] = verify_sheet.cell(row=target_sheet_row, column=col_idx).value
 
-            # 1. Verify seller_name
-            expected_seller = expected_data.get("seller_name") or expected_data.get("owner_name")
+            # 1. Verify Business Name
+            expected_seller = (
+                expected_data.get("Business Name")
+                or expected_data.get("seller_name")
+                or expected_data.get("owner_name")
+            )
             if expected_seller:
-                saved_seller = saved_values.get("seller_name")
+                saved_seller = saved_values.get("Business Name")
                 if _seller_key(saved_seller) != _seller_key(expected_seller):
                     return (
                         False,
-                        f"seller_name mismatch at row {target_sheet_row}: expected '{expected_seller}', found '{saved_seller}'",
+                        f"Business Name mismatch at row {target_sheet_row}: expected '{expected_seller}', found '{saved_seller}'",
                     )
 
-            # 2. Verify status
-            expected_status = expected_data.get("status")
+            # 2. Verify Status
+            expected_status = expected_data.get("Status") or expected_data.get("status")
             if expected_status:
-                saved_status = str(saved_values.get("status") or "").strip()
+                saved_status = str(saved_values.get("Status") or "").strip()
                 if saved_status != str(expected_status).strip():
                     return (
                         False,
-                        f"status mismatch at row {target_sheet_row}: expected '{expected_status}', found '{saved_status}'",
+                        f"Status mismatch at row {target_sheet_row}: expected '{expected_status}', found '{saved_status}'",
                     )
 
             # 3. Verify key credentials if provided
-            key_fields = ["gst_number", "pan_number", "contact_number", "email", "country", "website_url"]
-            for field in key_fields:
-                exp_val = expected_data.get(field)
-                if exp_val is not None and str(exp_val).strip() != "" and str(exp_val).strip() != "N/A":
-                    saved_val = str(saved_values.get(field) or "").strip()
+            key_fields = [
+                ("GST Number", ["GST Number", "gst_number"]),
+                ("PAN Number", ["PAN Number", "pan_number"]),
+                ("Phone Number", ["Phone Number", "contact_number", "phone"]),
+                ("Email Address", ["Email Address", "email"]),
+                ("Country", ["Country", "country"]),
+                ("Website URL", ["Website URL", "website_url"]),
+            ]
+            for col_hdr, aliases in key_fields:
+                exp_val = None
+                for a in aliases:
+                    if expected_data.get(a) is not None:
+                        exp_val = expected_data[a]
+                        break
+                if exp_val is not None and str(exp_val).strip() not in ("", "N/A", "NOT FOUND"):
+                    saved_val = str(saved_values.get(col_hdr) or "").strip()
                     if saved_val != str(exp_val).strip():
                         return (
                             False,
-                            f"{field} mismatch at row {target_sheet_row}: expected '{exp_val}', found '{saved_val}'",
+                            f"{col_hdr} mismatch at row {target_sheet_row}: expected '{exp_val}', found '{saved_val}'",
                         )
 
             return True, "All fields verified successfully in saved Excel file."

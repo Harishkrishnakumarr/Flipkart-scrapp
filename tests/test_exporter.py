@@ -31,8 +31,8 @@ def test_live_excel_manager_immediate_save_and_update(tmp_path: Path):
     wb = openpyxl.load_workbook(excel_path)
     ws = wb.active
     assert ws.max_row == 2
-    assert ws.cell(row=2, column=manager.header_col_map["seller_name"]).value == "IKAGIFOOTWEAR"
-    assert ws.cell(row=2, column=manager.header_col_map["status"]).value == "ENRICHMENT_PENDING"
+    assert ws.cell(row=2, column=manager.header_col_map["Business Name"]).value == "IKAGIFOOTWEAR"
+    assert ws.cell(row=2, column=manager.header_col_map["Status"]).value == "ENRICHMENT_PENDING"
 
     # 2. Another seller added
     seller_2 = {
@@ -65,11 +65,10 @@ def test_live_excel_manager_immediate_save_and_update(tmp_path: Path):
     assert ws2.max_row == 3
 
     # Check updated fields
-    assert ws2.cell(row=2, column=manager.header_col_map["gst_number"]).value == "27AAPFU0939F1ZV"
-    assert ws2.cell(row=2, column=manager.header_col_map["status"]).value == "VERIFIED"
-    assert ws2.cell(row=2, column=manager.header_col_map["email"]).value == "contact@ikagi.in"
-    # Preserved previous product_url
-    assert ws2.cell(row=2, column=manager.header_col_map["product_url"]).value == "https://www.flipkart.com/item/p/123"
+    assert ws2.cell(row=2, column=manager.header_col_map["GST Number"]).value == "27AAPFU0939F1ZV"
+    assert ws2.cell(row=2, column=manager.header_col_map["Status"]).value == "VERIFIED"
+    assert ws2.cell(row=2, column=manager.header_col_map["Email Address"]).value == "contact@ikagi.in"
+    assert ws2.cell(row=2, column=manager.header_col_map["Website URL"]).value == "https://ikagi.in"
 
 
 def test_export_sellers_to_excel_bulk(tmp_path: Path):
@@ -137,19 +136,18 @@ def test_live_excel_manager_verify_saved_row(tmp_path: Path):
     mismatch_seller["gst_number"] = "WRONG_GST"
     verified2, msg2 = manager.verify_saved_row(row_num, mismatch_seller)
     assert verified2 is False
-    assert "gst_number mismatch" in msg2
+    assert "gst number mismatch" in msg2.lower()
 
 
 def test_live_excel_manager_schema_migration(tmp_path: Path):
     excel_path = tmp_path / "legacy_schema.xlsx"
-    # Create legacy workbook with old 3-column format missing seller_name
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.append(["business_model", "status", "star_rating"])
     ws.append(["Retail", "VERIFIED", 4.5])
     wb.save(excel_path)
 
-    # Load with LiveExcelManager -> should migrate to 30 columns
+    # Load with LiveExcelManager -> should migrate to exact 18 columns
     manager = LiveExcelManager(output_path=excel_path)
     assert list(manager.header_col_map.keys()) == OUTPUT_EXCEL_COLUMNS
 

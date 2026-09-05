@@ -401,6 +401,9 @@ def match_gst_to_seller(
     trade_name: Optional[str] = None,
     snippet: str = "",
     url: str = "",
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
 ) -> Tuple[bool, int, str]:
     """Dedicated Indian GST-to-seller identity matcher.
     
@@ -412,10 +415,12 @@ def match_gst_to_seller(
       + Legal name & Trade name match
       + Distinctive token match
       + Entity-type consistency (rejects conflicting entity e.g. TRADERS vs ENTERPRISES)
-      + State code consistency with snippet address/state
+      + State code consistency with seller state/location
+      + City / Address location consistency
       + Domain / URL match
       
-    Rejects candidates matching only generic terms ('India', 'Retail', 'Enterprises', 'Trading', 'Store').
+    Rejects candidates matching only generic terms ('India', 'Retail', 'Enterprises', 'Trading', 'Store')
+    or possessing strong location/state conflicts.
     
     Returns:
       Tuple of (matched: bool, score: int, reason: str)
@@ -437,6 +442,70 @@ def match_gst_to_seller(
 
     combined = f"{legal_name or ''} {trade_name or ''} {snippet} {url}".lower()
     combined_compact = re.sub(r"[^\w]", "", combined)
+
+    # 0. Location Disambiguation & Conflict Check
+    gst_state_code = valid_gst[:2]
+    gst_state_name = GST_STATE_CODES.get(gst_state_code, "").lower()
+
+    # If seller state is known, check GST state code match
+    if state:
+        state_clean = state.strip().lower()
+        if gst_state_name and state_clean not in gst_state_name and gst_state_name not in state_clean:
+            return (
+                False,
+                0,
+                f"LOCATION_MISMATCH: Candidate GST state '{gst_state_name}' ({gst_state_code}) conflicts with seller state '{state}'",
+            )
+
+    # If seller city is known, verify candidate does not conflict
+    if city:
+        city_clean = city.strip().lower()
+        # If snippet explicitly specifies a conflicting city/town
+        known_cities = {
+            "mumbai", "delhi", "new delhi", "bengaluru", "bangalore", "chennai", "kolkata",
+            "hyderabad", "ahmedabad", "surat", "pune", "jaipur", "lucknow", "kanpur", "nagpur",
+            "indore", "thane", "bhopal", "visakhapatnam", "patna", "vadodara", "ghaziabad",
+            "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot", "varanasi",
+            "srinagar", "aurangabad", "dhanbad", "amritsar", "navi mumbai", "allahabad",
+            "prayagraj", "howrah", "gwalior", "jabalpur", "coimbatore", "vijayawada", "jodhpur",
+            "madurai", "raipur", "kota", "guwahati", "chandigarh", "solapur", "hubballi",
+            "dharwad", "tiruchirappalli", "bareilly", "moradabad", "mysuru", "tirupur",
+            "gurgaon", "gurugram", "aligarh", "jalandhar", "bhubaneswar", "salem", "warangal",
+            "mira bhayandar", "jalgaon", "guntur", "thiruvananthapuram", "bhiwandi", "saharanpur",
+            "gorakhpur", "bikaner", "amravati", "noida", "jamshedpur", "bhilai", "cuttack",
+            "firozabad", "kochi", "nellore", "bhavnagar", "dehradun", "durgapur", "asansol",
+            "rourkela", "nanded", "kolhapur", "ajmer", "akola", "gulbarga", "jamnagar",
+            "ujjain", "loni", "siliguri", "jhansi", "ulhasnagar", "jammu", "sangli",
+            "mangalore", "erode", "belgaum", "ambattur", "tirunelveli", "malegaon", "gaya",
+            "jalna", "udaipur", "maheshtala", "davanagere", "kozhikode", "kurnool", "rajpur",
+            "bokaro", "south dumdum", "bellary", "patiala", "gopalpur", "agartala", "bhagalpur",
+            "muzaffarnagar", "bhatpara", "panihati", "latur", "dhule", "rohtak", "korba",
+            "bhilwara", "berhampur", "muzaffarpur", "ahmednagar", "mathura", "kollam",
+            "avadi", "kadapa", "kamarhati", "sambalpur", "bilaspur", "shahjahanpur",
+            "satara", "bijapur", "rampur", "shivamogga", "chandrapur", "junagadh", "thrissur",
+            "alwar", "bardhaman", "kulti", "kakinada", "nizamabad", "parbhani", "tumkur",
+            "khammam", "ozhukarai", "bihar sharif", "panipat", "darbhanga", "bally", "aizawl",
+            "dewas", "ichalkaranji", "karnal", "bathinda", "jalpaiguri", "eluru", "barasat",
+            "kirari suleman nagar", "purnia", "satna", "mau", "sonipat", "farrukhabad",
+            "sagar", "rourkela", "durg", "imphal", "ratlam", "hapur", "arrah", "karimnagar",
+            "anantapur", "etawah", "ambernath", "north dumdum", "bharatpur", "begusarai",
+            "new delhi", "gandhidham", "baranagar", "tiruvannamalai", "thoothukudi", "tuticorin",
+            "eral", "sivakasi", "hosur", "pollachi", "dindigul", "karur", "thanjavur",
+        }
+        if city_clean not in combined:
+            # Check if an explicitly different city from the same or different region is prominent in candidate
+            for other_city in known_cities:
+                if other_city != city_clean and re.search(r"\b" + re.escape(other_city) + r"\b", combined):
+                    # If target city is completely absent and another city is explicitly mentioned as company location
+                    if any(
+                        re.search(r"(?i)(?:in|at|location|city|address)\s*[:\-]?\s*" + re.escape(other_city), combined)
+                        for _ in [1]
+                    ):
+                        return (
+                            False,
+                            0,
+                            f"LOCATION_MISMATCH: Candidate location '{other_city}' conflicts with target seller city '{city}'",
+                        )
 
     # 1. Reject if candidate explicitly mentions a conflicting entity type
     # e.g., Target is "ABC ENTERPRISES", candidate is "ABC TRADERS"
@@ -461,12 +530,11 @@ def match_gst_to_seller(
     # 3. Exact seller name match (e.g. "ABC Enterprises" in legal/trade/snippet)
     if re.search(r"\b" + re.escape(seller_lower) + r"\b", combined):
         score = 95
-        # Bonus if state code matches state name in text
-        state_code = valid_gst[:2]
-        if state_code in GST_STATE_CODES:
-            st_name = GST_STATE_CODES[state_code].lower()
-            if st_name in combined:
-                score = 99
+        # Bonus if state code matches state name in text or known state
+        if gst_state_name and (gst_state_name in combined or (state and state.lower() in gst_state_name)):
+            score = 99
+        if city and city.lower() in combined:
+            score = 100
         return True, score, "EXACT_SELLER_NAME_MATCH"
 
     # 4. Legal / Trade name match
@@ -474,16 +542,25 @@ def match_gst_to_seller(
         if cand_name:
             cn_lower = cand_name.lower().strip()
             if seller_lower in cn_lower:
-                return True, 95, "LEGAL_OR_TRADE_NAME_EXACT_MATCH"
+                score = 95
+                if city and city.lower() in combined:
+                    score = 100
+                return True, score, "LEGAL_OR_TRADE_NAME_EXACT_MATCH"
             # Check if all distinctive tokens match
             if distinctive_tokens and all(re.search(r"\b" + re.escape(dt) + r"\b", cn_lower) for dt in distinctive_tokens):
-                return True, 90, "LEGAL_NAME_DISTINCTIVE_TOKEN_MATCH"
+                score = 90
+                if city and city.lower() in combined:
+                    score = 98
+                return True, score, "LEGAL_NAME_DISTINCTIVE_TOKEN_MATCH"
 
     # 5. Compact seller name match in combined_compact
     norm = normalize_seller_name_for_matching(seller_name)
     compact = norm["compact"]
     if compact and len(compact) >= 5 and compact in combined_compact:
-        return True, 90, "COMPACT_SELLER_NAME_MATCH"
+        score = 90
+        if city and city.lower() in combined:
+            score = 98
+        return True, score, "COMPACT_SELLER_NAME_MATCH"
 
     # Check singular/plural compact
     if compact.endswith("s") and len(compact) > 5 and compact[:-1] in combined_compact:
@@ -495,7 +572,10 @@ def match_gst_to_seller(
             if re.search(r"\b" + re.escape(var) + r"\b", combined):
                 # Verify distinctive token is included
                 if distinctive_tokens and any(dt in var.lower() for dt in distinctive_tokens):
-                    return True, 85, f"VARIATION_MATCH: {var}"
+                    score = 85
+                    if city and city.lower() in combined:
+                        score = 95
+                    return True, score, f"VARIATION_MATCH: {var}"
 
     # 7. Distinctive tokens match check
     if distinctive_tokens:
@@ -507,7 +587,10 @@ def match_gst_to_seller(
             # If distinctive token is short (<= 3 chars, like "ABC") and entity word is missing, reject
             if all(len(dt) <= 3 for dt in distinctive_tokens) and seller_entity_words and not any(se in combined for se in seller_entity_words):
                 return False, 30, "INSUFFICIENT_DISTINCTIVE_EVIDENCE: Short token without entity qualifier"
-            return True, 80, "DISTINCTIVE_TOKEN_MATCH"
+            score = 80
+            if city and city.lower() in combined:
+                score = 95
+            return True, score, "DISTINCTIVE_TOKEN_MATCH"
 
     return False, 0, "NO_MATCHING_SELLER: No reliable seller identity evidence"
 

@@ -16,7 +16,7 @@
     "seller_confidence": 0.95,
     "enrichment_status": "completed",
     "first_seen": "2026-08-29T13:55:02.930130+00:00",
-    "last_seen": "2026-08-31T11:55:35.220378+00:00",
+    "last_seen": "2026-09-04T19:50:08.572590+00:00",
     "last_enriched": "2026-09-01T18:33:44.299605+00:00",
     "enriched_data": {
       "seller_name": "Boat Lifestyle",
@@ -12624,6 +12624,7 @@
       "seller_confidence": 0.95
     }
   },
+<<<<<<< HEAD
   "flipkart::majrot": {
     "seller_name": "Majrot",
     "canonical_id": "majrot",
@@ -15650,12 +15651,25 @@
     "categories": [
       "Bandanas",
       "Handkerchiefs"
+=======
+  "flipkart::newevastore": {
+    "seller_name": "Newevastore",
+    "canonical_id": "newevastore",
+    "marketplace": "flipkart",
+    "fulfillment_by": "NEWEVASTORE",
+    "product_urls": [
+      "https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD"
+    ],
+    "categories": [
+      "Arm Warmers"
+>>>>>>> 03233c6 (fix)
     ],
     "star_rating": null,
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
     "enrichment_status": "completed",
+<<<<<<< HEAD
     "first_seen": "2026-09-03T08:35:07.935615+00:00",
     "last_seen": "2026-09-03T12:45:20.305270+00:00",
     "last_enriched": "2026-09-03T08:35:18.260852+00:00",
@@ -15667,6 +15681,19 @@
       "seller_source_url": "https://www.flipkart.com/royal-mart-cotton-print-bandanas-gym-walk-style-soft-versatile-all-day-comfort-men-women-printed-bandana/p/itm4addb6b43694e?pid=BDAGSTHRP5MSJCWE",
       "seller_source_type": "fulfillment_label",
       "category": "Bandanas",
+=======
+    "first_seen": "2026-09-03T05:33:13.018955+00:00",
+    "last_seen": "2026-09-03T05:33:13.018955+00:00",
+    "last_enriched": "2026-09-03T05:33:34.840783+00:00",
+    "enriched_data": {
+      "seller_name": "NEWEVASTORE",
+      "marketplace": "flipkart",
+      "fulfillment_by": "NEWEVASTORE",
+      "product_url": "https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD",
+      "seller_source_url": "https://www.flipkart.com/crazy-era-d-y-d-sleeves-cotton-arm-warmer/p/itmf899f8d601e93?pid=ARMHN5RVZBRNSCTD",
+      "seller_source_type": "fulfillment_label",
+      "category": "Arm Warmers",
+>>>>>>> 03233c6 (fix)
       "sub_category": null,
       "sub_sub_category": null,
       "sub_sub_subcategory": null,
@@ -15674,6 +15701,7 @@
       "seller_rating": null,
       "star_rating": null,
       "business_model": "B2C / Retail",
+<<<<<<< HEAD
       "business_category": "Bandanas",
       "owner_name": null,
       "contact_number": null,
@@ -96561,6 +96589,9 @@
       "star_rating": null,
       "business_model": "B2C / Retail",
       "business_category": "Salwar Suit Sets",
+=======
+      "business_category": "Arm Warmers",
+>>>>>>> 03233c6 (fix)
       "owner_name": null,
       "contact_number": null,
       "email": null,
