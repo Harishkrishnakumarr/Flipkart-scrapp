@@ -375,6 +375,14 @@ class ScraperPipeline:
                                     marketplace="flipkart",
                                     product_rating=product_rating,
                                     seller_source_type=source_type,
+                                    seller_url=seller_info.get("seller_url"),
+                                    seller_location=seller_info.get("seller_location"),
+                                    city=seller_info.get("city"),
+                                    state=seller_info.get("state"),
+                                    pincode=seller_info.get("pincode"),
+                                    contact_number=seller_info.get("contact_number") or seller_info.get("phone"),
+                                    email=seller_info.get("email"),
+                                    gst_number=seller_info.get("gst_number") or seller_info.get("gst"),
                                 )
 
                                 # 2. Check if this seller was already enriched in a previous run
@@ -400,6 +408,20 @@ class ScraperPipeline:
                                     "star_rating": star_rating,
                                     "seller_source_url": p_url,
                                     "seller_source_type": source_type or "flipkart_product",
+                                    "seller_url": seller_info.get("seller_url"),
+                                    "seller_location": seller_info.get("seller_location"),
+                                    "city": seller_info.get("city"),
+                                    "state": seller_info.get("state"),
+                                    "pincode": seller_info.get("pincode"),
+                                    "contact_number": seller_info.get("contact_number") or seller_info.get("phone"),
+                                    "phone": seller_info.get("contact_number") or seller_info.get("phone"),
+                                    "Phone Number": seller_info.get("contact_number") or seller_info.get("phone"),
+                                    "email": seller_info.get("email"),
+                                    "Email Address": seller_info.get("email"),
+                                    "City": seller_info.get("city"),
+                                    "State": seller_info.get("state"),
+                                    "Pincode": seller_info.get("pincode"),
+                                    "Billing Address": seller_info.get("seller_location"),
                                 }
 
                                 row_num = self.excel_manager.write_or_update_seller(initial_excel_data)
@@ -425,6 +447,18 @@ class ScraperPipeline:
                                     "star_rating": star_rating,
                                     "product_rating": product_rating,
                                     "seller_confidence": seller_info.get("seller_confidence", 0.95),
+                                    "seller_url": seller_info.get("seller_url"),
+                                    "seller_location": seller_info.get("seller_location"),
+                                    "city": seller_info.get("city"),
+                                    "state": seller_info.get("state"),
+                                    "pincode": seller_info.get("pincode"),
+                                    "contact_number": seller_info.get("contact_number") or seller_info.get("phone"),
+                                    "phone": seller_info.get("contact_number") or seller_info.get("phone"),
+                                    "Phone Number": seller_info.get("contact_number") or seller_info.get("phone"),
+                                    "email": seller_info.get("email"),
+                                    "Email Address": seller_info.get("email"),
+                                    "gst_number": seller_info.get("gst_number") or seller_info.get("gst"),
+                                    "GST Number": seller_info.get("gst_number") or seller_info.get("gst"),
                                 }
 
                                 enriched_data = await self.enrich_seller(generic_record)
@@ -524,6 +558,16 @@ class ScraperPipeline:
                         "star_rating": star_rating,
                         "product_rating": product_rating,
                         "seller_confidence": seller.get("seller_confidence", 0.95),
+                        "seller_url": seller.get("seller_url"),
+                        "seller_location": seller.get("seller_location"),
+                        "city": seller.get("city"),
+                        "state": seller.get("state"),
+                        "pincode": seller.get("pincode"),
+                        "contact_number": seller.get("contact_number") or seller.get("phone"),
+                        "phone": seller.get("contact_number") or seller.get("phone"),
+                        "email": seller.get("email"),
+                        "gst_number": seller.get("gst_number"),
+                        "GST Number": seller.get("gst_number"),
                     }
 
                     enriched_data = await self.enrich_seller(generic_record)

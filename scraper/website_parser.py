@@ -1,5 +1,6 @@
 """Company website crawler and parser for extracting business identity and contact details."""
 
+import json
 import logging
 import re
 import urllib.parse
@@ -32,6 +33,8 @@ PRIORITY_SUBPATHS = [
     "/contact-us",
     "/about",
     "/about-us",
+    "/support",
+    "/customer-care",
     "/terms-and-conditions",
     "/terms",
     "/privacy-policy",
@@ -135,6 +138,45 @@ class WebsiteParser:
         """
         soup = BeautifulSoup(html_content, "lxml")
 
+        # 4A. JSON-LD Structured Data (extract before decomposing scripts)
+        email_candidates: List[str] = []
+        jsonld_gst = None
+        for script in soup.find_all("script", type="application/ld+json"):
+            script_text = script.get_text()
+            if not script_text:
+                continue
+            try:
+                data = json.loads(script_text)
+                items = data if isinstance(data, list) else [data]
+                for item in items:
+                    if isinstance(item, dict):
+                        if item.get("email"):
+                            v = validate_email(str(item["email"]))
+                            if v and v not in email_candidates:
+                                email_candidates.append(v)
+                        for gst_k in ["taxID", "vatID", "identifier", "gst", "gstin"]:
+                            if item.get(gst_k) and not jsonld_gst:
+                                v_g = validate_gst(str(item[gst_k]))
+                                if v_g:
+                                    jsonld_gst = v_g
+                                    break
+                        contact_points = item.get("contactPoint") or item.get("contactPoints")
+                        cps = contact_points if isinstance(contact_points, list) else ([contact_points] if isinstance(contact_points, dict) else [])
+                        for cp in cps:
+                            if isinstance(cp, dict):
+                                if cp.get("email"):
+                                    v = validate_email(str(cp["email"]))
+                                    if v and v not in email_candidates:
+                                        email_candidates.append(v)
+                                for gst_k in ["taxID", "vatID", "identifier", "gst", "gstin"]:
+                                    if cp.get(gst_k) and not jsonld_gst:
+                                        v_g = validate_gst(str(cp[gst_k]))
+                                        if v_g:
+                                            jsonld_gst = v_g
+                                            break
+            except Exception:
+                pass
+
         # Strip script and style tags for plain text scanning
         for s in soup(["script", "style", "noscript", "svg"]):
             s.decompose()
@@ -146,7 +188,7 @@ class WebsiteParser:
             "owner_name": None,
             "contact_number": None,
             "email": None,
-            "gst_number": None,
+            "gst_number": jsonld_gst,
             "pan_number": None,
             "fssai_number": None,
             "address": None,
@@ -154,12 +196,13 @@ class WebsiteParser:
         }
 
         # 1. GST Extraction
-        gst_matches = GST_REGEX.findall(plain_text)
-        for match in gst_matches:
-            valid = validate_gst(match)
-            if valid:
-                extracted["gst_number"] = valid
-                break
+        if not extracted["gst_number"]:
+            gst_matches = GST_REGEX.findall(plain_text)
+            for match in gst_matches:
+                valid = validate_gst(match)
+                if valid:
+                    extracted["gst_number"] = valid
+                    break
 
         # 2. PAN Extraction (or derived from GST)
         if extracted["gst_number"]:
@@ -186,22 +229,33 @@ class WebsiteParser:
                     extracted["fssai_number"] = valid_fssai
                     break
 
-        # 4. Email Extraction (check mailto links first, then regex)
+        # 4B. Mailto links
         for mailto in soup.select("a[href^='mailto:']"):
             href = mailto.get("href", "")
             candidate = href.replace("mailto:", "").split("?")[0].strip()
             valid = validate_email(candidate)
-            if valid:
-                extracted["email"] = valid
-                break
+            if valid and valid not in email_candidates:
+                email_candidates.append(valid)
 
-        if not extracted["email"]:
-            email_matches = EMAIL_REGEX.findall(plain_text)
-            for em in email_matches:
-                valid = validate_email(em)
-                if valid:
-                    extracted["email"] = valid
-                    break
+        # 4C. Regex matches across plain text
+        email_matches = EMAIL_REGEX.findall(plain_text)
+        for em in email_matches:
+            valid = validate_email(em)
+            if valid and valid not in email_candidates:
+                email_candidates.append(valid)
+
+        # 4D. Pick best email candidate (prefer sales@, contact@, info@, support@)
+        if email_candidates:
+            def _email_rank(e: str) -> int:
+                user = e.split("@")[0].lower()
+                if user in ("sales", "contact", "info", "support", "care", "help", "order", "orders"):
+                    return 3
+                if user in ("admin", "office", "business", "service"):
+                    return 2
+                return 1
+
+            email_candidates.sort(key=_email_rank, reverse=True)
+            extracted["email"] = email_candidates[0]
 
         # 5. Phone Extraction (check tel: links first, then regex)
         for tel in soup.select("a[href^='tel:']"):

@@ -367,8 +367,16 @@ async def test_enrichment_query_cap_and_exhaustion(monkeypatch):
         ]
         return junk_results, 200
 
+    async def mock_google(query: str):
+        return [], 200
+
+    async def mock_ddg(query: str):
+        return []
+
+    monkeypatch.setattr(engine, "_query_google", mock_google)
     monkeypatch.setattr(engine, "_query_bing", mock_bing)
     monkeypatch.setattr(engine, "_query_brave", mock_brave)
+    monkeypatch.setattr(engine, "_query_ddg", mock_ddg)
 
     seller_record = {
         "marketplace": "flipkart",

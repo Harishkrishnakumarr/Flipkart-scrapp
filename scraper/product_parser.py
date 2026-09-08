@@ -29,6 +29,15 @@ from typing import Any, Dict, List, Optional, Tuple
 from bs4 import BeautifulSoup, Tag
 
 from scraper.config import DEBUG_DIR
+from scraper.address_parser import parse_raw_address
+from scraper.validator import (
+    EMAIL_REGEX,
+    GST_REGEX,
+    PHONE_REGEX,
+    validate_email,
+    validate_gst,
+    validate_phone,
+)
 
 logger = logging.getLogger("FlipkartScraper.ProductParser")
 
@@ -706,17 +715,240 @@ def detect_flipkart_page_status(html_content: str, http_status: int = 200) -> st
     return "PRODUCT_PAGE"
 
 
+def extract_flipkart_seller_metadata(
+    soup: Optional[BeautifulSoup], html_text: str
+) -> Dict[str, Any]:
+    """Extract seller profile URL, location, address, phone number, and GSTIN directly from Flipkart page.
+
+    Checks:
+      - Embedded State JSON (window.__INITIAL_STATE__, __PRELOADED_STATE__, __PAGE_DATA__)
+      - JSON-LD structured data (<script type="application/ld+json">)
+      - Direct DOM links / anchors (seller links, tel: links)
+      - Seller details / contact / business details sections
+    """
+    meta: Dict[str, Any] = {
+        "seller_url": None,
+        "seller_location": None,
+        "city": None,
+        "state": None,
+        "pincode": None,
+        "phone": None,
+        "email": None,
+        "gst_number": None,
+        "raw_address": None,
+    }
+
+    if not html_text:
+        return meta
+
+    # 1. Inspect State JSON
+    m = re.search(r'window\.__INITIAL_STATE__\s*=\s*(\{.+?\})[\s;]*</script>', html_text, re.DOTALL)
+    if not m:
+        m = re.search(r'window\.__PRELOADED_STATE__\s*=\s*(\{.+?\})[\s;]*</script>', html_text, re.DOTALL)
+    if not m:
+        m = re.search(r'window\.__PAGE_DATA__\s*=\s*(\{.+?\})[\s;]*</script>', html_text, re.DOTALL)
+    if not m:
+        m = re.search(r'window\.__INITIAL_STATE__\s*=\s*(\{.+?\})[\s;]*<', html_text, re.DOTALL)
+
+    if m:
+        try:
+            raw_json_str = m.group(1)
+            # Find seller profile / seller URL
+            seller_url_m = re.search(r'["\'](?:sellerUrl|sellerProfileUrl|profileUrl)["\']\s*:\s*["\']([^"\']+)["\']', raw_json_str, re.I)
+            if seller_url_m:
+                u = seller_url_m.group(1).strip()
+                if u.startswith("/"):
+                    u = f"https://www.flipkart.com{u}"
+                meta["seller_url"] = u
+
+            # Find seller phone in state JSON
+            phone_m = re.search(r'["\'](?:sellerPhone|phone|mobile|contactNumber|telephone)["\']\s*:\s*["\']([^"\']+)["\']', raw_json_str, re.I)
+            if phone_m:
+                valid_p = validate_phone(phone_m.group(1))
+                if valid_p:
+                    meta["phone"] = valid_p
+
+            # Find seller email in state JSON
+            email_m = re.search(r'["\'](?:sellerEmail|email|contactEmail|supportEmail)["\']\s*:\s*["\']([^"\']+)["\']', raw_json_str, re.I)
+            if email_m:
+                valid_e = validate_email(email_m.group(1))
+                if valid_e:
+                    meta["email"] = valid_e
+
+            # Find seller GSTIN in state JSON
+            gst_m = re.search(r'["\'](?:sellerGst|sellerGSTIN|gstNumber|gstin|gst|taxId|taxIdentification|registrationNumber)["\']\s*:\s*["\']([^"\']+)["\']', raw_json_str, re.I)
+            if gst_m:
+                valid_g = validate_gst(gst_m.group(1))
+                if valid_g:
+                    meta["gst_number"] = valid_g
+
+            # Find seller location / address in state JSON
+            loc_m = re.search(r'["\'](?:sellerLocation|sellerAddress|location|pickupAddress)["\']\s*:\s*["\']([^"\']+)["\']', raw_json_str, re.I)
+            if loc_m:
+                loc_str = loc_m.group(1).strip()
+                if len(loc_str) >= 2:
+                    meta["seller_location"] = loc_str
+                    addr_parsed = parse_raw_address(loc_str)
+                    if addr_parsed.get("city"):
+                        meta["city"] = addr_parsed["city"]
+                    if addr_parsed.get("state"):
+                        meta["state"] = addr_parsed["state"]
+                    if addr_parsed.get("pincode"):
+                        meta["pincode"] = addr_parsed["pincode"]
+        except Exception:
+            pass
+
+    # 2. Inspect JSON-LD
+    if soup:
+        for script in soup.find_all("script", type="application/ld+json"):
+            if not script.string:
+                continue
+            try:
+                data = json.loads(script.string)
+                items = data if isinstance(data, list) else [data]
+                for item in items:
+                    offers = item.get("offers")
+                    offer_list = offers if isinstance(offers, list) else ([offers] if isinstance(offers, dict) else [])
+                    for offer in offer_list:
+                        if isinstance(offer, dict):
+                            seller = offer.get("seller")
+                            if isinstance(seller, dict):
+                                if not meta["seller_url"] and seller.get("url"):
+                                    su = seller["url"]
+                                    if su.startswith("/"):
+                                        su = f"https://www.flipkart.com{su}"
+                                    meta["seller_url"] = su
+                                if not meta["phone"] and seller.get("telephone"):
+                                    valid_p = validate_phone(seller["telephone"])
+                                    if valid_p:
+                                        meta["phone"] = valid_p
+                                if not meta["email"] and seller.get("email"):
+                                    valid_e = validate_email(seller["email"])
+                                    if valid_e:
+                                        meta["email"] = valid_e
+                                if not meta["gst_number"]:
+                                    for gst_k in ["taxID", "vatID", "identifier", "gst", "gstin"]:
+                                        if seller.get(gst_k):
+                                            valid_g = validate_gst(str(seller[gst_k]))
+                                            if valid_g:
+                                                meta["gst_number"] = valid_g
+                                                break
+                                if seller.get("address"):
+                                    addr = seller["address"]
+                                    if isinstance(addr, dict):
+                                        meta["city"] = meta["city"] or addr.get("addressLocality")
+                                        meta["state"] = meta["state"] or addr.get("addressRegion")
+                                        meta["pincode"] = meta["pincode"] or addr.get("postalCode")
+                                        if not meta["seller_location"]:
+                                            parts = [addr.get("streetAddress"), addr.get("addressLocality"), addr.get("addressRegion"), addr.get("postalCode")]
+                                            meta["seller_location"] = ", ".join([p for p in parts if p])
+            except Exception:
+                pass
+
+    # 3. Inspect DOM Links & Text
+    if soup:
+        # Check tel: links
+        if not meta["phone"]:
+            for a_tag in soup.find_all("a", href=True):
+                href = a_tag["href"]
+                if href.startswith("tel:"):
+                    raw_tel = href.replace("tel:", "").strip()
+                    valid_p = validate_phone(raw_tel)
+                    if valid_p:
+                        meta["phone"] = valid_p
+                        break
+
+        # Check mailto: links
+        if not meta["email"]:
+            for a_tag in soup.find_all("a", href=True):
+                href = a_tag["href"]
+                if href.startswith("mailto:"):
+                    raw_mailto = href.replace("mailto:", "").split("?")[0].strip()
+                    valid_e = validate_email(raw_mailto)
+                    if valid_e:
+                        meta["email"] = valid_e
+                        break
+
+        # Check seller link href
+        if not meta["seller_url"]:
+            for a_tag in soup.find_all("a", href=True):
+                href = a_tag["href"]
+                if ("/seller" in href or "/sellers" in href) and "seller.flipkart.com" not in href:
+                    full_href = href if href.startswith("http") else f"https://www.flipkart.com{href}"
+                    meta["seller_url"] = full_href
+                    break
+
+        # Check visible phone numbers in seller / contact section
+        if not meta["phone"]:
+            for seller_el in soup.find_all(lambda t: t.name in ["div", "span", "p", "section"] and t.text and ("seller details" in t.text.lower() or "contact seller" in t.text.lower() or "sold by" in t.text.lower())):
+                stext = seller_el.get_text(" ", strip=True)
+                ph_matches = PHONE_REGEX.findall(stext)
+                for ph in ph_matches:
+                    valid_p = validate_phone(ph)
+                    if valid_p and not any(valid_p.startswith(pfx) for pfx in ["1800", "01800", "911800"]):
+                        meta["phone"] = valid_p
+                        break
+                if meta["phone"]:
+                    break
+
+        # Check visible email in seller / contact section
+        if not meta["email"]:
+            for seller_el in soup.find_all(lambda t: t.name in ["div", "span", "p", "section"] and t.text and ("seller details" in t.text.lower() or "contact seller" in t.text.lower() or "sold by" in t.text.lower() or "grievance" in t.text.lower())):
+                stext = seller_el.get_text(" ", strip=True)
+                em_matches = EMAIL_REGEX.findall(stext)
+                for em in em_matches:
+                    valid_e = validate_email(em)
+                    if valid_e:
+                        meta["email"] = valid_e
+                        break
+                if meta["email"]:
+                    break
+
+        # Check visible location in seller / contact section
+        if not meta["seller_location"]:
+            for seller_el in soup.find_all(lambda t: t.name in ["div", "span", "p", "section"] and t.text and any(k in t.text.lower() for k in ["location:", "address:", "seller details", "sold by"])):
+                stext = seller_el.get_text(" ", strip=True)
+                loc_m = re.search(r"(?:Location|Address)\s*[:\-]\s*([A-Za-z0-9\s,.\-]+)", stext, re.I)
+                if loc_m:
+                    loc_val = loc_m.group(1).strip()
+                    if len(loc_val) >= 3:
+                        meta["seller_location"] = loc_val
+                        parsed_loc = parse_raw_address(loc_val)
+                        if parsed_loc.get("city"):
+                            meta["city"] = parsed_loc["city"]
+                        if parsed_loc.get("state"):
+                            meta["state"] = parsed_loc["state"]
+                        if parsed_loc.get("pincode"):
+                            meta["pincode"] = parsed_loc["pincode"]
+                        break
+
+        # Check visible GSTIN in seller / contact section
+        if not meta["gst_number"]:
+            for seller_el in soup.find_all(lambda t: t.name in ["div", "span", "p", "section", "tr", "td", "li"] and t.text and any(k in t.text.lower() for k in ["seller details", "contact seller", "sold by", "gstin", "gst no", "gst number", "tax id", "registration"])):
+                stext = seller_el.get_text(" ", strip=True)
+                gst_matches = GST_REGEX.findall(stext)
+                for gm in gst_matches:
+                    valid_g = validate_gst(gm)
+                    if valid_g:
+                        meta["gst_number"] = valid_g
+                        break
+                if meta["gst_number"]:
+                    break
+
+    return meta
+
+
 def parse_product_page(
     html_content: str, page_url: str = "", http_status: int = 200
 ) -> Dict[str, Any]:
-    """Extract seller name, fulfillment seller, and ratings from product page HTML.
+    """Extract seller name, fulfillment seller, ratings, location, and phone from product page HTML.
 
     Distinguishes:
       - CASE A: Page successfully loaded, seller genuinely unavailable -> Seller = NOT_FOUND
       - CASE B: Blocked / CAPTCHA -> Extraction Status = BLOCKED / CAPTCHA
       - CASE C: HTTP failure -> Extraction Status = REQUEST_FAILED
       - CASE D: Redirected -> Extraction Status = REDIRECTED
-      - CASE E: Seller exists -> Extract Seller Name, Fulfilled By, and Rating
+      - CASE E: Seller exists -> Extract Seller Name, Fulfilled By, Rating, Location, Phone
 
     Args:
         html_content: Raw HTML text of the Flipkart product page.
@@ -738,6 +970,9 @@ def parse_product_page(
 
     # Step 3: Extract and score all valid seller candidates
     candidates = find_seller_candidates_with_scores(soup, html_content)
+
+    # Step 4: Extract metadata (seller_url, seller_location, city, state, pincode, phone) directly from Flipkart page
+    seller_meta = extract_flipkart_seller_metadata(soup, html_content)
 
     # Pick highest scoring seller candidate
     selected_candidate: Optional[CandidateScore] = candidates[0] if candidates else None
@@ -784,7 +1019,10 @@ def parse_product_page(
         f"Seller HTML Found: {'YES' if has_seller_html else 'NO'}\n"
         f"Extracted Seller: {seller_name or 'NOT_FOUND'}\n"
         f"Fulfilled By Seller: {fulfilled_by_seller or 'N/A'}\n"
-        f"Rating: {seller_rating if seller_rating is not None else 'N/A'}"
+        f"Rating: {seller_rating if seller_rating is not None else 'N/A'}\n"
+        f"Flipkart GST: {seller_meta.get('gst_number') or 'NOT_FOUND'}\n"
+        f"Flipkart Phone: {seller_meta.get('phone') or 'NOT_FOUND'}\n"
+        f"Flipkart Location: {seller_meta.get('seller_location') or 'NOT_FOUND'}"
     )
 
     if not seller_name:
@@ -810,4 +1048,14 @@ def parse_product_page(
         "seller_confidence": seller_confidence,
         "rating_confidence": 0.95 if seller_rating else 0.0,
         "page_status": page_status,
+        "seller_url": seller_meta.get("seller_url"),
+        "seller_location": seller_meta.get("seller_location"),
+        "city": seller_meta.get("city"),
+        "state": seller_meta.get("state"),
+        "pincode": seller_meta.get("pincode"),
+        "contact_number": seller_meta.get("phone"),
+        "phone": seller_meta.get("phone"),
+        "email": seller_meta.get("email"),
+        "gst_number": seller_meta.get("gst_number"),
+        "gst": seller_meta.get("gst_number"),
     }

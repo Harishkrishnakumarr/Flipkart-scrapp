@@ -25,6 +25,7 @@
     "product_rating": 4.2,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
+<<<<<<< HEAD
     "enrichment_status": "completed",
     "first_seen": "2026-09-05T08:21:21.613203+00:00",
     "last_seen": "2026-09-05T12:04:26.750569+00:00",
@@ -114654,5 +114655,10 @@
     "enrichment_status": "pending",
     "first_seen": "2026-09-08T14:17:13.506988+00:00",
     "last_seen": "2026-09-08T14:17:13.506988+00:00"
+=======
+    "enrichment_status": "pending",
+    "first_seen": "2026-09-06T18:10:39.650382+00:00",
+    "last_seen": "2026-09-07T11:24:45.210444+00:00"
+>>>>>>> c5b1d94 (changed)
   }
 }

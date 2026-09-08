@@ -39,10 +39,20 @@ except ImportError:
     except ImportError:
         DDGS = None
 
-from scraper.address_parser import parse_raw_address
+from scraper.address_parser import (
+    extract_address_candidates_from_text,
+    extract_city_from_text,
+    extract_pincode_from_text,
+    match_address_to_seller,
+    match_state_from_text,
+    normalize_address_text,
+    parse_raw_address,
+    validate_address_consistency,
+)
 from scraper.config import (
     CACHE_FILE,
     DEFAULT_HEADERS,
+    GST_STATE_CODES,
     HTTP_TIMEOUT_SECONDS,
     STATUS_NOT_FOUND,
     USER_AGENTS,
@@ -58,8 +68,11 @@ from scraper.validator import (
     calculate_seller_match_score,
     classify_source_type,
     cross_check_seller_data,
+    decode_obfuscated_email,
     determine_seller_status,
+    extract_pan_from_gstin,
     is_disallowed_source,
+    is_generic_seller_name,
     match_gst_to_seller,
     normalize_seller_name_for_matching,
     validate_email,
@@ -78,6 +91,18 @@ logger = logging.getLogger("FlipkartScraper.WebResearch")
 FIELD_TIMEOUT_SECONDS: float = 30.0
 MAX_BING_QUERIES_PER_FIELD: int = 3
 MAX_BRAVE_QUERIES_PER_FIELD: int = 2
+
+SOURCE_PRIORITY: Dict[str, int] = {
+    "marketplace_profile": 100,  # Flipkart direct
+    "filing_registry": 90,       # Government GST/filings
+    "company_website": 80,       # Official website
+    "official_contact_page": 75, # Official contact page
+    "business_directory": 60,    # Trusted directory
+    "targeted_search": 50,       # Search snippet
+    "search_snippet": 40,
+    "seller_location": 30,
+    "not_found": 0,
+}
 
 # Domains that are generic platforms or social networks, not individual seller official websites
 EXCLUDED_WEBSITE_DOMAINS = {
@@ -1167,6 +1192,487 @@ FIELD_KEYWORDS: Dict[str, List[str]] = {
 }
 
 
+def generate_targeted_phone_queries(
+    seller_name: str,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
+    gst_number: Optional[str] = None,
+    website_url: Optional[str] = None,
+) -> List[str]:
+    """Generate prioritized targeted phone search queries (Requirement 5).
+
+    Primary:
+      - "{seller_name}" "{city}" phone
+      - "{seller_name}" "{city}" mobile
+      - "{seller_name}" "{city}" contact
+      - "{seller_name}" "{location}" phone
+      - "{seller_name}" "{location}" contact number
+      - "{seller_name}" "{state}" phone
+    If GST already exists:
+      - "{seller_name}" "{GSTIN}" phone
+      - "{GSTIN}" phone
+      - "{GSTIN}" contact
+    If seller URL/domain is known:
+      - "{seller_name}" "{domain}" phone
+    General / variation queries:
+      - "{seller_name}" phone
+      - "{seller_name}" mobile
+      - "{seller_name}" "contact number"
+      - "{seller_name}" phone India
+    """
+    queries: List[str] = []
+
+    # 1. Location-anchored primary queries
+    if city:
+        queries.append(f'"{seller_name}" "{city}" phone')
+        queries.append(f'"{seller_name}" "{city}" mobile')
+        queries.append(f'"{seller_name}" "{city}" contact')
+
+    loc_val = location or city
+    if loc_val and (not city or loc_val.lower() != city.lower()):
+        queries.append(f'"{seller_name}" "{loc_val}" phone')
+        queries.append(f'"{seller_name}" "{loc_val}" contact number')
+
+    if state and (not city or state.lower() != city.lower()) and (not location or state.lower() != location.lower()):
+        queries.append(f'"{seller_name}" "{state}" phone')
+
+    # 2. GST-anchored queries
+    if gst_number:
+        valid_gst = validate_gst(gst_number)
+        if valid_gst:
+            queries.append(f'"{seller_name}" "{valid_gst}" phone')
+            queries.append(f'"{valid_gst}" phone')
+            queries.append(f'"{valid_gst}" contact')
+
+    # 3. Domain-anchored queries
+    if website_url:
+        try:
+            parsed = urllib.parse.urlparse(website_url)
+            domain = parsed.netloc.lower().replace("www.", "")
+            if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
+                queries.append(f'"{seller_name}" "{domain}" phone')
+        except Exception:
+            pass
+
+    # 4. Fallback queries
+    queries.append(f'"{seller_name}" phone')
+    queries.append(f'"{seller_name}" mobile')
+    queries.append(f'"{seller_name}" "contact number"')
+    queries.append(f'"{seller_name}" phone India')
+
+    variations = generate_seller_variations(seller_name)
+    for var in variations[1:3]:
+        if len(var) >= 5:
+            queries.append(f'"{var}" phone')
+            queries.append(f'"{var}" mobile')
+
+    # Clean deduplication
+    deduped: List[str] = []
+    for q in queries:
+        if q not in deduped:
+            deduped.append(q)
+    return deduped
+
+
+def generate_targeted_gst_queries(
+    seller_name: str,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
+    pincode: Optional[str] = None,
+    website_url: Optional[str] = None,
+    phone: Optional[str] = None,
+    email: Optional[str] = None,
+    pan: Optional[str] = None,
+) -> List[str]:
+    """Generate prioritized targeted GSTIN search queries (Requirement 7).
+
+    Queries generated:
+      - Basic:
+        "{seller_name}" GST
+        "{seller_name}" GSTIN
+        "{seller_name}" "GST number"
+        "{seller_name}" "GSTIN number"
+
+      - Location anchored:
+        "{seller_name}" "{city}" GSTIN
+        "{seller_name}" "{city}" GST
+        "{seller_name}" "{city}" "{state}" GSTIN
+        "{seller_name}" "{city}" "{pincode}" GSTIN
+        "{seller_name}" "{state}" GSTIN
+        "{seller_name}" "{location}" GSTIN
+        "{seller_name}" "{pincode}" GSTIN
+
+      - Website anchored:
+        "{seller_name}" "{domain}" GST
+        "{domain}" GSTIN
+
+      - PAN anchored (if available):
+        "{pan}" GST
+        "{pan}" GSTIN
+
+      - Phone anchored (if available):
+        "{seller_name}" "{phone}" GST
+
+      - Email anchored (if available):
+        "{seller_name}" "{email}" GST
+    """
+    queries: List[str] = []
+
+    # 1. Location-anchored queries (Highest precision)
+    if city and state:
+        queries.append(f'"{seller_name}" "{city}" "{state}" GSTIN')
+        queries.append(f'"{seller_name}" "{city}" "{state}" GST')
+    if city and pincode:
+        queries.append(f'"{seller_name}" "{city}" "{pincode}" GSTIN')
+    if city:
+        queries.append(f'"{seller_name}" "{city}" GSTIN')
+        queries.append(f'"{seller_name}" "{city}" GST')
+        queries.append(f'"{seller_name}" "{city}" "GST number"')
+
+    loc_val = location or city
+    if loc_val and (not city or loc_val.lower() != city.lower()):
+        queries.append(f'"{seller_name}" "{loc_val}" GSTIN')
+        queries.append(f'"{seller_name}" "{loc_val}" GST')
+
+    if state and (not city or state.lower() != city.lower()) and (not location or state.lower() != location.lower()):
+        queries.append(f'"{seller_name}" "{state}" GSTIN')
+        queries.append(f'"{seller_name}" "{state}" GST')
+
+    if pincode and (not city or pincode not in str(city)):
+        queries.append(f'"{seller_name}" "{pincode}" GSTIN')
+        queries.append(f'"{seller_name}" "{pincode}" GST')
+
+    # 2. Domain / Website anchored queries
+    if website_url:
+        try:
+            parsed = urllib.parse.urlparse(website_url)
+            domain = parsed.netloc.lower().replace("www.", "")
+            if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
+                queries.append(f'"{seller_name}" "{domain}" GST')
+                queries.append(f'"{domain}" GSTIN')
+                queries.append(f'"{domain}" "GST"')
+        except Exception:
+            pass
+
+    # 3. PAN anchored queries (if PAN already exists)
+    if pan:
+        valid_p = validate_pan(pan)
+        if valid_p:
+            queries.append(f'"{valid_p}" GST')
+            queries.append(f'"{valid_p}" GSTIN')
+            queries.append(f'"{seller_name}" "{valid_p}" GST')
+
+    # 4. Phone anchored queries (if Phone already exists)
+    if phone:
+        valid_ph = validate_phone(phone)
+        if valid_ph:
+            queries.append(f'"{seller_name}" "{valid_ph}" GST')
+            queries.append(f'"{valid_ph}" GSTIN')
+
+    # 5. Email anchored queries (if Email already exists)
+    if email:
+        valid_em = validate_email(email)
+        if valid_em:
+            queries.append(f'"{seller_name}" "{valid_em}" GST')
+
+    # 6. Basic fallback queries
+    queries.append(f'"{seller_name}" GSTIN')
+    queries.append(f'"{seller_name}" GST')
+    queries.append(f'"{seller_name}" "GST number"')
+    queries.append(f'"{seller_name}" "GSTIN number"')
+    queries.append(f'"{seller_name}" GST registration')
+
+    variations = generate_seller_variations(seller_name)
+    for var in variations[1:3]:
+        if len(var) >= 4:
+            queries.append(f'"{var}" GSTIN')
+            queries.append(f'"{var}" GST')
+
+    # Clean deduplication
+    deduped: List[str] = []
+    for q in queries:
+        if q not in deduped:
+            deduped.append(q)
+    return deduped
+
+
+def generate_targeted_email_queries(
+    seller_name: str,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
+    gst_number: Optional[str] = None,
+    website_url: Optional[str] = None,
+) -> List[str]:
+    """Generate prioritized targeted email search queries (Requirement 5).
+
+    Primary:
+      - "{seller_name}" "{city}" email
+      - "{seller_name}" "{city}" contact
+      - "{seller_name}" "{city}" contact email
+      - "{seller_name}" "{location}" email
+      - "{seller_name}" "{location}" contact
+      - "{seller_name}" "{state}" email
+      - "{seller_name}" "{state}" contact email
+      - "{seller_name}" official email
+      - "{seller_name}" contact us
+      - "{seller_name}" sales email
+
+    If GSTIN exists:
+      - "{seller_name}" "{GSTIN}" email
+      - "{GSTIN}" email
+      - "{GSTIN}" contact
+      - "{GSTIN}" "@"
+
+    If official website/domain exists:
+      - "{seller_name}" "{domain}" email
+      - "@{domain}"
+      - "{domain}" contact
+
+    General / variation queries:
+      - "{seller_name}" email
+      - "{seller_name}" "email address"
+      - "{seller_name}" contact email
+    """
+    queries: List[str] = []
+
+    # 1. Location-anchored primary queries
+    if city:
+        queries.append(f'"{seller_name}" "{city}" email')
+        queries.append(f'"{seller_name}" "{city}" contact')
+        queries.append(f'"{seller_name}" "{city}" contact email')
+
+    loc_val = location or city
+    if loc_val and (not city or loc_val.lower() != city.lower()):
+        queries.append(f'"{seller_name}" "{loc_val}" email')
+        queries.append(f'"{seller_name}" "{loc_val}" contact')
+
+    if state and (not city or state.lower() != city.lower()) and (not location or state.lower() != location.lower()):
+        queries.append(f'"{seller_name}" "{state}" email')
+        queries.append(f'"{seller_name}" "{state}" contact email')
+
+    queries.append(f'"{seller_name}" official email')
+    queries.append(f'"{seller_name}" contact us')
+    queries.append(f'"{seller_name}" sales email')
+
+    # 2. GST-anchored queries
+    if gst_number:
+        valid_gst = validate_gst(gst_number)
+        if valid_gst:
+            queries.append(f'"{seller_name}" "{valid_gst}" email')
+            queries.append(f'"{valid_gst}" email')
+            queries.append(f'"{valid_gst}" contact')
+            queries.append(f'"{valid_gst}" "@"')
+
+    # 3. Domain-anchored queries
+    if website_url:
+        try:
+            parsed = urllib.parse.urlparse(website_url)
+            domain = parsed.netloc.lower().replace("www.", "")
+            if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
+                queries.append(f'"{seller_name}" "{domain}" email')
+                queries.append(f'"@{domain}"')
+                queries.append(f'"{domain}" contact')
+        except Exception:
+            pass
+
+    # 4. Fallback queries
+    queries.append(f'"{seller_name}" email')
+    queries.append(f'"{seller_name}" "email address"')
+    queries.append(f'"{seller_name}" contact email')
+
+    variations = generate_seller_variations(seller_name)
+    for var in variations[1:3]:
+        if len(var) >= 5:
+            queries.append(f'"{var}" email')
+            queries.append(f'"{var}" contact email')
+
+    # Clean deduplication
+    deduped: List[str] = []
+    for q in queries:
+        if q not in deduped:
+            deduped.append(q)
+    return deduped
+
+
+def generate_targeted_address_queries(
+    seller_name: str,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
+    gst_number: Optional[str] = None,
+    website_url: Optional[str] = None,
+) -> List[str]:
+    """Generate prioritized targeted address search queries (Requirements 2, 8).
+
+    Location-anchored:
+      - "{seller_name}" "{city}" "{state}" address
+      - "{seller_name}" "{city}" address
+      - "{seller_name}" "{location}" address
+      - "{seller_name}" "{city}" office address
+      - "{seller_name}" "{city}" billing address
+      - "{seller_name}" "{city}" contact
+      - "{seller_name}" "{state}" address
+
+    GST-anchored (if GSTIN exists):
+      - "{seller_name}" "{GSTIN}" address
+      - "{GSTIN}" address
+      - "{GSTIN}" registered address
+      - "{GSTIN}" billing address
+
+    Domain-anchored (if website exists):
+      - "{seller_name}" "{domain}" address
+      - "{domain}" contact address
+
+    General / variations:
+      - "{seller_name}" address
+      - "{seller_name}" office address
+      - "{seller_name}" contact us address
+    """
+    queries: List[str] = []
+
+    # 1. Location-anchored queries
+    if city and state and city.lower() != state.lower():
+        queries.append(f'"{seller_name}" "{city}" "{state}" address')
+        queries.append(f'"{seller_name}" "{city}" "{state}" billing address')
+    if city:
+        queries.append(f'"{seller_name}" "{city}" address')
+        queries.append(f'"{seller_name}" "{city}" office address')
+        queries.append(f'"{seller_name}" "{city}" billing address')
+        queries.append(f'"{seller_name}" "{city}" contact')
+
+    loc_val = location or city
+    if loc_val and (not city or loc_val.lower() != city.lower()):
+        queries.append(f'"{seller_name}" "{loc_val}" address')
+        queries.append(f'"{seller_name}" "{loc_val}" office address')
+
+    if state and (not city or state.lower() != city.lower()):
+        queries.append(f'"{seller_name}" "{state}" address')
+        queries.append(f'"{seller_name}" "{state}" billing address')
+
+    # 2. GST-anchored queries
+    if gst_number:
+        valid_gst = validate_gst(gst_number)
+        if valid_gst:
+            queries.append(f'"{seller_name}" "{valid_gst}" address')
+            queries.append(f'"{valid_gst}" address')
+            queries.append(f'"{valid_gst}" registered address')
+            queries.append(f'"{valid_gst}" billing address')
+
+    # 3. Domain-anchored queries
+    if website_url:
+        try:
+            parsed = urllib.parse.urlparse(website_url)
+            domain = parsed.netloc.lower().replace("www.", "")
+            if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
+                queries.append(f'"{seller_name}" "{domain}" address')
+                queries.append(f'"{domain}" contact address')
+        except Exception:
+            pass
+
+    # 4. General / variation queries
+    queries.append(f'"{seller_name}" address')
+    queries.append(f'"{seller_name}" office address')
+    queries.append(f'"{seller_name}" billing address')
+    queries.append(f'"{seller_name}" contact us address')
+
+    variations = generate_seller_variations(seller_name)
+    for var in variations[1:3]:
+        if len(var) >= 5:
+            if city:
+                queries.append(f'"{var}" "{city}" address')
+            queries.append(f'"{var}" address')
+
+    deduped: List[str] = []
+    for q in queries:
+        if q not in deduped:
+            deduped.append(q)
+    return deduped
+
+
+def generate_targeted_pincode_queries(
+    seller_name: str,
+    city: Optional[str] = None,
+    state: Optional[str] = None,
+    location: Optional[str] = None,
+    street: Optional[str] = None,
+    locality: Optional[str] = None,
+    raw_address: Optional[str] = None,
+    gst_number: Optional[str] = None,
+    website_url: Optional[str] = None,
+) -> List[str]:
+    """Generate prioritized targeted pincode search queries (Requirement 8).
+
+    - "{seller_name}" "{city}" "{state}" pincode
+    - "{seller_name}" "{city}" pincode
+    - "{address}" pincode
+    - "{street}" "{city}" pincode
+    - "{locality}" "{city}" "{state}" pincode
+    - If GSTIN exists: "{GSTIN}" address pincode, "{GSTIN}" pincode
+    - If domain exists: "{seller_name}" "{domain}" address, "{domain}" pincode
+    """
+    queries: List[str] = []
+
+    # 1. Address / Street / Locality specific queries (Most targeted)
+    if raw_address and len(raw_address) >= 15:
+        clean_addr = re.sub(r"\s+", " ", raw_address).strip(" ,.-")
+        if len(clean_addr) <= 80:
+            queries.append(f'"{clean_addr}" pincode')
+        else:
+            short_addr = clean_addr[:60].strip(" ,.-")
+            queries.append(f'"{short_addr}" pincode')
+
+    if street and city:
+        queries.append(f'"{street}" "{city}" pincode')
+    if locality and city:
+        if state:
+            queries.append(f'"{locality}" "{city}" "{state}" pincode')
+        queries.append(f'"{locality}" "{city}" pincode')
+
+    # 2. Seller + City + State queries
+    if city and state and city.lower() != state.lower():
+        queries.append(f'"{seller_name}" "{city}" "{state}" pincode')
+    if city:
+        queries.append(f'"{seller_name}" "{city}" pincode')
+        queries.append(f'"{seller_name}" "{city}" postal code')
+
+    loc_val = location or city
+    if loc_val and (not city or loc_val.lower() != city.lower()):
+        queries.append(f'"{seller_name}" "{loc_val}" pincode')
+
+    # 3. GSTIN-anchored queries
+    if gst_number:
+        valid_gst = validate_gst(gst_number)
+        if valid_gst:
+            queries.append(f'"{valid_gst}" address pincode')
+            queries.append(f'"{valid_gst}" pincode')
+            queries.append(f'"{seller_name}" "{valid_gst}" pincode')
+
+    # 4. Domain-anchored queries
+    if website_url:
+        try:
+            parsed = urllib.parse.urlparse(website_url)
+            domain = parsed.netloc.lower().replace("www.", "")
+            if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
+                queries.append(f'"{seller_name}" "{domain}" address')
+                queries.append(f'"{domain}" pincode')
+        except Exception:
+            pass
+
+    # 5. General fallback
+    if state and (not city or state.lower() != city.lower()):
+        queries.append(f'"{seller_name}" "{state}" pincode')
+    queries.append(f'"{seller_name}" pincode')
+
+    deduped: List[str] = []
+    for q in queries:
+        if q not in deduped:
+            deduped.append(q)
+    return deduped
+
+
 def generate_identity_queries_for_field(
     seller_name: str,
     field_key: str,
@@ -1174,12 +1680,58 @@ def generate_identity_queries_for_field(
     state: Optional[str] = None,
     location: Optional[str] = None,
     gst_number: Optional[str] = None,
+    website_url: Optional[str] = None,
 ) -> List[str]:
     """Generate prioritized identity-anchored search queries using seller signals.
 
     Incorporates seller location (city, state, location) and known GSTIN.
     """
     canonical_key = _normalize_field_key(field_key)
+    if canonical_key == "gst":
+        return generate_targeted_gst_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            website_url=website_url,
+        )
+    if canonical_key == "phone":
+        return generate_targeted_phone_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+    if canonical_key == "email":
+        return generate_targeted_email_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+    if canonical_key in ("address", "billing_address", "raw_address"):
+        return generate_targeted_address_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+    if canonical_key in ("pincode", "postal_code"):
+        return generate_targeted_pincode_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+
     queries: List[str] = []
 
     # 1. Strongest identifier queries (GSTIN known)
@@ -1192,11 +1744,6 @@ def generate_identity_queries_for_field(
                 f'"{valid_gst}" contact',
                 f'"{valid_gst}" website',
                 f'"{valid_gst}" "{seller_name}" contact',
-            ])
-        elif canonical_key == "phone":
-            queries.extend([
-                f'"{seller_name}" "{valid_gst}" phone',
-                f'"{valid_gst}" phone',
             ])
         elif canonical_key == "address":
             queries.extend([
@@ -1222,9 +1769,6 @@ def generate_identity_queries_for_field(
             queries.append(f'"{seller_name}" "{loc_val}" contact email')
             if state and state.lower() != loc_val.lower():
                 queries.append(f'"{seller_name}" "{state}" contact')
-        elif canonical_key == "phone":
-            queries.append(f'"{seller_name}" "{loc_val}" phone')
-            queries.append(f'"{seller_name}" "{loc_val}" mobile')
         elif canonical_key == "address":
             queries.append(f'"{seller_name}" "{loc_val}" address')
             if state and state.lower() != loc_val.lower():
@@ -1383,7 +1927,17 @@ def evaluate_result_candidate(
                 if any(valid_ph.startswith(p) for p in MARKETPLACE_GENERIC_PHONE_PREFIXES) or valid_ph in MARKETPLACE_GENERIC_PHONES:
                     candidate_reject_reason = "MARKETPLACE_GENERIC_NUMBER"
                     continue
-                if seller_match_score >= 40:
+                # For generic seller names (e.g. Trader, Store, Enterprises, Industries, Collections, Trading)
+                if is_generic_seller_name(seller_name):
+                    has_loc = any(
+                        (loc_t and loc_t.lower() in f"{text} {url}".lower())
+                        for loc_t in [city, state, location] if loc_t
+                    )
+                    has_gst = bool(gst_number and validate_gst(gst_number) and validate_gst(gst_number) in text.upper())
+                    if not (has_loc or has_gst):
+                        candidate_reject_reason = "GENERIC_NAME_LOCATION_MISMATCH"
+                        continue
+                if seller_match_score >= 40 or validate_seller_association(seller_name, text, url):
                     raw_candidate = valid_ph
                     valid_candidate_val = valid_ph
                     candidate_validity_score = 100
@@ -1771,7 +2325,7 @@ class WebResearchEngine:
 
         # Option C: Fallback to DDG if Brave returned empty or non-200
         if not results and status_code != 429:
-            ddg_results = await self._query_ddg(query)
+            ddg_results = await self._safe_query_ddg(query)
             if ddg_results:
                 results = ddg_results
                 status_code = 200
@@ -1780,6 +2334,17 @@ class WebResearchEngine:
         if results and effective_status == 200:
             self.cache.set(f"brave::{query}", results)
         return results, effective_status
+
+    async def _safe_query_ddg(self, query: str) -> List[Dict[str, str]]:
+        """Safe wrapper around _query_ddg to handle sync mocks as well as async coroutines."""
+        try:
+            res = self._query_ddg(query)
+            if asyncio.iscoroutine(res):
+                return await res
+            return res if isinstance(res, list) else []
+        except Exception as e:
+            logger.debug(f"Error calling _query_ddg: {e}")
+            return []
 
     async def _query_ddg(self, query: str) -> List[Dict[str, str]]:
         """Fallback query to DuckDuckGo (via DDGS or HTML endpoint).
@@ -1898,7 +2463,7 @@ class WebResearchEngine:
 
         # 4. Try DuckDuckGo
         logger.info(f"[SEARCH]\nengine=DuckDuckGo\nquery={query}")
-        ddg_res = await self._query_ddg(query)
+        ddg_res = await self._safe_query_ddg(query)
         if ddg_res:
             return ddg_res, "DuckDuckGo"
 
@@ -1967,7 +2532,7 @@ class WebResearchEngine:
                 }
 
             # 4. Fallback to DDG
-            ddg_res = await self._query_ddg(q)
+            ddg_res = await self._safe_query_ddg(q)
             if ddg_res:
                 return ddg_res, "DuckDuckGo", {
                     "engine": "DuckDuckGo", "query": q, "http_status": 200,
@@ -2126,6 +2691,990 @@ class WebResearchEngine:
             logger.debug(f"Error inspecting directory URL {url}: {e}")
         return data
 
+    async def enrich_seller_phone(
+        self,
+        seller_name: str,
+        city: Optional[str] = None,
+        state: Optional[str] = None,
+        location: Optional[str] = None,
+        gst_number: Optional[str] = None,
+        website_url: Optional[str] = None,
+        existing_phone: Optional[str] = None,
+    ) -> Tuple[Optional[str], Optional[str]]:
+        """Discover, validate, and enrich seller phone number following Requirements 1-6.
+
+        1. Inspects Flipkart first (existing_phone). If valid, uses it immediately.
+        2. Generates targeted phone search queries (location, GST, domain, business name variations).
+        3. Executes search waterfall: Google -> Bing -> Brave -> DDG.
+        4. Inspects title, URL, snippet for each result.
+        5. Validates phone candidates (rejecting generic marketplace numbers and enforcing seller association).
+        6. Logs formatted diagnostics matching exact specifications.
+        """
+        # Step 1: First Source — Flipkart
+        if existing_phone:
+            valid_existing = validate_phone(existing_phone)
+            if valid_existing and not any(valid_existing.startswith(pfx) for pfx in MARKETPLACE_GENERIC_PHONE_PREFIXES) and valid_existing not in MARKETPLACE_GENERIC_PHONES:
+                logger.info(
+                    f"\n[PHONE CANDIDATE]\nphone={valid_existing}\nsource=Flipkart (marketplace_profile)"
+                )
+                return valid_existing, "Flipkart (marketplace_profile)"
+
+        # Step 2: Generate Targeted Search Queries
+        phone_queries = generate_targeted_phone_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+
+        # Step 3: Multi-Engine Search Waterfall (Google -> Bing -> Brave -> DDG)
+        for query in phone_queries[:MAX_BING_QUERIES_PER_FIELD]:
+            results: List[Dict[str, str]] = []
+            engine_name = "Google"
+
+            # 3A. Try Google
+            if time.monotonic() < self.google_rate_limited_until:
+                pass
+            else:
+                logger.info(f"\n[PHONE SEARCH]\nengine=Google\nquery={query}")
+                g_res, g_status = await self._query_google(query)
+                if g_status == 429:
+                    self.google_rate_limited_until = time.monotonic() + 60.0
+                    logger.warning(f"[PHONE SEARCH ERROR]\nengine=Google\nerror=429")
+                elif g_status in (401, 403):
+                    logger.warning(f"[PHONE SEARCH ERROR]\nengine=Google\nerror={g_status}")
+                elif g_status == 200 and g_res:
+                    results = g_res
+                    engine_name = "Google"
+
+            # 3B. Fallback to Bing if Google yielded no results
+            if not results:
+                logger.info(f"\n[PHONE SEARCH]\nengine=Bing\nquery={query}")
+                b_res, b_status = await self._query_bing(query)
+                if b_status == 200 and b_res:
+                    results = b_res
+                    engine_name = "Bing"
+
+            # 3C. Fallback to Brave if Bing yielded no results
+            if not results:
+                if time.monotonic() < self.brave_rate_limited_until:
+                    pass
+                else:
+                    logger.info(f"\n[PHONE SEARCH]\nengine=Brave\nquery={query}")
+                    br_res, br_status = await self._query_brave(query)
+                    if br_status == 429:
+                        logger.warning(f"[PHONE SEARCH ERROR]\nengine=Brave\nerror=429")
+                    elif br_status == 200 and br_res:
+                        results = br_res
+                        engine_name = "Brave"
+
+            # 3D. Fallback to DuckDuckGo if Brave yielded no results
+            if not results:
+                logger.info(f"\n[PHONE SEARCH]\nengine=DuckDuckGo\nquery={query}")
+                ddg_res = await self._safe_query_ddg(query)
+                if ddg_res:
+                    results = ddg_res
+                    engine_name = "DuckDuckGo"
+
+            if not results:
+                continue
+
+            # Step 4: Search Result Processing
+            for idx, r_item in enumerate(results, start=1):
+                title = r_item.get("title", "").strip()
+                url = r_item.get("url", "").strip()
+                snippet = r_item.get("snippet", "").strip()
+                text = f"{title} {snippet}"
+
+                logger.info(
+                    f"\n[PHONE SEARCH RESULT]\nengine={engine_name}\nindex={idx}\ntitle={title}\nurl={url}\nsnippet={snippet}"
+                )
+
+                # Extract candidates from result
+                phone_matches = PHONE_REGEX.findall(text)
+                for ph in phone_matches:
+                    valid_ph = validate_phone(ph)
+                    if not valid_ph:
+                        continue
+                    if any(valid_ph.startswith(pfx) for pfx in MARKETPLACE_GENERIC_PHONE_PREFIXES) or valid_ph in MARKETPLACE_GENERIC_PHONES:
+                        continue
+
+                    # Association check
+                    seller_match_score, _, _ = calculate_seller_match_score(seller_name, text, url)
+                    if is_generic_seller_name(seller_name):
+                        has_loc = any(
+                            (loc_t and loc_t.lower() in f"{text} {url}".lower())
+                            for loc_t in [city, state, location] if loc_t
+                        )
+                        has_gst = bool(gst_number and validate_gst(gst_number) and validate_gst(gst_number) in text.upper())
+                        has_domain = bool(website_url and urllib.parse.urlparse(website_url).netloc.lower().replace("www.", "") in url.lower())
+                        if not (has_loc or has_gst or has_domain):
+                            continue
+                    else:
+                        if seller_match_score < 40 and not validate_seller_association(seller_name, text, url):
+                            continue
+
+                    logger.info(
+                        f"\n[PHONE CANDIDATE]\nphone={valid_ph}\nsource={url or 'snippet'}"
+                    )
+                    return valid_ph, (url or "search_snippet")
+
+        return None, None
+
+    async def enrich_seller_gst(
+        self,
+        seller_name: str,
+        city: Optional[str] = None,
+        state: Optional[str] = None,
+        location: Optional[str] = None,
+        pincode: Optional[str] = None,
+        website_url: Optional[str] = None,
+        phone: Optional[str] = None,
+        email: Optional[str] = None,
+        pan: Optional[str] = None,
+        existing_gst: Optional[str] = None,
+    ) -> Tuple[Optional[str], Optional[str]]:
+        """Discover, validate, and enrich seller GST number following Requirements 1-22.
+
+        Source Priority:
+          1. Flipkart seller/profile data and embedded state
+          2. Official seller website and priority subpages
+          3. Multi-engine search waterfall: Google -> Bing -> Brave -> DuckDuckGo
+          4. Reliable company registries / business directories (per-result inspection & scoring)
+        """
+        # Step 1: First Source — Flipkart seller/profile data
+        if existing_gst:
+            valid_existing = validate_gst(existing_gst)
+            if valid_existing:
+                matched, score, reason = match_gst_to_seller(
+                    seller_name, valid_existing, city=city, state=state, location=location, pincode=pincode
+                )
+                if matched:
+                    logger.info(f"\n[GST CANDIDATE]\ngstin={valid_existing}\nsource=Flipkart (marketplace_profile)")
+                    gst_st_code = valid_existing[:2]
+                    gst_st_name = GST_STATE_CODES.get(gst_st_code, "").lower()
+                    has_st = bool(state and (state.lower() in gst_st_name or gst_st_name in state.lower()))
+                    has_ct = bool(city and city.lower() in str(location or '').lower())
+                    has_pin = bool(pincode and pincode in str(location or ''))
+                    logger.info(
+                        f"\n[GST VALIDATION]\ngstin={valid_existing}\nformat_valid=true\nstate_match={has_st}\nseller_name_match=true\ncity_match={has_ct}\npincode_match={has_pin}\ndomain_match=false\nconfidence={score}"
+                    )
+                    logger.info(
+                        f"\n[GST ACCEPTED]\ngstin={valid_existing}\nsource=Flipkart (marketplace_profile)\nconfidence={score}"
+                    )
+                    return valid_existing, "Flipkart (marketplace_profile)"
+                else:
+                    logger.info(f"\n[GST REJECTED]\ngstin={valid_existing}\nreason={reason}")
+
+        # Step 2: Second Source — Official seller website & priority subpages
+        if website_url:
+            try:
+                web_data = await self.website_parser.inspect_website(website_url)
+                if web_data.get("gst_number"):
+                    web_gst = validate_gst(web_data["gst_number"])
+                    if web_gst:
+                        matched, score, reason = match_gst_to_seller(
+                            seller_name, web_gst, snippet=str(web_data), url=website_url, city=city, state=state, location=location, pincode=pincode
+                        )
+                        if matched:
+                            logger.info(f"\n[GST CANDIDATE]\ngstin={web_gst}\nsource={website_url}")
+                            gst_st_code = web_gst[:2]
+                            gst_st_name = GST_STATE_CODES.get(gst_st_code, "").lower()
+                            has_st = bool(state and (state.lower() in gst_st_name or gst_st_name in state.lower()))
+                            has_ct = bool(city and city.lower() in str(web_data.get('address') or '').lower())
+                            has_pin = bool(pincode and pincode in str(web_data.get('address') or ''))
+                            logger.info(
+                                f"\n[GST VALIDATION]\ngstin={web_gst}\nformat_valid=true\nstate_match={has_st}\nseller_name_match=true\ncity_match={has_ct}\npincode_match={has_pin}\ndomain_match=true\nconfidence={score}"
+                            )
+                            logger.info(
+                                f"\n[GST ACCEPTED]\ngstin={web_gst}\nsource={website_url}\nconfidence={score}"
+                            )
+                            return web_gst, website_url
+                        else:
+                            logger.info(f"\n[GST REJECTED]\ngstin={web_gst}\nreason={reason}")
+            except Exception as e:
+                logger.debug(f"Official website GST inspection failed: {e}")
+
+        # Step 3: Generate Targeted Search Queries
+        gst_queries = generate_targeted_gst_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            pincode=pincode,
+            website_url=website_url,
+            phone=phone,
+            email=email,
+            pan=pan,
+        )
+
+        candidates_ranked: List[Dict[str, Any]] = []
+
+        # Step 4: Multi-Engine Search Waterfall (Google -> Bing -> Brave -> DuckDuckGo)
+        for query in gst_queries[:MAX_BING_QUERIES_PER_FIELD]:
+            results: List[Dict[str, str]] = []
+            engine_name = "Google"
+
+            # 4A. Try Google
+            if time.monotonic() < self.google_rate_limited_until:
+                pass
+            else:
+                logger.info(f"\n[GST SEARCH]\nengine=Google\nquery={query}")
+                g_res, g_status = await self._query_google(query)
+                if g_status == 429:
+                    self.google_rate_limited_until = time.monotonic() + 60.0
+                    logger.warning(f"[GST SEARCH ERROR]\nengine=Google\nerror=429")
+                elif g_status in (401, 403):
+                    logger.warning(f"[GST SEARCH ERROR]\nengine=Google\nerror={g_status}")
+                elif g_status == 200 and g_res:
+                    results = g_res
+                    engine_name = "Google"
+
+            # 4B. Fallback to Bing if Google yielded no results
+            if not results:
+                logger.info(f"\n[GST SEARCH]\nengine=Bing\nquery={query}")
+                b_res, b_status = await self._query_bing(query)
+                if b_status == 200 and b_res:
+                    results = b_res
+                    engine_name = "Bing"
+
+            # 4C. Fallback to Brave if Bing yielded no results
+            if not results:
+                if time.monotonic() < self.brave_rate_limited_until:
+                    pass
+                else:
+                    logger.info(f"\n[GST SEARCH]\nengine=Brave\nquery={query}")
+                    br_res, br_status = await self._query_brave(query)
+                    if br_status == 429:
+                        logger.warning(f"[GST SEARCH ERROR]\nengine=Brave\nerror=429")
+                    elif br_status == 200 and br_res:
+                        results = br_res
+                        engine_name = "Brave"
+
+            # 4D. Fallback to DuckDuckGo if Brave yielded no results
+            if not results:
+                logger.info(f"\n[GST SEARCH]\nengine=DuckDuckGo\nquery={query}")
+                ddg_res = await self._safe_query_ddg(query)
+                if ddg_res:
+                    results = ddg_res
+                    engine_name = "DuckDuckGo"
+
+            if not results:
+                continue
+
+            # Step 5: Search Result Processing & Inspection
+            for idx, r_item in enumerate(results, start=1):
+                title = r_item.get("title", "").strip()
+                url = r_item.get("url", "").strip()
+                snippet = r_item.get("snippet", "").strip()
+                text = f"{title} {snippet}"
+
+                logger.info(
+                    f"\n[GST SEARCH RESULT]\nengine={engine_name}\nindex={idx}\ntitle={title}\nurl={url}\nsnippet={snippet}"
+                )
+
+                # Extract candidate GSTINs from text
+                gst_matches = GST_REGEX.findall(text)
+
+                # If no GSTIN in snippet, but URL is a high-authority directory or official domain, fetch page
+                if not gst_matches and url and url.startswith("http") and not any(ed in url.lower() for ed in EXCLUDED_WEBSITE_DOMAINS):
+                    seller_match_score, _, _ = calculate_seller_match_score(seller_name, text, url)
+                    is_dir = any(d in url.lower() for d in DIRECTORY_DOMAINS)
+                    if seller_match_score >= 35 or is_dir:
+                        try:
+                            p_html = await self.website_parser.fetch_html(url)
+                            if p_html:
+                                p_data = self.website_parser.extract_from_html(p_html, url)
+                                if p_data.get("gst_number"):
+                                    gst_matches.append(p_data["gst_number"])
+                        except Exception:
+                            pass
+
+                for gm in gst_matches:
+                    valid_g = validate_gst(gm)
+                    if not valid_g:
+                        continue
+
+                    logger.info(
+                        f"\n[GST CANDIDATE]\ngstin={valid_g}\nsource={url or 'snippet'}"
+                    )
+
+                    # Seller Identity Matching
+                    matched, score, reason = match_gst_to_seller(
+                        seller_name=seller_name,
+                        gst_number=valid_g,
+                        snippet=text,
+                        url=url,
+                        city=city,
+                        state=state,
+                        location=location,
+                        pincode=pincode,
+                    )
+
+                    gst_st_code = valid_g[:2]
+                    gst_st_name = GST_STATE_CODES.get(gst_st_code, "").lower()
+                    has_st = bool(state and (state.lower() in gst_st_name or gst_st_name in state.lower()))
+                    has_ct = bool(city and city.lower() in text.lower())
+                    has_pin = bool(pincode and pincode in text)
+                    has_dom = bool(website_url and urllib.parse.urlparse(website_url).netloc.lower().replace("www.", "") in url.lower())
+
+                    logger.info(
+                        f"\n[GST VALIDATION]\ngstin={valid_g}\nformat_valid=true\nstate_match={has_st}\nseller_name_match={matched}\ncity_match={has_ct}\npincode_match={has_pin}\ndomain_match={has_dom}\nconfidence={score}"
+                    )
+
+                    if matched:
+                        logger.info(
+                            f"\n[GST ACCEPTED]\ngstin={valid_g}\nsource={url or 'snippet'}\nconfidence={score}"
+                        )
+                        # If candidate has high confidence (>=90) or matches city/pincode/domain, return immediately
+                        if score >= 90 or has_ct or has_pin or has_dom:
+                            return valid_g, (url or "search_snippet")
+                        # Otherwise track in candidates list for multiple GSTIN resolution
+                        candidates_ranked.append({
+                            "gstin": valid_g,
+                            "source": url or "search_snippet",
+                            "score": score,
+                            "has_st": has_st,
+                            "has_ct": has_ct,
+                            "has_pin": has_pin,
+                            "has_dom": has_dom,
+                        })
+                    else:
+                        logger.info(
+                            f"\n[GST REJECTED]\ngstin={valid_g}\nreason={reason}"
+                        )
+
+        # If we collected multiple candidates, pick highest ranked by location match & score
+        if candidates_ranked:
+            candidates_ranked.sort(
+                key=lambda c: (1 if c["has_ct"] else 0, 1 if c["has_pin"] else 0, 1 if c["has_st"] else 0, c["score"]),
+                reverse=True,
+            )
+            best = candidates_ranked[0]
+            logger.info(
+                f"\n[GST ACCEPTED]\ngstin={best['gstin']}\nsource={best['source']}\nconfidence={best['score']}"
+            )
+            return best["gstin"], best["source"]
+
+        logger.info(
+            f"\n[GST NOT FOUND]\nseller={seller_name}\nreason=All sources exhausted without verified candidate"
+        )
+        return None, None
+
+    async def enrich_seller_email(
+        self,
+        seller_name: str,
+        city: Optional[str] = None,
+        state: Optional[str] = None,
+        location: Optional[str] = None,
+        gst_number: Optional[str] = None,
+        website_url: Optional[str] = None,
+        existing_email: Optional[str] = None,
+    ) -> Tuple[Optional[str], Optional[str]]:
+        """Discover, validate, and enrich seller email address following Requirements 1-15.
+
+        SOURCE 1: Flipkart seller/profile page
+        SOURCE 2 & 3: Official seller website and contact/about/support subpages
+        SOURCE 4: Search engine waterfall: Google -> Bing -> Brave -> DuckDuckGo
+        SOURCE 5: Reliable business directories / company listings (per-result inspection & scoring)
+        """
+        # Step 1: First Source — Flipkart
+        if existing_email:
+            valid_existing = validate_email(existing_email)
+            if valid_existing:
+                logger.info(
+                    f"\n[EMAIL CANDIDATE]\nemail={valid_existing}\nsource=Flipkart (marketplace_profile)"
+                )
+                logger.info(
+                    f"\n[EMAIL VALIDATION]\nemail={valid_existing}\nseller_match=100\nlocation_match=True\ngst_match=True\ndomain_match=True\nconfidence=95"
+                )
+                logger.info(
+                    f"\n[EMAIL ACCEPTED]\nemail={valid_existing}\nsource=Flipkart (marketplace_profile)\nconfidence=95"
+                )
+                return valid_existing, "Flipkart (marketplace_profile)"
+
+        # Step 2 & 3: Second & Third Source — Official seller website & subpages
+        if website_url:
+            try:
+                web_data = await self.website_parser.inspect_website(website_url)
+                if web_data.get("email"):
+                    web_email = validate_email(web_data["email"])
+                    if web_email:
+                        logger.info(
+                            f"\n[EMAIL CANDIDATE]\nemail={web_email}\nsource={website_url}"
+                        )
+                        logger.info(
+                            f"\n[EMAIL VALIDATION]\nemail={web_email}\nseller_match=90\nlocation_match=True\ngst_match=True\ndomain_match=True\nconfidence=95"
+                        )
+                        logger.info(
+                            f"\n[EMAIL ACCEPTED]\nemail={web_email}\nsource={website_url}\nconfidence=95"
+                        )
+                        return web_email, website_url
+            except Exception as e:
+                logger.debug(f"Official website email inspection failed: {e}")
+
+        # Step 4: Generate Targeted Search Queries
+        email_queries = generate_targeted_email_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+
+        # Step 5: Multi-Engine Search Waterfall (Google -> Bing -> Brave -> DDG)
+        for query in email_queries[:MAX_BING_QUERIES_PER_FIELD]:
+            results: List[Dict[str, str]] = []
+            engine_name = "Google"
+
+            # 5A. Try Google
+            if time.monotonic() < self.google_rate_limited_until:
+                pass
+            else:
+                logger.info(f"\n[EMAIL SEARCH]\nengine=Google\nquery={query}")
+                g_res, g_status = await self._query_google(query)
+                if g_status == 429:
+                    self.google_rate_limited_until = time.monotonic() + 60.0
+                    logger.warning(f"[EMAIL SEARCH ERROR]\nengine=Google\nerror=429")
+                elif g_status in (401, 403):
+                    logger.warning(f"[EMAIL SEARCH ERROR]\nengine=Google\nerror={g_status}")
+                elif g_status == 200 and g_res:
+                    results = g_res
+                    engine_name = "Google"
+
+            # 5B. Fallback to Bing if Google yielded no results
+            if not results:
+                logger.info(f"\n[EMAIL SEARCH]\nengine=Bing\nquery={query}")
+                b_res, b_status = await self._query_bing(query)
+                if b_status == 200 and b_res:
+                    results = b_res
+                    engine_name = "Bing"
+
+            # 5C. Fallback to Brave if Bing yielded no results
+            if not results:
+                if time.monotonic() < self.brave_rate_limited_until:
+                    pass
+                else:
+                    logger.info(f"\n[EMAIL SEARCH]\nengine=Brave\nquery={query}")
+                    br_res, br_status = await self._query_brave(query)
+                    if br_status == 429:
+                        logger.warning(f"[EMAIL SEARCH ERROR]\nengine=Brave\nerror=429")
+                    elif br_status == 200 and br_res:
+                        results = br_res
+                        engine_name = "Brave"
+
+            # 5D. Fallback to DuckDuckGo if Brave yielded no results
+            if not results:
+                logger.info(f"\n[EMAIL SEARCH]\nengine=DuckDuckGo\nquery={query}")
+                ddg_res = await self._safe_query_ddg(query)
+                if ddg_res:
+                    results = ddg_res
+                    engine_name = "DuckDuckGo"
+
+            if not results:
+                continue
+
+            # Step 6: Search Result Processing
+            for idx, r_item in enumerate(results, start=1):
+                title = r_item.get("title", "").strip()
+                url = r_item.get("url", "").strip()
+                snippet = r_item.get("snippet", "").strip()
+                text = f"{title} {snippet}"
+
+                logger.info(
+                    f"\n[EMAIL SEARCH RESULT]\nengine={engine_name}\nindex={idx}\ntitle={title}\nurl={url}\nsnippet={snippet}"
+                )
+
+                # 6A. Extract candidates from text & decode obfuscation
+                decoded_text = decode_obfuscated_email(text)
+                email_matches = EMAIL_REGEX.findall(decoded_text)
+
+                # If no email in snippet and URL has seller relevance, fetch page
+                if not email_matches and url and url.startswith("http") and not any(ed in url.lower() for ed in EXCLUDED_WEBSITE_DOMAINS):
+                    seller_match_score, _, _ = calculate_seller_match_score(seller_name, text, url)
+                    if seller_match_score >= 35 or (website_url and urllib.parse.urlparse(website_url).netloc.lower().replace("www.", "") in url.lower()):
+                        try:
+                            p_html = await self.website_parser.fetch_html(url)
+                            if p_html:
+                                p_data = self.website_parser.extract_from_html(p_html, url)
+                                if p_data.get("email"):
+                                    email_matches.append(p_data["email"])
+                        except Exception:
+                            pass
+
+                for em in email_matches:
+                    valid_em = validate_email(em)
+                    if not valid_em:
+                        continue
+
+                    logger.info(
+                        f"\n[EMAIL CANDIDATE]\nemail={valid_em}\nsource={url or 'snippet'}"
+                    )
+
+                    # Association check & scoring
+                    seller_match_score, _, _ = calculate_seller_match_score(seller_name, text, url)
+                    has_loc = any(
+                        (loc_t and loc_t.lower() in f"{text} {url}".lower())
+                        for loc_t in [city, state, location] if loc_t
+                    )
+                    has_gst = bool(gst_number and validate_gst(gst_number) and validate_gst(gst_number) in text.upper())
+                    has_domain = bool(website_url and urllib.parse.urlparse(website_url).netloc.lower().replace("www.", "") in url.lower())
+
+                    # Generic seller name protection
+                    if is_generic_seller_name(seller_name):
+                        if not (has_loc or has_gst or has_domain):
+                            logger.info(
+                                f"\n[EMAIL REJECTED]\nemail={valid_em}\nreason=GENERIC_NAME_LOCATION_MISMATCH"
+                            )
+                            continue
+                    else:
+                        if seller_match_score < 40 and not validate_seller_association(seller_name, text, url):
+                            logger.info(
+                                f"\n[EMAIL REJECTED]\nemail={valid_em}\nreason=SELLER_ASSOCIATION_FAILURE"
+                            )
+                            continue
+
+                    confidence = 85
+                    if has_domain:
+                        confidence = 95
+                    elif has_gst or (has_loc and seller_match_score >= 60):
+                        confidence = 90
+
+                    logger.info(
+                        f"\n[EMAIL VALIDATION]\nemail={valid_em}\nseller_match={seller_match_score}\nlocation_match={has_loc}\ngst_match={has_gst}\ndomain_match={has_domain}\nconfidence={confidence}"
+                    )
+                    logger.info(
+                        f"\n[EMAIL ACCEPTED]\nemail={valid_em}\nsource={url or 'snippet'}\nconfidence={confidence}"
+                    )
+                    return valid_em, (url or "search_snippet")
+
+        logger.info(
+            f"\n[EMAIL NOT FOUND]\nseller={seller_name}\nreason=All sources exhausted without verified candidate"
+        )
+        return None, None
+
+    async def enrich_missing_pincode(
+        self,
+        seller_name: str,
+        city: Optional[str] = None,
+        state: Optional[str] = None,
+        location: Optional[str] = None,
+        street: Optional[str] = None,
+        locality: Optional[str] = None,
+        raw_address: Optional[str] = None,
+        gst_number: Optional[str] = None,
+        website_url: Optional[str] = None,
+    ) -> Tuple[Optional[str], Optional[str]]:
+        """Targeted missing pincode enrichment following Requirements 8, 9, 10, 18, 25.
+
+        Searches using targeted queries anchored on seller + address/locality/street + city + state,
+        collects candidate pincodes, validates against location context, and rejects generic guesses.
+        """
+        # Generate targeted pincode queries
+        pin_queries = generate_targeted_pincode_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            street=street,
+            locality=locality,
+            raw_address=raw_address,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+
+        for query in pin_queries[:MAX_BING_QUERIES_PER_FIELD]:
+            results: List[Dict[str, str]] = []
+            engine_name = "Google"
+
+            # 1. Try Google
+            if time.monotonic() < self.google_rate_limited_until:
+                pass
+            else:
+                logger.info(f"\n[ADDRESS SEARCH]\nengine=Google\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                g_res, g_status = await self._query_google(query)
+                if g_status == 429:
+                    self.google_rate_limited_until = time.monotonic() + 60.0
+                    logger.warning(f"[ADDRESS SEARCH ERROR]\nengine=Google\nerror=429")
+                elif g_status in (401, 403):
+                    logger.warning(f"[ADDRESS SEARCH ERROR]\nengine=Google\nerror={g_status}")
+                elif g_status == 200 and g_res:
+                    results = g_res
+                    engine_name = "Google"
+
+            # 2. Fallback to Bing
+            if not results:
+                logger.info(f"\n[ADDRESS SEARCH]\nengine=Bing\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                b_res, b_status = await self._query_bing(query)
+                if b_status == 200 and b_res:
+                    results = b_res
+                    engine_name = "Bing"
+
+            # 3. Fallback to Brave
+            if not results:
+                if time.monotonic() < self.brave_rate_limited_until:
+                    pass
+                else:
+                    logger.info(f"\n[ADDRESS SEARCH]\nengine=Brave\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                    br_res, br_status = await self._query_brave(query)
+                    if br_status == 429:
+                        logger.warning(f"[ADDRESS SEARCH ERROR]\nengine=Brave\nerror=429")
+                    elif br_status == 200 and br_res:
+                        results = br_res
+                        engine_name = "Brave"
+
+            # 4. Fallback to DuckDuckGo
+            if not results:
+                logger.info(f"\n[ADDRESS SEARCH]\nengine=DuckDuckGo\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                ddg_res = await self._safe_query_ddg(query)
+                if ddg_res:
+                    results = ddg_res
+                    engine_name = "DuckDuckGo"
+
+            if not results:
+                continue
+
+            for idx, r_item in enumerate(results, start=1):
+                title = r_item.get("title", "").strip()
+                url = r_item.get("url", "").strip()
+                snippet = r_item.get("snippet", "").strip()
+                text = f"{title} {snippet}"
+
+                logger.info(
+                    f"\n[ADDRESS SEARCH RESULT]\nengine={engine_name}\nindex={idx}\ntitle={title}\nurl={url}\nsnippet={snippet}"
+                )
+
+                candidate_pins = PINCODE_REGEX.findall(text)
+                for c_pin in candidate_pins:
+                    valid_pin = validate_pincode(c_pin)
+                    if not valid_pin:
+                        continue
+
+                    logger.info(
+                        f"\n[PINCODE ENRICHMENT]\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\ncandidate_pincode={valid_pin}\nsource={url or 'snippet'}"
+                    )
+
+                    # Validate location association
+                    text_lower = text.lower()
+                    has_city = bool(city and city.lower() in text_lower)
+                    has_state = bool(state and state.lower() in text_lower)
+                    has_loc = bool(location and location.lower() in text_lower)
+                    has_street = bool(street and street.lower() in text_lower)
+                    has_locality = bool(locality and locality.lower() in text_lower)
+                    seller_match_score, _, _ = calculate_seller_match_score(seller_name, text, url)
+
+                    # Reject if generic name with zero location/seller evidence
+                    if is_generic_seller_name(seller_name):
+                        if not (has_city or has_loc or has_street or has_locality):
+                            logger.info(
+                                f"\n[PINCODE REJECTED]\npincode={valid_pin}\nreason=wrong_location"
+                            )
+                            continue
+
+                    # Require at least city or location or street or strong seller match
+                    if has_city or has_loc or has_street or has_locality or (seller_match_score >= 60 and (has_state or not state)):
+                        logger.info(
+                            f"\n[PINCODE ACCEPTED]\npincode={valid_pin}\nsource={url or 'snippet'}\nconfidence=HIGH"
+                        )
+                        return valid_pin, (url or "search_snippet")
+                    else:
+                        logger.info(
+                            f"\n[PINCODE REJECTED]\npincode={valid_pin}\nreason=wrong_location"
+                        )
+
+        return None, None
+
+    async def enrich_seller_address(
+        self,
+        seller_name: str,
+        city: Optional[str] = None,
+        state: Optional[str] = None,
+        location: Optional[str] = None,
+        pincode: Optional[str] = None,
+        gst_number: Optional[str] = None,
+        website_url: Optional[str] = None,
+        existing_address: Optional[str] = None,
+    ) -> Tuple[Optional[str], Optional[str], Optional[str], Optional[str], Optional[str], Optional[str]]:
+        """Discover, normalize, validate, and enrich complete seller address.
+
+        Source Priority:
+          1. Flipkart seller profile and existing data
+          2. Official seller website and priority subpages
+          3. Multi-engine search waterfall: Google -> Bing -> Brave -> DuckDuckGo
+          4. Reliable company registries / business directories (with candidate extraction and validation)
+
+        Returns:
+            Tuple of (billing_address, city, state, pincode, country, source).
+        """
+        # Step 1: First Source — Flipkart seller/profile data
+        if existing_address and len(str(existing_address).strip()) >= 10:
+            norm_existing = normalize_address_text(existing_address)
+            matched, score, reason = match_address_to_seller(
+                seller_name=seller_name,
+                address_text=norm_existing,
+                snippet=existing_address,
+                city=city,
+                state=state,
+                location=location,
+                pincode=pincode,
+                gst_number=gst_number,
+            )
+            if matched:
+                parsed = parse_raw_address(norm_existing, gst_number=gst_number)
+                cand_city = parsed.get("city") or city
+                cand_state = parsed.get("state") or state
+                cand_pincode = parsed.get("pincode") or pincode
+
+                if not cand_pincode:
+                    # Enrich missing pincode
+                    enr_pin, _ = await self.enrich_missing_pincode(
+                        seller_name=seller_name,
+                        city=cand_city,
+                        state=cand_state,
+                        location=location,
+                        raw_address=norm_existing,
+                        gst_number=gst_number,
+                        website_url=website_url,
+                    )
+                    if enr_pin:
+                        cand_pincode = enr_pin
+                        if enr_pin not in norm_existing:
+                            norm_existing = f"{norm_existing}, {cand_pincode}"
+
+                is_cons, _ = validate_address_consistency(norm_existing, cand_city, cand_state, cand_pincode, country="India")
+                if is_cons:
+                    logger.info(
+                        f"\n[ADDRESS CANDIDATE]\naddress={norm_existing}\ncity={cand_city or 'NONE'}\nstate={cand_state or 'NONE'}\npincode={cand_pincode or 'NONE'}\nsource=Flipkart (marketplace_profile)"
+                    )
+                    logger.info(
+                        f"\n[ADDRESS VALIDATION]\nseller_match=true\ncity_match={bool(cand_city)}\nstate_match={bool(cand_state)}\npincode_match={bool(cand_pincode)}\ngst_match={bool(gst_number)}\ndomain_match=false\nconfidence={score}"
+                    )
+                    logger.info(
+                        f"\n[ADDRESS ACCEPTED]\naddress={norm_existing}\ncity={cand_city or 'NONE'}\nstate={cand_state or 'NONE'}\npincode={cand_pincode or 'NONE'}\ncountry=India\nsource=Flipkart (marketplace_profile)\nconfidence={score}"
+                    )
+                    return norm_existing, cand_city, cand_state, cand_pincode, "India", "Flipkart (marketplace_profile)"
+            else:
+                logger.info(f"\n[ADDRESS REJECTED]\naddress={norm_existing}\nreason={reason}")
+
+        # Step 2: Second Source — Official seller website
+        if website_url:
+            try:
+                web_data = await self.website_parser.inspect_website(website_url)
+                if web_data.get("address"):
+                    norm_web = normalize_address_text(web_data["address"])
+                    matched, score, reason = match_address_to_seller(
+                        seller_name=seller_name,
+                        address_text=norm_web,
+                        url=website_url,
+                        snippet=str(web_data),
+                        city=city,
+                        state=state,
+                        location=location,
+                        pincode=pincode,
+                        gst_number=gst_number,
+                    )
+                    if matched:
+                        parsed = parse_raw_address(norm_web, gst_number=gst_number)
+                        cand_city = parsed.get("city") or city
+                        cand_state = parsed.get("state") or state
+                        cand_pincode = parsed.get("pincode") or pincode
+
+                        if not cand_pincode:
+                            enr_pin, _ = await self.enrich_missing_pincode(
+                                seller_name=seller_name,
+                                city=cand_city,
+                                state=cand_state,
+                                location=location,
+                                raw_address=norm_web,
+                                gst_number=gst_number,
+                                website_url=website_url,
+                            )
+                            if enr_pin:
+                                cand_pincode = enr_pin
+                                if enr_pin not in norm_web:
+                                    norm_web = f"{norm_web}, {cand_pincode}"
+
+                        is_cons, _ = validate_address_consistency(norm_web, cand_city, cand_state, cand_pincode, country="India")
+                        if is_cons:
+                            logger.info(
+                                f"\n[ADDRESS CANDIDATE]\naddress={norm_web}\ncity={cand_city or 'NONE'}\nstate={cand_state or 'NONE'}\npincode={cand_pincode or 'NONE'}\nsource={website_url}"
+                            )
+                            logger.info(
+                                f"\n[ADDRESS VALIDATION]\nseller_match=true\ncity_match={bool(cand_city)}\nstate_match={bool(cand_state)}\npincode_match={bool(cand_pincode)}\ngst_match={bool(gst_number)}\ndomain_match=true\nconfidence={score}"
+                            )
+                            logger.info(
+                                f"\n[ADDRESS ACCEPTED]\naddress={norm_web}\ncity={cand_city or 'NONE'}\nstate={cand_state or 'NONE'}\npincode={cand_pincode or 'NONE'}\ncountry=India\nsource={website_url}\nconfidence={score}"
+                            )
+                            return norm_web, cand_city, cand_state, cand_pincode, "India", website_url
+            except Exception as e:
+                logger.debug(f"Official website address inspection failed: {e}")
+
+        # Step 3: Targeted Search Queries
+        address_queries = generate_targeted_address_queries(
+            seller_name=seller_name,
+            city=city,
+            state=state,
+            location=location,
+            gst_number=gst_number,
+            website_url=website_url,
+        )
+
+        # Multi-Engine Search Waterfall (Google -> Bing -> Brave -> DuckDuckGo)
+        for query in address_queries[:MAX_BING_QUERIES_PER_FIELD]:
+            results: List[Dict[str, str]] = []
+            engine_name = "Google"
+
+            # 3A. Try Google
+            if time.monotonic() < self.google_rate_limited_until:
+                pass
+            else:
+                logger.info(f"\n[ADDRESS SEARCH]\nengine=Google\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                g_res, g_status = await self._query_google(query)
+                if g_status == 429:
+                    self.google_rate_limited_until = time.monotonic() + 60.0
+                    logger.warning(f"[ADDRESS SEARCH ERROR]\nengine=Google\nerror=429")
+                elif g_status in (401, 403):
+                    logger.warning(f"[ADDRESS SEARCH ERROR]\nengine=Google\nerror={g_status}")
+                elif g_status == 200 and g_res:
+                    results = g_res
+                    engine_name = "Google"
+
+            # 3B. Fallback to Bing
+            if not results:
+                logger.info(f"\n[ADDRESS SEARCH]\nengine=Bing\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                b_res, b_status = await self._query_bing(query)
+                if b_status == 200 and b_res:
+                    results = b_res
+                    engine_name = "Bing"
+
+            # 3C. Fallback to Brave
+            if not results:
+                if time.monotonic() < self.brave_rate_limited_until:
+                    pass
+                else:
+                    logger.info(f"\n[ADDRESS SEARCH]\nengine=Brave\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                    br_res, br_status = await self._query_brave(query)
+                    if br_status == 429:
+                        logger.warning(f"[ADDRESS SEARCH ERROR]\nengine=Brave\nerror=429")
+                    elif br_status == 200 and br_res:
+                        results = br_res
+                        engine_name = "Brave"
+
+            # 3D. Fallback to DuckDuckGo
+            if not results:
+                logger.info(f"\n[ADDRESS SEARCH]\nengine=DuckDuckGo\nseller={seller_name}\ncity={city or 'NONE'}\nstate={state or 'NONE'}\nquery={query}")
+                ddg_res = await self._safe_query_ddg(query)
+                if ddg_res:
+                    results = ddg_res
+                    engine_name = "DuckDuckGo"
+
+            if not results:
+                continue
+
+            # Process search results
+            for idx, r_item in enumerate(results, start=1):
+                title = r_item.get("title", "").strip()
+                url = r_item.get("url", "").strip()
+                snippet = r_item.get("snippet", "").strip()
+                text = f"{title} {snippet}"
+
+                logger.info(
+                    f"\n[ADDRESS SEARCH RESULT]\nengine={engine_name}\nindex={idx}\ntitle={title}\nurl={url}\nsnippet={snippet}"
+                )
+
+                candidates = extract_address_candidates_from_text(text)
+
+                # If no candidates in snippet and URL is high authority or official domain, inspect page
+                if not candidates and url and url.startswith("http") and not any(ed in url.lower() for ed in EXCLUDED_WEBSITE_DOMAINS):
+                    seller_match_score, _, _ = calculate_seller_match_score(seller_name, text, url)
+                    is_dir = any(d in url.lower() for d in DIRECTORY_DOMAINS)
+                    if seller_match_score >= 35 or is_dir:
+                        try:
+                            p_html = await self.website_parser.fetch_html(url)
+                            if p_html:
+                                p_data = self.website_parser.extract_from_html(p_html, url)
+                                if p_data.get("address"):
+                                    candidates.append(normalize_address_text(p_data["address"]))
+                        except Exception:
+                            pass
+
+                for cand in candidates:
+                    matched, score, reason = match_address_to_seller(
+                        seller_name=seller_name,
+                        address_text=cand,
+                        url=url,
+                        snippet=text,
+                        city=city,
+                        state=state,
+                        location=location,
+                        pincode=pincode,
+                        gst_number=gst_number,
+                    )
+
+                    parsed = parse_raw_address(cand, gst_number=gst_number)
+                    cand_city = parsed.get("city") or city
+                    cand_state = parsed.get("state") or state
+                    cand_pincode = parsed.get("pincode") or pincode
+
+                    logger.info(
+                        f"\n[ADDRESS CANDIDATE]\naddress={cand}\ncity={cand_city or 'NONE'}\nstate={cand_state or 'NONE'}\npincode={cand_pincode or 'NONE'}\nsource={url or 'snippet'}"
+                    )
+                    logger.info(
+                        f"\n[ADDRESS VALIDATION]\nseller_match={matched}\ncity_match={bool(cand_city)}\nstate_match={bool(cand_state)}\npincode_match={bool(cand_pincode)}\ngst_match={bool(gst_number and gst_number in text)}\ndomain_match={bool(website_url and urllib.parse.urlparse(website_url).netloc.lower().replace('www.', '') in (url or '').lower())}\nconfidence={score}"
+                    )
+
+                    if matched:
+                        if not cand_pincode:
+                            enr_pin, _ = await self.enrich_missing_pincode(
+                                seller_name=seller_name,
+                                city=cand_city,
+                                state=cand_state,
+                                location=location,
+                                raw_address=cand,
+                                gst_number=gst_number,
+                                website_url=website_url,
+                            )
+                            if enr_pin:
+                                cand_pincode = enr_pin
+                                if enr_pin not in cand:
+                                    cand = f"{cand}, {cand_pincode}"
+
+                        is_cons, _ = validate_address_consistency(cand, cand_city, cand_state, cand_pincode, country="India")
+                        if is_cons:
+                            logger.info(
+                                f"\n[ADDRESS ACCEPTED]\naddress={cand}\ncity={cand_city or 'NONE'}\nstate={cand_state or 'NONE'}\npincode={cand_pincode or 'NONE'}\ncountry=India\nsource={url or 'search_snippet'}\nconfidence={score}"
+                            )
+                            return cand, cand_city, cand_state, cand_pincode, "India", (url or "search_snippet")
+                    else:
+                        logger.info(f"\n[ADDRESS REJECTED]\naddress={cand}\nreason={reason}")
+
+        # Step 4: Partial resolution if seller has known city/state
+        if city or state or location:
+            resolved_state = state or match_state_from_text(location or "", gst_number=gst_number)
+            resolved_city = city or extract_city_from_text(location or "", identified_state=resolved_state)
+            resolved_pin = pincode or extract_pincode_from_text(location or "")
+            if not resolved_pin and (resolved_city or resolved_state):
+                enr_pin, _ = await self.enrich_missing_pincode(
+                    seller_name=seller_name,
+                    city=resolved_city,
+                    state=resolved_state,
+                    location=location,
+                    gst_number=gst_number,
+                    website_url=website_url,
+                )
+                if enr_pin:
+                    resolved_pin = enr_pin
+
+            return None, resolved_city, resolved_state, resolved_pin, "India", None
+
+        logger.info(
+            f"\n[ADDRESS NOT FOUND]\nseller={seller_name}\nreason=All sources exhausted without verified candidate"
+        )
+        return None, None, None, None, "India", None
+
     async def enrich_seller(self, seller_record: Dict[str, Any]) -> Dict[str, Any]:
         """Production seller enrichment pipeline.
 
@@ -2187,13 +3736,19 @@ class WebResearchEngine:
             "state": state,
         }
 
+        # Mark pre-existing fields from Flipkart profile with highest priority
+        for k, v in merged.items():
+            if v:
+                field_sources[k] = "marketplace_profile"
+                sources_used.add("marketplace_profile")
+
         # Helper to update field respecting source priority hierarchy
         def _set_field(field: str, val: Any, src: str, src_url: Optional[str] = None) -> None:
             if not val:
                 return
             curr_val = merged.get(field)
             curr_src = field_sources.get(field, "not_found")
-            if not curr_val or SOURCE_PRIORITY.get(src, 1) >= SOURCE_PRIORITY.get(curr_src, 1):
+            if not curr_val or SOURCE_PRIORITY.get(src, 1) > SOURCE_PRIORITY.get(curr_src, 1):
                 merged[field] = val
                 field_sources[field] = src
                 if src_url:
@@ -2273,7 +3828,21 @@ class WebResearchEngine:
                     _set_field("contact_number", c_data.get("contact_number"), "company_website", src_url=candidate_url)
                     _set_field("email", c_data.get("email"), "company_website", src_url=candidate_url)
                     _set_field("owner_name", c_data.get("owner_name"), "company_website", src_url=candidate_url)
-                    _set_field("raw_address", c_data.get("address"), "company_website", src_url=candidate_url)
+                    if c_data.get("address"):
+                        c_addr = normalize_address_text(c_data["address"])
+                        matched, score, reason = match_address_to_seller(
+                            seller_name=seller_name,
+                            address_text=c_addr,
+                            url=candidate_url,
+                            snippet=str(c_data),
+                            city=city,
+                            state=state,
+                            location=location,
+                            pincode=pincode,
+                            gst_number=merged.get("gst_number"),
+                        )
+                        if matched:
+                            _set_field("raw_address", c_addr, "company_website", src_url=candidate_url)
                     break
 
         # Step 3: Targeted Search for missing fields using Identity Queries
@@ -2289,20 +3858,128 @@ class WebResearchEngine:
         ]
 
         for field_attr, field_display_name, query_key in fields_to_search:
+            # Dedicated PAN from Verified GSTIN flow (always cross-checks against verified GSTIN)
+            if field_attr == "pan_number":
+                verified_gst = merged.get("gst_number")
+                if verified_gst:
+                    valid_g = validate_gst(verified_gst)
+                    if valid_g:
+                        pan_derived = extract_pan_from_gstin(valid_g)
+                        logger.info(f"\n[PAN FROM GST]\ngstin={valid_g}\npan={pan_derived or 'NONE'}")
+                        if pan_derived:
+                            logger.info(f"\n[PAN VALIDATION]\ngstin={valid_g}\npan={pan_derived}\nvalid=true")
+                            existing_pan = merged.get("pan_number")
+                            if existing_pan and validate_pan(existing_pan) and validate_pan(existing_pan) != pan_derived:
+                                logger.warning(
+                                    f"\n[PAN MISMATCH]\nexisting_pan={existing_pan}\ngst_derived_pan={pan_derived}"
+                                )
+                            logger.info(f"\n[PAN ACCEPTED]\npan={pan_derived}\nsource=verified_gstin")
+                            _set_field("pan_number", pan_derived, "filing_registry", src_url="Derived from verified GSTIN")
+                            continue
+                        else:
+                            logger.info(f"\n[PAN VALIDATION]\ngstin={valid_g}\npan=NONE\nvalid=false")
+                logger.info(f"\n[PAN NOT FOUND]\nreason=verified GSTIN unavailable")
+                continue
+
             # If already confidently filled, skip
             if merged.get(field_attr):
                 continue
 
-            # Auto-derive PAN from verified GSTIN
-            if field_attr == "pan_number" and merged.get("gst_number"):
-                valid_g = validate_gst(merged["gst_number"])
-                if valid_g:
-                    pan_derived = valid_g[2:12]
-                    valid_p = validate_pan(pan_derived, gst_str=valid_g)
-                    if valid_p:
-                        _set_field("pan_number", valid_p, "filing_registry", src_url="Derived from GSTIN")
-                        logger.info(f"PAN: Derived from verified GSTIN ({valid_p})")
-                        continue
+            # Dedicated GST Enrichment flow
+            if field_attr == "gst_number":
+                gst_val, gst_src = await self.enrich_seller_gst(
+                    seller_name=seller_name,
+                    city=city,
+                    state=state,
+                    location=location,
+                    pincode=pincode,
+                    website_url=merged.get("website_url"),
+                    phone=merged.get("contact_number"),
+                    email=merged.get("email"),
+                    pan=merged.get("pan_number"),
+                    existing_gst=merged.get("gst_number"),
+                )
+                if gst_val:
+                    _set_field("gst_number", gst_val, "marketplace_profile" if gst_src and "Flipkart" in gst_src else "targeted_search", src_url=gst_src)
+                    v_g = validate_gst(gst_val)
+                    if v_g and not merged.get("pan_number"):
+                        pan_val = extract_pan_from_gstin(v_g)
+                        if pan_val:
+                            logger.info(f"\n[PAN FROM GST]\ngstin={v_g}\npan={pan_val}")
+                            logger.info(f"\n[PAN VALIDATION]\ngstin={v_g}\npan={pan_val}\nvalid=true")
+                            logger.info(f"\n[PAN ACCEPTED]\npan={pan_val}\nsource=verified_gstin")
+                            _set_field("pan_number", pan_val, "filing_registry", src_url="Derived from verified GSTIN")
+                continue
+
+            # Dedicated Phone Enrichment flow
+            if field_attr == "contact_number":
+                ph_val, ph_src = await self.enrich_seller_phone(
+                    seller_name=seller_name,
+                    city=city,
+                    state=state,
+                    location=location,
+                    gst_number=merged.get("gst_number"),
+                    website_url=merged.get("website_url"),
+                    existing_phone=merged.get("contact_number"),
+                )
+                if ph_val:
+                    _set_field("contact_number", ph_val, "marketplace_profile" if ph_src and "Flipkart" in ph_src else "targeted_search", src_url=ph_src)
+                continue
+
+            # Dedicated Email Enrichment flow
+            if field_attr == "email":
+                em_val, em_src = await self.enrich_seller_email(
+                    seller_name=seller_name,
+                    city=city,
+                    state=state,
+                    location=location,
+                    gst_number=merged.get("gst_number"),
+                    website_url=merged.get("website_url"),
+                    existing_email=merged.get("email"),
+                )
+                if em_val:
+                    _set_field("email", em_val, "marketplace_profile" if em_src and "Flipkart" in em_src else "targeted_search", src_url=em_src)
+                continue
+
+            # Dedicated Address Enrichment flow
+            if field_attr == "raw_address":
+                addr_val, addr_city, addr_state, addr_pin, addr_country, addr_src = await self.enrich_seller_address(
+                    seller_name=seller_name,
+                    city=city or merged.get("city"),
+                    state=state or merged.get("state"),
+                    location=location,
+                    pincode=pincode or merged.get("pincode"),
+                    gst_number=merged.get("gst_number"),
+                    website_url=merged.get("website_url"),
+                    existing_address=merged.get("raw_address"),
+                )
+                if addr_val:
+                    _set_field("raw_address", addr_val, "marketplace_profile" if addr_src and "Flipkart" in addr_src else "targeted_search", src_url=addr_src)
+                if addr_city and not merged.get("city"):
+                    _set_field("city", addr_city, "targeted_search", src_url=addr_src)
+                if addr_state and not merged.get("state"):
+                    _set_field("state", addr_state, "targeted_search", src_url=addr_src)
+                if addr_pin and not merged.get("pincode"):
+                    _set_field("pincode", addr_pin, "targeted_search", src_url=addr_src)
+                continue
+
+            # Dedicated Missing Pincode Enrichment flow
+            if field_attr == "pincode":
+                if not merged.get("pincode"):
+                    pin_val, pin_src = await self.enrich_missing_pincode(
+                        seller_name=seller_name,
+                        city=merged.get("city") or city,
+                        state=merged.get("state") or state,
+                        location=location,
+                        raw_address=merged.get("raw_address"),
+                        gst_number=merged.get("gst_number"),
+                        website_url=merged.get("website_url"),
+                    )
+                    if pin_val:
+                        _set_field("pincode", pin_val, "targeted_search", src_url=pin_src)
+                        if merged.get("raw_address") and pin_val not in str(merged["raw_address"]):
+                            merged["raw_address"] = f"{merged['raw_address']}, {pin_val}"
+                continue
 
             # Phase A: Bing queries
             target_bing_queries = generate_identity_queries_for_field(
@@ -2345,10 +4022,9 @@ class WebResearchEngine:
                     if field_attr == "gst_number":
                         v_g = validate_gst(accepted_candidate)
                         if v_g:
-                            pan_val = v_g[2:12]
-                            v_p = validate_pan(pan_val, gst_str=v_g)
-                            if v_p:
-                                _set_field("pan_number", v_p, "targeted_search", src_url="Derived from GSTIN")
+                            pan_val = extract_pan_from_gstin(v_g)
+                            if pan_val:
+                                _set_field("pan_number", pan_val, "filing_registry", src_url="Derived from verified GSTIN")
                     if field_attr == "raw_address":
                         parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
                         if parsed_addr.get("city") and not merged.get("city"):

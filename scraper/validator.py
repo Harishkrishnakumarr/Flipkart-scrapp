@@ -18,7 +18,7 @@ GST_REGEX = re.compile(
 )
 PAN_REGEX = re.compile(r"\b([A-Z]{5}[0-9]{4}[A-Z]{1})\b", re.IGNORECASE)
 EMAIL_REGEX = re.compile(
-    r"\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b",
+    r"\b[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}\b",
     re.IGNORECASE,
 )
 PHONE_REGEX = re.compile(
@@ -27,9 +27,11 @@ PHONE_REGEX = re.compile(
 PINCODE_REGEX = re.compile(r"\b([1-9][0-9]{5})\b")
 FSSAI_REGEX = re.compile(r"\b([1-2][0-9]{13})\b")
 
-# Blacklisted Dummy / Framework Emails
+# Blacklisted Dummy / Framework / Marketplace Support Emails
 DISALLOWED_EMAIL_DOMAINS = {
     "example.com",
+    "example.org",
+    "example.net",
     "domain.com",
     "test.com",
     "mysite.com",
@@ -38,6 +40,44 @@ DISALLOWED_EMAIL_DOMAINS = {
     "sentry.io",
     "shopify.com",
     "schema.org",
+    "github.com",
+    "wordpress.org",
+    "google.com",
+    "bing.com",
+    "microsoft.com",
+    "cloudflare.com",
+    "godaddy.com",
+    "gravatar.com",
+    "w3.org",
+    "mozilla.org",
+    "apple.com",
+    "flipkart.com",
+    "seller.flipkart.com",
+    "amazon.com",
+    "amazon.in",
+    "meesho.com",
+    "myntra.com",
+    "jiomart.com",
+    "snapdeal.com",
+    "ebay.com",
+    "walmart.com",
+    "indiamart.com",
+    "justdial.com",
+    "tradeindia.com",
+    "zaubacorp.com",
+    "tofler.in",
+    "quikr.com",
+    "sulekha.com",
+}
+
+DISALLOWED_EMAIL_PREFIXES = {
+    "noreply",
+    "no-reply",
+    "donotreply",
+    "do-not-reply",
+    "mailer-daemon",
+    "postmaster",
+    "root",
 }
 
 DISALLOWED_EMAIL_EXTENSIONS = {
@@ -49,7 +89,92 @@ DISALLOWED_EMAIL_EXTENSIONS = {
     ".svg",
     ".css",
     ".js",
+    ".ico",
+    ".woff",
+    ".woff2",
+    ".ttf",
 }
+
+
+def decode_obfuscated_email(text: str) -> str:
+    """Decode common human-readable obfuscated email representations.
+
+    Handles:
+      - 'name [at] domain [dot] com'
+      - 'name(at)domain(dot)com'
+      - 'name [AT] domain [DOT] com'
+      - 'name AT domain DOT com'
+      - 'name [dot] sur [at] domain [dot] com'
+
+    Args:
+        text: Raw text string.
+
+    Returns:
+        Decoded text string with '@' and '.' restored.
+    """
+    if not text or ("at" not in text.lower() and "dot" not in text.lower()):
+        return text
+
+    decoded = text
+    # Replace bracketed/parenthesized at & dot
+    decoded = re.sub(r"\s*[\[\(<]\s*at\s*[\]\)>]\s*", "@", decoded, flags=re.I)
+    decoded = re.sub(r"\s*[\[\(<]\s*dot\s*[\]\)>]\s*", ".", decoded, flags=re.I)
+    # Replace standalone uppercase / spaced AT and DOT
+    decoded = re.sub(r"\b\s+AT\s+\b", "@", decoded)
+    decoded = re.sub(r"\b\s+DOT\s+\b", ".", decoded)
+    return decoded
+
+
+def validate_email(email_str: Optional[str]) -> Optional[str]:
+    """Validate email address against RFC standards, decode obfuscations, and reject dummy addresses.
+
+    Args:
+        email_str: Candidate email string.
+
+    Returns:
+        Normalized lowercase email string or None if invalid.
+    """
+    if not email_str:
+        return None
+
+    raw = str(email_str).strip()
+    decoded = decode_obfuscated_email(raw)
+    cleaned = re.sub(r"^[\s\"'<(\[]+|[\s\"'>)\].,;:]+$", "", decoded).strip().lower()
+
+    match = EMAIL_REGEX.search(cleaned)
+    if not match:
+        return None
+
+    candidate = match.group(0).lower().rstrip(".,;:")
+
+    # Disallow image file names mistakenly matched
+    for ext in DISALLOWED_EMAIL_EXTENSIONS:
+        if candidate.endswith(ext):
+            return None
+
+    if "@" not in candidate:
+        return None
+
+    user_part, domain_part = candidate.split("@", 1)
+    user_part = user_part.strip()
+    domain_part = domain_part.strip().lower()
+
+    if not user_part or not domain_part or "." not in domain_part:
+        return None
+
+    # Check disallowed domains
+    if domain_part in DISALLOWED_EMAIL_DOMAINS or any(domain_part.endswith("." + d) for d in DISALLOWED_EMAIL_DOMAINS):
+        return None
+
+    # Disallow generic noreply / system addresses unless specified
+    if user_part in DISALLOWED_EMAIL_PREFIXES:
+        return None
+
+    # Reject placeholder addresses like yourname@domain.com or email@domain.com
+    if user_part in {"yourname", "name", "email", "username", "user"} and domain_part in {"domain.com", "company.com", "example.com", "site.com"}:
+        return None
+
+    return candidate
 
 
 def validate_gst(gst_str: Optional[str]) -> Optional[str]:
@@ -79,6 +204,33 @@ def validate_gst(gst_str: Optional[str]) -> Optional[str]:
     return gst_candidate
 
 
+def extract_pan_from_gstin(gstin: Optional[str]) -> Optional[str]:
+    """Extract and validate the 10-character Indian PAN embedded inside a GSTIN (chars 3 to 12).
+
+    Structure of standard 15-character GSTIN:
+      - 2 digits: State code (index 0:2)
+      - 10 chars: PAN (index 2:12) -> 5 letters, 4 digits, 1 letter
+      - 1 char: Entity number (index 12)
+      - 1 char: 'Z' (index 13)
+      - 1 char: Checksum (index 14)
+
+    Args:
+        gstin: Candidate or verified GSTIN string.
+
+    Returns:
+        Normalized uppercase 10-character PAN if valid, else None.
+    """
+    if not gstin:
+        return None
+
+    valid_gst = validate_gst(gstin)
+    if not valid_gst:
+        return None
+
+    embedded_pan = valid_gst[2:12]
+    return validate_pan(embedded_pan, gst_str=valid_gst)
+
+
 def validate_pan(pan_str: Optional[str], gst_str: Optional[str] = None) -> Optional[str]:
     """Validate Indian PAN (10 characters: 5 letters, 4 digits, 1 letter).
 
@@ -97,7 +249,9 @@ def validate_pan(pan_str: Optional[str], gst_str: Optional[str] = None) -> Optio
         if valid_gst:
             embedded_pan = valid_gst[2:12]
             if PAN_REGEX.match(embedded_pan):
-                return embedded_pan
+                valid_entity_types = {"C", "P", "H", "F", "A", "T", "B", "L", "J", "G"}
+                if embedded_pan[3] in valid_entity_types:
+                    return embedded_pan
 
     if not pan_str:
         return None
@@ -116,36 +270,6 @@ def validate_pan(pan_str: Optional[str], gst_str: Optional[str] = None) -> Optio
     return pan_candidate
 
 
-def validate_email(email_str: Optional[str]) -> Optional[str]:
-    """Validate email address against RFC standards and reject dummy addresses.
-
-    Args:
-        email_str: Candidate email string.
-
-    Returns:
-        Normalized lowercase email string or None if invalid.
-    """
-    if not email_str:
-        return None
-
-    email_clean = str(email_str).strip().lower()
-    match = EMAIL_REGEX.search(email_clean)
-    if not match:
-        return None
-
-    candidate = match.group(0).lower()
-
-    # Disallow image file names mistakenly matched
-    for ext in DISALLOWED_EMAIL_EXTENSIONS:
-        if candidate.endswith(ext):
-            return None
-
-    # Check disallowed domains
-    domain = candidate.split("@")[-1]
-    if domain in DISALLOWED_EMAIL_DOMAINS:
-        return None
-
-    return candidate
 
 
 def validate_phone(phone_str: Optional[str]) -> Optional[str]:
@@ -221,7 +345,11 @@ GENERIC_SELLER_WORDS = {
     "trader", "store", "stores", "shop", "shops", "online", "pvt", "ltd", "limited",
     "llp", "co", "company", "corp", "corporation", "inc", "ind", "solutions",
     "international", "group", "services", "hub", "mart", "bazaar", "bazar",
-    "wholesalers", "wholesaler", "distributor", "distributors",
+    "wholesalers", "wholesaler", "distributor", "distributors", "fashion", "fashions",
+    "general", "generalstore", "exports", "export", "imports", "import", "handicrafts",
+    "handicraft", "electronics", "electronic", "furniture", "collections", "collection",
+    "industries", "industry", "creations", "creation", "textiles", "textile", "garments",
+    "garment", "apparels", "apparel", "footwear", "footwears", "cloth", "clothing",
 }
 
 # Entity qualifier keywords often present in Indian business names
@@ -231,6 +359,20 @@ ENTITY_QUALIFIER_WORDS = {
     "export", "imports", "import", "textiles", "textile", "garments", "garment",
     "fashions", "fashion", "industries", "industry", "apparel", "apparels", "footwear",
     "footwears", "jewellers", "jewellery", "cloth", "clothing", "cloths", "lifestyle",
+    "handicrafts", "handicraft", "electronics", "electronic", "furniture",
+}
+
+GENERIC_MODIFIERS = {
+    "royal", "fashion", "fashions", "metro", "star", "supreme", "national", "global",
+    "super", "grand", "prime", "classic", "modern", "golden", "elite", "perfect",
+    "smart", "best", "top", "choice", "alpha", "express", "direct", "point", "corner",
+    "world", "india", "indian", "shree", "sri", "om", "new", "all", "pro", "plus",
+    "hub", "zone", "house", "planet", "empire", "galaxy", "bazaar", "bazar", "plaza",
+    "center", "centre", "mall", "market", "mart", "gallery", "junction", "palace",
+    "vogue", "look", "style", "styles", "wear", "wears", "trend", "trends", "care",
+    "tech", "goods", "supply", "supplies", "agency", "agencies", "co", "sons",
+    "brothers", "bros", "gupta", "sharma", "singh", "kumar", "general", "digital", "city",
+    "abc",
 }
 
 BUSINESS_CONTEXT_KEYWORDS = {
@@ -241,6 +383,44 @@ BUSINESS_CONTEXT_KEYWORDS = {
     "kolkata", "hyderabad", "pune", "gujarat", "maharashtra", "tamil nadu", "karnataka", "haryana",
     "contact", "email", "phone", "mobile", "official", "store",
 }
+
+
+def is_generic_seller_name(name: str) -> bool:
+    """Check if seller name consists mostly or entirely of generic business words.
+
+    Examples:
+      'Trader', 'Store', 'Enterprises', 'Industries', 'Collections', 'Trading', 'Retail Store',
+      'ABC Enterprises', 'Fashion Store', 'Metro Traders', 'Royal Collections'
+
+    Args:
+        name: Seller name string.
+
+    Returns:
+        True if name is generic and requires location/strong matching, False otherwise.
+    """
+    if not name:
+        return True
+    raw_lower = name.lower().strip()
+    norm = normalize_seller_name_for_matching(name)
+    tokens = [w.lower() for w in re.split(r"[^\w]+", raw_lower) if w]
+    if not tokens:
+        return True
+
+    # Check if all tokens are generic, qualifiers, common modifiers, or short (<= 3 chars)
+    distinctive = [
+        t for t in tokens
+        if t not in GENERIC_SELLER_WORDS
+        and t not in ENTITY_QUALIFIER_WORDS
+        and t not in GENERIC_MODIFIERS
+        and len(t) > 3
+    ]
+    if len(distinctive) == 0:
+        return True
+    if len(distinctive) == 1 and any(
+        t in GENERIC_SELLER_WORDS or t in ENTITY_QUALIFIER_WORDS or t in GENERIC_MODIFIERS for t in tokens
+    ):
+        return True
+    return False
 
 
 def normalize_seller_name_for_matching(name: str) -> Dict[str, Any]:
@@ -404,6 +584,7 @@ def match_gst_to_seller(
     city: Optional[str] = None,
     state: Optional[str] = None,
     location: Optional[str] = None,
+    pincode: Optional[str] = None,
 ) -> Tuple[bool, int, str]:
     """Dedicated Indian GST-to-seller identity matcher.
     
@@ -417,6 +598,7 @@ def match_gst_to_seller(
       + Entity-type consistency (rejects conflicting entity e.g. TRADERS vs ENTERPRISES)
       + State code consistency with seller state/location
       + City / Address location consistency
+      + Pincode consistency
       + Domain / URL match
       
     Rejects candidates matching only generic terms ('India', 'Retail', 'Enterprises', 'Trading', 'Store')
@@ -458,54 +640,48 @@ def match_gst_to_seller(
             )
 
     # If seller city is known, verify candidate does not conflict
+    known_cities = {
+        "mumbai", "delhi", "new delhi", "bengaluru", "bangalore", "chennai", "kolkata",
+        "hyderabad", "ahmedabad", "surat", "pune", "jaipur", "lucknow", "kanpur", "nagpur",
+        "indore", "thane", "bhopal", "visakhapatnam", "patna", "vadodara", "ghaziabad",
+        "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot", "varanasi",
+        "srinagar", "aurangabad", "dhanbad", "amritsar", "navi mumbai", "allahabad",
+        "prayagraj", "howrah", "gwalior", "jabalpur", "coimbatore", "vijayawada", "jodhpur",
+        "madurai", "raipur", "kota", "guwahati", "chandigarh", "solapur", "hubballi",
+        "dharwad", "tiruchirappalli", "bareilly", "moradabad", "mysuru", "tirupur",
+        "gurgaon", "gurugram", "aligarh", "jalandhar", "bhubaneswar", "salem", "warangal",
+        "mira bhayandar", "jalgaon", "guntur", "thiruvananthapuram", "bhiwandi", "saharanpur",
+        "gorakhpur", "bikaner", "amravati", "noida", "jamshedpur", "bhilai", "cuttack",
+        "firozabad", "kochi", "nellore", "bhavnagar", "dehradun", "durgapur", "asansol",
+        "rourkela", "nanded", "kolhapur", "ajmer", "akola", "gulbarga", "jamnagar",
+        "ujjain", "loni", "siliguri", "jhansi", "ulhasnagar", "jammu", "sangli",
+        "mangalore", "erode", "belgaum", "ambattur", "tirunelveli", "malegaon", "gaya",
+        "jalna", "udaipur", "maheshtala", "davanagere", "kozhikode", "kurnool", "rajpur",
+        "bokaro", "south dumdum", "bellary", "patiala", "gopalpur", "agartala", "bhagalpur",
+        "muzaffarnagar", "bhatpara", "panihati", "latur", "dhule", "rohtak", "korba",
+        "bhilwara", "berhampur", "muzaffarpur", "ahmednagar", "mathura", "kollam",
+        "avadi", "kadapa", "kamarhati", "sambalpur", "bilaspur", "shahjahanpur",
+        "satara", "bijapur", "rampur", "shivamogga", "chandrapur", "junagadh", "thrissur",
+        "alwar", "bardhaman", "kulti", "kakinada", "nizamabad", "parbhani", "tumkur",
+        "khammam", "ozhukarai", "bihar sharif", "panipat", "darbhanga", "bally", "aizawl",
+        "dewas", "ichalkaranji", "karnal", "bathinda", "jalpaiguri", "eluru", "barasat",
+        "kirari suleman nagar", "purnia", "satna", "mau", "sonipat", "farrukhabad",
+        "sagar", "rourkela", "durg", "imphal", "ratlam", "hapur", "arrah", "karimnagar",
+        "anantapur", "etawah", "ambernath", "north dumdum", "bharatpur", "begusarai",
+        "new delhi", "gandhidham", "baranagar", "tiruvannamalai", "thoothukudi", "tuticorin",
+        "eral", "sivakasi", "hosur", "pollachi", "dindigul", "karur", "thanjavur",
+    }
     if city:
         city_clean = city.strip().lower()
-        # If snippet explicitly specifies a conflicting city/town
-        known_cities = {
-            "mumbai", "delhi", "new delhi", "bengaluru", "bangalore", "chennai", "kolkata",
-            "hyderabad", "ahmedabad", "surat", "pune", "jaipur", "lucknow", "kanpur", "nagpur",
-            "indore", "thane", "bhopal", "visakhapatnam", "patna", "vadodara", "ghaziabad",
-            "ludhiana", "agra", "nashik", "faridabad", "meerut", "rajkot", "varanasi",
-            "srinagar", "aurangabad", "dhanbad", "amritsar", "navi mumbai", "allahabad",
-            "prayagraj", "howrah", "gwalior", "jabalpur", "coimbatore", "vijayawada", "jodhpur",
-            "madurai", "raipur", "kota", "guwahati", "chandigarh", "solapur", "hubballi",
-            "dharwad", "tiruchirappalli", "bareilly", "moradabad", "mysuru", "tirupur",
-            "gurgaon", "gurugram", "aligarh", "jalandhar", "bhubaneswar", "salem", "warangal",
-            "mira bhayandar", "jalgaon", "guntur", "thiruvananthapuram", "bhiwandi", "saharanpur",
-            "gorakhpur", "bikaner", "amravati", "noida", "jamshedpur", "bhilai", "cuttack",
-            "firozabad", "kochi", "nellore", "bhavnagar", "dehradun", "durgapur", "asansol",
-            "rourkela", "nanded", "kolhapur", "ajmer", "akola", "gulbarga", "jamnagar",
-            "ujjain", "loni", "siliguri", "jhansi", "ulhasnagar", "jammu", "sangli",
-            "mangalore", "erode", "belgaum", "ambattur", "tirunelveli", "malegaon", "gaya",
-            "jalna", "udaipur", "maheshtala", "davanagere", "kozhikode", "kurnool", "rajpur",
-            "bokaro", "south dumdum", "bellary", "patiala", "gopalpur", "agartala", "bhagalpur",
-            "muzaffarnagar", "bhatpara", "panihati", "latur", "dhule", "rohtak", "korba",
-            "bhilwara", "berhampur", "muzaffarpur", "ahmednagar", "mathura", "kollam",
-            "avadi", "kadapa", "kamarhati", "sambalpur", "bilaspur", "shahjahanpur",
-            "satara", "bijapur", "rampur", "shivamogga", "chandrapur", "junagadh", "thrissur",
-            "alwar", "bardhaman", "kulti", "kakinada", "nizamabad", "parbhani", "tumkur",
-            "khammam", "ozhukarai", "bihar sharif", "panipat", "darbhanga", "bally", "aizawl",
-            "dewas", "ichalkaranji", "karnal", "bathinda", "jalpaiguri", "eluru", "barasat",
-            "kirari suleman nagar", "purnia", "satna", "mau", "sonipat", "farrukhabad",
-            "sagar", "rourkela", "durg", "imphal", "ratlam", "hapur", "arrah", "karimnagar",
-            "anantapur", "etawah", "ambernath", "north dumdum", "bharatpur", "begusarai",
-            "new delhi", "gandhidham", "baranagar", "tiruvannamalai", "thoothukudi", "tuticorin",
-            "eral", "sivakasi", "hosur", "pollachi", "dindigul", "karur", "thanjavur",
-        }
         if city_clean not in combined:
-            # Check if an explicitly different city from the same or different region is prominent in candidate
+            # Check if an explicitly different city from the known cities is present in candidate
             for other_city in known_cities:
-                if other_city != city_clean and re.search(r"\b" + re.escape(other_city) + r"\b", combined):
-                    # If target city is completely absent and another city is explicitly mentioned as company location
-                    if any(
-                        re.search(r"(?i)(?:in|at|location|city|address)\s*[:\-]?\s*" + re.escape(other_city), combined)
-                        for _ in [1]
-                    ):
-                        return (
-                            False,
-                            0,
-                            f"LOCATION_MISMATCH: Candidate location '{other_city}' conflicts with target seller city '{city}'",
-                        )
+                if other_city != city_clean and len(other_city) >= 4 and re.search(r"\b" + re.escape(other_city) + r"\b", combined):
+                    return (
+                        False,
+                        0,
+                        f"LOCATION_MISMATCH: Candidate location '{other_city}' conflicts with target seller city '{city}'",
+                    )
 
     # 1. Reject if candidate explicitly mentions a conflicting entity type
     # e.g., Target is "ABC ENTERPRISES", candidate is "ABC TRADERS"
@@ -527,6 +703,34 @@ def match_gst_to_seller(
     if matched_words and all(w in GENERIC_SELLER_WORDS for w in matched_words):
         return False, 0, "COMMON_WORD_ONLY: Candidate matched only generic business words"
 
+    # Generic seller name protection check
+    is_generic = is_generic_seller_name(seller_name)
+    has_city_match = bool(city and city.strip().lower() in combined)
+    has_state_match = bool(
+        (state and (state.strip().lower() in gst_state_name or state.strip().lower() in combined))
+        or (gst_state_name and gst_state_name in combined)
+    )
+    has_pincode_match = bool(pincode and pincode.strip() in combined)
+    has_domain_match = bool(url and any(t in url.lower() for t in distinctive_tokens if len(t) >= 4))
+
+    if is_generic:
+        if city:
+            # If target city is specified, require city, pincode, or domain match
+            if not (has_city_match or has_pincode_match or has_domain_match):
+                return (
+                    False,
+                    0,
+                    "GENERIC_NAME_LOCATION_MISMATCH: Generic seller name requires matching city, pincode, or domain",
+                )
+        else:
+            # Require state, pincode, or domain match
+            if not (has_state_match or has_pincode_match or has_domain_match):
+                return (
+                    False,
+                    0,
+                    "GENERIC_NAME_LOCATION_MISMATCH: Generic seller name requires location or domain verification",
+                )
+
     # 3. Exact seller name match (e.g. "ABC Enterprises" in legal/trade/snippet)
     if re.search(r"\b" + re.escape(seller_lower) + r"\b", combined):
         score = 95
@@ -534,6 +738,8 @@ def match_gst_to_seller(
         if gst_state_name and (gst_state_name in combined or (state and state.lower() in gst_state_name)):
             score = 99
         if city and city.lower() in combined:
+            score = 100
+        if pincode and pincode.strip() in combined:
             score = 100
         return True, score, "EXACT_SELLER_NAME_MATCH"
 
@@ -545,11 +751,15 @@ def match_gst_to_seller(
                 score = 95
                 if city and city.lower() in combined:
                     score = 100
+                if pincode and pincode.strip() in combined:
+                    score = 100
                 return True, score, "LEGAL_OR_TRADE_NAME_EXACT_MATCH"
             # Check if all distinctive tokens match
             if distinctive_tokens and all(re.search(r"\b" + re.escape(dt) + r"\b", cn_lower) for dt in distinctive_tokens):
                 score = 90
                 if city and city.lower() in combined:
+                    score = 98
+                if pincode and pincode.strip() in combined:
                     score = 98
                 return True, score, "LEGAL_NAME_DISTINCTIVE_TOKEN_MATCH"
 
@@ -559,6 +769,8 @@ def match_gst_to_seller(
     if compact and len(compact) >= 5 and compact in combined_compact:
         score = 90
         if city and city.lower() in combined:
+            score = 98
+        if pincode and pincode.strip() in combined:
             score = 98
         return True, score, "COMPACT_SELLER_NAME_MATCH"
 
@@ -575,6 +787,8 @@ def match_gst_to_seller(
                     score = 85
                     if city and city.lower() in combined:
                         score = 95
+                    if pincode and pincode.strip() in combined:
+                        score = 95
                     return True, score, f"VARIATION_MATCH: {var}"
 
     # 7. Distinctive tokens match check
@@ -589,6 +803,8 @@ def match_gst_to_seller(
                 return False, 30, "INSUFFICIENT_DISTINCTIVE_EVIDENCE: Short token without entity qualifier"
             score = 80
             if city and city.lower() in combined:
+                score = 95
+            if pincode and pincode.strip() in combined:
                 score = 95
             return True, score, "DISTINCTIVE_TOKEN_MATCH"
 

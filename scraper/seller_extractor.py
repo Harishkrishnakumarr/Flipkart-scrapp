@@ -109,6 +109,15 @@ class SellerRepository:
         product_rating: Optional[float] = None,
         seller_source_type: Optional[str] = None,
         seller_confidence: float = 0.95,
+        seller_url: Optional[str] = None,
+        seller_location: Optional[str] = None,
+        city: Optional[str] = None,
+        state: Optional[str] = None,
+        pincode: Optional[str] = None,
+        contact_number: Optional[str] = None,
+        phone: Optional[str] = None,
+        email: Optional[str] = None,
+        gst_number: Optional[str] = None,
     ) -> Optional[Dict[str, Any]]:
         """Add a new generic seller or update existing seller's products and categories.
 
@@ -122,6 +131,14 @@ class SellerRepository:
             product_rating: Product rating if available.
             seller_source_type: Extraction source type.
             seller_confidence: Confidence score.
+            seller_url: Seller profile link URL.
+            seller_location: Seller location string.
+            city: Seller city.
+            state: Seller state.
+            pincode: Seller pincode.
+            contact_number: Seller phone number.
+            phone: Alias for contact_number.
+            email: Seller email address.
 
         Returns:
             The normalized generic seller record dictionary or None if invalid.
@@ -137,6 +154,7 @@ class SellerRepository:
         storage_key = f"{marketplace}::{canonical_key}"
         category_str = " > ".join(category_hierarchy) if category_hierarchy else "General"
         now_iso = datetime.now(timezone.utc).isoformat()
+        phone_val = contact_number or phone
 
         if storage_key in self.sellers:
             seller = self.sellers[storage_key]
@@ -150,6 +168,21 @@ class SellerRepository:
                 seller["star_rating"] = star_rating
             if fulfillment_by and not seller.get("fulfillment_by"):
                 seller["fulfillment_by"] = fulfillment_by
+            if seller_url and not seller.get("seller_url"):
+                seller["seller_url"] = seller_url
+            if seller_location and not seller.get("seller_location"):
+                seller["seller_location"] = seller_location
+            if city and not seller.get("city"):
+                seller["city"] = city
+            if state and not seller.get("state"):
+                seller["state"] = state
+            if pincode and not seller.get("pincode"):
+                seller["pincode"] = pincode
+            if phone_val and not seller.get("contact_number"):
+                seller["contact_number"] = phone_val
+                seller["phone"] = phone_val
+            if email and not seller.get("email"):
+                seller["email"] = email
             seller["last_seen"] = now_iso
         else:
             self.sellers[storage_key] = {
@@ -163,6 +196,14 @@ class SellerRepository:
                 "product_rating": product_rating,
                 "seller_source_type": seller_source_type or f"{marketplace}_product",
                 "seller_confidence": seller_confidence,
+                "seller_url": seller_url,
+                "seller_location": seller_location,
+                "city": city,
+                "state": state,
+                "pincode": pincode,
+                "contact_number": phone_val,
+                "phone": phone_val,
+                "email": email,
                 "enrichment_status": "pending",
                 "first_seen": now_iso,
                 "last_seen": now_iso,
