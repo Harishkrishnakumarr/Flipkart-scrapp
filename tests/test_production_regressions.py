@@ -62,14 +62,13 @@ EXPECTED_EXCEL_HEADERS = [
     "PAN Number",
     "FSSAI Number",
     "Billing Address",
-    "x",
     "City",
     "State",
     "Pincode",
     "Country",
     "Website URL",
-    "Status",
-    "Source rating",
+    "Status Source",
+    "Rating",
 ]
 
 
@@ -158,10 +157,7 @@ async def test_regression_8_email_missing_triggers_external_enrichment(monkeypat
     engine = WebResearchEngine()
     searched_queries = []
 
-    async def mock_google(query: str):
-        return [], 429
-
-    async def mock_brave(query: str):
+    async def mock_fail(query: str):
         return [], 429
 
     async def mock_bing(query: str):
@@ -174,9 +170,10 @@ async def test_regression_8_email_missing_triggers_external_enrichment(monkeypat
             }], 200
         return [], 200
 
-    monkeypatch.setattr(engine, "_query_google", mock_google)
+    monkeypatch.setattr(engine, "_query_google", mock_fail)
+    monkeypatch.setattr(engine, "_query_ddg", lambda query: [])
+    monkeypatch.setattr(engine, "_query_brave", mock_fail)
     monkeypatch.setattr(engine, "_query_bing", mock_bing)
-    monkeypatch.setattr(engine, "_query_brave", mock_brave)
 
     seller_record = {
         "seller_name": "Sidh India Plastics",
@@ -196,7 +193,7 @@ async def test_regression_9_google_429_falls_back_to_bing(monkeypatch):
     """Regression 9: Google 429 rate limit immediately falls back to Bing without failing."""
     engine = WebResearchEngine()
 
-    async def mock_google(query: str):
+    async def mock_fail(query: str):
         return [], 429
 
     async def mock_bing(query: str):
@@ -206,7 +203,9 @@ async def test_regression_9_google_429_falls_back_to_bing(monkeypatch):
             "url": "https://alphatech.in",
         }], 200
 
-    monkeypatch.setattr(engine, "_query_google", mock_google)
+    monkeypatch.setattr(engine, "_query_google", mock_fail)
+    monkeypatch.setattr(engine, "_query_ddg", lambda query: [])
+    monkeypatch.setattr(engine, "_query_brave", mock_fail)
     monkeypatch.setattr(engine, "_query_bing", mock_bing)
 
     results, engine_used, diag = await engine.search_seller_web("Alpha Tech", "phone")
@@ -222,10 +221,10 @@ async def test_regression_10_bing_failure_falls_back_to_brave(monkeypatch):
     """Regression 10: Bing error / failure falls back to Brave."""
     engine = WebResearchEngine()
 
-    async def mock_google(query: str):
-        return [], 500
+    async def mock_fail_429(query: str):
+        return [], 429
 
-    async def mock_bing(query: str):
+    async def mock_fail_500(query: str):
         return [], 500
 
     async def mock_brave(query: str):
@@ -235,8 +234,9 @@ async def test_regression_10_bing_failure_falls_back_to_brave(monkeypatch):
             "url": "https://betafootwear.in",
         }], 200
 
-    monkeypatch.setattr(engine, "_query_google", mock_google)
-    monkeypatch.setattr(engine, "_query_bing", mock_bing)
+    monkeypatch.setattr(engine, "_query_google", mock_fail_500)
+    monkeypatch.setattr(engine, "_query_ddg", lambda query: [])
+    monkeypatch.setattr(engine, "_query_bing", mock_fail_500)
     monkeypatch.setattr(engine, "_query_brave", mock_brave)
 
     results, engine_used, diag = await engine.search_seller_web("Beta Footwear", "gst")

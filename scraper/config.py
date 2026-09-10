@@ -33,24 +33,23 @@ REQUIRED_INPUT_COLUMNS: List[str] = [
 ]
 
 OUTPUT_EXCEL_COLUMNS: List[str] = [
-    "Business Name",
-    "Business Model",
-    "Business Category",
-    "Owner Name",
-    "Phone Number",
-    "Email Address",
-    "GST Number",
-    "PAN Number",
-    "FSSAI Number",
-    "Billing Address",
-    "x",
-    "City",
-    "State",
-    "Pincode",
-    "Country",
-    "Website URL",
-    "Status",
-    "Source rating",
+    "Business Name",       # 1  — Seller's registered business / marketplace name
+    "Business Model",      # 2  — Proprietorship / Pvt Ltd / Partnership etc.
+    "Business Category",   # 3  — Full Flipkart category path
+    "Owner Name",          # 4  — Proprietor / Director name from web research
+    "Phone Number",        # 5  — Validated 10-digit Indian mobile
+    "Email Address",       # 6  — RFC-compliant validated email
+    "GST Number",          # 7  — Validated 15-char GSTIN
+    "PAN Number",          # 8  — Validated 10-char PAN (derived from GSTIN if available)
+    "FSSAI Number",        # 9  — 14-digit food license (food sellers only)
+    "Billing Address",     # 10 — Cleaned registered / dispatch address string
+    "City",                # 11 — Extracted Indian city
+    "State",               # 12 — Normalised Indian State / UT
+    "Pincode",             # 13 — 6-digit Indian postal code
+    "Country",             # 14 — Default: India
+    "Website URL",         # 15 — Official company website
+    "Status Source",       # 16 — VERIFIED / PARTIALLY_VERIFIED / NEEDS_REVIEW / NOT_FOUND
+    "Rating",              # 17 — Flipkart seller star rating (e.g. 4.2)
 ]
 
 # Verification Statuses

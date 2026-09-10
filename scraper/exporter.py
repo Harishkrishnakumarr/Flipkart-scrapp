@@ -53,24 +53,28 @@ THIN_BORDER = Border(
 
 
 EXCEL_FIELD_MAPPING: Dict[str, List[str]] = {
-    "Business Name": ["Business Name", "seller_name", "business_name", "company_name", "name"],
-    "Business Model": ["Business Model", "business_model"],
-    "Business Category": ["Business Category", "business_category", "category"],
-    "Owner Name": ["Owner Name", "owner_name", "owner", "proprietor_name", "director_name"],
-    "Phone Number": ["Phone Number", "contact_number", "phone_number", "phone", "mobile"],
-    "Email Address": ["Email Address", "email", "email_address", "contact_email"],
-    "GST Number": ["GST Number", "gst_number", "gstin", "gst"],
-    "PAN Number": ["PAN Number", "pan_number", "pan"],
-    "FSSAI Number": ["FSSAI Number", "fssai_number", "fssai"],
-    "Billing Address": ["Billing Address", "billing_address", "address", "raw_address"],
-    "x": ["x", "shipping_address", "fulfillment_by"],
-    "City": ["City", "city"],
-    "State": ["State", "state"],
-    "Pincode": ["Pincode", "pincode", "postal_code", "zip"],
-    "Country": ["Country", "country"],
-    "Website URL": ["Website URL", "website_url", "website", "official_website"],
-    "Status": ["Status", "status"],
-    "Source rating": ["Source rating", "source_rating", "star_rating", "seller_rating"],
+    "Business Name":    ["Business Name", "seller_name", "business_name", "company_name", "name"],
+    "Business Model":   ["Business Model", "business_model"],
+    "Business Category":["Business Category", "business_category", "category"],
+    "Owner Name":       ["Owner Name", "owner_name", "owner", "proprietor_name", "director_name"],
+    "Phone Number":     ["Phone Number", "contact_number", "phone_number", "phone", "mobile"],
+    "Email Address":    ["Email Address", "email", "email_address", "contact_email"],
+    "GST Number":       ["GST Number", "gst_number", "gstin", "gst"],
+    "PAN Number":       ["PAN Number", "pan_number", "pan"],
+    "FSSAI Number":     ["FSSAI Number", "fssai_number", "fssai"],
+    "Billing Address":  ["Billing Address", "billing_address", "address", "raw_address"],
+    "City":             ["City", "city"],
+    "State":            ["State", "state"],
+    "Pincode":          ["Pincode", "pincode", "postal_code", "zip"],
+    "Country":          ["Country", "country"],
+    "Website URL":      ["Website URL", "website_url", "website", "official_website"],
+    # Verification status pill
+    "Status Source":    ["Status Source", "Status", "status", "verification_status"],
+    "Status":           ["Status", "Status Source", "status", "verification_status"],
+    # Seller rating & product rating
+    "Rating":           ["Rating", "Source rating", "source_rating", "star_rating", "seller_rating"],
+    "Seller Rating":    ["Seller Rating", "seller_rating", "star_rating", "Rating", "Source rating"],
+    "Product Rating":   ["Product Rating", "product_rating", "aggregatedRating", "ratingValue"],
 }
 
 
@@ -95,10 +99,15 @@ def _extract_column_value(col_name: str, seller_data: Dict[str, Any]) -> Any:
     # Defaults
     if col_name == "Country":
         return "India"
-    if col_name == "x":
-        return seller_data.get("fulfillment_by") or seller_data.get("shipping_address")
-    if col_name == "Source rating":
-        return seller_data.get("star_rating") or seller_data.get("seller_rating") or seller_data.get("source_rating")
+    if col_name in ("Rating", "Seller Rating"):
+        return (
+            seller_data.get("star_rating")
+            or seller_data.get("seller_rating")
+            or seller_data.get("source_rating")
+            or seller_data.get("Rating")
+        )
+    if col_name == "Product Rating":
+        return seller_data.get("product_rating")
     return None
 
 
@@ -229,7 +238,7 @@ class LiveExcelManager:
                         cell.fill = row_fill
                         if col_name in [
                             "Phone Number", "GST Number", "PAN Number", "FSSAI Number",
-                            "Pincode", "Source rating", "Status"
+                            "Pincode", "Rating", "Status Source"
                         ]:
                             cell.alignment = Alignment(horizontal="center", vertical="center")
                         else:
@@ -263,7 +272,8 @@ class LiveExcelManager:
     def get_completed_sellers(self) -> Set[str]:
         """Return set of canonical seller keys already enriched and present in the Excel."""
         completed: Set[str] = set()
-        status_col_idx = self.header_col_map.get("Status", 17)
+        # Column is now named "Status Source" (index 16); fall back to 16 if not mapped
+        status_col_idx = self.header_col_map.get("Status Source") or self.header_col_map.get("Status", 16)
         seller_col_idx = self.header_col_map.get("Business Name", 1)
 
         for row_idx in range(2, self.sheet.max_row + 1):
@@ -337,15 +347,15 @@ class LiveExcelManager:
                 "PAN Number",
                 "FSSAI Number",
                 "Pincode",
-                "Source rating",
-                "Status",
+                "Rating",
+                "Status Source",
             ]:
                 cell.alignment = Alignment(horizontal="center", vertical="center")
             else:
                 cell.alignment = Alignment(horizontal="left", vertical="center")
 
-            # Status cell special highlight
-            if col_name == "Status":
+            # Status Source cell special highlight (keyed by value, not column name)
+            if col_name == "Status Source":
                 status_str = str(val).strip() if val else ""
                 if status_str in STATUS_STYLES:
                     cell.fill = STATUS_STYLES[status_str]["fill"]
@@ -411,24 +421,28 @@ class LiveExcelManager:
                         f"Business Name mismatch at row {target_sheet_row}: expected '{expected_seller}', found '{saved_seller}'",
                     )
 
-            # 2. Verify Status
-            expected_status = expected_data.get("Status") or expected_data.get("status")
+            # 2. Verify Status Source
+            expected_status = (
+                expected_data.get("Status Source")
+                or expected_data.get("Status")
+                or expected_data.get("status")
+            )
             if expected_status:
-                saved_status = str(saved_values.get("Status") or "").strip()
+                saved_status = str(saved_values.get("Status Source") or "").strip()
                 if saved_status != str(expected_status).strip():
                     return (
                         False,
-                        f"Status mismatch at row {target_sheet_row}: expected '{expected_status}', found '{saved_status}'",
+                        f"Status Source mismatch at row {target_sheet_row}: expected '{expected_status}', found '{saved_status}'",
                     )
 
             # 3. Verify key credentials if provided
             key_fields = [
-                ("GST Number", ["GST Number", "gst_number"]),
-                ("PAN Number", ["PAN Number", "pan_number"]),
+                ("GST Number",   ["GST Number", "gst_number"]),
+                ("PAN Number",   ["PAN Number", "pan_number"]),
                 ("Phone Number", ["Phone Number", "contact_number", "phone"]),
-                ("Email Address", ["Email Address", "email"]),
-                ("Country", ["Country", "country"]),
-                ("Website URL", ["Website URL", "website_url"]),
+                ("Email Address",["Email Address", "email"]),
+                ("Country",      ["Country", "country"]),
+                ("Website URL",  ["Website URL", "website_url"]),
             ]
             for col_hdr, aliases in key_fields:
                 exp_val = None

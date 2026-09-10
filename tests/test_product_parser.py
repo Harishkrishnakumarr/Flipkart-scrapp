@@ -415,3 +415,30 @@ def test_regression_8_seller_name_with_spaces_and_special_chars():
     res_sp = parse_product_page(html_special, "https://www.flipkart.com/item/p/itm999")
     assert res_sp["seller_name"] == "A & B Retail (India)"
 
+
+def test_modern_flipkart_product_and_seller_rating():
+    """Verify modern Flipkart product rating (div.XQDdHH), reviews count (span.Wphh3K), and seller rating."""
+    html = """
+    <html>
+      <body>
+        <div class="product-title">boAt Airdopes 131 Bluetooth Headset</div>
+        <div class="XQDdHH">4.2 ★</div>
+        <span class="Wphh3K">12,450 Ratings & 1,120 Reviews</span>
+        <div id="sellerName">
+          <span>Corpnation</span>
+          <div class="_1RLviY">4.6 ★</div>
+        </div>
+        <img src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fa_62673a.png" alt="Plus" />
+      </body>
+    </html>
+    """
+    res = parse_product_page(html, "https://www.flipkart.com/boat-airdopes/p/itm123")
+    assert res["seller_name"] == "Corpnation"
+    assert res["product_rating"] == 4.2
+    assert res["product_rating_count"] == 12450
+    assert res["product_review_count"] == 1120
+    assert res["seller_rating"] == 4.6
+    assert res["star_rating"] == 4.6
+    assert res["is_f_assured"] is True
+
+

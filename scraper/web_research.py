@@ -159,13 +159,17 @@ DIRECTORY_DOMAINS = {
 
 # Source Priority Hierarchy: Higher numbers take precedence and cannot be overwritten by lower ones
 SOURCE_PRIORITY: Dict[str, int] = {
-    "government_source": 7,
-    "company_website": 6,
-    "filing_registry": 5,
-    "marketplace_profile": 4,
-    "directory_registry": 3,
-    "targeted_search": 2,
-    "search_query": 1,
+    "marketplace_profile": 100,  # Marketplace direct profile data
+    "filing_registry": 90,       # Government GST/filings
+    "government_source": 90,     # Official government portal
+    "company_website": 80,       # Official website
+    "official_contact_page": 75, # Official contact page
+    "business_directory": 60,    # Trusted directory
+    "directory_registry": 60,    # Zauba / Tofler / IndiaMART
+    "targeted_search": 50,       # Verified search candidate
+    "search_snippet": 40,        # Raw snippet match
+    "search_query": 30,          # Query fallback
+    "seller_location": 30,
     "not_found": 0,
 }
 
@@ -296,78 +300,78 @@ FIELD_BRAVE_QUERIES: Dict[str, List[str]] = {
     ],
 }
 
-# Legacy Field-Specific Query Templates for backward compatibility
+# Legacy Field-Specific Query Templates — updated with focused site-dork queries
+# to prevent unstructured search snippet garbage from being harvested.
 FIELD_SEARCH_QUERIES: Dict[str, List[str]] = {
     "gst": [
-        '"{seller}" GST',
+        # Site-dork priority: government company registries
+        '"{seller}" GSTIN site:zaubacorp.com OR site:tofler.in OR site:thecompanycheck.com',
+        '"{seller}" GSTIN site:zaubacorp.com',
+        '"{seller}" GSTIN site:tofler.in',
+        '"{seller}" GSTIN site:thecompanycheck.com',
+        '"{seller}" GSTIN site:quickcompany.in',
+        '"{seller}" GSTIN site:knowyourgst.com',
+        # Broad but quoted to force seller name match
+        '"{seller}" "GSTIN" India',
+        '"{seller}" "GST number" India',
         '"{seller}" GSTIN',
-        '"{seller}" "GST number"',
-        '"{seller}" GST India',
-        '"{seller}" GST site:zaubacorp.com',
-        '"{seller}" GST site:thecompanycheck.com',
-        '"{seller}" GST site:tofler.in',
-        '"{seller}" GST site:quickcompany.in',
-        '"{seller}" GST site:piceapp.com',
-        '"{seller}" GST site:knowyourgst.com',
-    ],
-    "address": [
-        '"{seller}" address',
-        '"{seller}" "registered address"',
-        '"{seller}" "registered office"',
-        '"{seller}" "business address"',
-        '"{seller}" "office address"',
-        '"{seller}" address India',
-        '"{seller}" address site:zaubacorp.com',
-        '"{seller}" address site:thecompanycheck.com',
-        '"{seller}" address site:tofler.in',
-    ],
-    "pincode": [
-        '"{seller}" pincode',
-        '"{seller}" "postal code"',
-        '"{seller}" "PIN code"',
-        '"{seller}" pincode India',
-        '"{seller}" address',
-    ],
-    "phone": [
-        '"{seller}" phone',
-        '"{seller}" mobile',
-        '"{seller}" "contact number"',
-        '"{seller}" "phone number"',
-        '"{seller}" phone India',
-    ],
-    "email": [
-        '"{seller}" email',
-        '"{seller}" "email address"',
-        '"{seller}" "contact email"',
-        '"{seller}" email India',
-    ],
-    "owner": [
-        '"{seller}" owner',
-        '"{seller}" proprietor',
-        '"{seller}" founder',
-        '"{seller}" director',
-        '"{seller}" promoter',
-        '"{seller}" director site:zaubacorp.com',
-        '"{seller}" director site:thecompanycheck.com',
-        '"{seller}" director site:tofler.in',
     ],
     "pan": [
-        '"{seller}" PAN',
-        '"{seller}" "PAN number"',
-        '"{seller}" PAN India',
+        # PAN via company registries (same pages that expose GSTIN)
+        '"{seller}" PAN site:zaubacorp.com OR site:tofler.in',
         '"{seller}" PAN site:zaubacorp.com',
+        '"{seller}" PAN site:tofler.in',
+        '"{seller}" "PAN number" India',
+        '"{seller}" "company PAN"',
+    ],
+    "address": [
+        # Registered address via company registries
+        '"{seller}" address site:zaubacorp.com OR site:tofler.in OR site:thecompanycheck.com',
+        '"{seller}" "registered address" site:zaubacorp.com',
+        '"{seller}" "registered address" site:tofler.in',
+        '"{seller}" "registered office" India',
+        '"{seller}" "corporate office" India',
+        '"{seller}" address India',
+    ],
+    "pincode": [
+        '"{seller}" pincode site:zaubacorp.com OR site:tofler.in',
+        '"{seller}" "postal code" India',
+        '"{seller}" pincode India',
+    ],
+    "phone": [
+        # Contact/phone from official presence or directories
+        '"{seller}" "contact us" OR "phone" OR "mobile" India',
+        '"{seller}" "phone number" site:indiamart.com OR site:justdial.com',
+        '"{seller}" phone India',
+        '"{seller}" mobile India',
+        '"{seller}" "contact number" India',
+    ],
+    "email": [
+        # Email from official pages
+        '"{seller}" "contact us" OR "email" OR "FSSAI" India',
+        '"{seller}" email India',
+        '"{seller}" "email address" India',
+        '"{seller}" "contact email" India',
+    ],
+    "owner": [
+        '"{seller}" owner site:zaubacorp.com OR site:tofler.in',
+        '"{seller}" director site:zaubacorp.com',
+        '"{seller}" director site:tofler.in',
+        '"{seller}" proprietor India',
+        '"{seller}" founder India',
     ],
     "fssai": [
         '"{seller}" FSSAI',
-        '"{seller}" "FSSAI license"',
-        '"{seller}" "FSSAI number"',
-        '"{seller}" FSSAI India',
+        '"{seller}" "FSSAI license" India',
+        '"{seller}" "FSSAI number" India',
+        '"{seller}" "FSSAI registration" India',
+        '"{seller}" food license India',
     ],
     "website": [
         '"{seller}" official website',
         '"{seller}" brand website',
-        '"{seller}" online store',
-        '"{seller}" website',
+        '"{seller}" online store India',
+        '"{seller}" company website',
     ],
 }
 
@@ -543,6 +547,55 @@ KNOWN_WORDS = [
     "DOLL",
     "SECRET",
 ]
+
+
+def strip_html_boilerplate(html_text: str, max_chars: int = 5000) -> str:
+    """Remove navigation, header, footer, script, and cookie-banner noise from HTML.
+
+    Strips structurally noisy HTML elements using BeautifulSoup and collapses
+    whitespace so the returned plain-text is clean enough to feed directly into
+    credential parsers without polluting addresses or contact fields.
+
+    Args:
+        html_text: Raw HTML string from a fetched page.
+        max_chars:  Maximum number of characters to return (default 5000).
+
+    Returns:
+        Clean plain-text string, truncated to *max_chars*.
+    """
+    if not html_text:
+        return ""
+
+    try:
+        soup = BeautifulSoup(html_text, "lxml")
+
+        # Remove non-content structural elements
+        for tag in soup.find_all(
+            ["script", "style", "noscript", "header", "nav",
+             "footer", "aside", "iframe", "form", "button",
+             "input", "select", "option"]
+        ):
+            tag.decompose()
+
+        # Remove cookie-banner / GDPR notice blocks by common class patterns
+        for tag in soup.find_all(
+            lambda t: t.get("class")
+            and any(
+                kw in " ".join(t.get("class", [])).lower()
+                for kw in ("cookie", "gdpr", "consent", "banner",
+                           "popup", "modal", "overlay", "notice")
+            )
+        ):
+            tag.decompose()
+
+        text = soup.get_text(separator=" ", strip=True)
+    except Exception:
+        # Fallback: strip raw HTML tags with regex
+        text = re.sub(r"<[^>]+>", " ", html_text)
+
+    # Collapse whitespace
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:max_chars]
 
 
 def generate_seller_variations(seller_name: str) -> List[str]:
@@ -1084,23 +1137,38 @@ def extract_address(
     Returns:
         Tuple of (parsed_address_dict, source, confidence) or None.
     """
+    from scraper.validator import is_junk_address  # local import to avoid circular
+
     for r in results:
         text = f"{r.get('title', '')} {r.get('snippet', '')}"
         url = r.get("url", "")
         if not validate_seller_association(seller_name, text, url):
             continue
+
+        # Gate 1: Reject entire snippet if it is junk / boilerplate
+        if is_junk_address(text):
+            logger.debug(f"[ADDRESS] Rejected junk snippet from {url}")
+            continue
+
         addr_m = re.search(
             r"(?i)(?:address|registered\s+office|located\s+at)\s*[:\-]?\s*([^.]+?(?:[1-9][0-9]{5}|India))",
             text,
         )
         if addr_m:
             addr_text = addr_m.group(1).strip()
+            # Gate 2: Reject extracted address fragment if it is junk
+            if is_junk_address(addr_text):
+                logger.debug(f"[ADDRESS] Rejected junk addr fragment from {url}")
+                continue
             parsed = parse_raw_address(addr_text, gst_number=gst_number)
             if parsed.get("billing_address"):
                 return parsed, url or text, 80
-        elif re.search(r"\b[1-9][0-9]{5}\b", text) and any(kw in text.lower() for kw in ["plot", "street", "road", "nagar", "building", "sector", "industrial"]):
+        elif re.search(r"\b[1-9][0-9]{5}\b", text) and any(
+            kw in text.lower()
+            for kw in ["plot", "street", "road", "nagar", "building", "sector", "industrial"]
+        ):
             parsed = parse_raw_address(text, gst_number=gst_number)
-            if parsed.get("billing_address"):
+            if parsed.get("billing_address") and not is_junk_address(parsed.get("billing_address")):
                 return parsed, url or text, 75
     return None
 
@@ -2361,7 +2429,7 @@ class WebResearchEngine:
             try:
                 def _do_ddgs():
                     with DDGS() as ddgs_client:
-                        return list(ddgs_client.text(query, max_results=6))
+                        return list(ddgs_client.text(query, max_results=8))
 
                 loop = asyncio.get_running_loop()
                 raw_items = await loop.run_in_executor(None, _do_ddgs)
@@ -2376,6 +2444,7 @@ class WebResearchEngine:
             except Exception as e:
                 logger.debug(f"DDGS query '{query}' exception: {e}")
 
+        # Fallback 1: DuckDuckGo HTML endpoint (POST)
         try:
             resp = await self.client.post(
                 "https://html.duckduckgo.com/html/",
@@ -2399,9 +2468,43 @@ class WebResearchEngine:
                             parsed_qs = urllib.parse.parse_qs(urllib.parse.urlparse(raw_href).query)
                             actual_url = parsed_qs.get("uddg", [raw_href])[0]
                         snippet = snippet_el.get_text(strip=True) if snippet_el else ""
-                        results.append({"title": title, "url": actual_url, "snippet": snippet})
+                        if actual_url and (title or snippet):
+                            results.append({"title": title, "url": actual_url, "snippet": snippet})
+                if results:
+                    return results
         except Exception as e:
-            logger.debug(f"HTTP DDG fallback error: {e}")
+            logger.debug(f"HTTP DDG HTML post fallback error: {e}")
+
+        # Fallback 2: DuckDuckGo Lite endpoint (POST/GET)
+        try:
+            resp_lite = await self.client.post(
+                "https://lite.duckduckgo.com/lite/",
+                data={"q": query},
+                headers={
+                    "User-Agent": random.choice(USER_AGENTS),
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                timeout=8.0,
+            )
+            if resp_lite.status_code == 200:
+                soup = BeautifulSoup(resp_lite.text, "lxml")
+                # In DDG Lite, results are table rows with class .result-link / .result-snippet
+                links = soup.select("a.result-link")
+                snippets = soup.select("td.result-snippet")
+                for idx, link in enumerate(links):
+                    title = link.get_text(strip=True)
+                    raw_href = link.get("href", "")
+                    actual_url = raw_href
+                    if "uddg=" in raw_href:
+                        parsed_qs = urllib.parse.parse_qs(urllib.parse.urlparse(raw_href).query)
+                        actual_url = parsed_qs.get("uddg", [raw_href])[0]
+                    snippet = snippets[idx].get_text(strip=True) if idx < len(snippets) else ""
+                    if actual_url and (title or snippet):
+                        results.append({"title": title, "url": actual_url, "snippet": snippet})
+                if results:
+                    return results
+        except Exception as e:
+            logger.debug(f"HTTP DDG Lite fallback error: {e}")
 
         return results
 
@@ -3764,6 +3867,9 @@ class WebResearchEngine:
             for w_q in web_bing_queries[:MAX_BING_QUERIES_PER_FIELD]:
                 logger.info(f"[SEARCH]\nengine=Bing\nquery={w_q}")
                 raw_res, status_code = await self._query_bing(w_q)
+                if not raw_res and status_code != 200:
+                    raw_res = await self._safe_query_ddg(w_q)
+
                 for idx, r_item in enumerate(raw_res, start=1):
                     eval_res = evaluate_result_candidate(
                         seller_name, "website_url", r_item,
@@ -3790,9 +3896,9 @@ class WebResearchEngine:
                 for br_q in web_brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD]:
                     logger.info(f"[SEARCH]\nengine=Brave\nquery={br_q}")
                     raw_res, status_code = await self._query_brave(br_q)
-                    if status_code == 429:
-                        logger.warning(f"[SEARCH ERROR]\nengine=Brave\nerror=429")
-                        break
+                    if not raw_res and status_code != 200:
+                        raw_res = await self._safe_query_ddg(br_q)
+
                     for idx, r_item in enumerate(raw_res, start=1):
                         eval_res = evaluate_result_candidate(
                             seller_name, "website_url", r_item,
@@ -3990,6 +4096,9 @@ class WebResearchEngine:
             for target_query in target_bing_queries[:MAX_BING_QUERIES_PER_FIELD]:
                 logger.info(f"[SEARCH]\nengine=Bing\nquery={target_query}")
                 raw_results, status_code = await self._query_bing(target_query)
+                if not raw_results and status_code != 200:
+                    raw_results = await self._safe_query_ddg(target_query)
+
                 accepted_candidate = None
                 accepted_src = None
 
@@ -4045,7 +4154,10 @@ class WebResearchEngine:
                 for target_query in brave_queries[:MAX_BRAVE_QUERIES_PER_FIELD]:
                     logger.info(f"[SEARCH]\nengine=Brave\nquery={target_query}")
                     raw_results, status_code = await self._query_brave(target_query)
-                    if status_code == 429:
+                    if not raw_results and status_code != 200:
+                        raw_results = await self._safe_query_ddg(target_query)
+
+                    if status_code == 429 and not raw_results:
                         logger.warning(f"[SEARCH ERROR]\nengine=Brave\nerror=429")
                         break
 
@@ -4081,10 +4193,9 @@ class WebResearchEngine:
                         if field_attr == "gst_number":
                             v_g = validate_gst(accepted_candidate)
                             if v_g:
-                                pan_val = v_g[2:12]
-                                v_p = validate_pan(pan_val, gst_str=v_g)
-                                if v_p:
-                                    _set_field("pan_number", v_p, "targeted_search", src_url="Derived from GSTIN")
+                                pan_val = extract_pan_from_gstin(v_g)
+                                if pan_val:
+                                    _set_field("pan_number", pan_val, "filing_registry", src_url="Derived from verified GSTIN")
                         if field_attr == "raw_address":
                             parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
                             if parsed_addr.get("city") and not merged.get("city"):

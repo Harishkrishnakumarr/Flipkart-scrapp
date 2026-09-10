@@ -304,17 +304,28 @@ def extract_rating_from_tag(tag: Tag) -> Optional[float]:
     return None
 
 
-def extract_product_rating(soup: BeautifulSoup, html_text: str) -> Optional[float]:
-    """Extract product-level rating (from Ratings & Reviews section or JSON-LD).
+def extract_product_rating_details(
+    soup: BeautifulSoup, html_text: str
+) -> Tuple[Optional[float], Optional[int], Optional[int]]:
+    """Extract product-level rating, total ratings count, and reviews count.
+
+    Checks:
+      1. JSON-LD structured data (<script type="application/ld+json">)
+      2. Modern Flipkart DOM selectors (div.XQDdHH, div._3LWZlK, div._2d4LTz, span.Wphh3K, span._2_R_DZ)
+      3. Embedded State JSON (window.__INITIAL_STATE__, pageDataV4, widgetsData)
 
     Args:
         soup: Parsed BeautifulSoup object.
         html_text: Raw HTML string.
 
     Returns:
-        Float product rating or None.
+        Tuple of (product_rating, rating_count, review_count).
     """
-    # Check JSON-LD aggregateRating
+    prod_rating: Optional[float] = None
+    rating_count: Optional[int] = None
+    review_count: Optional[int] = None
+
+    # Strategy 1: JSON-LD aggregateRating
     for script in soup.find_all("script", type="application/ld+json"):
         if not script.string:
             continue
@@ -323,28 +334,129 @@ def extract_product_rating(soup: BeautifulSoup, html_text: str) -> Optional[floa
             items = data if isinstance(data, list) else [data]
             for item in items:
                 agg = item.get("aggregateRating")
-                if isinstance(agg, dict) and agg.get("ratingValue"):
-                    val = float(agg["ratingValue"])
-                    if 1.0 <= val <= 5.0:
-                        return val
+                if isinstance(agg, dict):
+                    if agg.get("ratingValue") is not None and prod_rating is None:
+                        try:
+                            val = float(agg["ratingValue"])
+                            if 1.0 <= val <= 5.0:
+                                prod_rating = round(val, 1)
+                        except (ValueError, TypeError):
+                            pass
+                    if agg.get("ratingCount") is not None and rating_count is None:
+                        try:
+                            rating_count = int(agg["ratingCount"])
+                        except (ValueError, TypeError):
+                            pass
+                    if agg.get("reviewCount") is not None and review_count is None:
+                        try:
+                            review_count = int(agg["reviewCount"])
+                        except (ValueError, TypeError):
+                            pass
         except Exception:
             continue
 
-    # Look for "Ratings and reviews" rating badge
-    review_sections = soup.find_all(
-        lambda t: t.name in ["div", "span", "h2", "h3"]
-        and t.text
-        and "ratings & reviews" in t.text.strip().lower()
-    )
-    for section in review_sections:
-        parent = section.parent
-        if parent:
-            for badge in parent.find_all(class_=re.compile(r"_3LWZlK|rating")):
-                r = extract_rating_from_tag(badge)
-                if r is not None:
-                    return r
+    # Strategy 2: Modern & Legacy DOM selectors for product rating badge
+    if prod_rating is None:
+        # Common Flipkart product rating badges (usually under the product title / buybox)
+        prod_rating_selectors = [
+            "div.XQDdHH",                 # Modern Flipkart rating pill
+            "div._3LWZlK",                # Legacy Flipkart rating pill
+            "div._2d4LTz",                # Large rating score in reviews overview
+            "span._1lRcqv",
+            "div.IP_AVn",
+            "div[class*='XQDdHH']",
+            "div[class*='_3LWZlK']",
+        ]
+        for sel in prod_rating_selectors:
+            for el in soup.select(sel):
+                # Avoid seller rating badge (which is inside sellerName or seller container)
+                parent_text = el.parent.get_text(" ", strip=True).lower() if el.parent else ""
+                if "seller" in parent_text and "ratings & reviews" not in parent_text:
+                    continue
+                r = extract_rating_from_tag(el)
+                if r is not None and 1.0 <= r <= 5.0:
+                    prod_rating = r
+                    break
+            if prod_rating is not None:
+                break
 
-    return None
+    # Strategy 3: Rating count and review count from DOM (e.g. "4,512 Ratings & 320 Reviews" / span.Wphh3K / span._2_R_DZ)
+    if rating_count is None or review_count is None:
+        count_elements = soup.select("span.Wphh3K, span._2_R_DZ, span[class*='Wphh3K'], span[class*='_2_R_DZ']")
+        for cel in count_elements:
+            txt = cel.get_text(" ", strip=True)
+            # Match "4,512 Ratings & 320 Reviews" or "4,512 Ratings" or "320 Reviews"
+            m_rc = re.search(r"([\d,]+)\s*(?:Ratings?|ratings?)", txt)
+            if m_rc and rating_count is None:
+                try:
+                    rating_count = int(m_rc.group(1).replace(",", ""))
+                except ValueError:
+                    pass
+            m_rv = re.search(r"([\d,]+)\s*(?:Reviews?|reviews?)", txt)
+            if m_rv and review_count is None:
+                try:
+                    review_count = int(m_rv.group(1).replace(",", ""))
+                except ValueError:
+                    pass
+
+    # Strategy 4: Fallback to State JSON for product rating
+    if prod_rating is None and html_text:
+        # Check rating patterns in state JSON
+        m_state_r = re.search(
+            r'["\'](?:productRating|aggregatedRating|ratingValue|overallRating)["\']\s*:\s*"?([1-5](?:\.[0-9]+)?)"?',
+            html_text,
+            re.IGNORECASE,
+        )
+        if m_state_r:
+            try:
+                val = float(m_state_r.group(1))
+                if 1.0 <= val <= 5.0:
+                    prod_rating = round(val, 1)
+            except (ValueError, TypeError):
+                pass
+
+    return prod_rating, rating_count, review_count
+
+
+def extract_product_rating(soup: BeautifulSoup, html_text: str) -> Optional[float]:
+    """Extract product-level rating (from Ratings & Reviews section, DOM, or JSON-LD).
+
+    Args:
+        soup: Parsed BeautifulSoup object.
+        html_text: Raw HTML string.
+
+    Returns:
+        Float product rating (1.0 to 5.0) or None.
+    """
+    rating, _, _ = extract_product_rating_details(soup, html_text)
+    return rating
+
+
+def extract_is_f_assured(soup: BeautifulSoup, html_text: str) -> bool:
+    """Detect Flipkart F-Assured / Plus fulfillment badge.
+
+    Args:
+        soup: Parsed BeautifulSoup object.
+        html_text: Raw HTML string.
+
+    Returns:
+        True if F-Assured badge is detected, False otherwise.
+    """
+    if "isFAssured\":true" in html_text or "is_f_assured\":true" in html_text:
+        return True
+
+    # Check DOM badges
+    for img in soup.find_all("img"):
+        src = img.get("src", "").lower()
+        alt = img.get("alt", "").lower()
+        if "fa_" in src or "f-assured" in alt or "plus-icon" in alt or "fassured" in src:
+            return True
+
+    for el in soup.select("div._21AAV0, span._3j4x2k, div[class*='_21AAV0']"):
+        if el:
+            return True
+
+    return False
 
 
 class CandidateScore:
@@ -562,6 +674,8 @@ def _extract_from_dom_selectors(soup: BeautifulSoup) -> List[CandidateScore]:
     candidates: List[CandidateScore] = []
 
     # 1. Dedicated targeted seller selectors
+    SELLER_RATING_BADGE_REGEX = re.compile(r"\b(?:_3LWZlK|_1RLviY|V3C51r|XQDdHH|_1D0tN1|seller_rating|seller-rating)\b", re.I)
+
     for selector in TARGETED_SELLER_SELECTORS:
         elements = soup.select(selector)
         for el in elements:
@@ -572,7 +686,28 @@ def _extract_from_dom_selectors(soup: BeautifulSoup) -> List[CandidateScore]:
             text = el.get_text(separator=" ", strip=True)
             cand = clean_seller_candidate(text)
             if cand:
-                badge = el.find(class_=re.compile(r"_3LWZlK|rating", re.I))
+                # Look for seller rating badge inside element or direct sibling badge (avoiding reviews container)
+                badge = None
+                for child in el.find_all(class_=SELLER_RATING_BADGE_REGEX):
+                    if "review" not in " ".join(child.get("class", [])).lower():
+                        badge = child
+                        break
+
+                if not badge:
+                    # Check immediate next/prev sibling element
+                    for sib in list(el.find_next_siblings())[:2] + list(el.find_previous_siblings())[:2]:
+                        sib_cls = " ".join(sib.get("class", []))
+                        if "review" in sib_cls.lower():
+                            continue
+                        if SELLER_RATING_BADGE_REGEX.search(sib_cls):
+                            badge = sib
+                            break
+                        # Check inside small sibling container
+                        b_inside = sib.find(class_=SELLER_RATING_BADGE_REGEX)
+                        if b_inside and "review" not in " ".join(sib.get("class", [])).lower():
+                            badge = b_inside
+                            break
+
                 rating = extract_rating_from_tag(badge) if badge else None
                 candidates.append(
                     CandidateScore(name=cand, score=80, source="dom_targeted_selector", rating=rating)
@@ -593,7 +728,19 @@ def _extract_from_dom_selectors(soup: BeautifulSoup) -> List[CandidateScore]:
             sib_text = sib.get_text(separator=" ", strip=True)
             cand = clean_seller_candidate(sib_text)
             if cand:
-                badge = parent.find(class_=re.compile(r"_3LWZlK|rating", re.I))
+                badge = None
+                for b_cand in sib.find_all(class_=SELLER_RATING_BADGE_REGEX):
+                    if "review" not in " ".join(b_cand.get("class", [])).lower():
+                        badge = b_cand
+                        break
+                if not badge:
+                    for next_s in list(sib.find_next_siblings())[:2]:
+                        sib_cls = " ".join(next_s.get("class", []))
+                        if "review" in sib_cls.lower():
+                            continue
+                        if SELLER_RATING_BADGE_REGEX.search(sib_cls):
+                            badge = next_s
+                            break
                 rating = extract_rating_from_tag(badge) if badge else None
                 candidates.append(
                     CandidateScore(name=cand, score=80, source="dom_seller_label_sibling", rating=rating)
@@ -715,6 +862,78 @@ def detect_flipkart_page_status(html_content: str, http_status: int = 200) -> st
     return "PRODUCT_PAGE"
 
 
+# ---------------------------------------------------------------------------
+# Native Flipkart State-JSON Extraction Helpers
+# ---------------------------------------------------------------------------
+
+def _extract_seller_rating_from_state(raw_json_str: str) -> Optional[float]:
+    """Hunt specifically for the seller's star rating inside a raw state JSON blob.
+
+    Searches for JSON keys: sellerRating, ratingValue, averageRating, overallRating,
+    qualityScore.  Enforces 1.0 <= value <= 5.0 to reject irrelevant numeric hits.
+
+    Args:
+        raw_json_str: Raw JSON string (already extracted from the page).
+
+    Returns:
+        Float seller rating or None.
+    """
+    patterns = [
+        r'["\'](?:sellerRating|ratingValue|averageRating|overallRating|qualityScore)["\']\s*:\s*"?([0-9](?:\.[0-9]+)?)"?',
+        r'["\'](?:sellerRating)["\']\s*:\s*([0-9](?:\.[0-9]+)?)',
+    ]
+    for pat in patterns:
+        m = re.search(pat, raw_json_str, re.IGNORECASE)
+        if m:
+            try:
+                val = float(m.group(1))
+                if 1.0 <= val <= 5.0:
+                    return round(val, 1)
+            except ValueError:
+                pass
+    return None
+
+
+def _extract_registered_address_from_state(raw_json_str: str) -> Optional[str]:
+    """Search state JSON blob for the seller's registered / dispatch address.
+
+    Attempts the following JSON key patterns in priority order:
+      - registeredAddress
+      - dispatchAddress  / dispatch_address
+      - pickupAddress    / pickup_address
+      - sellerLocation   / sellerAddress
+
+    Args:
+        raw_json_str: Raw JSON string from page.
+
+    Returns:
+        Address string or None.
+    """
+    address_keys = [
+        "registeredAddress", "registered_address",
+        "dispatchAddress", "dispatch_address",
+        "pickupAddress", "pickup_address",
+        "sellerAddress", "seller_address",
+        "sellerLocation", "seller_location",
+        # Also match the bare "address" key (used in Flipkart page data / tests)
+        "address",
+    ]
+    for key in address_keys:
+        escaped = re.escape(key)
+        # Two concrete patterns: double-quoted and single-quoted JSON strings.
+        # These avoid rf-string brace-escaping issues inside character classes.
+        pat_dq = '"' + escaped + r'"\s*:\s*"([^"{}]{5,})"'
+        pat_sq = "'" + escaped + r"'\s*:\s*'([^'{}]{5,})'"
+        m = re.search(pat_dq, raw_json_str, re.IGNORECASE) or \
+            re.search(pat_sq, raw_json_str, re.IGNORECASE)
+        if m:
+            addr = m.group(1).strip()
+            # Must be non-trivial: at least 5 chars and not a URL/path
+            if len(addr) >= 5 and "http" not in addr and "/" not in addr[:6]:
+                return addr
+    return None
+
+
 def extract_flipkart_seller_metadata(
     soup: Optional[BeautifulSoup], html_text: str
 ) -> Dict[str, Any]:
@@ -736,12 +955,67 @@ def extract_flipkart_seller_metadata(
         "email": None,
         "gst_number": None,
         "raw_address": None,
+        # Extended fields populated by deeper state JSON scan
+        "seller_rating": None,       # numeric star rating (1.0–5.0)
+        "rating_count": None,        # total number of ratings
+        "seller_id": None,           # marketplace seller / platform ID
+        "marketplace_seller_id": None,
     }
 
     if not html_text:
         return meta
 
-    # 1. Inspect State JSON
+    # --- Pass 1: regex-match the raw JSON string for a broad set of keys ---
+    # We search the full page text (not just parsed JSON) to handle partially
+    # broken or truncated JSON blobs that cannot be parsed by json.loads.
+    raw_scan = html_text  # full page; parsers below limit scope where possible
+
+    # Seller rating — always try raw scan first (fastest path)
+    if not meta["seller_rating"]:
+        rating_val = _extract_seller_rating_from_state(raw_scan)
+        if rating_val is not None:
+            meta["seller_rating"] = rating_val
+
+    # Seller ID / marketplace ID
+    for id_key in ["sellerId", "seller_id", "sellerMarketplaceId", "marketplace_seller_id"]:
+        m_id = re.search(
+            rf'["\'{re.escape(id_key)}["\']\s*:\s*["\']([A-Za-z0-9_\-]+)["\']',
+            raw_scan,
+            re.IGNORECASE,
+        )
+        if m_id:
+            val_id = m_id.group(1).strip()
+            if len(val_id) >= 3:
+                if "seller_id" in id_key.lower() and not "marketplace" in id_key.lower():
+                    meta["seller_id"] = val_id
+                else:
+                    meta["marketplace_seller_id"] = val_id
+            break
+
+    # Rating count
+    m_rc = re.search(
+        r'["\'](?:ratingCount|ratingsCount|totalRatings|numRatings|reviewCount)["\']\s*:\s*(\d+)',
+        raw_scan,
+        re.IGNORECASE,
+    )
+    if m_rc:
+        try:
+            meta["rating_count"] = int(m_rc.group(1))
+        except ValueError:
+            pass
+
+    # Registered / dispatch address from raw scan
+    if not meta["seller_location"]:
+        addr_str = _extract_registered_address_from_state(raw_scan)
+        if addr_str:
+            meta["seller_location"] = addr_str
+            meta["raw_address"] = addr_str
+            addr_parsed = parse_raw_address(addr_str)
+            meta["city"] = meta["city"] or addr_parsed.get("city")
+            meta["state"] = meta["state"] or addr_parsed.get("state")
+            meta["pincode"] = meta["pincode"] or addr_parsed.get("pincode")
+
+    # 1. Inspect State JSON (structured — for URL, phone, email, GST, location)
     m = re.search(r'window\.__INITIAL_STATE__\s*=\s*(\{.+?\})[\s;]*</script>', html_text, re.DOTALL)
     if not m:
         m = re.search(r'window\.__PRELOADED_STATE__\s*=\s*(\{.+?\})[\s;]*</script>', html_text, re.DOTALL)
@@ -964,9 +1238,10 @@ def parse_product_page(
 
     # Step 1: Extract Fulfillment Entity separately
     fulfilled_by_seller = extract_fulfillment_seller(soup, html_content)
+    is_f_assured = extract_is_f_assured(soup, html_content)
 
-    # Step 2: Extract Product Rating separately (from Ratings & Reviews)
-    product_rating = extract_product_rating(soup, html_content)
+    # Step 2: Extract Product Rating details separately (from Ratings & Reviews / JSON-LD / DOM)
+    product_rating, product_rating_count, product_review_count = extract_product_rating_details(soup, html_content)
 
     # Step 3: Extract and score all valid seller candidates
     candidates = find_seller_candidates_with_scores(soup, html_content)
@@ -994,6 +1269,14 @@ def parse_product_page(
         seller_source = "fulfillment_label"
         seller_confidence = 0.85
 
+    # Final seller rating resolution
+    final_seller_rating = seller_rating or seller_meta.get("seller_rating")
+    if final_seller_rating is not None:
+        try:
+            final_seller_rating = round(float(final_seller_rating), 1)
+        except (ValueError, TypeError):
+            final_seller_rating = None
+
     # Build list of unique seller values found
     seller_values_found: List[str] = []
     if fulfilled_by_seller and fulfilled_by_seller not in seller_values_found:
@@ -1019,7 +1302,9 @@ def parse_product_page(
         f"Seller HTML Found: {'YES' if has_seller_html else 'NO'}\n"
         f"Extracted Seller: {seller_name or 'NOT_FOUND'}\n"
         f"Fulfilled By Seller: {fulfilled_by_seller or 'N/A'}\n"
-        f"Rating: {seller_rating if seller_rating is not None else 'N/A'}\n"
+        f"F-Assured: {'YES' if is_f_assured else 'NO'}\n"
+        f"Product Rating: {product_rating if product_rating is not None else 'N/A'}\n"
+        f"Seller Rating: {final_seller_rating if final_seller_rating is not None else 'N/A'}\n"
         f"Flipkart GST: {seller_meta.get('gst_number') or 'NOT_FOUND'}\n"
         f"Flipkart Phone: {seller_meta.get('phone') or 'NOT_FOUND'}\n"
         f"Flipkart Location: {seller_meta.get('seller_location') or 'NOT_FOUND'}"
@@ -1039,17 +1324,24 @@ def parse_product_page(
         "seller_name": seller_name or "",
         "fulfilled_by_seller": fulfilled_by_seller,
         "fulfillment_by": fulfilled_by_seller,
+        "is_f_assured": is_f_assured,
         "seller_values_found": seller_values_found,
-        "star_rating": seller_rating,
+        # Rating: prefer candidate-scored rating, fall back to state-JSON rating
+        "star_rating": final_seller_rating,
+        "seller_rating": final_seller_rating,
+        "rating_count": seller_meta.get("rating_count") or product_rating_count,
         "product_rating": product_rating,
+        "product_rating_count": product_rating_count,
+        "product_review_count": product_review_count,
         "seller_source": seller_source,
         "seller_name_source": seller_source,
-        "rating_source": "seller_section" if seller_rating else None,
+        "rating_source": "seller_section" if seller_rating else ("state_json" if seller_meta.get("seller_rating") else None),
         "seller_confidence": seller_confidence,
-        "rating_confidence": 0.95 if seller_rating else 0.0,
+        "rating_confidence": 0.95 if final_seller_rating else 0.0,
         "page_status": page_status,
         "seller_url": seller_meta.get("seller_url"),
         "seller_location": seller_meta.get("seller_location"),
+        "raw_address": seller_meta.get("raw_address"),
         "city": seller_meta.get("city"),
         "state": seller_meta.get("state"),
         "pincode": seller_meta.get("pincode"),
@@ -1058,4 +1350,7 @@ def parse_product_page(
         "email": seller_meta.get("email"),
         "gst_number": seller_meta.get("gst_number"),
         "gst": seller_meta.get("gst_number"),
+        # Extended identifiers
+        "seller_id": seller_meta.get("seller_id"),
+        "marketplace_seller_id": seller_meta.get("marketplace_seller_id"),
     }

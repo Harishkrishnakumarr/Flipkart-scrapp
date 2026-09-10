@@ -27,6 +27,97 @@ PHONE_REGEX = re.compile(
 PINCODE_REGEX = re.compile(r"\b([1-9][0-9]{5})\b")
 FSSAI_REGEX = re.compile(r"\b([1-2][0-9]{13})\b")
 
+# ---------------------------------------------------------------------------
+# ADDRESS QUALITY BLACKLIST
+# ---------------------------------------------------------------------------
+
+# Phrases that immediately identify a string as noise / boilerplate, NOT a
+# real seller address. Any candidate address containing these (case-insensitive)
+# must be rejected before being written to the Billing Address column.
+ADDRESS_BLACKLIST_PHRASES: List[str] = [
+    # Flipkart corporate boilerplate
+    "flipkart internet private limited",
+    "flipkart india private limited",
+    "flipkart india pvt",
+    "flipkart internet pvt",
+    "walmart",
+    # Cache / crawl artefacts
+    "google cache",
+    "cached version",
+    "web cache",
+    "cache:",
+    "webcache.googleusercontent",
+    # Legal / policy footer text
+    "all rights reserved",
+    "terms of use",
+    "terms & conditions",
+    "terms and conditions",
+    "privacy policy",
+    "cookie policy",
+    "legal notice",
+    "copyright notice",
+    # Navigation / UI text
+    "click here",
+    "sign in",
+    "log in",
+    "login",
+    "register now",
+    "add to cart",
+    "buy now",
+    "view cart",
+    "advertisement",
+    "sponsored",
+    # Marketplace navigation labels
+    "sell on flipkart",
+    "become a seller",
+    "customer care",
+    "help center",
+    # Generic web-scrape noise
+    "javascript is disabled",
+    "enable javascript",
+    "please enable",
+    "loading...",
+    "page not found",
+    "404 not found",
+    "access denied",
+    "meesho",
+    "amazon.in",
+    "snapdeal",
+]
+
+
+def is_junk_address(text: Optional[str], max_length: int = 350) -> bool:
+    """Return True if the address candidate is junk / boilerplate and must be rejected.
+
+    Rejects strings that:
+      - Are empty or None
+      - Exceed *max_length* characters (raw search snippet, not a real address)
+      - Contain any phrase from ADDRESS_BLACKLIST_PHRASES (case-insensitive)
+
+    Args:
+        text: Candidate address string.
+        max_length: Maximum permissible length for a valid address.
+
+    Returns:
+        True if the text should be discarded, False if it looks like a real address.
+    """
+    if not text or not str(text).strip():
+        return True
+
+    s = str(text).strip()
+
+    if len(s) > max_length:
+        return True
+
+    s_lower = s.lower()
+    for phrase in ADDRESS_BLACKLIST_PHRASES:
+        if phrase in s_lower:
+            return True
+
+    return False
+
+
+
 # Blacklisted Dummy / Framework / Marketplace Support Emails
 DISALLOWED_EMAIL_DOMAINS = {
     "example.com",

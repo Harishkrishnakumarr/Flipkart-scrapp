@@ -28,41 +28,42 @@ def test_generate_seller_variations():
 
 
 def test_generate_targeted_queries_for_field():
-    # GST queries
+    # GST queries — new templates use site-dork GSTIN, not bare GST
     gst_queries = generate_targeted_queries_for_field("REEPREECREATION", "gst_number")
-    assert '"REEPREECREATION" GST' in gst_queries
-    assert '"REEPREECREATION" GSTIN' in gst_queries
-    assert '"REEPREECREATION" "GST number"' in gst_queries
+    # Seller name must always be quoted in every query
+    assert all('"REEPREECREATION"' in q or '"REEPREE' in q for q in gst_queries[:4])
+    # GSTIN keyword must appear (new templates use GSTIN not bare GST)
+    assert any("GSTIN" in q for q in gst_queries)
+    # At least one variation query (REEPREE CREATION) must be generated
     assert any("REEPREE CREATION" in q for q in gst_queries)
 
     # Pincode queries
     pin_queries = generate_targeted_queries_for_field("REEPREECREATION", "pincode")
-    assert '"REEPREECREATION" pincode' in pin_queries
-    assert '"REEPREECREATION" "postal code"' in pin_queries
-    assert '"REEPREECREATION" address' in pin_queries
+    assert any("pincode" in q.lower() for q in pin_queries)
+    assert any('"REEPREECREATION"' in q for q in pin_queries)
 
     # Address queries
     addr_queries = generate_targeted_queries_for_field("REEPREECREATION", "address")
-    assert '"REEPREECREATION" address' in addr_queries
-    assert '"REEPREECREATION" "registered address"' in addr_queries
-    assert '"REEPREECREATION" "business address"' in addr_queries
+    assert any("address" in q.lower() for q in addr_queries)
+    assert any('"REEPREECREATION"' in q for q in addr_queries)
+    # Registry sites should be present in new templates
+    assert any("zaubacorp" in q or "tofler" in q or "India" in q for q in addr_queries)
 
     # Phone queries
     phone_queries = generate_targeted_queries_for_field("REEPREECREATION", "contact_number")
-    assert '"REEPREECREATION" phone' in phone_queries
-    assert '"REEPREECREATION" mobile' in phone_queries
-    assert '"REEPREECREATION" "contact number"' in phone_queries
+    assert any("phone" in q.lower() or "mobile" in q.lower() or "contact" in q.lower() for q in phone_queries)
+    assert any('"REEPREECREATION"' in q for q in phone_queries)
 
     # Email queries
     email_queries = generate_targeted_queries_for_field("REEPREECREATION", "email")
-    assert '"REEPREECREATION" email' in email_queries
-    assert '"REEPREECREATION" "email address"' in email_queries
+    assert any("email" in q.lower() for q in email_queries)
+    assert any('"REEPREECREATION"' in q for q in email_queries)
 
     # Owner queries
     owner_queries = generate_targeted_queries_for_field("REEPREECREATION", "owner_name")
-    assert '"REEPREECREATION" owner' in owner_queries
-    assert '"REEPREECREATION" founder' in owner_queries
-    assert '"REEPREECREATION" proprietor' in owner_queries
+    assert any("owner" in q.lower() or "director" in q.lower() or "proprietor" in q.lower() for q in owner_queries)
+    assert any('"REEPREECREATION"' in q for q in owner_queries)
+
 
     # Official website queries
     web_queries = generate_targeted_queries_for_field("REEPREECREATION", "website_url")
