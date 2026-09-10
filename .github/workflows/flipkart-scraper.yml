@@ -33,91 +33,87 @@ jobs:
     timeout-minutes: 360
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: pip
+          cache: "pip"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Install Playwright Chromium
+      - name: Install Playwright Chromium & System Dependencies
         run: |
           python -m playwright install --with-deps chromium
+
+      - name: Ensure runtime directories exist
+        run: |
+          mkdir -p output data logs
 
       - name: Run scraper
         env:
           PYTHONUNBUFFERED: "1"
           CI: "true"
-          FLIPKART_MAX_ROWS_PER_RUN: ${{ github.event.inputs.max_rows || '2000' }}
+          START_ROW: ${{ github.event.inputs.start_row || '1' }}
+          END_ROW: ${{ github.event.inputs.end_row || '2000' }}
+          MAX_ROWS: ${{ github.event.inputs.max_rows || '2000' }}
         run: |
-          python "main.py"
+          python main.py \
+            --start-row "$START_ROW" \
+            --end-row "$END_ROW" \
+            --max-rows "$MAX_ROWS" \
+            --resume
 
       - name: Diagnose generated files
         if: always()
         run: |
-          echo "===== DISK ====="
+          echo "===== DISK USAGE ====="
           df -h
 
-          echo "===== OUTPUT SIZE ====="
-          du -sh output/ 2>/dev/null || true
+          echo "===== DIRECTORY SIZES ====="
+          du -sh output/ data/ logs/ 2>/dev/null || true
 
-          echo "===== DATA SIZE ====="
-          du -sh data/ 2>/dev/null || true
+          echo "===== EXCEL OUTPUT ====="
+          ls -lh output/*.xlsx 2>/dev/null || echo "No xlsx found in output/"
 
-          echo "===== LOGS SIZE ====="
-          du -sh logs/ 2>/dev/null || true
+          echo "===== DATA DIRECTORY ====="
+          ls -lh data/ 2>/dev/null || echo "No files in data/"
 
-          echo "===== FILE COUNT ====="
-          find output data logs -type f 2>/dev/null | wc -l
-
-          echo "===== TOP 30 LARGEST FILES ====="
-          find output data logs -type f -printf '%s %p\n' 2>/dev/null \
-            | sort -nr \
-            | head -30
-
-          echo "===== XLSX FILE ====="
-          ls -lh output/*.xlsx 2>/dev/null || true
-
-          echo "===== GIT OBJECTS ====="
-          git count-objects -vH
-
-      - name: Commit and push updated progress and data
+      - name: Commit and push updated data & progress
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          echo "=== Git status before commit ==="
-          git status --short
-
-          git fetch origin main
-
-          git add output/flipkart_sellers.xlsx
-          git add data/
+          # Stage existing generated files safely
+          [ -f "output/flipkart_sellers.xlsx" ] && git add -f "output/flipkart_sellers.xlsx"
+          [ -d "data" ] && git add -f data/
 
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No changes detected to commit."
           else
             git commit -m "Auto-update Flipkart scraper progress & data [skip ci]"
+            
+            # Pull any remote changes made during the job run using ours strategy for data files
+            git pull --rebase -X ours origin main || true
             git push origin HEAD:main
           fi
 
-      - name: Upload scraper output
+      - name: Upload scraper artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: flipkart-scraper-output
+          name: flipkart-scraper-output-${{ github.run_id }}
           path: |
-            output/flipkart_sellers.xlsx
+            output/
             data/
             logs/
           if-no-files-found: warn
