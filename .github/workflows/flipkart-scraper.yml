@@ -3,18 +3,6 @@ name: Flipkart Playwright Scraper
 on:
   workflow_dispatch:
     inputs:
-      start_row:
-        description: "Start input Excel row"
-        required: true
-        default: "1"
-        type: string
-
-      end_row:
-        description: "End input Excel row"
-        required: true
-        default: "2000"
-        type: string
-
       max_rows:
         description: "Maximum pending rows to process in this run"
         required: false
@@ -62,15 +50,9 @@ jobs:
         env:
           PYTHONUNBUFFERED: "1"
           CI: "true"
-          START_ROW: ${{ github.event.inputs.start_row || '1' }}
-          END_ROW: ${{ github.event.inputs.end_row || '2000' }}
-          MAX_ROWS: ${{ github.event.inputs.max_rows || '2000' }}
+          FLIPKART_MAX_ROWS_PER_RUN: ${{ github.event.inputs.max_rows || '2000' }}
         run: |
-          python main.py \
-            --start-row "$START_ROW" \
-            --end-row "$END_ROW" \
-            --max-rows "$MAX_ROWS" \
-            --resume
+          python main.py --max-rows "${{ github.event.inputs.max_rows || '2000' }}"
 
       - name: Diagnose generated files
         if: always()
