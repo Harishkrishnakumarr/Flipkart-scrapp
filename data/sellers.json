@@ -1691,15 +1691,19 @@
       "https://www.flipkart.com/louis-philippe-sport-printed-men-round-neck-white-t-shirt/p/itm540bba62a63b5?pid=TSHGF85Q5AWA4SGV",
       "https://www.flipkart.com/louis-philippe-graphic-print-men-round-neck-black-t-shirt/p/itm069290746be77?pid=TSHGBP3HXNCR4FZX",
       "https://www.flipkart.com/peter-england-graphic-print-men-polo-neck-white-t-shirt/p/itm19cc623c94a4b?pid=TSHHB4GUGGDU87YE",
-      "https://www.flipkart.com/highlander-tapered-fit-men-blue-jeans/p/itmfdq4m36rf7yar?pid=JEAFDPYZBUMHSVBS"
+      "https://www.flipkart.com/highlander-tapered-fit-men-blue-jeans/p/itmfdq4m36rf7yar?pid=JEAFDPYZBUMHSVBS",
+      "https://www.flipkart.com/allen-solly-solid-men-polo-neck-white-t-shirt/p/itm55ecc3f549834?pid=TSHGTBWVYJ7FVEH3",
+      "https://www.flipkart.com/monte-carlo-full-sleeve-solid-men-jacket/p/itm3d7f1eb0df0d8?pid=JCKHP9KMUSYBSHGV"
     ],
     "categories": [
       "Pyjamas & Lounge Pants",
       "Sleep Robes",
       "T-Shirts",
-      "Jeans"
+      "Jeans",
+      "T-Shirts & Polos > Polos",
+      "Winter Wear > Coats, Jackets & Vests"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -1713,7 +1717,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:46:24.142202+00:00",
-    "last_seen": "2026-09-09T12:30:17.498159+00:00",
+    "last_seen": "2026-09-10T18:58:09.161212+00:00",
     "last_enriched": "2026-09-08T17:46:31.139649+00:00",
     "enriched_data": {
       "Business Name": "HSAtlastradeFashion",
@@ -3242,13 +3246,15 @@
     "fulfillment_by": "Max Stores",
     "product_urls": [
       "https://www.flipkart.com/max-solid-men-dark-blue-night-shorts/p/itm74efd0ee69a29?pid=SRTGDREQM7RGEMZK",
-      "https://www.flipkart.com/max-women-pyjama/p/itm4ad4caf99bd93?pid=PYJH7Z6SEZFHZ3TT"
+      "https://www.flipkart.com/max-women-pyjama/p/itm4ad4caf99bd93?pid=PYJH7Z6SEZFHZ3TT",
+      "https://www.flipkart.com/max-checkered-women-purple-casual-shorts/p/itm1f4509421df1c?pid=SRTHZUU5ZZPEDJEN"
     ],
     "categories": [
       "Lounge Shorts",
-      "Pyjamas"
+      "Pyjamas",
+      "Sleep & Lounge Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -3262,7 +3268,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:51:17.763841+00:00",
-    "last_seen": "2026-09-09T12:51:56.511509+00:00",
+    "last_seen": "2026-09-11T09:44:46.266955+00:00",
     "last_enriched": "2026-09-08T17:51:25.327632+00:00",
     "enriched_data": {
       "Business Name": "Max Stores",
@@ -3602,13 +3608,15 @@
     "fulfillment_by": "PEPEJEANSINNERFASHIONPRIVATELIMITED",
     "product_urls": [
       "https://www.flipkart.com/pepe-jeans-solid-women-boxer/p/itm2785049662d43?pid=BXRHFF64ZGU8HDAU",
-      "https://www.flipkart.com/pepe-jeans-men-pyjama/p/itm99af7cf7e8226?pid=PYJHZYM4PFMHCHYH"
+      "https://www.flipkart.com/pepe-jeans-men-pyjama/p/itm99af7cf7e8226?pid=PYJHZYM4PFMHCHYH",
+      "https://www.flipkart.com/pepe-jeans-men-pyjama/p/itmee0bdc68e1abd?pid=PYJHCMF8PGBYAYRS"
     ],
     "categories": [
       "Lounge Shorts",
-      "Pyjamas"
+      "Pyjamas",
+      "Sleep & Lounge Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -3622,7 +3630,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:52:14.254257+00:00",
-    "last_seen": "2026-09-09T12:56:24.915822+00:00",
+    "last_seen": "2026-09-11T10:04:07.883933+00:00",
     "last_enriched": "2026-09-08T17:52:22.353528+00:00",
     "enriched_data": {
       "Business Name": "PEPEJEANSINNERFASHIONPRIVATELIMITED",
@@ -4921,12 +4929,18 @@
     "fulfillment_by": "KOTTY",
     "product_urls": [
       "https://www.flipkart.com/kotty-women-fit-flare-blue-mini-short-dress/p/itma5468d879448d?pid=DREHZJ25NMCTE6G8",
-      "https://www.flipkart.com/kotty-women-fit-flare-blue-mini-short-dress/p/itm9dad37093c252?pid=DREHZJ25BZFYTQHG"
+      "https://www.flipkart.com/kotty-women-fit-flare-blue-mini-short-dress/p/itm9dad37093c252?pid=DREHZJ25BZFYTQHG",
+      "https://www.flipkart.com/kotty-full-sleeve-solid-men-jacket/p/itmd2a467ffc4d78?pid=JCKH8SYQJDSPFWHJ",
+      "https://www.flipkart.com/kotty-women-two-piece-dress-grey-maxi-full-length/p/itm79ae492705471?pid=DREHZ94UEUCK2QJX",
+      "https://www.flipkart.com/kotty-solid-women-a-line-grey-skirt/p/itm5ccb7b4422104?pid=SKIHKE2JXEVZ4QZE"
     ],
     "categories": [
-      "Onesies"
+      "Onesies",
+      "Winter Wear > Coats, Jackets & Vests",
+      "Western Wear > Co-ords",
+      "Skirts & Shorts > Skirts"
     ],
-    "star_rating": null,
+    "star_rating": 4.8,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -4940,7 +4954,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:59:08.736914+00:00",
-    "last_seen": "2026-09-08T18:00:31.252106+00:00",
+    "last_seen": "2026-09-11T12:59:46.490131+00:00",
     "last_enriched": "2026-09-08T17:59:17.542632+00:00",
     "enriched_data": {
       "Business Name": "KOTTY",
@@ -5044,13 +5058,22 @@
       "https://www.flipkart.com/sheetal-associates-women-fit-flare-brown-black-below-knee-dress/p/itm95a3f9a112dc7?pid=DREH7D48JAGMYH3Y",
       "https://www.flipkart.com/sheetal-associates-women-a-line-red-white-midi-calf-length-dress/p/itm317d1378e6bd4?pid=DREGRZVY2YEJGZ72",
       "https://www.flipkart.com/sheetal-associates-women-fit-flare-white-black-midi-calf-length-dress/p/itm98307287501da?pid=DREGUU9Z7YJGHAGH",
-      "https://www.flipkart.com/sheetal-associates-women-fit-flare-brown-midi-calf-length-dress/p/itm9fb1f3b08ac97?pid=DREGUU9ZQDVKFFJM"
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-brown-midi-calf-length-dress/p/itm9fb1f3b08ac97?pid=DREGUU9ZQDVKFFJM",
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-black-midi-calf-length-dress/p/itm532a76ddf3898?pid=DREGUPX8GCNQQFWM",
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-black-white-midi-calf-length-dress/p/itm3ce08a43ea40d?pid=DREHFRAHZJBSKCVR",
+      "https://www.flipkart.com/sheetal-associates-women-maxi-multicolor-full-length-dress/p/itm5065a560e0dea?pid=DREH2XCCMZSMH4UX",
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-blue-midi-calf-length-dress/p/itm6eef60aac5495?pid=DREH4W4Z9MHMQXHT",
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-multicolor-maxi-full-length-dress/p/itm6629160df73d2?pid=DREHZ7MEXZDYSSGB",
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-brown-below-knee-dress/p/itmb2d7499eef25e?pid=DREH7D2NKRZRFJRA",
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-purple-midi-calf-length-dress/p/itm3cad2d9e78fdf?pid=DREGSZGCAEFGXGUW",
+      "https://www.flipkart.com/sheetal-associates-women-fit-flare-multicolor-maxi-full-length-dress/p/itm762d8349529db?pid=DREGMNETQNTPCWJS"
     ],
     "categories": [
       "Onesies",
-      "One Pieces"
+      "One Pieces",
+      "Western Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -5064,7 +5087,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:59:29.090129+00:00",
-    "last_seen": "2026-09-09T14:21:01.544640+00:00",
+    "last_seen": "2026-09-11T09:04:37.157716+00:00",
     "last_enriched": "2026-09-08T17:59:37.139647+00:00",
     "enriched_data": {
       "Business Name": "SHEETALASSOCIATES",
@@ -5410,15 +5433,17 @@
       "https://www.flipkart.com/u-s-polo-assn-slim-fit-men-brown-trousers/p/itma420ea25d125c?pid=TROHFGJME4TGHD8K",
       "https://www.flipkart.com/arrow-tapered-men-black-trousers/p/itm34d438bb2cf48?pid=TROH9QKPVRA2JUNZ",
       "https://www.flipkart.com/u-s-polo-assn-straight-fit-men-blue-trousers/p/itmeba4a5e11be96?pid=TROHF9U3APEDVRE6",
-      "https://www.flipkart.com/u-s-polo-assn-slim-fit-men-beige-trousers/p/itm976143a76c0a2?pid=TROGPUFGW37WSBV3"
+      "https://www.flipkart.com/u-s-polo-assn-slim-fit-men-beige-trousers/p/itm976143a76c0a2?pid=TROGPUFGW37WSBV3",
+      "https://www.flipkart.com/u-s-polo-assn-men-solid-multicolor-night-suit-set/p/itm826185a3ea97f?pid=NSTHFVQ8JEHUQEXF"
     ],
     "categories": [
       "Onesies",
       "Shirts",
       "Jeans",
-      "Pants"
+      "Pants",
+      "Sleep & Lounge Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.4,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -5432,7 +5457,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:00:54.470469+00:00",
-    "last_seen": "2026-09-09T12:42:10.436804+00:00",
+    "last_seen": "2026-09-11T10:03:56.076430+00:00",
     "last_enriched": "2026-09-08T18:01:03.869879+00:00",
     "enriched_data": {
       "Business Name": "ArvindLifestyleBrands",
@@ -6367,13 +6392,18 @@
     "product_urls": [
       "https://www.flipkart.com/metronaut-women-fit-flare-brown-maxi-full-length-dress/p/itm5a901fa1e52eb?pid=DREHKKGKDB3P7N3A",
       "https://www.flipkart.com/zwerlon-women-fit-flare-green-midi-calf-length-dress/p/itm52ff8035d64aa?pid=DREHJ9YS8EGR4ZNM",
-      "https://www.flipkart.com/metronaut-women-fit-flare-brown-maxi-full-length-dress/p/itm5a901fa1e52eb?pid=DREHKKGKUMPFTSMZ"
+      "https://www.flipkart.com/metronaut-women-fit-flare-brown-maxi-full-length-dress/p/itm5a901fa1e52eb?pid=DREHKKGKUMPFTSMZ",
+      "https://www.flipkart.com/metronaut-women-fit-flare-black-midi-calf-length-dress/p/itm907586de42724?pid=DREHKKH8ZJZASE3Q",
+      "https://www.flipkart.com/zwerlon-women-fit-flare-white-midi-calf-length-dress/p/itmf625ae7fc3121?pid=DREHHZCESPW49QCT",
+      "https://www.flipkart.com/zwerlon-women-a-line-multicolor-midi-calf-length-dress/p/itma0c83d047f77d?pid=DREGQ2ZM4M3ZWSC7",
+      "https://www.flipkart.com/zwerlon-women-fit-flare-brown-maxi-full-length-dress/p/itm6a7f810f9ff51?pid=DREHJZCN7WTPJQFT"
     ],
     "categories": [
       "Onesies",
-      "One Pieces"
+      "One Pieces",
+      "Western Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -6387,7 +6417,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:03:37.230009+00:00",
-    "last_seen": "2026-09-09T14:19:00.959559+00:00",
+    "last_seen": "2026-09-11T09:02:24.893481+00:00",
     "last_enriched": "2026-09-08T18:03:45.560815+00:00",
     "enriched_data": {
       "Business Name": "KZULLY",
@@ -9118,13 +9148,15 @@
     "fulfillment_by": "Mihirpiplani",
     "product_urls": [
       "https://www.flipkart.com/movex-men-brief/p/itmbf535462372dd?pid=BRFHG5FTYRMUHSYP",
-      "https://www.flipkart.com/movex-morex-kids-swimming-costume-combo-set-cap-goggles-ear-plugs-nose-clip-printed-boys-girls-swimsuit/p/itme491f475c74eb?pid=SWIHZU4C7DJTGNPK"
+      "https://www.flipkart.com/movex-morex-kids-swimming-costume-combo-set-cap-goggles-ear-plugs-nose-clip-printed-boys-girls-swimsuit/p/itme491f475c74eb?pid=SWIHZU4C7DJTGNPK",
+      "https://www.flipkart.com/movex-morex-kids-swimming-costume-combo-set-cap-goggles-ear-plugs-nose-clip-solid-boys-girls-swimsuit/p/itme491f475c74eb?pid=SWIHZU55UZMYAHPV"
     ],
     "categories": [
       "Swimwear > Briefs",
-      "Rash Guard Sets"
+      "Rash Guard Sets",
+      "Swimwear Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -9138,7 +9170,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:13:50.472333+00:00",
-    "last_seen": "2026-09-08T18:30:42.180941+00:00",
+    "last_seen": "2026-09-10T10:09:00.904694+00:00",
     "last_enriched": "2026-09-08T18:13:59.572379+00:00",
     "enriched_data": {
       "Business Name": "Mihirpiplani",
@@ -10306,12 +10338,16 @@
     "marketplace": "flipkart",
     "fulfillment_by": "THEKLOWTCO",
     "product_urls": [
-      "https://www.flipkart.com/klowt-co-printed-men-swimsuit/p/itm99b9bb547c7ab?pid=SWIHZJ7H6FUXYDQ6"
+      "https://www.flipkart.com/klowt-co-printed-men-swimsuit/p/itm99b9bb547c7ab?pid=SWIHZJ7H6FUXYDQ6",
+      "https://www.flipkart.com/klowt-co-solid-women-swimsuit/p/itm656834da0583e?pid=SWIHPBHK58HAGFSY",
+      "https://www.flipkart.com/klowt-co-solid-women-swimsuit/p/itmbd8735227bf43?pid=SWIHP7GRGMR4TJZZ"
     ],
     "categories": [
-      "Swimwear > Briefs"
+      "Swimwear > Briefs",
+      "Swimwear Sets",
+      "Swim & Beachwear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -10325,7 +10361,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:17:46.192216+00:00",
-    "last_seen": "2026-09-08T18:17:46.192216+00:00",
+    "last_seen": "2026-09-11T10:07:08.823906+00:00",
     "last_enriched": "2026-09-08T18:17:56.219567+00:00",
     "enriched_data": {
       "Business Name": "THEKLOWTCO",
@@ -12132,14 +12168,16 @@
       "https://www.flipkart.com/just-rider-self-design-men-black-swim-shorts/p/itm9a06009c8e60b?pid=SRTHBZQYDSE9QQPG",
       "https://www.flipkart.com/just-rider-color-block-men-reversible-black-compression-shorts/p/itm6853a3c22d4b3?pid=SRTGHG2ZPQKMKMXW",
       "https://www.flipkart.com/just-rider-solid-printed-men-red-blue-swim-shorts/p/itm52d000abca1ed?pid=SRTHBZNP73FBH9FR",
-      "https://www.flipkart.com/just-rider-solid-men-black-red-swim-shorts/p/itmd128ab379ebcf?pid=SRTHAZXFYW5VVTB9"
+      "https://www.flipkart.com/just-rider-solid-men-black-red-swim-shorts/p/itmd128ab379ebcf?pid=SRTHAZXFYW5VVTB9",
+      "https://www.flipkart.com/just-rider-swimwear-half-sleeve-t-shirt-shorts-men-women-solid-swimsuit/p/itm74ff529808067?pid=SWIHMHHXJVVTCD4M"
     ],
     "categories": [
       "Rash Guard Shirts",
       "Rash Guard Sets",
-      "Swim Shorts"
+      "Swim Shorts",
+      "Swimwear Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.6,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -12153,7 +12191,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:27:11.158450+00:00",
-    "last_seen": "2026-09-08T18:38:44.480160+00:00",
+    "last_seen": "2026-09-10T10:00:44.152154+00:00",
     "last_enriched": "2026-09-08T18:27:21.330721+00:00",
     "enriched_data": {
       "Business Name": "JUSTRIDER",
@@ -12740,12 +12778,17 @@
       "https://www.flipkart.com/lebami-toddler-boys-swimsuit-set-rash-guard-swim-trunk-swimming-cap-printed/p/itmda4f3cca4148a?pid=SWIHNSDYBXZVBKHP",
       "https://www.flipkart.com/lebami-toddler-boys-swimsuit-set-rash-guard-swim-trunk-swimming-cap-printed/p/itm79311181025e0?pid=SWIHZF4SU89VUVHS",
       "https://www.flipkart.com/lebami-toddler-boys-swimsuit-set-rash-guard-swim-trunk-swimming-cap-printed/p/itmd07956c412ff8?pid=SWIHNSEAGACXHK9M",
-      "https://www.flipkart.com/lebami-toddler-boys-swimsuit-set-rash-guard-swim-trunk-swimming-cap-printed/p/itmbbdf3a9a8e62b?pid=SWIHNSFHU5S4GN4Y"
+      "https://www.flipkart.com/lebami-toddler-boys-swimsuit-set-rash-guard-swim-trunk-swimming-cap-printed/p/itmbbdf3a9a8e62b?pid=SWIHNSFHU5S4GN4Y",
+      "https://www.flipkart.com/lebami-swimwear-costume-boys-three-piece-swimsuit-t-shirt-shorts-cap-set-printed-swimsuit/p/itmf895d16953ed8?pid=SWIHFH9PQXWH2CZB",
+      "https://www.flipkart.com/lebami-swimwear-costume-boys-three-piece-swimsuit-t-shirt-shorts-cap-set-printed-swimsuit/p/itm969c08f111663?pid=SWIHDZ8G4XCQQ7QA",
+      "https://www.flipkart.com/lebami-swimwear-costume-boys-three-piece-swimsuit-t-shirt-shorts-cap-set-printed-swimsuit/p/itma1ae4b24e0f91?pid=SWIHAHUZBCHGW72T"
     ],
     "categories": [
-      "Rash Guard Sets"
+      "Rash Guard Sets",
+      "Swimwear Sets",
+      "Swim & Beachwear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.6,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -12759,7 +12802,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:30:20.811587+00:00",
-    "last_seen": "2026-09-08T18:34:42.376991+00:00",
+    "last_seen": "2026-09-11T10:06:57.203247+00:00",
     "last_enriched": "2026-09-08T18:30:30.519649+00:00",
     "enriched_data": {
       "Business Name": "JMTTRADING",
@@ -12861,13 +12904,15 @@
     "product_urls": [
       "https://www.flipkart.com/jmt-wear-toddler-boys-swimsuit-set-rash-guard-swim-trunk-swimming-cap-printed/p/itm599561e236e8e?pid=SWIHNSEUJGRKYWBM",
       "https://www.flipkart.com/jmt-wear-toddler-boys-swimsuit-set-rash-guard-swim-trunk-swimming-cap-printed/p/itma64340ae28bea?pid=SWIHNSEURZWBAW4Y",
-      "https://www.flipkart.com/jmt-wear-warm-winter-tharmal-fleece-lined-tights-pantyhose-stockings-women-pyjama-thermal/p/itm72197208bc598?pid=TMLGHYXCA4YN7G3D"
+      "https://www.flipkart.com/jmt-wear-warm-winter-tharmal-fleece-lined-tights-pantyhose-stockings-women-pyjama-thermal/p/itm72197208bc598?pid=TMLGHYXCA4YN7G3D",
+      "https://www.flipkart.com/jmt-wear-swimming-kit-men-costume-boys-cap-goggles-ear-nose-clip-printed-swimsuit/p/itm1acd3eb91e80e?pid=SWIGZGD9UUQ4WR6S"
     ],
     "categories": [
       "Rash Guard Sets",
-      "Leg Warmers"
+      "Leg Warmers",
+      "Swimwear Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -12881,7 +12926,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:30:53.786174+00:00",
-    "last_seen": "2026-09-09T08:43:06.783852+00:00",
+    "last_seen": "2026-09-10T10:02:42.834849+00:00",
     "last_enriched": "2026-09-08T18:31:05.003063+00:00",
     "enriched_data": {
       "Business Name": "JMTWear",
@@ -13106,13 +13151,15 @@
       "https://www.flipkart.com/shifter-kids-swimwear-boys-girls-swim-cap-goggle-earplug-noseplug-kit-bag-self-design-swimsuit/p/itmc0a831a486c93?pid=SWIHJDCZ2PC6G8AP",
       "https://www.flipkart.com/shifter-printed-men-multicolor-swim-shorts/p/itm23f02aa81765a?pid=SRTHYH6ZZSHWQHSF",
       "https://www.flipkart.com/shifter-printed-men-multicolor-swim-shorts/p/itm23f02aa81765a?pid=SRTHYH6ZVZGZGBXK",
-      "https://www.flipkart.com/shifter-solid-men-women-black-swim-shorts/p/itmf293daecdafb3?pid=SRTHMVAVSYFCRJHZ"
+      "https://www.flipkart.com/shifter-solid-men-women-black-swim-shorts/p/itmf293daecdafb3?pid=SRTHMVAVSYFCRJHZ",
+      "https://www.flipkart.com/shifter-kids-swimwear-boys-girls-swim-cap-goggle-earplug-noseplug-hand-towel-solid-swimsuit/p/itm159370c51075f?pid=SWIHM6RPP9X3EM2W"
     ],
     "categories": [
       "Rash Guard Sets",
-      "Swim Shorts"
+      "Swim Shorts",
+      "Swimwear Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -13126,7 +13173,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:33:11.244569+00:00",
-    "last_seen": "2026-09-08T18:39:07.336446+00:00",
+    "last_seen": "2026-09-10T10:05:04.674436+00:00",
     "last_enriched": "2026-09-08T18:33:21.547398+00:00",
     "enriched_data": {
       "Business Name": "TrueCartHub",
@@ -14299,13 +14346,17 @@
       "https://www.flipkart.com/vrojass-solid-men-raincoat/p/itm541f8b1ecc29f?pid=RNCG44YFH8J5EJHU",
       "https://www.flipkart.com/vrojass-solid-men-raincoat/p/itm08638260982aa?pid=RNCG44YFN7P6DUTF",
       "https://www.flipkart.com/vrojass-solid-men-raincoat/p/itm3ce1037d62c96?pid=RNCG44YFYHH2BBHU",
-      "https://www.flipkart.com/ojass-full-sleeve-colorblock-men-jacket/p/itm2b9c4ae9d8d5f?pid=JCKG2SY4TTGNCFDR"
+      "https://www.flipkart.com/ojass-full-sleeve-colorblock-men-jacket/p/itm2b9c4ae9d8d5f?pid=JCKG2SY4TTGNCFDR",
+      "https://www.flipkart.com/ojass-sleeveless-solid-men-jacket/p/itmf36389b6f9b3a?pid=JCKGWHC6AMZDCG8F",
+      "https://www.flipkart.com/vrojass-sleeveless-solid-men-jacket/p/itm372d94d93a537?pid=JCKGWHC6KUGDPMHG",
+      "https://www.flipkart.com/ojass-full-sleeve-solid-men-jacket/p/itm76b20669c3835?pid=JCKGWHC6GQSH5GU4"
     ],
     "categories": [
       "Rainwear > Rain Trousers",
-      "Winterwear > Jackets"
+      "Winterwear > Jackets",
+      "Winter Wear > Coats, Jackets & Vests"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.9,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -14319,7 +14370,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:40:43.749417+00:00",
-    "last_seen": "2026-09-08T19:08:49.639462+00:00",
+    "last_seen": "2026-09-10T19:00:16.497631+00:00",
     "last_enriched": "2026-09-08T18:40:54.184682+00:00",
     "enriched_data": {
       "Business Name": "OJASS",
@@ -14662,12 +14713,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Neekshaa",
     "product_urls": [
-      "https://www.flipkart.com/neekshaa-solid-women-raincoat/p/itm1d3cab0663c10?pid=RNCHZEDPPSVZTSZM"
+      "https://www.flipkart.com/neekshaa-solid-women-raincoat/p/itm1d3cab0663c10?pid=RNCHZEDPPSVZTSZM",
+      "https://www.flipkart.com/neekshaa-solid-women-rain-suit/p/itm78a6af4427865?pid=RNCHZEDPTP7A46NY",
+      "https://www.flipkart.com/n-g-products-solid-women-raincoat/p/itmb1320bac90c8c?pid=RNCHAM9FZ5WAYUMV"
     ],
     "categories": [
-      "Rainwear > Rain Trousers"
+      "Rainwear > Rain Trousers",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -14681,7 +14735,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:43:47.722720+00:00",
-    "last_seen": "2026-09-08T18:43:47.722720+00:00",
+    "last_seen": "2026-09-11T10:24:49.193797+00:00",
     "last_enriched": "2026-09-08T18:43:59.635728+00:00",
     "enriched_data": {
       "Business Name": "Neekshaa",
@@ -14781,12 +14835,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "VELMORO",
     "product_urls": [
-      "https://www.flipkart.com/vevve-solid-women-raincoat/p/itmcafe372322bec?pid=RNCHNVHH2GYKJKSY"
+      "https://www.flipkart.com/vevve-solid-women-raincoat/p/itmcafe372322bec?pid=RNCHNVHH2GYKJKSY",
+      "https://www.flipkart.com/vevve-solid-women-raincoat/p/itm0d759a28448b4?pid=RNCHNVHMSM7ZYUHY"
     ],
     "categories": [
-      "Rainwear > Rain Trousers"
+      "Rainwear > Rain Trousers",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -14800,7 +14856,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:44:56.959720+00:00",
-    "last_seen": "2026-09-08T18:44:56.959720+00:00",
+    "last_seen": "2026-09-11T10:27:34.856539+00:00",
     "last_enriched": "2026-09-08T18:45:08.268815+00:00",
     "enriched_data": {
       "Business Name": "VELMORO",
@@ -15258,13 +15314,15 @@
     "fulfillment_by": "Tryo",
     "product_urls": [
       "https://www.flipkart.com/mankrit-solid-men-rain-suit/p/itmd39e654d5d759?pid=RNCHNEZH9RVHBJCR",
-      "https://www.flipkart.com/rainshower-solid-women-raincoat/p/itmd1f1acabee2de?pid=RNCHH4P8FM4NKZRU"
+      "https://www.flipkart.com/rainshower-solid-women-raincoat/p/itmd1f1acabee2de?pid=RNCHH4P8FM4NKZRU",
+      "https://www.flipkart.com/dressbase-solid-women-raincoat/p/itmdb90111605446?pid=RNCHNXZWFYMQFPQG"
     ],
     "categories": [
       "Rainwear > Rain Trousers",
-      "Raincoats"
+      "Raincoats",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.4,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -15278,7 +15336,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:47:27.631814+00:00",
-    "last_seen": "2026-09-08T18:48:50.694348+00:00",
+    "last_seen": "2026-09-11T10:19:16.782604+00:00",
     "last_enriched": "2026-09-08T18:47:40.607076+00:00",
     "enriched_data": {
       "Business Name": "Tryo",
@@ -15500,13 +15558,16 @@
       "https://www.flipkart.com/dollar-solid-men-rain-suit/p/itmc03d1e3105884?pid=RNCHM9QNCQQTDSN5",
       "https://www.flipkart.com/dollar-solid-men-rain-suit/p/itmcdb4f4f3bed8f?pid=RNCHYVRZPPTEKE6S",
       "https://www.flipkart.com/dollar-solid-men-rain-suit/p/itmdee4025bfb531?pid=RNCHM9QNY4R8HHFG",
-      "https://www.flipkart.com/dollar-bigboss-men-vest/p/itm50e948c7c5331?pid=VESG9NPDGAZFSSVQ"
+      "https://www.flipkart.com/dollar-bigboss-men-vest/p/itm50e948c7c5331?pid=VESG9NPDGAZFSSVQ",
+      "https://www.flipkart.com/dollar-rainguard-women-s-pvc-full-sleeve-solid-raincoat-women/p/itmbe3e7a56b1ff5?pid=RNCGYG48GTNXSNZU",
+      "https://www.flipkart.com/dollar-graphic-print-women-raincoat/p/itm5ca50ccc9bbe1?pid=RNCHDAA7VGYWYHZN"
     ],
     "categories": [
       "Raincoats",
-      "Innerwear > Vests"
+      "Innerwear > Vests",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -15520,7 +15581,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:48:27.030336+00:00",
-    "last_seen": "2026-09-09T13:39:21.358754+00:00",
+    "last_seen": "2026-09-11T10:24:26.144096+00:00",
     "last_enriched": "2026-09-08T18:48:38.982526+00:00",
     "enriched_data": {
       "Business Name": "Dollarbigboss",
@@ -15737,12 +15798,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Cloud Online",
     "product_urls": [
-      "https://www.flipkart.com/allextreme-solid-men-women-raincoat/p/itm1f4a98bc14dac?pid=RNCHE4KSQPAMYTC2"
+      "https://www.flipkart.com/allextreme-solid-men-women-raincoat/p/itm1f4a98bc14dac?pid=RNCHE4KSQPAMYTC2",
+      "https://www.flipkart.com/allextreme-black-bike-face-mask-men/p/itmc8b4e0c1e103d?pid=BLVH7F9KZPHFGJGK"
     ],
     "categories": [
-      "Raincoats"
+      "Raincoats",
+      "Balaclavas"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.5,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -15756,7 +15819,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:49:24.635569+00:00",
-    "last_seen": "2026-09-08T18:49:24.635569+00:00",
+    "last_seen": "2026-09-10T11:33:31.579573+00:00",
     "last_enriched": "2026-09-08T18:49:40.136057+00:00",
     "enriched_data": {
       "Business Name": "Cloud Online",
@@ -15859,9 +15922,10 @@
       "https://www.flipkart.com/kidstrend-solid-women-raincoat/p/itm372b269040f5c?pid=RNCHZYXEK9HFHWF4"
     ],
     "categories": [
-      "Raincoats"
+      "Raincoats",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -15875,7 +15939,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:49:51.772315+00:00",
-    "last_seen": "2026-09-08T18:49:51.772315+00:00",
+    "last_seen": "2026-09-11T10:25:00.655684+00:00",
     "last_enriched": "2026-09-08T18:50:02.023650+00:00",
     "enriched_data": {
       "Business Name": "Kidstrendfashion",
@@ -16333,12 +16397,14 @@
     "fulfillment_by": "CitizenUmbrella",
     "product_urls": [
       "https://www.flipkart.com/citizen-solid-men-rain-poncho/p/itm80ecb3d45c796?pid=RNCHBNJZVP8SXAUJ",
-      "https://www.flipkart.com/citizen-colorblock-men-raincoat/p/itm60703c4d3f955?pid=RNCGWB6URYUJATBZ"
+      "https://www.flipkart.com/citizen-colorblock-men-raincoat/p/itm60703c4d3f955?pid=RNCGWB6URYUJATBZ",
+      "https://www.flipkart.com/citizen-solid-women-rain-poncho/p/itm47708d1b74a27?pid=RNCHKYQZDA6HHRHV"
     ],
     "categories": [
-      "Raincoats"
+      "Raincoats",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.5,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -16352,7 +16418,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:51:24.033590+00:00",
-    "last_seen": "2026-09-08T18:51:58.626342+00:00",
+    "last_seen": "2026-09-11T10:21:29.373998+00:00",
     "last_enriched": "2026-09-08T18:51:35.440866+00:00",
     "enriched_data": {
       "Business Name": "CitizenUmbrella",
@@ -16693,13 +16759,16 @@
       "https://www.flipkart.com/infispace-fedora-hat/p/itm5fb6a8970f15c?pid=HATHBHBNU34NYJ3X",
       "https://www.flipkart.com/infispace-bucket-hat/p/itm3a2a3271b923e?pid=HATG4ASBKZQZCH8H",
       "https://www.flipkart.com/infispace-fedora-hat/p/itm579a3d834df2a?pid=HATHBHBMAPFJVXNE",
-      "https://www.flipkart.com/infispace-fedora-hat/p/itm1a3d3b2c793ad?pid=HATHBHBNRYDFSSZ6"
+      "https://www.flipkart.com/infispace-fedora-hat/p/itm1a3d3b2c793ad?pid=HATHBHBNRYDFSSZ6",
+      "https://www.flipkart.com/infispace-skull-cap/p/itm07f5274cbdf62?pid=CAPGNZ6N7EBEJKRY",
+      "https://www.flipkart.com/infispace-self-design-beanie/p/itm1817657b34b41?pid=CAPHFHSHPZHNMKQN"
     ],
     "categories": [
       "Raincoats",
-      "Hats"
+      "Hats",
+      "Cold Weather Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.5,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -16713,7 +16782,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:52:57.255260+00:00",
-    "last_seen": "2026-09-09T09:42:53.236778+00:00",
+    "last_seen": "2026-09-10T22:31:11.652681+00:00",
     "last_enriched": "2026-09-08T18:53:08.042152+00:00",
     "enriched_data": {
       "Business Name": "infispace",
@@ -17309,9 +17378,10 @@
     ],
     "categories": [
       "Snow Trousers & Bibs",
-      "Overalls"
+      "Overalls",
+      "Dungarees"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -17325,7 +17395,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T18:55:35.752878+00:00",
-    "last_seen": "2026-09-09T11:05:58.600784+00:00",
+    "last_seen": "2026-09-10T13:40:32.850008+00:00",
     "last_enriched": "2026-09-08T18:55:47.072114+00:00",
     "enriched_data": {
       "Business Name": "NINAS",
@@ -20205,12 +20275,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "AZMANI",
     "product_urls": [
-      "https://www.flipkart.com/futse-peno-full-sleeve-solid-men-jacket/p/itm903e238608d75?pid=JCKHQ7XNUGG6DMQ4"
+      "https://www.flipkart.com/futse-peno-full-sleeve-solid-men-jacket/p/itm903e238608d75?pid=JCKHQ7XNUGG6DMQ4",
+      "https://www.flipkart.com/futse-peno-full-sleeve-solid-boys-girls-jacket/p/itm39734d3d8d48d?pid=JCKHQ9BWTFG6NV3D",
+      "https://www.flipkart.com/futse-peno-full-sleeve-solid-boys-girls-jacket/p/itm95345bfe5297b?pid=JCKHQ9Y9AZGQKJXM"
     ],
     "categories": [
-      "Winterwear > Jackets"
+      "Winterwear > Jackets",
+      "Winter Wear > Coats, Jackets & Vests"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -20224,7 +20297,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T19:10:11.357693+00:00",
-    "last_seen": "2026-09-08T19:10:11.357693+00:00",
+    "last_seen": "2026-09-10T19:00:39.560679+00:00",
     "last_enriched": "2026-09-08T19:10:23.829733+00:00",
     "enriched_data": {
       "Business Name": "AZMANI",
@@ -22836,14 +22909,17 @@
       "https://www.flipkart.com/ausk-checkered-men-polo-neck-white-black-pink-t-shirt/p/itm85662b3e31c26?pid=TSHHBZX7U39ACXGV",
       "https://www.flipkart.com/ausk-checkered-men-polo-neck-white-black-blue-multicolor-t-shirt/p/itmb186740637ceb?pid=TSHHBZX7PMHFVMEG",
       "https://www.flipkart.com/global-nomad-graphic-print-women-round-neck-maroon-t-shirt/p/itm7e6658b5aea59?pid=TSHHZAAECKNNJ65T",
-      "https://www.flipkart.com/flipkart-smartbuy-graphic-print-women-round-neck-maroon-t-shirt/p/itm8024aad831861?pid=TSHHZA9RJZNEB9AK"
+      "https://www.flipkart.com/flipkart-smartbuy-graphic-print-women-round-neck-maroon-t-shirt/p/itm8024aad831861?pid=TSHHZA9RJZNEB9AK",
+      "https://www.flipkart.com/metronaut-self-design-men-polo-neck-blue-beige-t-shirt/p/itm2f96a14883bba?pid=TSHHZMBGAQYKSYNY",
+      "https://www.flipkart.com/ausk-colorblock-men-polo-neck-multicolor-t-shirt/p/itmcd059650bee15?pid=TSHHJYM2QC3GYUAP"
     ],
     "categories": [
       "Hoodies",
       "T-Shirts",
-      "Tops, T-Shirts & Shirts"
+      "Tops, T-Shirts & Shirts",
+      "T-Shirts & Polos > Polos"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -22857,7 +22933,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T19:21:27.308887+00:00",
-    "last_seen": "2026-09-09T11:52:32.853602+00:00",
+    "last_seen": "2026-09-10T18:40:30.666275+00:00",
     "last_enriched": "2026-09-08T19:21:48.422268+00:00",
     "enriched_data": {
       "Business Name": "FROST",
@@ -23791,12 +23867,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "MJ INDUSTRIES",
     "product_urls": [
-      "https://www.flipkart.com/try-full-sleeve-solid-men-sweatshirt/p/itmee63afc84da72?pid=SWSH4XBM5RG3BQFG"
+      "https://www.flipkart.com/try-full-sleeve-solid-men-sweatshirt/p/itmee63afc84da72?pid=SWSH4XBM5RG3BQFG",
+      "https://www.flipkart.com/try-colorblock-men-polo-neck-dark-green-white-t-shirt/p/itmd58efb47ab46e?pid=TSHHJQUPHUXDHZFC"
     ],
     "categories": [
-      "Hoodies"
+      "Hoodies",
+      "T-Shirts & Polos > Polos"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -23810,7 +23888,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T19:25:57.147368+00:00",
-    "last_seen": "2026-09-08T19:25:57.147368+00:00",
+    "last_seen": "2026-09-10T18:51:58.853155+00:00",
     "last_enriched": "2026-09-08T19:26:12.115479+00:00",
     "enriched_data": {
       "Business Name": "MJ INDUSTRIES",
@@ -32259,12 +32337,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Big-Basket",
     "product_urls": [
-      "https://www.flipkart.com/nicsy-men-women-leg-warmer/p/itm28fe0f97df2d8?pid=LWMGG7BEFNG6DCPF"
+      "https://www.flipkart.com/nicsy-men-women-leg-warmer/p/itm28fe0f97df2d8?pid=LWMGG7BEFNG6DCPF",
+      "https://www.flipkart.com/spun-daffodils-beanie/p/itm5999dc1c04b79?pid=CAPG8TSUYMAQZ7RU"
     ],
     "categories": [
-      "Leg Warmers"
+      "Leg Warmers",
+      "Cold Weather Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -32278,7 +32358,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:46:04.244285+00:00",
-    "last_seen": "2026-09-09T08:46:04.244285+00:00",
+    "last_seen": "2026-09-10T19:09:14.631709+00:00",
     "last_enriched": "2026-09-09T08:46:19.324772+00:00",
     "enriched_data": {
       "Business Name": "Big-Basket",
@@ -34161,12 +34241,14 @@
     "fulfillment_by": "Gentlewrap",
     "product_urls": [
       "https://www.flipkart.com/punjabi-maroon-3-75-meters-dastar-fullvoile-cotton-self-design-pagri/p/itmdae51ca8f23bf?pid=TRBGZ75GWDZUCZDH",
-      "https://www.flipkart.com/sikh-6-25-meters-dark-green-fullvoile-cotton-self-design-pagri/p/itmad4ecdcb62243?pid=TRBGMXGWNUYHE52H"
+      "https://www.flipkart.com/sikh-6-25-meters-dark-green-fullvoile-cotton-self-design-pagri/p/itmad4ecdcb62243?pid=TRBGMXGWNUYHE52H",
+      "https://www.flipkart.com/punjabi-black-3-75-meters-dastar-fullvoile-cotton-solid-pagri/p/itm83f8c4566b4a6?pid=TRBGN9F7QVDBMCY4"
     ],
     "categories": [
-      "Clothing Accessories > Turbans"
+      "Clothing Accessories > Turbans",
+      "Turbans"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -34180,7 +34262,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:55:05.998749+00:00",
-    "last_seen": "2026-09-09T08:55:32.675925+00:00",
+    "last_seen": "2026-09-10T21:08:25.482987+00:00",
     "last_enriched": "2026-09-09T08:55:20.961385+00:00",
     "enriched_data": {
       "Business Name": "Gentlewrap",
@@ -34284,9 +34366,10 @@
       "https://www.flipkart.com/st-creation-printed-dastar/p/itmbab39c3601f15?pid=TRBHH8V8GWHNUXGG"
     ],
     "categories": [
-      "Clothing Accessories > Turbans"
+      "Clothing Accessories > Turbans",
+      "Turbans"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -34300,7 +34383,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:55:43.986837+00:00",
-    "last_seen": "2026-09-09T09:00:27.139786+00:00",
+    "last_seen": "2026-09-10T21:11:38.582346+00:00",
     "last_enriched": "2026-09-09T08:55:59.202887+00:00",
     "enriched_data": {
       "Business Name": "THEALIXPRESSS",
@@ -34406,12 +34489,17 @@
       "https://www.flipkart.com/charkhi-7-meter-red-100-full-voile-punjabi-turban-men-cotton-solid-pagri/p/itm6f5adc309d46f?pid=TRBH9DB7VJKRHGRY",
       "https://www.flipkart.com/charkhi-7-meter-sky-blue-pure-full-voile-punjabi-turban-men-solid-pagri/p/itmcbba84e72ebbc?pid=TRBH9DB7YD4T6KJN",
       "https://www.flipkart.com/charkhi-7-5-meter-magenta-full-voile-turban-dastar-men-solid-pagri/p/itm3a49535b51e4e?pid=TRBH9DBMGJUMUVGD",
-      "https://www.flipkart.com/charkhi-6-meter-kesari-fullvoile-sikh-turban-men-punjabi-pagg-solid-pagri/p/itmea0958b28e71b?pid=TRBH9DBMCGDUFHW3"
+      "https://www.flipkart.com/charkhi-6-meter-kesari-fullvoile-sikh-turban-men-punjabi-pagg-solid-pagri/p/itmea0958b28e71b?pid=TRBH9DBMCGDUFHW3",
+      "https://www.flipkart.com/charkhi-midnight-blue-6-meter-fullvoile-turban-men-unstich-solid-pagri/p/itm00c8e510efc78?pid=TRBH9DB7QYGK5GPJ",
+      "https://www.flipkart.com/charkhi-brown-5-meter-100-full-voile-turban-men-pure-cotton-solid-pagri/p/itma04856bbd907c?pid=TRBH9DBM9GE5R6SQ",
+      "https://www.flipkart.com/charkhi-6-5-meter-light-lavendar-fullvoile-punjabi-turban-men-solid-pagri/p/itmd655cc65d1eb4?pid=TRBH9DBMUTVWBE7Z",
+      "https://www.flipkart.com/charkhi-6-5-meter-tohra-blue-full-voile-turban-men-punjabi-sikh-solid-pagri/p/itm45eeb3ed2d401?pid=TRBH9DB7ZZQGUNNG"
     ],
     "categories": [
-      "Clothing Accessories > Turbans"
+      "Clothing Accessories > Turbans",
+      "Turbans"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -34425,7 +34513,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:56:11.438233+00:00",
-    "last_seen": "2026-09-09T09:00:15.771662+00:00",
+    "last_seen": "2026-09-10T21:12:01.770775+00:00",
     "last_enriched": "2026-09-09T08:56:27.318175+00:00",
     "enriched_data": {
       "Business Name": "CHARKHIturban",
@@ -34525,12 +34613,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "RunIndia",
     "product_urls": [
-      "https://www.flipkart.com/run-india-solid-pagri/p/itmce7c0dd73e948?pid=TRBH2TYBGEW3EK3E"
+      "https://www.flipkart.com/run-india-solid-pagri/p/itmce7c0dd73e948?pid=TRBH2TYBGEW3EK3E",
+      "https://www.flipkart.com/run-india-solid-skull-cap/p/itm23aa0df61095c?pid=CAPHFFY5GXPQZGBA",
+      "https://www.flipkart.com/run-india-solid-skull-cap/p/itmbc9fba3a40a19?pid=CAPHFFYAKJGCEMUK"
     ],
     "categories": [
-      "Clothing Accessories > Turbans"
+      "Clothing Accessories > Turbans",
+      "Hats & Caps"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -34544,7 +34635,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:56:39.065846+00:00",
-    "last_seen": "2026-09-09T08:56:39.065846+00:00",
+    "last_seen": "2026-09-10T11:07:02.512695+00:00",
     "last_enriched": "2026-09-09T08:56:53.969310+00:00",
     "enriched_data": {
       "Business Name": "RunIndia",
@@ -34763,12 +34854,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "BISMAADH",
     "product_urls": [
-      "https://www.flipkart.com/bismaadh-solid-pagri/p/itm44214752a8a70?pid=TRBGZ2GMZJZHYHGD"
+      "https://www.flipkart.com/bismaadh-solid-pagri/p/itm44214752a8a70?pid=TRBGZ2GMZJZHYHGD",
+      "https://www.flipkart.com/bismaadh-men-printed-bandana/p/itma7674d41996e4?pid=BDAG4YZ4U9T8MCCD",
+      "https://www.flipkart.com/bismaadh-men-women-solid-bandana/p/itm78876ec089d4e?pid=BDAG5DFRZBFTX8QX"
     ],
     "categories": [
-      "Clothing Accessories > Turbans"
+      "Clothing Accessories > Turbans",
+      "Neckerchiefs"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -34782,7 +34876,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:58:06.146002+00:00",
-    "last_seen": "2026-09-09T08:58:06.146002+00:00",
+    "last_seen": "2026-09-10T12:07:39.000274+00:00",
     "last_enriched": "2026-09-09T08:58:21.641289+00:00",
     "enriched_data": {
       "Business Name": "BISMAADH",
@@ -34886,9 +34980,10 @@
       "https://www.flipkart.com/majrot-solid-pagri/p/itm998149dcb814b?pid=TRBHPZ5Y4YNPHZS3"
     ],
     "categories": [
-      "Clothing Accessories > Turbans"
+      "Clothing Accessories > Turbans",
+      "Turbans"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -34902,7 +34997,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:58:45.772108+00:00",
-    "last_seen": "2026-09-09T08:59:52.914902+00:00",
+    "last_seen": "2026-09-10T21:08:48.407287+00:00",
     "last_enriched": "2026-09-09T08:59:00.304648+00:00",
     "enriched_data": {
       "Business Name": "MAJROT",
@@ -35008,14 +35103,19 @@
       "https://www.flipkart.com/paropkar-men-women-boys-girls-solid-bandana/p/itm985972edfb9c8?pid=BDAGFHTJ8VGZHRQ8",
       "https://www.flipkart.com/paropkar-men-women-boys-girls-baby-girls-solid-bandana/p/itm7a08f346e07b4?pid=BDAGSRFW2JERGYY6",
       "https://www.flipkart.com/paropkar-men-women-boys-girls-baby-girls-solid-bandana/p/itm409f937cd6faa?pid=BDAGBB3A3FZ85WGM",
-      "https://www.flipkart.com/paropkar-3pcs-paisey-handkerchief-cowboy-head-wrap-scarf-women-men-100-cotton-black-red-white/p/itmc74f86e505d96?pid=HKFFUMQF5KRG8FBQ"
+      "https://www.flipkart.com/paropkar-3pcs-paisey-handkerchief-cowboy-head-wrap-scarf-women-men-100-cotton-black-red-white/p/itmc74f86e505d96?pid=HKFFUMQF5KRG8FBQ",
+      "https://www.flipkart.com/alpha-stylist-solid-skull-cap/p/itm9ceb737b4a810?pid=CAPHAZPJZDZTDJC5",
+      "https://www.flipkart.com/paropkar-non-slip-fashion-stretch-yoga-workout-running-gym-tie-neon-green-headband-head-band/p/itmbab36e91ebaa2?pid=HACHEGY7VTHDAXQM"
     ],
     "categories": [
       "Clothing Accessories > Turbans",
       "Bandanas",
-      "Handkerchiefs"
+      "Handkerchiefs",
+      "Hats & Caps",
+      "Fashion Headbands",
+      "Turbans"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 2.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -35029,7 +35129,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T08:59:12.130960+00:00",
-    "last_seen": "2026-09-09T09:28:09.348107+00:00",
+    "last_seen": "2026-09-10T21:08:36.956792+00:00",
     "last_enriched": "2026-09-09T08:59:29.639400+00:00",
     "enriched_data": {
       "Business Name": "PAROPKAR STORE",
@@ -35373,13 +35473,15 @@
       "https://www.flipkart.com/am-amormente-men-shirt-stays-adjustable-elastic-garter-shirts-holder-non-slip/p/itm6f13c963fdfbd?pid=GATGWS635SFPPWBU",
       "https://www.flipkart.com/am-amormente-shirt-tucker-men-s-elastic-stays-non-slip-locking-clamps-3-line-garter/p/itm133fad8d17baf?pid=GATGWTHKFFKWPVU8",
       "https://www.flipkart.com/jocoboo-black-garter/p/itmf1bd29d670d4b?pid=GATGMV8PGWGTPZSX",
-      "https://www.flipkart.com/gymisa-black-garter/p/itm4a13076e6fa4b?pid=GATH5UT4HGGMUKVT"
+      "https://www.flipkart.com/gymisa-black-garter/p/itm4a13076e6fa4b?pid=GATH5UT4HGGMUKVT",
+      "https://www.flipkart.com/beltworld-men-women-party-evening-casual-formal-black-synthetic-artificial-leather-metal-belt/p/itmc3d9a1f44db09?pid=BELHZZZNY9UWY8MT"
     ],
     "categories": [
       "Suspenders",
-      "Garters"
+      "Garters",
+      "Accessories > Belts"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.9,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -35393,7 +35495,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:01:39.259435+00:00",
-    "last_seen": "2026-09-09T09:11:17.643164+00:00",
+    "last_seen": "2026-09-10T10:18:33.831484+00:00",
     "last_enriched": "2026-09-09T09:01:55.214811+00:00",
     "enriched_data": {
       "Business Name": "Qamar enterprises",
@@ -35740,13 +35842,16 @@
       "https://www.flipkart.com/momisy-y-back-suspenders-men-women/p/itmae7079aa8458d?pid=SUSHFUGGG3ZS9UZR",
       "https://www.flipkart.com/triparulla-black-garter/p/itme60506787ca87?pid=GATHDZWAK8RZYVKN",
       "https://www.flipkart.com/beltworld-black-garter/p/itm5473b966196ad?pid=GATHGJAGGY6TSVNE",
-      "https://www.flipkart.com/jocoboo-black-garter/p/itm441425838e2b8?pid=GATGMV769RFHHFKA"
+      "https://www.flipkart.com/jocoboo-black-garter/p/itm441425838e2b8?pid=GATGMV769RFHHFKA",
+      "https://www.flipkart.com/simple-ghar-men-women-casual-evening-formal-party-black-fabric-nylon-belt/p/itm04cb01c543325?pid=BELHZECV7K9ZDCVW"
     ],
     "categories": [
       "Suspenders",
-      "Garters"
+      "Garters",
+      "Accessories > Belts",
+      "Belt Buckles"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -35760,7 +35865,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:03:49.763248+00:00",
-    "last_seen": "2026-09-09T09:11:06.283128+00:00",
+    "last_seen": "2026-09-10T20:47:00.909508+00:00",
     "last_enriched": "2026-09-09T09:04:06.074786+00:00",
     "enriched_data": {
       "Business Name": "NAUSHADENTERPRISE1",
@@ -36218,12 +36323,15 @@
     "fulfillment_by": "ARAMODA",
     "product_urls": [
       "https://www.flipkart.com/aferelle-y-back-suspenders-men/p/itm744e0c5852f6a?pid=SUSGWRBDUUFZQHUT",
-      "https://www.flipkart.com/aferelle-x-back-suspenders-men/p/itm2f7b4f3e92926?pid=SUSFRHT28ZQMFUNY"
+      "https://www.flipkart.com/aferelle-x-back-suspenders-men/p/itm2f7b4f3e92926?pid=SUSFRHT28ZQMFUNY",
+      "https://www.flipkart.com/aferelle-full-rim-rectangle-frame/p/itm5b3fc58f1c118?pid=FRAGEFMXUYWN3FFC",
+      "https://www.flipkart.com/aferelle-full-rim-rectangle-frame/p/itm666440a52ebc6?pid=FRAGHEPFMQHSHJNF"
     ],
     "categories": [
-      "Suspenders"
+      "Suspenders",
+      "Eyewear Frames"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.9,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -36237,7 +36345,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:06:04.222257+00:00",
-    "last_seen": "2026-09-09T09:07:58.060579+00:00",
+    "last_seen": "2026-09-10T14:29:16.375985+00:00",
     "last_enriched": "2026-09-09T09:06:18.405555+00:00",
     "enriched_data": {
       "Business Name": "ARAMODA",
@@ -36700,12 +36808,14 @@
       "https://www.flipkart.com/new-vastra-lok-black-garter/p/itm57e45b7211d20?pid=GATGKDENYSHUSJQM",
       "https://www.flipkart.com/kidducollection-black-garter/p/itme778951734a01?pid=GATGZP4CGDWQUFR9",
       "https://www.flipkart.com/gymisa-black-garter/p/itm2fd4389a3946a?pid=GATH5WZDENZRKEMZ",
-      "https://www.flipkart.com/greyfab-men-s-elastic-shirt-stays-non-slip-locking-clamps-garter/p/itm7ca6d37d32796?pid=GATGZS8HTERUGQHH"
+      "https://www.flipkart.com/greyfab-men-s-elastic-shirt-stays-non-slip-locking-clamps-garter/p/itm7ca6d37d32796?pid=GATGZS8HTERUGQHH",
+      "https://www.flipkart.com/smarty-world-men-women-casual-evening-formal-party-black-metal-fabric-belt/p/itmeb0e72b4f9b8b?pid=BELHZ4P42YMZXWCG"
     ],
     "categories": [
-      "Garters"
+      "Garters",
+      "Clothing Accessories > Belts"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -36719,7 +36829,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:09:29.397371+00:00",
-    "last_seen": "2026-09-09T09:12:32.194551+00:00",
+    "last_seen": "2026-09-10T20:25:57.671854+00:00",
     "last_enriched": "2026-09-09T09:09:46.008427+00:00",
     "enriched_data": {
       "Business Name": "Katariaandsons",
@@ -37898,12 +38008,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "HauteHaven",
     "product_urls": [
-      "https://www.flipkart.com/evanden-sports-regular-cap/p/itm219921d37d254?pid=CAPG69ZYGDE9Q4VE"
+      "https://www.flipkart.com/evanden-sports-regular-cap/p/itm219921d37d254?pid=CAPG69ZYGDE9Q4VE",
+      "https://www.flipkart.com/evanden-self-design-sports-regular-cap/p/itma1968780e7f97?pid=CAPHZ7V5P8HBHT2T",
+      "https://www.flipkart.com/evanden-self-design-sports-regular-cap/p/itmb73d0e27f212b?pid=CAPHZ7VGKYHE6PEJ"
     ],
     "categories": [
-      "Caps"
+      "Caps",
+      "Hats & Caps"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.9,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -37917,7 +38030,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:17:18.744970+00:00",
-    "last_seen": "2026-09-09T09:17:18.744970+00:00",
+    "last_seen": "2026-09-10T11:14:53.933463+00:00",
     "last_enriched": "2026-09-09T09:17:34.714580+00:00",
     "enriched_data": {
       "Business Name": "HauteHaven",
@@ -38016,12 +38129,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Good Friend",
     "product_urls": [
-      "https://www.flipkart.com/flexcycap-solid-beanie/p/itm3cbfff27fe08e?pid=CAPGUPE39ZGEHKQ2"
+      "https://www.flipkart.com/flexcycap-solid-beanie/p/itm3cbfff27fe08e?pid=CAPGUPE39ZGEHKQ2",
+      "https://www.flipkart.com/seafly-spectacle-sunglasses/p/itmc3c62c1a98762?pid=SGLHJ9XDHFVMCJF4",
+      "https://www.flipkart.com/sunglasses-clubmaster/p/itme7a27028cc8d9?pid=SGLHGPHCY6ZAYAFZ"
     ],
     "categories": [
-      "Caps"
+      "Caps",
+      "Sunglasses"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -38035,7 +38151,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:17:47.030345+00:00",
-    "last_seen": "2026-09-09T09:17:47.030345+00:00",
+    "last_seen": "2026-09-10T23:14:25.278469+00:00",
     "last_enriched": "2026-09-09T09:18:18.606373+00:00",
     "enriched_data": {
       "Business Name": "Good Friend",
@@ -39325,13 +39441,28 @@
     "fulfillment_by": "DHANVIESTORE",
     "product_urls": [
       "https://www.flipkart.com/luccamess-men-women-boys-girls-solid-bandana/p/itm3c7db9b2e1e10?pid=BDAGRB74PTRKE4MW",
-      "https://www.flipkart.com/alpha-stylist-balaclava-men-bike-riding-face-mask-full-cover-bikers-cyclists/p/itm2a784fbcd506a?pid=HATHGU7NBYRKUVCM"
+      "https://www.flipkart.com/alpha-stylist-balaclava-men-bike-riding-face-mask-full-cover-bikers-cyclists/p/itm2a784fbcd506a?pid=HATHGU7NBYRKUVCM",
+      "https://www.flipkart.com/alpha-stylist-helmet-skull-caps-head-hair-inner-cover-cap-cap-bikers/p/itm803c0cfedb53e?pid=HATHAYY8V7EAJHEZ",
+      "https://www.flipkart.com/alpha-stylist-black-bike-face-mask-men-women/p/itm6948526ad1182?pid=BLVHHQNZTNTQRDWG",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itmb4f423f2829ec?pid=BDAHAWWZ4NXFBAMX",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itma17832ed04c38?pid=BDAHAXYZ2GYEVRS4",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itmd026d626ee462?pid=BDAHAXF6ZVFFXWFZ",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itmfa402319ca1c9?pid=BDAHATPFEEFWFZJW",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itmba36f32005796?pid=BDAHATPFXSJT8VYR",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itm6f3045eca11f6?pid=BDAHATPFYJ8RTTES",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itm9d953b0cf3bc4?pid=BDAHATPEGWHZGYQP",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itmd7318e4f8e059?pid=BDAHATPDC7HYXACY",
+      "https://www.flipkart.com/aj-style-men-women-boys-girls-solid-bandana/p/itmba2edf66e0f9a?pid=BDAH9NHH4CGHURUS",
+      "https://www.flipkart.com/sutrawear-men-solid-bandana/p/itmf08268f745cd5?pid=BDAHAXYUP5ZXGW3K"
     ],
     "categories": [
       "Bandanas",
-      "Hats"
+      "Hats",
+      "Hats & Caps",
+      "Balaclavas",
+      "Neckerchiefs"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.9,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -39345,7 +39476,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:25:07.274661+00:00",
-    "last_seen": "2026-09-09T09:42:41.632131+00:00",
+    "last_seen": "2026-09-10T12:14:41.071439+00:00",
     "last_enriched": "2026-09-09T09:25:23.524018+00:00",
     "enriched_data": {
       "Business Name": "DHANVIESTORE",
@@ -39562,12 +39693,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "UndermeBrands",
     "product_urls": [
-      "https://www.flipkart.com/freecultr-unisex-anti-microbial-super-soft-comfort-fit-breathable-multipurpose-headband-face-mask-dust-protection-men-solid-bandana/p/itm604bad1ee0695?pid=BDAFZENRHWRZVZN2"
+      "https://www.flipkart.com/freecultr-unisex-anti-microbial-super-soft-comfort-fit-breathable-multipurpose-headband-face-mask-dust-protection-men-solid-bandana/p/itm604bad1ee0695?pid=BDAFZENRHWRZVZN2",
+      "https://www.flipkart.com/freecultr-black-helmet-skull-cap-men/p/itm33813dceca52b?pid=BLVHGZUZQVZYWC2G"
     ],
     "categories": [
-      "Bandanas"
+      "Bandanas",
+      "Balaclavas"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -39581,7 +39714,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:26:04.755536+00:00",
-    "last_seen": "2026-09-09T09:26:04.755536+00:00",
+    "last_seen": "2026-09-10T11:32:23.427872+00:00",
     "last_enriched": "2026-09-09T09:26:21.201053+00:00",
     "enriched_data": {
       "Business Name": "UndermeBrands",
@@ -39800,12 +39933,16 @@
     "marketplace": "flipkart",
     "fulfillment_by": "PlutoProm",
     "product_urls": [
-      "https://www.flipkart.com/plutoprom-men-women-solid-bandana/p/itmc77eff8e2ddb2?pid=BDAGUZZJFFNJXWGV"
+      "https://www.flipkart.com/plutoprom-men-women-solid-bandana/p/itmc77eff8e2ddb2?pid=BDAGUZZJFFNJXWGV",
+      "https://www.flipkart.com/plutoprom-black-bike-face-mask-men-women/p/itmf3d617f9085fd?pid=BLVGH6GTWAFFSHJJ",
+      "https://www.flipkart.com/fabhunk-athletic-running-men-women-fitness-headband-great-all-sports-pilates-band/p/itm94fb5ac9ebcdb?pid=FNBGQ377GMB4VYVW"
     ],
     "categories": [
-      "Bandanas"
+      "Bandanas",
+      "Balaclavas",
+      "Sport Headbands"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -39819,7 +39956,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:27:36.118830+00:00",
-    "last_seen": "2026-09-09T09:27:36.118830+00:00",
+    "last_seen": "2026-09-10T12:16:44.215487+00:00",
     "last_enriched": "2026-09-09T09:27:52.379045+00:00",
     "enriched_data": {
       "Business Name": "PlutoProm",
@@ -40518,12 +40655,14 @@
     "fulfillment_by": "SoxSense",
     "product_urls": [
       "https://www.flipkart.com/capada-men-s-royal-classy-cotton-white-color-line-handkerchief/p/itm1d6cc4d820016?pid=HKFGD4CY3NBZTSQZ",
-      "https://www.flipkart.com/raj-laxmi-fashion-baby-shower-gift-microfiber-face-towel-kids-women-girls-multicolor-handkerchief/p/itm40aee0cb863e2?pid=HKFGS92FRPPGCMG9"
+      "https://www.flipkart.com/raj-laxmi-fashion-baby-shower-gift-microfiber-face-towel-kids-women-girls-multicolor-handkerchief/p/itm40aee0cb863e2?pid=HKFGS92FRPPGCMG9",
+      "https://www.flipkart.com/highever-cute-jumping-rabbit-earmuffs-kids-girls-boys-chuchu-sound-4-to14-years-ear-muff/p/itmde8270bca8c72?pid=EARH7XRRS2UEA8JT"
     ],
     "categories": [
-      "Handkerchiefs"
+      "Handkerchiefs",
+      "Earmuffs"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -40537,7 +40676,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:31:08.368070+00:00",
-    "last_seen": "2026-09-09T09:35:00.104114+00:00",
+    "last_seen": "2026-09-10T22:57:32.861679+00:00",
     "last_enriched": "2026-09-09T09:31:25.326699+00:00",
     "enriched_data": {
       "Business Name": "SoxSense",
@@ -41228,12 +41367,14 @@
     "fulfillment_by": "HSR India Group",
     "product_urls": [
       "https://www.flipkart.com/hsr-stylish-summer-sun-protection-round-hat-cap-men-women-uv/p/itmebd4f729e39f1?pid=HATHA8KDS5NRJTBD",
-      "https://www.flipkart.com/hsr-stylish-summer-hat-cap-men-women-uv-protection-sun-protection-round/p/itm1699bb49371a2?pid=HATHA8K68GUJ2NHP"
+      "https://www.flipkart.com/hsr-stylish-summer-hat-cap-men-women-uv-protection-sun-protection-round/p/itm1699bb49371a2?pid=HATHA8K68GUJ2NHP",
+      "https://www.flipkart.com/hsr-solid-trucker-cap/p/itm36d5b4d7973c9?pid=CAPHH3NCUWAKXFXZ"
     ],
     "categories": [
-      "Hats"
+      "Hats",
+      "Hats & Caps"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.2,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -41247,7 +41388,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:35:28.718225+00:00",
-    "last_seen": "2026-09-09T09:35:58.031565+00:00",
+    "last_seen": "2026-09-10T11:17:03.729117+00:00",
     "last_enriched": "2026-09-09T09:35:46.121340+00:00",
     "enriched_data": {
       "Business Name": "HSR India Group",
@@ -41346,12 +41487,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Adorazone",
     "product_urls": [
-      "https://www.flipkart.com/adorazone-baby-boy-s-girl-s-straw-fedora-short-brim-hat-5-10-years/p/itm3b095911050ed?pid=HATGSWXHEESXZRGY"
+      "https://www.flipkart.com/adorazone-baby-boy-s-girl-s-straw-fedora-short-brim-hat-5-10-years/p/itm3b095911050ed?pid=HATGSWXHEESXZRGY",
+      "https://www.flipkart.com/adorazone-solid-beanie/p/itm967325c1db2ed?pid=CAPH79KAJXJR7G62"
     ],
     "categories": [
-      "Hats"
+      "Hats",
+      "Cold Weather Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -41365,7 +41508,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:36:09.387265+00:00",
-    "last_seen": "2026-09-09T09:36:09.387265+00:00",
+    "last_seen": "2026-09-10T22:35:34.996805+00:00",
     "last_enriched": "2026-09-09T09:36:26.940258+00:00",
     "enriched_data": {
       "Business Name": "Adorazone",
@@ -41585,12 +41728,14 @@
     "fulfillment_by": "CRAVEONLINE",
     "product_urls": [
       "https://www.flipkart.com/ecosky-sports-regular-cap/p/itm7a3a398aca034?pid=HATHQG5RTD8VYM6A",
-      "https://www.flipkart.com/ecosky-sports-regular-cap/p/itm17b28acaf8082?pid=HATHQK3PZZ7C5AWK"
+      "https://www.flipkart.com/ecosky-sports-regular-cap/p/itm17b28acaf8082?pid=HATHQK3PZZ7C5AWK",
+      "https://www.flipkart.com/krazo-fashion-solid-sports-regular-cap/p/itmb2770dff4f960?pid=CAPGG55SVDGCN4NK"
     ],
     "categories": [
-      "Hats"
+      "Hats",
+      "Cold Weather Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -41604,7 +41749,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:37:08.695920+00:00",
-    "last_seen": "2026-09-09T09:40:56.697812+00:00",
+    "last_seen": "2026-09-10T19:02:48.793728+00:00",
     "last_enriched": "2026-09-09T09:37:26.445255+00:00",
     "enriched_data": {
       "Business Name": "CRAVEONLINE",
@@ -41708,9 +41853,10 @@
     ],
     "categories": [
       "Hats",
-      "Sleepwear > Pyjamas"
+      "Sleepwear > Pyjamas",
+      "Sleep & Lounge Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -41724,7 +41870,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:37:38.409361+00:00",
-    "last_seen": "2026-09-09T13:00:22.168560+00:00",
+    "last_seen": "2026-09-11T10:04:42.551969+00:00",
     "last_enriched": "2026-09-09T09:37:55.549675+00:00",
     "enriched_data": {
       "Business Name": "ShopGenius",
@@ -42062,12 +42208,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "JAZAARETAIL",
     "product_urls": [
-      "https://www.flipkart.com/jamont-unisex-bucket-hat-beach-sun-fishing-reversible-double-side-wear/p/itm4869320593ea0?pid=HATGFJTHTZXUHUD9"
+      "https://www.flipkart.com/jamont-unisex-bucket-hat-beach-sun-fishing-reversible-double-side-wear/p/itm4869320593ea0?pid=HATGFJTHTZXUHUD9",
+      "https://www.flipkart.com/ecombas-checkered-beanie/p/itm6b48551d2aadc?pid=CAPGWH8ZZPVVHZ7P"
     ],
     "categories": [
-      "Hats"
+      "Hats",
+      "Cold Weather Sets"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -42081,7 +42229,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:39:17.491571+00:00",
-    "last_seen": "2026-09-09T09:39:17.491571+00:00",
+    "last_seen": "2026-09-10T22:18:15.570877+00:00",
     "last_enriched": "2026-09-09T09:39:33.984993+00:00",
     "enriched_data": {
       "Business Name": "JAZAARETAIL",
@@ -42538,9 +42686,10 @@
       "https://www.flipkart.com/nilaya-collecton-helmet-inner-cap-sweat-absorbing-riding/p/itm8f3854d5ba58c?pid=HATHKHNCFPVAH4GZ"
     ],
     "categories": [
-      "Hats"
+      "Hats",
+      "Hats & Caps"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -42554,7 +42703,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:41:43.331225+00:00",
-    "last_seen": "2026-09-09T09:41:43.331225+00:00",
+    "last_seen": "2026-09-10T11:17:15.247747+00:00",
     "last_enriched": "2026-09-09T09:41:58.681589+00:00",
     "enriched_data": {
       "Business Name": "NilayaCollection",
@@ -42776,12 +42925,14 @@
       "https://www.flipkart.com/neatoes-sweat-absorbent-sports-wrist-band-support/p/itm72739665a6bc5?pid=SUPHZRX2PTTWSSEN",
       "https://www.flipkart.com/neatoes-sweat-absorbent-sports-wrist-band-support/p/itm4d2da5b619250?pid=SUPHZRXCGYZEGJ7J",
       "https://www.flipkart.com/neatoes-sweat-absorbent-sports-wrist-band-support/p/itm8f9b3de095ab1?pid=SUPHZRXCDCZWFCVJ",
-      "https://www.flipkart.com/neatoes-sweat-absorbent-sports-wrist-band-support/p/itm3a8af1eb72205?pid=SUPHZRX2WGDRVHZH"
+      "https://www.flipkart.com/neatoes-sweat-absorbent-sports-wrist-band-support/p/itm3a8af1eb72205?pid=SUPHZRX2WGDRVHZH",
+      "https://www.flipkart.com/neatoes-sweat-absorbent-sports-wrist-band-support/p/itm37419fcf33040?pid=SUPHZRX2ZZHJMGVJ"
     ],
     "categories": [
-      "Wristbands"
+      "Wristbands",
+      "Sport Headbands"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "html_seller_regex",
     "seller_confidence": 0.95,
@@ -42795,7 +42946,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:43:11.792047+00:00",
-    "last_seen": "2026-09-09T09:48:41.746618+00:00",
+    "last_seen": "2026-09-10T12:26:30.609199+00:00",
     "last_enriched": "2026-09-09T09:43:29.330369+00:00",
     "enriched_data": {
       "Business Name": "NEATOES",
@@ -43965,12 +44116,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "SMDACollection",
     "product_urls": [
-      "https://www.flipkart.com/ppt-blue-wrist-men-women/p/itmdbdd607dacee3?pid=WTBGPJFZWREXKHZM"
+      "https://www.flipkart.com/ppt-blue-wrist-men-women/p/itmdbdd607dacee3?pid=WTBGPJFZWREXKHZM",
+      "https://www.flipkart.com/steffer-headband-sport-gym-workout-yoga-sweatband-all-sports-wear-fitness-band/p/itm72b0843122b7d?pid=FNBGHVVVTYDHR8M2"
     ],
     "categories": [
-      "Wristbands"
+      "Wristbands",
+      "Sport Headbands"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -43984,7 +44137,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:49:16.090581+00:00",
-    "last_seen": "2026-09-09T09:49:16.090581+00:00",
+    "last_seen": "2026-09-10T12:22:05.292758+00:00",
     "last_enriched": "2026-09-09T09:49:34.381428+00:00",
     "enriched_data": {
       "Business Name": "SMDACollection",
@@ -44446,12 +44599,18 @@
       "https://www.flipkart.com/randome-stripe-printed-tie/p/itm2d1d7b5de7b74?pid=TIEHGGF6BZS8J7XY",
       "https://www.flipkart.com/randome-stripe-self-design-tie/p/itm4fa323d2cfbd8?pid=TIEHGZ3APZA84HWB",
       "https://www.flipkart.com/kaezri-silk-tie-cufflink/p/itme4647fc52c388?pid=CTPGS4CCZ8NAQPZD",
-      "https://www.flipkart.com/randome-stripe-satin-cufflink-tie-pin-set/p/itm6a50f67a18619?pid=CTPHPN2Z3XJYGAGH"
+      "https://www.flipkart.com/randome-stripe-satin-cufflink-tie-pin-set/p/itm6a50f67a18619?pid=CTPHPN2Z3XJYGAGH",
+      "https://www.flipkart.com/randome-stripe-satin-cufflink-tie-pin-set/p/itme0b7b99088384?pid=CTPHZDDZGCZHKRDM",
+      "https://www.flipkart.com/randome-stripe-satin-cufflink-tie-pin-set/p/itmfbb6ddfbcd3b4?pid=CTPHPN2APP9ZQUNG",
+      "https://www.flipkart.com/randome-stripe-satin-tie-pin-set/p/itm3c81a96cf19c4?pid=CTPHGR8RHMW8BEXC",
+      "https://www.flipkart.com/randome-stripe-satin-cufflink-tie-pin-set/p/itm4010316e3a281?pid=CTPHGR5PTXWGHZ7B"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties",
+      "Ties & Cufflinks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -44465,7 +44624,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:51:21.238368+00:00",
-    "last_seen": "2026-09-09T09:57:21.279462+00:00",
+    "last_seen": "2026-09-10T22:17:46.869217+00:00",
     "last_enriched": "2026-09-09T09:51:39.143142+00:00",
     "enriched_data": {
       "Business Name": "YKTEXTILES",
@@ -44565,12 +44724,23 @@
     "marketplace": "flipkart",
     "fulfillment_by": "BSQUAREMARKETING",
     "product_urls": [
-      "https://www.flipkart.com/fashmade-nickel-cufflink/p/itmdfac17b6f0c1b?pid=CTPFJV4XYJQRWJ4Z"
+      "https://www.flipkart.com/fashmade-nickel-cufflink/p/itmdfac17b6f0c1b?pid=CTPFJV4XYJQRWJ4Z",
+      "https://www.flipkart.com/fashmade-solid-tie/p/itmfftyz73naddnc?pid=TIEFFSXZFHHPWYN2",
+      "https://www.flipkart.com/maruti-tie-geometric-print/p/itmeqgdfdkvugpkf?pid=TIEEQGDFYNBMKJYR",
+      "https://www.flipkart.com/bsquare-solid-tie/p/itmejzh6emktu78s?pid=TIEEJZH6ZFYRYMUP",
+      "https://www.flipkart.com/bsquare-brass-cufflink/p/itmejm2hqq3jchff?pid=CTPEJM2HBWMZHFGC",
+      "https://www.flipkart.com/fashmade-metal-cufflink/p/itm60574228b0680?pid=CTPHMKYAFAWHHW3N",
+      "https://www.flipkart.com/fashmade-metal-cufflink/p/itm6a33e6cf30bf9?pid=CTPHMKYAFQ8BUW8A",
+      "https://www.flipkart.com/house-common-alloy-tie-pin/p/itmenjpuvm2kp27g?pid=CTPH44FACZ7NZD4Y",
+      "https://www.flipkart.com/fashmade-brass-tie-pin/p/itma8046d945d0fb?pid=CTPHEF7AEZGAGFUN",
+      "https://www.flipkart.com/fashmade-brass-stainless-steel-alloy-cufflink/p/itmfaf7aaab17790?pid=CTPHCTQ3K8V2HZF6"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties",
+      "Ties & Cufflinks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -44584,7 +44754,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:51:51.071702+00:00",
-    "last_seen": "2026-09-09T09:51:51.071702+00:00",
+    "last_seen": "2026-09-10T22:17:12.074559+00:00",
     "last_enriched": "2026-09-09T09:52:09.113151+00:00",
     "enriched_data": {
       "Business Name": "BSQUAREMARKETING",
@@ -44685,12 +44855,15 @@
     "fulfillment_by": "TADENTERPRISES",
     "product_urls": [
       "https://www.flipkart.com/neuroclub-silk-cufflink-tie-pin-set/p/itm67b2fc3572d17?pid=CTPGCCGK2TRJPPNA",
-      "https://www.flipkart.com/neuroclub-silk-cufflink-tie-pin-set/p/itmc7ad54891f22a?pid=CTPGCCH6GHYNKYHC"
+      "https://www.flipkart.com/neuroclub-silk-cufflink-tie-pin-set/p/itmc7ad54891f22a?pid=CTPGCCH6GHYNKYHC",
+      "https://www.flipkart.com/neuroclub-silk-cufflink-tie-pin-set/p/itm67b2fc3572d17?pid=CTPGCCGKAAVAGFYR",
+      "https://www.flipkart.com/neuroclub-silk-cufflink-tie-pin-set/p/itm67b2fc3572d17?pid=CTPGCCGKWF37MQQW"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties & Cufflinks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -44704,7 +44877,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:52:21.591200+00:00",
-    "last_seen": "2026-09-09T09:54:14.347379+00:00",
+    "last_seen": "2026-09-10T22:16:26.053820+00:00",
     "last_enriched": "2026-09-09T09:52:39.647800+00:00",
     "enriched_data": {
       "Business Name": "TADENTERPRISES",
@@ -44924,12 +45097,14 @@
     "fulfillment_by": "GalaxyRetailInc",
     "product_urls": [
       "https://www.flipkart.com/tie-cuffs-satin-cufflink/p/itmf15d965d891fb?pid=CTPGK77YXTCAKRJM",
-      "https://www.flipkart.com/tie-cuffs-satin-cufflink/p/itmb9b7780419f4a?pid=CTPGK79H3RR7Y5XP"
+      "https://www.flipkart.com/tie-cuffs-satin-cufflink/p/itmb9b7780419f4a?pid=CTPGK79H3RR7Y5XP",
+      "https://www.flipkart.com/tie-cuffs-satin-cufflink/p/itmd1ce8049941fb?pid=CTPGKH5YZFN9GUMP"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties & Cufflinks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -44943,7 +45118,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:53:32.258125+00:00",
-    "last_seen": "2026-09-09T09:56:58.459468+00:00",
+    "last_seen": "2026-09-10T22:16:37.580596+00:00",
     "last_enriched": "2026-09-09T09:53:50.823649+00:00",
     "enriched_data": {
       "Business Name": "GalaxyRetailInc",
@@ -45043,12 +45218,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Gunmetal Stitches Pvt Ltd",
     "product_urls": [
-      "https://www.flipkart.com/louis-stitch-silk-cufflink-tie-pin-set/p/itm96bfc5aa7ccf1?pid=CTPGPF6UZZZPY3TH"
+      "https://www.flipkart.com/louis-stitch-silk-cufflink-tie-pin-set/p/itm96bfc5aa7ccf1?pid=CTPGPF6UZZZPY3TH",
+      "https://www.flipkart.com/louis-stitch-silk-cufflink-tie-pin-set/p/itmbd28f124cb687?pid=CTPG3H3QRZWTNXJW"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties & Cufflinks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.5,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -45062,7 +45239,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:54:37.170971+00:00",
-    "last_seen": "2026-09-09T09:54:37.170971+00:00",
+    "last_seen": "2026-09-10T22:16:49.101642+00:00",
     "last_enriched": "2026-09-09T09:54:55.277215+00:00",
     "enriched_data": {
       "Business Name": "Gunmetal Stitches Pvt Ltd",
@@ -45163,12 +45340,14 @@
     "fulfillment_by": "jdcollectionss",
     "product_urls": [
       "https://www.flipkart.com/justin-dustin-checkered-striped-polka-print-tie/p/itme26abebcab2d6?pid=TIEHKR3TQUJ6EYJ2",
-      "https://www.flipkart.com/justin-dustin-striped-tie/p/itmd093dbf8db509?pid=TIEHFRKGMK5QGYQX"
+      "https://www.flipkart.com/justin-dustin-striped-tie/p/itmd093dbf8db509?pid=TIEHFRKGMK5QGYQX",
+      "https://www.flipkart.com/justin-dustin-printed-polka-print-tie/p/itmee554df83a9ee?pid=TIEHMPKEZGVJ6D8F"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -45182,7 +45361,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:55:18.758353+00:00",
-    "last_seen": "2026-09-09T09:57:09.848213+00:00",
+    "last_seen": "2026-09-10T11:18:55.075440+00:00",
     "last_enriched": "2026-09-09T09:55:37.042988+00:00",
     "enriched_data": {
       "Business Name": "jdcollectionss",
@@ -45283,12 +45462,20 @@
     "product_urls": [
       "https://www.flipkart.com/random-stripe-silk-cufflink-tie-pin-set/p/itm20467706c8ef0?pid=CTPGMCVZPQUZHKWW",
       "https://www.flipkart.com/random-stripe-silk-cufflink-tie-pin-set/p/itm22e3016ff1c6b?pid=CTPGM6ZWCPHFRNGC",
-      "https://www.flipkart.com/random-stripe-silk-cufflink-tie-pin-set/p/itm20467706c8ef0?pid=CTPGMCVZJPDWSHGZ"
+      "https://www.flipkart.com/random-stripe-silk-cufflink-tie-pin-set/p/itm20467706c8ef0?pid=CTPGMCVZJPDWSHGZ",
+      "https://www.flipkart.com/random-stripe-printed-tie/p/itmb300aded3a66b?pid=TIEHM234Z6GRYUEU",
+      "https://www.flipkart.com/random-stripe-striped-tie/p/itm723565b3c4432?pid=TIEHEJWMNYAAHXHK",
+      "https://www.flipkart.com/random-stripe-printed-tie/p/itm277f77bd75e2a?pid=TIEHM234YFWRWADG",
+      "https://www.flipkart.com/random-stripe-silk-cufflink-tie-pin-set/p/itm22e3016ff1c6b?pid=CTPGM6ZWWS7GFGVT",
+      "https://www.flipkart.com/random-stripe-silk-cufflink-tie-pin-set/p/itm22e3016ff1c6b?pid=CTPGM6ZWFXJGWFQH",
+      "https://www.flipkart.com/random-stripe-silk-cufflink-tie-pin-set/p/itm58e8aec9216e7?pid=CTPGZDTKG63PHCRQ"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties",
+      "Ties & Cufflinks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -45302,7 +45489,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:55:49.050106+00:00",
-    "last_seen": "2026-09-09T09:57:32.911678+00:00",
+    "last_seen": "2026-09-10T22:12:49.029044+00:00",
     "last_enriched": "2026-09-09T09:56:07.388808+00:00",
     "enriched_data": {
       "Business Name": "voxon",
@@ -45405,9 +45592,10 @@
       "https://www.flipkart.com/calixto-floral-print-tie/p/itm6aa11c2dc03ea?pid=TIEH2ZB4N7VZFDGA"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -45421,7 +45609,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:56:30.963643+00:00",
-    "last_seen": "2026-09-09T09:56:30.963643+00:00",
+    "last_seen": "2026-09-10T11:21:26.407466+00:00",
     "last_enriched": "2026-09-09T09:56:46.504261+00:00",
     "enriched_data": {
       "Business Name": "WilcoRetails",
@@ -45521,12 +45709,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "RibharGlobal",
     "product_urls": [
-      "https://www.flipkart.com/bsquare-brass-tie-pin/p/itmeqg9fcrkfsqzg?pid=CTPEQG9FMPBKVAV7"
+      "https://www.flipkart.com/bsquare-brass-tie-pin/p/itmeqg9fcrkfsqzg?pid=CTPEQG9FMPBKVAV7",
+      "https://www.flipkart.com/zitti-silver-tie-pin/p/itm37966560ecee2?pid=CTPHERUFZ6Z4CKAU",
+      "https://www.flipkart.com/zitti-stainless-steel-cufflink/p/itm786586ef5c547?pid=CTPHDYHXHG2VWHMH"
     ],
     "categories": [
-      "Ties and Cufflinks"
+      "Ties and Cufflinks",
+      "Ties & Cufflinks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -45540,7 +45731,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:57:44.370493+00:00",
-    "last_seen": "2026-09-09T09:57:44.370493+00:00",
+    "last_seen": "2026-09-10T22:17:35.288007+00:00",
     "last_enriched": "2026-09-09T09:58:03.207861+00:00",
     "enriched_data": {
       "Business Name": "RibharGlobal",
@@ -45646,9 +45837,10 @@
       "https://www.flipkart.com/zoro-men-casual-party-formal-evening-black-brown-texas-leatherite-artificial-leather-reversible-belt/p/itmfbr32gygsbgaf?pid=BELFBMJDC4FGGWFM"
     ],
     "categories": [
-      "Belts"
+      "Belts",
+      "Accessories > Belts"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -45662,7 +45854,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:58:22.960326+00:00",
-    "last_seen": "2026-09-09T10:04:33.337795+00:00",
+    "last_seen": "2026-09-10T10:24:40.802488+00:00",
     "last_enriched": "2026-09-09T09:58:40.833478+00:00",
     "enriched_data": {
       "Business Name": "AlfaRetailCorp",
@@ -45884,12 +46076,16 @@
       "https://www.flipkart.com/provogue-men-casual-formal-evening-party-black-grey-nylon-belt/p/itmc8040e40d6daf?pid=BELGHRGW6N8EP5CA",
       "https://www.flipkart.com/wrogn-men-formal-casual-evening-party-black-artificial-leather-reversible-belt/p/itm1d17237cdf451?pid=BELHKVN4DSHZ3YGK",
       "https://www.flipkart.com/roadster-men-formal-casual-evening-party-black-genuine-leather-belt/p/itm5d84abb31e085?pid=BELHMY5UQVS4ZDPZ",
-      "https://www.flipkart.com/roadster-men-formal-black-genuine-leather-belt/p/itm43b6981d506d8?pid=BELHD2H7SHZXA87Y"
+      "https://www.flipkart.com/roadster-men-formal-black-genuine-leather-belt/p/itm43b6981d506d8?pid=BELHD2H7SHZXA87Y",
+      "https://www.flipkart.com/killer-men-formal-casual-evening-party-multicolor-nylon-belt/p/itm289acaad5bb5d?pid=BELHHY4YMGYRGGM8",
+      "https://www.flipkart.com/loopa-men-formal-black-genuine-leather-belt/p/itmce7f998cc09ec?pid=BELFNEHPA5FP39EF",
+      "https://www.flipkart.com/metronaut-men-casual-formal-black-texas-leatherite-belt/p/itm704a6397e5419?pid=BELGSW4ZKCZMBFGQ"
     ],
     "categories": [
-      "Belts"
+      "Belts",
+      "Accessories > Belts"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -45903,7 +46099,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:59:23.953151+00:00",
-    "last_seen": "2026-09-09T10:03:00.301765+00:00",
+    "last_seen": "2026-09-10T10:26:49.511303+00:00",
     "last_enriched": "2026-09-09T09:59:39.265871+00:00",
     "enriched_data": {
       "Business Name": "LOOPA",
@@ -46003,12 +46199,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Laczo",
     "product_urls": [
-      "https://www.flipkart.com/laczo-men-casual-formal-party-black-synthetic-belt/p/itm8d6b64599e55e?pid=BELHZUBKBNZHYATE"
+      "https://www.flipkart.com/laczo-men-casual-formal-party-black-synthetic-belt/p/itm8d6b64599e55e?pid=BELHZUBKBNZHYATE",
+      "https://www.flipkart.com/laczo-men-casual-formal-party-black-synthetic-belt/p/itm8d6b64599e55e?pid=BELHZUBK4DRZKJF9"
     ],
     "categories": [
-      "Belts"
+      "Belts",
+      "Accessories > Belts",
+      "Belt Buckles"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.2,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -46022,7 +46221,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T09:59:51.271192+00:00",
-    "last_seen": "2026-09-09T09:59:51.271192+00:00",
+    "last_seen": "2026-09-10T20:47:12.547015+00:00",
     "last_enriched": "2026-09-09T10:00:10.342893+00:00",
     "enriched_data": {
       "Business Name": "Laczo",
@@ -46122,12 +46321,23 @@
     "fulfillment_by": "sunshopping",
     "product_urls": [
       "https://www.flipkart.com/roadster-men-formal-casual-evening-party-black-genuine-leather-belt/p/itm53f4a3a800a62?pid=BELHFDZZAFRB7EQK",
-      "https://www.flipkart.com/roadster-men-formal-casual-evening-party-black-genuine-leather-belt/p/itm85a914c398909?pid=BELHFDZZMX4ZNGRQ"
+      "https://www.flipkart.com/roadster-men-formal-casual-evening-party-black-genuine-leather-belt/p/itm85a914c398909?pid=BELHFDZZMX4ZNGRQ",
+      "https://www.flipkart.com/roadster-men-formal-casual-evening-party-black-genuine-leather-belt/p/itm85a914c398909?pid=BELHFDZZKY884CUH",
+      "https://www.flipkart.com/killer-men-formal-casual-party-evening-black-artificial-leather-belt/p/itmaa009d1d67c79?pid=BELHEPNDARVA2VGQ",
+      "https://www.flipkart.com/wholesome-deal-red001-solid-men-tie/p/itme6f87yszmh24f?pid=TIEE6F87ACVCYHVQ",
+      "https://www.flipkart.com/wholesome-deal-bltie001-solid-men-tie/p/itme6j6efpmgz9hx?pid=TIEE6J6EQ5TZZUAN",
+      "https://www.flipkart.com/wholesome-deal-solid-tie/p/itmfey4hgnx6yszy?pid=TIEFDZQFDJAC6QGY",
+      "https://www.flipkart.com/roadster-men-formal-casual-evening-party-black-genuine-leather-belt/p/itm85a914c398909?pid=BELHFDZZQQ5QHZFW",
+      "https://www.flipkart.com/roadster-men-casual-evening-formal-party-brown-genuine-leather-belt/p/itmaef25235b22b7?pid=BELH34RURESW2EFP",
+      "https://www.flipkart.com/killer-men-formal-brown-artificial-leather-belt/p/itm4ca1d4c213530?pid=BELHGVFWY4GDCCWV"
     ],
     "categories": [
-      "Belts"
+      "Belts",
+      "Accessories > Belts",
+      "Ties",
+      "Belt Buckles"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -46141,7 +46351,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:00:57.858891+00:00",
-    "last_seen": "2026-09-09T10:04:44.931813+00:00",
+    "last_seen": "2026-09-10T20:49:54.783144+00:00",
     "last_enriched": "2026-09-09T10:01:15.888451+00:00",
     "enriched_data": {
       "Business Name": "sunshopping",
@@ -46243,14 +46453,20 @@
     "product_urls": [
       "https://www.flipkart.com/tommy-hilfiger-men-casual-black-genuine-leather-reversible-belt/p/itm26f83a8cbb978?pid=BELFK4RTDKCTZBC9",
       "https://www.flipkart.com/highlander-men-pyjama/p/itm045af190d7d88?pid=PYJFZWNZZJRWWCYQ",
-      "https://www.flipkart.com/peter-england-single-breasted-solid-men-suit/p/itm73501eeb91b37?pid=SUIGWMERT7UFRTVS"
+      "https://www.flipkart.com/peter-england-single-breasted-solid-men-suit/p/itm73501eeb91b37?pid=SUIGWMERT7UFRTVS",
+      "https://www.flipkart.com/john-players-men-contoured-crotch-cotton-fabric-red-brief/p/itm5fac511644cde?pid=BRFGYJBMRZYTY7XT",
+      "https://www.flipkart.com/john-jacobs-round-sunglasses/p/itm3e641dd5100ae?pid=SGLFXCEYTQQZ3YNA",
+      "https://www.flipkart.com/lenskart-blu-full-rim-square-frame/p/itmbf7068c5ea588?pid=FRAFYBUHTC3UZ6GU"
     ],
     "categories": [
       "Belts",
       "Sleepwear > Pyjamas",
-      "Suits & Blazers > Suits"
+      "Suits & Blazers > Suits",
+      "Shorts & Trunks",
+      "Sunglasses & Spectacle Frames > Sunglasses",
+      "Eyewear Frames"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -46264,7 +46480,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:01:27.929801+00:00",
-    "last_seen": "2026-09-09T13:55:35.152821+00:00",
+    "last_seen": "2026-09-10T14:11:45.486307+00:00",
     "last_enriched": "2026-09-09T10:01:45.727876+00:00",
     "enriched_data": {
       "Business Name": "RetailNet",
@@ -46367,9 +46583,10 @@
       "https://www.flipkart.com/hapani-fashion-men-women-party-casual-black-artificial-leather-belt/p/itmab7f0ca15af2a?pid=BELHHYTWHYKYG5B3"
     ],
     "categories": [
-      "Belts"
+      "Belts",
+      "Belt Buckles"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.5,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -46383,7 +46600,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:02:09.155229+00:00",
-    "last_seen": "2026-09-09T10:02:09.155229+00:00",
+    "last_seen": "2026-09-10T20:49:31.322036+00:00",
     "last_enriched": "2026-09-09T10:02:25.086325+00:00",
     "enriched_data": {
       "Business Name": "HAPANI ENTERPRISE",
@@ -46842,9 +47059,11 @@
       "https://www.flipkart.com/craft-india-women-casual-party-evening-formal-black-genuine-leather-belt/p/itmcaa600e6fa87e?pid=BELHHHEMYJG48UM4"
     ],
     "categories": [
-      "Belts"
+      "Belts",
+      "Accessories > Belts",
+      "Belt Buckles"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -46858,7 +47077,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:05:26.053457+00:00",
-    "last_seen": "2026-09-09T10:05:26.053457+00:00",
+    "last_seen": "2026-09-10T20:37:07.473093+00:00",
     "last_enriched": "2026-09-09T10:05:43.432560+00:00",
     "enriched_data": {
       "Business Name": "CraftIndia01",
@@ -53775,12 +53994,17 @@
     "marketplace": "flipkart",
     "fulfillment_by": "ZEPPIENTERPRISES",
     "product_urls": [
-      "https://www.flipkart.com/zeppi-solid-men-wind-cheater/p/itm05b6d3570f04f?pid=WCTHPCVQBRFZREAZ"
+      "https://www.flipkart.com/zeppi-solid-men-wind-cheater/p/itm05b6d3570f04f?pid=WCTHPCVQBRFZREAZ",
+      "https://www.flipkart.com/zeppi-solid-women-raincoat/p/itm11346d5ca001d?pid=RNCHPYPC7G3KAC49",
+      "https://www.flipkart.com/zeppi-solid-women-raincoat/p/itm6ada32deb2d43?pid=RNCHPYPBDW2MQSPH",
+      "https://www.flipkart.com/zeppi-solid-women-raincoat/p/itm1b559604e7459?pid=RNCHPYPBGEEVFGCB",
+      "https://www.flipkart.com/zeppi-solid-women-raincoat/p/itm36411f242d17b?pid=RNCHZZRY8FWFHZ3D"
     ],
     "categories": [
-      "Windcheaters > Men's WindCheaters"
+      "Windcheaters > Men's WindCheaters",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -53794,7 +54018,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:46:48.525034+00:00",
-    "last_seen": "2026-09-09T10:46:48.525034+00:00",
+    "last_seen": "2026-09-11T10:27:58.439351+00:00",
     "last_enriched": "2026-09-09T10:47:10.153878+00:00",
     "enriched_data": {
       "Business Name": "ZEPPIENTERPRISES",
@@ -54014,12 +54238,19 @@
     "fulfillment_by": "HEMLOCK",
     "product_urls": [
       "https://www.flipkart.com/hemlock-solid-men-wind-cheater/p/itm1226f42ca7ffb?pid=WCTHPGY5GY2JVUDH",
-      "https://www.flipkart.com/hemlock-solid-men-wind-cheater/p/itmb688e13e0c1b5?pid=WCTHPEFSQYH46CKD"
+      "https://www.flipkart.com/hemlock-solid-men-wind-cheater/p/itmb688e13e0c1b5?pid=WCTHPEFSQYH46CKD",
+      "https://www.flipkart.com/hemlock-sleeveless-solid-men-jacket/p/itmc792f608629fb?pid=JCKGUPW5HRZE9KRV",
+      "https://www.flipkart.com/hemlock-sleeveless-solid-men-jacket/p/itm5dfabd760bcd9?pid=JCKG72FY2YCJ2DFQ",
+      "https://www.flipkart.com/hemlock-sleeveless-solid-men-jacket/p/itmf6626b0dcf162?pid=JCKGUQEWC6UHFFJC",
+      "https://www.flipkart.com/hemlock-sleeveless-solid-men-jacket/p/itm83958098706b9?pid=JCKGUPW5HCHQCAQC",
+      "https://www.flipkart.com/hemlock-sleeveless-solid-men-jacket/p/itm4e5dfadd72f79?pid=JCKGUQEWFKBBZS3Z",
+      "https://www.flipkart.com/hemlock-sleeveless-solid-men-jacket/p/itmc88f95c39f4e4?pid=JCKG5W67C4FH9Y8P"
     ],
     "categories": [
-      "Windcheaters > Men's WindCheaters"
+      "Windcheaters > Men's WindCheaters",
+      "Winter Wear > Coats, Jackets & Vests"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -54033,7 +54264,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:47:53.898511+00:00",
-    "last_seen": "2026-09-09T10:49:14.414008+00:00",
+    "last_seen": "2026-09-10T19:00:28.024902+00:00",
     "last_enriched": "2026-09-09T10:48:19.367282+00:00",
     "enriched_data": {
       "Business Name": "HEMLOCK",
@@ -55211,12 +55442,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "ALFIVECOLLECTION",
     "product_urls": [
-      "https://www.flipkart.com/alfive-dungaree-girls-casual-self-design-cotton-blend/p/itm06b17d114bcd3?pid=KDRHZFZ864FMYMYA"
+      "https://www.flipkart.com/alfive-dungaree-girls-casual-self-design-cotton-blend/p/itm06b17d114bcd3?pid=KDRHZFZ864FMYMYA",
+      "https://www.flipkart.com/r-rimsa-dresses-girls-casual-shirt-pant/p/itmbf0918705d13a?pid=KPBHMHY2UUZS7UWH",
+      "https://www.flipkart.com/r-rimsa-dresses-girls-casual-shirt-pant/p/itme50fd21421051?pid=KPBHMHY2QBJVPUR9"
     ],
     "categories": [
-      "Overalls"
+      "Overalls",
+      "Western Wear > Co-ords"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.4,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -55230,7 +55464,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:58:14.035352+00:00",
-    "last_seen": "2026-09-09T10:58:14.035352+00:00",
+    "last_seen": "2026-09-10T20:11:38.066072+00:00",
     "last_enriched": "2026-09-09T10:58:35.150669+00:00",
     "enriched_data": {
       "Business Name": "ALFIVECOLLECTION",
@@ -55449,12 +55683,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Drapefashion",
     "product_urls": [
-      "https://www.flipkart.com/uprising-dungaree-baby-girls-casual-self-design-denim-hosiery/p/itm43b9b2850837a?pid=KDRHZEPZKZY9HNBB"
+      "https://www.flipkart.com/uprising-dungaree-baby-girls-casual-self-design-denim-hosiery/p/itm43b9b2850837a?pid=KDRHZEPZKZY9HNBB",
+      "https://www.flipkart.com/complete-outfits-dungaree-girls-casual-solid-denim-cotton-blend/p/itm4e046ec7d3428?pid=KDRHPY3NEYJVUC5T"
     ],
     "categories": [
-      "Overalls"
+      "Overalls",
+      "Dungarees"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.3,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -55468,7 +55704,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:59:23.593449+00:00",
-    "last_seen": "2026-09-09T10:59:23.593449+00:00",
+    "last_seen": "2026-09-10T13:39:58.077292+00:00",
     "last_enriched": "2026-09-09T10:59:46.392420+00:00",
     "enriched_data": {
       "Business Name": "Drapefashion",
@@ -55569,12 +55805,14 @@
     "fulfillment_by": "NNSIFACOLLECTION",
     "product_urls": [
       "https://www.flipkart.com/stylehut-dungaree-baby-boys-girls-solid-cotton-blend/p/itm647ceee14e3db?pid=KDRHHB466GVPJKEH",
-      "https://www.flipkart.com/stylehut-dungaree-baby-boys-girls-solid-cotton-blend/p/itm647ceee14e3db?pid=KDRHHB43NHEWZDYY"
+      "https://www.flipkart.com/stylehut-dungaree-baby-boys-girls-solid-cotton-blend/p/itm647ceee14e3db?pid=KDRHHB43NHEWZDYY",
+      "https://www.flipkart.com/stylehut-dungaree-baby-boys-girls-washed-cotton-blend-denim/p/itm647ceee14e3db?pid=KDRHHB46CEVFBQES"
     ],
     "categories": [
-      "Overalls"
+      "Overalls",
+      "Dungarees"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -55588,7 +55826,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:00:10.613233+00:00",
-    "last_seen": "2026-09-09T11:00:43.539787+00:00",
+    "last_seen": "2026-09-10T13:40:44.447920+00:00",
     "last_enriched": "2026-09-09T11:00:31.465196+00:00",
     "enriched_data": {
       "Business Name": "NNSIFACOLLECTION",
@@ -55692,9 +55930,10 @@
       "https://www.flipkart.com/skgarments-dungaree-baby-boys-girls-party-printed-applique-cotton-blend/p/itm6f7b7fd670157?pid=KDRHPUZ6G89Y3DNM"
     ],
     "categories": [
-      "Overalls"
+      "Overalls",
+      "Dungarees"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -55708,7 +55947,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:00:54.841898+00:00",
-    "last_seen": "2026-09-09T11:04:28.149829+00:00",
+    "last_seen": "2026-09-10T13:29:50.083533+00:00",
     "last_enriched": "2026-09-09T11:01:14.968046+00:00",
     "enriched_data": {
       "Business Name": "CHALIMSEKH",
@@ -56164,12 +56403,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "AKIDS",
     "product_urls": [
-      "https://www.flipkart.com/pekham-fashion-dungaree-baby-boys-girls-party-printed-cotton-blend/p/itmbc490ff4261f5?pid=KDRH4DD7FY28ZD4D"
+      "https://www.flipkart.com/pekham-fashion-dungaree-baby-boys-girls-party-printed-cotton-blend/p/itmbc490ff4261f5?pid=KDRH4DD7FY28ZD4D",
+      "https://www.flipkart.com/pekham-fashion-dungaree-baby-boys-girls-party-printed-cotton-blend/p/itmbc490ff4261f5?pid=KDRH4DD7JGZXDKJM"
     ],
     "categories": [
-      "Overalls"
+      "Overalls",
+      "Dungarees"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.4,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -56183,7 +56424,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:03:08.608468+00:00",
-    "last_seen": "2026-09-09T11:03:08.608468+00:00",
+    "last_seen": "2026-09-10T13:40:55.987798+00:00",
     "last_enriched": "2026-09-09T11:03:30.889110+00:00",
     "enriched_data": {
       "Business Name": "AKIDS",
@@ -56286,9 +56527,10 @@
       "https://www.flipkart.com/stylehut-dungaree-baby-boys-girls-self-design-cotton-blend/p/itm5dc7995c10a8a?pid=KDRHKG4CZD7GMVS2"
     ],
     "categories": [
-      "Overalls"
+      "Overalls",
+      "Dungarees"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -56302,7 +56544,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:03:42.994000+00:00",
-    "last_seen": "2026-09-09T11:03:42.994000+00:00",
+    "last_seen": "2026-09-10T13:33:48.101184+00:00",
     "last_enriched": "2026-09-09T11:04:04.532794+00:00",
     "enriched_data": {
       "Business Name": "MSARDARDRESSES",
@@ -56640,12 +56882,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "QuickVibe",
     "product_urls": [
-      "https://www.flipkart.com/quickvibes-dungaree-baby-boys-girls-casual-graphic-print-cotton-blend/p/itmaa495f0574196?pid=KDRHQXQKAGWFDCVM"
+      "https://www.flipkart.com/quickvibes-dungaree-baby-boys-girls-casual-graphic-print-cotton-blend/p/itmaa495f0574196?pid=KDRHQXQKAGWFDCVM",
+      "https://www.flipkart.com/quickvibe-dungaree-baby-boys-girls-casual-graphic-print-cotton-blend/p/itm118cb05ea5486?pid=KDRHQXQVGJHGDTT4"
     ],
     "categories": [
-      "Overalls"
+      "Overalls",
+      "Dungarees"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -56659,7 +56903,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:06:09.987206+00:00",
-    "last_seen": "2026-09-09T11:06:09.987206+00:00",
+    "last_seen": "2026-09-10T13:33:36.453001+00:00",
     "last_enriched": "2026-09-09T11:06:31.747163+00:00",
     "enriched_data": {
       "Business Name": "QuickVibe",
@@ -57351,12 +57595,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Maalxmicraft",
     "product_urls": [
-      "https://www.flipkart.com/omney-tunic-palazzos-co-ords-set/p/itmfc8384032f534?pid=AZTHQSFHGUZYG5FY"
+      "https://www.flipkart.com/omney-tunic-palazzos-co-ords-set/p/itmfc8384032f534?pid=AZTHQSFHGUZYG5FY",
+      "https://www.flipkart.com/omney-tunic-palazzos-co-ords-set/p/itm485546f8d9ddd?pid=AZTHQSFHV2HVTDQH"
     ],
     "categories": [
-      "Co-ords"
+      "Co-ords",
+      "Western Wear > Co-ords"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -57370,7 +57616,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:09:51.678197+00:00",
-    "last_seen": "2026-09-09T11:09:51.678197+00:00",
+    "last_seen": "2026-09-10T19:57:48.990009+00:00",
     "last_enriched": "2026-09-09T11:10:13.954325+00:00",
     "enriched_data": {
       "Business Name": "Maalxmicraft",
@@ -58070,12 +58316,14 @@
     "product_urls": [
       "https://www.flipkart.com/janasya-top-pant-co-ords-set-jacket/p/itm94434edefb54d?pid=AZTH3U9GVM7FZWDQ",
       "https://www.flipkart.com/janasya-top-pant-co-ords-set-jacket/p/itm94434edefb54d?pid=AZTH3U9HEB7XG9KA",
-      "https://www.flipkart.com/janasya-top-pant-co-ords-set-jacket/p/itm757f929a81cd9?pid=AZTH3Z2QZMQGGSRG"
+      "https://www.flipkart.com/janasya-top-pant-co-ords-set-jacket/p/itm757f929a81cd9?pid=AZTH3Z2QZMQGGSRG",
+      "https://www.flipkart.com/janasya-top-pant-co-ords-set/p/itm8a8da8a85a13c?pid=AZTGXTYNNYW8ADCE"
     ],
     "categories": [
-      "Co-ords"
+      "Co-ords",
+      "Western Wear > Co-ords"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.2,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -58089,7 +58337,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:13:38.694606+00:00",
-    "last_seen": "2026-09-09T11:15:29.222791+00:00",
+    "last_seen": "2026-09-10T19:58:12.197726+00:00",
     "last_enriched": "2026-09-09T11:13:56.662393+00:00",
     "enriched_data": {
       "Business Name": "ThreadbucketStudioLLP",
@@ -58189,12 +58437,16 @@
     "marketplace": "flipkart",
     "fulfillment_by": "MSONLINEMART",
     "product_urls": [
-      "https://www.flipkart.com/omi-top-palazzos-co-ords-set/p/itmbb0e5f8b6af75?pid=AZTH46WPYPEHXBQV"
+      "https://www.flipkart.com/omi-top-palazzos-co-ords-set/p/itmbb0e5f8b6af75?pid=AZTH46WPYPEHXBQV",
+      "https://www.flipkart.com/tiromi-top-pant-western-set/p/itm89b4050d81ad7?pid=AZTHZY9XRHVF33BE",
+      "https://www.flipkart.com/tiromi-top-pant-western-set/p/itmd1931cdfcbcd8?pid=AZTHKXXBYGRQKYB9",
+      "https://www.flipkart.com/tiromi-top-pant-western-set/p/itma5945acdf7bbc?pid=AZTHKXXCBGHXMZFF"
     ],
     "categories": [
-      "Co-ords"
+      "Co-ords",
+      "Western Wear > Co-ords"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -58208,7 +58460,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T11:14:08.876750+00:00",
-    "last_seen": "2026-09-09T11:14:08.876750+00:00",
+    "last_seen": "2026-09-10T20:14:05.785353+00:00",
     "last_enriched": "2026-09-09T11:14:30.973578+00:00",
     "enriched_data": {
       "Business Name": "MSONLINEMART",
@@ -71992,13 +72244,16 @@
     "fulfillment_by": "ZAXIS",
     "product_urls": [
       "https://www.flipkart.com/combraided-regular-fit-men-grey-trousers/p/itm64b00e7723dde?pid=TROGZ29ZDZHCDTDH",
-      "https://www.flipkart.com/combraided-comfort-fit-men-black-trousers/p/itm873580184807d?pid=TROHJVARRZWJQH5E"
+      "https://www.flipkart.com/combraided-comfort-fit-men-black-trousers/p/itm873580184807d?pid=TROHJVARRZWJQH5E",
+      "https://www.flipkart.com/combraided-self-design-men-polo-neck-white-brown-t-shirt/p/itm5ba606220b96d?pid=TSHHMF2PYRHQRHGS",
+      "https://www.flipkart.com/combraided-self-design-men-polo-neck-white-pink-t-shirt/p/itmbaaf03dd621c0?pid=TSHHMF2PMJDRZJHD"
     ],
     "categories": [
       "Pants",
-      "Trousers"
+      "Trousers",
+      "T-Shirts & Polos > Polos"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.9,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -72012,7 +72267,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T12:41:19.605407+00:00",
-    "last_seen": "2026-09-09T14:10:00.647576+00:00",
+    "last_seen": "2026-09-10T18:45:51.464913+00:00",
     "last_enriched": "2026-09-09T12:41:46.348978+00:00",
     "enriched_data": {
       "Business Name": "ZAXIS",
@@ -74500,12 +74755,15 @@
     "marketplace": "flipkart",
     "fulfillment_by": "NISINE",
     "product_urls": [
-      "https://www.flipkart.com/zeppi-women-pyjama/p/itmdefa3bf0fb06f?pid=PYJG25WJRGVWHYNF"
+      "https://www.flipkart.com/zeppi-women-pyjama/p/itmdefa3bf0fb06f?pid=PYJG25WJRGVWHYNF",
+      "https://www.flipkart.com/dressbase-solid-women-raincoat/p/itm949407f06ff46?pid=RNCHZ5GF5TT23A7K",
+      "https://www.flipkart.com/dressbase-solid-women-raincoat/p/itmd14324986cd75?pid=RNCHZ5GFD345YHH6"
     ],
     "categories": [
-      "Sleepwear > Pyjamas"
+      "Sleepwear > Pyjamas",
+      "Rainwear > Women Raincoats"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -74519,7 +74777,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T13:01:59.383203+00:00",
-    "last_seen": "2026-09-09T13:01:59.383203+00:00",
+    "last_seen": "2026-09-11T10:27:23.174936+00:00",
     "last_enriched": "2026-09-09T13:02:27.854219+00:00",
     "enriched_data": {
       "Business Name": "NISINE",
@@ -75334,12 +75592,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "RoyalFashion8",
     "product_urls": [
-      "https://www.flipkart.com/paghdal-brothers-women-printed-conversational-white-shirt-pyjama-set/p/itmd40c1d6666d4e?pid=NSTHJZHKY3BCEFQV"
+      "https://www.flipkart.com/paghdal-brothers-women-printed-conversational-white-shirt-pyjama-set/p/itmd40c1d6666d4e?pid=NSTHJZHKY3BCEFQV",
+      "https://www.flipkart.com/paghdal-brothers-women-checkered-multicolor-shirt-pyjama-set/p/itm53e5369d5e6a9?pid=NSTHJZHKQCH9M3Q5"
     ],
     "categories": [
-      "Pyjama Sets"
+      "Pyjama Sets",
+      "Sleep & Lounge Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -75353,7 +75613,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T13:08:17.452648+00:00",
-    "last_seen": "2026-09-09T13:08:17.452648+00:00",
+    "last_seen": "2026-09-11T10:04:31.013921+00:00",
     "last_enriched": "2026-09-09T13:08:44.906815+00:00",
     "enriched_data": {
       "Business Name": "RoyalFashion8",
@@ -79872,12 +80132,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "maniaclife",
     "product_urls": [
-      "https://www.flipkart.com/maniac-men-anti-bacterial-pouch-odor-free-modal-self-design-brief/p/itm63775b47871fe?pid=BRFH95FHGQ3QKCVA"
+      "https://www.flipkart.com/maniac-men-anti-bacterial-pouch-odor-free-modal-self-design-brief/p/itm63775b47871fe?pid=BRFH95FHGQ3QKCVA",
+      "https://www.flipkart.com/maniac-men-anti-pilling-odour-free-cotton-trunk-brief/p/itm921f1181b4a1a?pid=BRFH9EGMUCJ5EW3H"
     ],
     "categories": [
-      "Briefs"
+      "Briefs",
+      "Shorts & Trunks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.2,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -79891,7 +80153,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T13:41:56.101434+00:00",
-    "last_seen": "2026-09-09T13:41:56.101434+00:00",
+    "last_seen": "2026-09-10T09:49:39.822142+00:00",
     "last_enriched": "2026-09-09T13:42:25.012796+00:00",
     "enriched_data": {
       "Business Name": "maniaclife",
@@ -81780,12 +82042,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "Aestheticapparels",
     "product_urls": [
-      "https://www.flipkart.com/asthetic-single-breasted-self-design-men-suit/p/itmcb5c2493ac1fd?pid=SUIHQXRGZYZPFGCF"
+      "https://www.flipkart.com/asthetic-single-breasted-self-design-men-suit/p/itmcb5c2493ac1fd?pid=SUIHQXRGZYZPFGCF",
+      "https://www.flipkart.com/asthetic-mandarin-solid-men-suit/p/itm962b387bf4a17?pid=SUIHPYU2D7ZWHCFY"
     ],
     "categories": [
-      "Suits & Blazers > Suits"
+      "Suits & Blazers > Suits",
+      "Formal Suit Fabrics"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -81799,7 +82063,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T13:54:10.781337+00:00",
-    "last_seen": "2026-09-09T13:54:10.781337+00:00",
+    "last_seen": "2026-09-11T00:14:09.519032+00:00",
     "last_enriched": "2026-09-09T13:54:40.321648+00:00",
     "enriched_data": {
       "Business Name": "Aestheticapparels",
@@ -83921,12 +84185,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "RKKCOLLECTIONS",
     "product_urls": [
-      "https://www.flipkart.com/metronaut-women-fit-flare-blue-midi-calf-length-dress/p/itm5c388be14f5d8?pid=DREHZDPHGWG9T7NQ"
+      "https://www.flipkart.com/metronaut-women-fit-flare-blue-midi-calf-length-dress/p/itm5c388be14f5d8?pid=DREHZDPHGWG9T7NQ",
+      "https://www.flipkart.com/metronaut-women-fit-flare-black-midi-calf-length-dress/p/itm76c78c47d3732?pid=DREHZDPHBUR9WHGR"
     ],
     "categories": [
-      "One Pieces"
+      "One Pieces",
+      "Western Wear"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.5,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -83940,7 +84206,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T14:14:58.374523+00:00",
-    "last_seen": "2026-09-09T14:14:58.374523+00:00",
+    "last_seen": "2026-09-11T09:00:28.714096+00:00",
     "last_enriched": "2026-09-09T14:15:28.520682+00:00",
     "enriched_data": {
       "Business Name": "RKKCOLLECTIONS",
@@ -84041,12 +84307,13 @@
     "product_urls": [
       "https://www.flipkart.com/tuhiraaj-women-a-line-black-white-midi-calf-length-dress/p/itmac0968b127608?pid=DREHQHYNQFQNNGXY",
       "https://www.flipkart.com/tuhiraaj-women-a-line-blue-white-midi-calf-length-dress/p/itm557eb77a49273?pid=DREHQHYN4CADHNPU",
-      "https://www.flipkart.com/tuhiraaj-women-a-line-pink-white-midi-calf-length-dress/p/itm9027968b69fd4?pid=DREHQHYM492JTEUJ"
+      "https://www.flipkart.com/tuhiraaj-women-a-line-pink-white-midi-calf-length-dress/p/itm9027968b69fd4?pid=DREHQHYM492JTEUJ",
+      "https://www.flipkart.com/tuhiraaj-women-a-line-orange-white-midi-calf-length-dress/p/itmd3f357fac4ede?pid=DREHQHYMMUMGGEYX"
     ],
     "categories": [
       "One Pieces"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": null,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -84060,7 +84327,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T14:15:41.356929+00:00",
-    "last_seen": "2026-09-09T14:20:50.053746+00:00",
+    "last_seen": "2026-09-10T09:19:59.663361+00:00",
     "last_enriched": "2026-09-09T14:16:09.104119+00:00",
     "enriched_data": {
       "Business Name": "ROYALBINDIATTIRE",
@@ -84403,7 +84670,7 @@
     "categories": [
       "One Pieces"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.1,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -84417,7 +84684,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T14:18:21.189565+00:00",
-    "last_seen": "2026-09-09T14:18:21.189565+00:00",
+    "last_seen": "2026-09-10T09:23:55.753501+00:00",
     "last_enriched": "2026-09-09T14:18:48.559162+00:00",
     "enriched_data": {
       "Business Name": "RESHMACREATION2",
