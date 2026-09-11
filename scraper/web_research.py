@@ -2124,18 +2124,28 @@ def evaluate_result_candidate(
                 valid_candidate_val = valid_f
                 candidate_validity_score = 100
     elif field_norm == "owner":
+        # Match pattern: "director: Aman Gupta" or "founder Aman Gupta"
         owner_m = re.search(
-            r"(?i)(?:owner|founder|director|proprietor|promoter|partner|managing\s+director)[:\-\s]+([A-Z][a-zA-Z\s]{2,40})",
+            r"(?i)(?:owner|founder|director|proprietor|promoter|partner|managing\s+director)\s*(?:is|was|:|-)?\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})",
             text,
         )
+        if not owner_m:
+            # Reverse pattern: "Aman Gupta, Co-Founder"
+            owner_m = re.search(
+                r"\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,3})\s*,\s*(?:co-founder|founder|director|owner|proprietor|ceo|promoter|partner)\b",
+                text,
+                re.IGNORECASE,
+            )
         if owner_m:
             raw_candidate = owner_m.group(1).strip()
+            # Clean common title prefix junk
+            raw_candidate = re.sub(r"(?i)^(?:and|the|mr|mrs|ms|dr|chief|officer|executive|marketing|director|founder|co-founder)\s+", "", raw_candidate).strip()
             if len(raw_candidate) >= 3 and not any(
                 w in raw_candidate.lower()
-                for w in ["flipkart", "amazon", "contact", "service", "policy", "terms"]
+                for w in ["flipkart", "amazon", "contact", "service", "policy", "terms", "company", "limited", "pvt", "ltd", "india"]
             ):
                 valid_candidate_val = raw_candidate
-                candidate_validity_score = 80
+                candidate_validity_score = 85
     elif field_norm == "phone":
         ph_matches = PHONE_REGEX.findall(text)
         for ph in ph_matches:
@@ -4154,6 +4164,14 @@ class WebResearchEngine:
                             logger.info(f"\n[PAN VALIDATION]\ngstin={valid_g}\npan=NONE\nvalid=false")
                 logger.info(f"\n[PAN NOT FOUND]\nreason=verified GSTIN unavailable")
                 continue
+
+            # Skip FSSAI search for non-food categories (saves search quotas and prevents 429 rate limits)
+            if field_attr == "fssai_number":
+                cat_lower = str(merged.get("business_category") or merged.get("category") or "").lower()
+                is_food_related = any(kw in cat_lower for kw in ["food", "grocery", "snack", "sweet", "beverage", "tea", "coffee", "spice", "supplement", "oil", "ghee", "grain", "organic", "nut", "dry fruit", "ayurveda", "chocolate", "pickle"])
+                if not is_food_related and not merged.get("fssai_number"):
+                    logger.debug(f"[FSSAI SKIPPED] Non-food category: {cat_lower or 'N/A'}")
+                    continue
 
             # If already confidently filled, skip
             if merged.get(field_attr):
