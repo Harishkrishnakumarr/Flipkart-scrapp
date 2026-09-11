@@ -2278,6 +2278,111 @@ def evaluate_result_candidate(
     }
 
 
+
+# Fields used to decide whether an in-memory seller result is sufficiently enriched.
+# FSSAI is deliberately optional because it is not applicable to non-food sellers.
+ENRICHMENT_CACHE_FIELDS: Tuple[str, ...] = (
+    "website_url",
+    "owner_name",
+    "contact_number",
+    "email",
+    "gst_number",
+    "pan_number",
+    "raw_address",
+    "city",
+    "state",
+    "pincode",
+)
+
+def _field_value_is_valid(field: str, value: Any) -> bool:
+    """Return True only for a usable normalized enrichment value."""
+    if value is None:
+        return False
+    value = str(value).strip()
+    if not value:
+        return False
+
+    try:
+        if field == "gst_number":
+            return bool(validate_gst(value))
+        if field == "pan_number":
+            return bool(validate_pan(value))
+        if field == "fssai_number":
+            return bool(validate_fssai(value))
+        if field == "contact_number":
+            if any(value.startswith(p) for p in MARKETPLACE_GENERIC_PHONE_PREFIXES):
+                return False
+            return bool(validate_phone(value))
+        if field == "email":
+            domain = value.split("@")[-1].lower()
+            return bool(validate_email(value)) and domain not in MARKETPLACE_EMAIL_DOMAINS
+        if field == "pincode":
+            return bool(validate_pincode(value))
+        if field == "website_url":
+            parsed = urllib.parse.urlparse(value if "://" in value else f"https://{value}")
+            domain = parsed.netloc.lower().split(":")[0].removeprefix("www.")
+            return bool(domain) and not any(
+                domain == excluded or domain.endswith(f".{excluded}")
+                for excluded in EXCLUDED_WEBSITE_DOMAINS
+            )
+    except Exception:
+        return False
+
+    # Address/location/owner fields need a non-trivial value; detailed validation is
+    # performed later by the existing seller association/address parser.
+    if field == "raw_address":
+        return len(value) >= 10
+    if field in {"city", "state", "owner_name"}:
+        return len(value) >= 2
+
+    return True
+
+
+def _cache_field_value(record: Dict[str, Any], field: str) -> Any:
+    """Read a field from either internal or Excel-style output keys."""
+    aliases = {
+        "website_url": ("website_url", "Website URL"),
+        "owner_name": ("owner_name", "Owner Name"),
+        "contact_number": ("contact_number", "Phone Number"),
+        "email": ("email", "Email Address"),
+        "gst_number": ("gst_number", "GST Number"),
+        "pan_number": ("pan_number", "PAN Number"),
+        "fssai_number": ("fssai_number", "FSSAI Number"),
+        "raw_address": ("raw_address", "billing_address", "Billing Address"),
+        "city": ("city", "City"),
+        "state": ("state", "State"),
+        "pincode": ("pincode", "Pincode"),
+    }
+    for key in aliases.get(field, (field,)):
+        value = record.get(key)
+        if value not in (None, ""):
+            return value
+    return None
+
+
+def _count_enrichment_fields(record: Dict[str, Any]) -> int:
+    """Count valid core enrichment fields present in a cached/final record."""
+    return sum(
+        1 for field in ENRICHMENT_CACHE_FIELDS
+        if _field_value_is_valid(field, _cache_field_value(record, field))
+    )
+
+
+def _is_enrichment_cache_usable(record: Dict[str, Any]) -> bool:
+    """Reject partial cache entries so later products trigger full enrichment."""
+    seller = record.get("seller_name") or record.get("Business Name")
+    if not seller:
+        return False
+
+    status = str(record.get("status") or record.get("Status") or "").upper()
+    # A verified/complete record is safe to reuse. Otherwise require a meaningful
+    # number of independently useful fields rather than accepting a mostly-empty row.
+    if status in {"VERIFIED", "COMPLETE"}:
+        return True
+
+    return _count_enrichment_fields(record) >= 6
+
+
 class WebResearchEngine:
     """Performs field-driven fallback multi-engine searches (Google -> Bing -> Brave) and deep enrichment for marketplace sellers."""
 
@@ -3963,14 +4068,31 @@ class WebResearchEngine:
         seller_confidence = seller_record.get("seller_confidence", 0.95)
 
         # In-Memory Cache Check
+        # IMPORTANT: never short-circuit enrichment with a partial record. A seller can
+        # appear on many products, so the first weak/partial lookup must not poison all
+        # subsequent products for the lifetime of this engine instance.
         cache_key = f"{marketplace}::{seller_name.lower()}"
-        if cache_key in self.seller_enrichment_cache:
-            logger.info(f"Reusing cached enrichment data for seller: '{seller_name}'")
-            cached_res = dict(self.seller_enrichment_cache[cache_key])
-            cached_res["product_url"] = product_url
-            cached_res["star_rating"] = star_rating or cached_res.get("star_rating")
-            cached_res["product_rating"] = product_rating or cached_res.get("product_rating")
-            return cached_res
+        cached_res = self.seller_enrichment_cache.get(cache_key)
+        if cached_res:
+            cached_res = dict(cached_res)
+            if _is_enrichment_cache_usable(cached_res):
+                logger.info(
+                    f"[CACHE HIT] seller={seller_name} status={cached_res.get('status') or cached_res.get('Status')} "
+                    f"filled={_count_enrichment_fields(cached_res)}"
+                )
+                cached_res["product_url"] = product_url
+                cached_res["star_rating"] = star_rating or cached_res.get("star_rating")
+                cached_res["product_rating"] = product_rating or cached_res.get("product_rating")
+                return cached_res
+
+            logger.info(
+                f"[CACHE INCOMPLETE - REFRESHING] seller={seller_name} "
+                f"filled={_count_enrichment_fields(cached_res)} "
+                f"status={cached_res.get('status') or cached_res.get('Status') or 'UNKNOWN'}"
+            )
+            # Remove the poisoned partial result so the complete enrichment waterfall
+            # below is executed again.
+            self.seller_enrichment_cache.pop(cache_key, None)
 
         logger.info(f"Starting production search enrichment for: '{seller_name}'")
 
@@ -4001,24 +4123,76 @@ class WebResearchEngine:
             "state": state,
         }
 
-        # Mark pre-existing fields from Flipkart profile with highest priority
+        # Mark only usable pre-existing marketplace values. Invalid placeholders must
+        # not acquire marketplace priority and block later enrichment.
         for k, v in merged.items():
-            if v:
+            if v and _field_value_is_valid(k, v):
                 field_sources[k] = "marketplace_profile"
                 sources_used.add("marketplace_profile")
 
-        # Helper to update field respecting source priority hierarchy
+        # Helper to merge values without allowing weak/invalid candidates to poison
+        # stronger data. Same-priority candidates may replace a lower-quality value
+        # only when the new candidate is materially more useful.
         def _set_field(field: str, val: Any, src: str, src_url: Optional[str] = None) -> None:
-            if not val:
+            if val is None or str(val).strip() == "":
                 return
+
+            # Normalize/validate known structured fields before merging.
+            normalized_val = val
+            if field == "gst_number":
+                normalized_val = validate_gst(str(val))
+            elif field == "pan_number":
+                normalized_val = validate_pan(str(val))
+            elif field == "fssai_number":
+                normalized_val = validate_fssai(str(val))
+            elif field == "contact_number":
+                normalized_val = validate_phone(str(val))
+                if normalized_val and (
+                    any(normalized_val.startswith(p) for p in MARKETPLACE_GENERIC_PHONE_PREFIXES)
+                    or normalized_val in MARKETPLACE_GENERIC_PHONES
+                ):
+                    normalized_val = None
+            elif field == "email":
+                normalized_val = validate_email(str(val))
+                if normalized_val and normalized_val.split("@")[-1].lower() in MARKETPLACE_EMAIL_DOMAINS:
+                    normalized_val = None
+            elif field == "pincode":
+                normalized_val = validate_pincode(str(val))
+
+            if not normalized_val:
+                logger.debug(
+                    f"[FIELD REJECTED] field={field} value={val!r} source={src} reason=invalid_or_empty"
+                )
+                return
+
             curr_val = merged.get(field)
             curr_src = field_sources.get(field, "not_found")
-            if not curr_val or SOURCE_PRIORITY.get(src, 1) > SOURCE_PRIORITY.get(curr_src, 1):
-                merged[field] = val
+            current_valid = _field_value_is_valid(field, curr_val)
+            new_priority = SOURCE_PRIORITY.get(src, 1)
+            current_priority = SOURCE_PRIORITY.get(curr_src, 0)
+
+            replace = (
+                not current_valid
+                or new_priority > current_priority
+                or (
+                    new_priority == current_priority
+                    and len(str(normalized_val).strip()) > len(str(curr_val or "").strip())
+                )
+            )
+
+            if replace:
+                merged[field] = normalized_val
                 field_sources[field] = src
                 if src_url:
                     field_source_urls[field] = src_url
                 sources_used.add(src)
+                logger.info(
+                    f"[FIELD MERGED] field={field} value={normalized_val!r} "
+                    f"source={src} previous_source={curr_src}"
+                )
+            elif src_url and field not in field_source_urls:
+                # Preserve provenance even when the current stronger value wins.
+                field_source_urls[field] = src_url
 
         # Auto-derive PAN, State, and Business Model from GSTIN if present initially
         if merged.get("gst_number"):
@@ -4090,44 +4264,96 @@ class WebResearchEngine:
                     if candidate_urls:
                         break
 
-        # Step 2: Scrape Official Website if found
+        # Step 2: Scrape official website(s) and MERGE all discovered fields.
+        # Do not stop after the first page/site that happens to contain one field:
+        # owner/PAN/FSSAI/contact/address often live on different pages or domains.
         primary_website_url = merged.get("website_url")
-        if candidate_urls and not primary_website_url:
-            for candidate_url in candidate_urls[:2]:
-                logger.info(f"Inspecting candidate website: {candidate_url}")
+        if primary_website_url and not candidate_urls:
+            candidate_urls = [primary_website_url]
+
+        inspected_websites: Set[str] = set()
+        for candidate_url in candidate_urls[:3]:
+            if not candidate_url or candidate_url in inspected_websites:
+                continue
+            inspected_websites.add(candidate_url)
+
+            logger.info(f"Inspecting candidate website: {candidate_url}")
+            try:
                 c_data = await self.website_parser.inspect_website(candidate_url)
-                if any(c_data.get(k) for k in ["gst_number", "email", "contact_number", "address", "owner_name"]):
-                    primary_website_url = candidate_url
-                    _set_field("website_url", candidate_url, "company_website", src_url=candidate_url)
-                    _set_field("gst_number", c_data.get("gst_number"), "company_website", src_url=candidate_url)
-                    _set_field("pan_number", c_data.get("pan_number"), "company_website", src_url=candidate_url)
-                    _set_field("fssai_number", c_data.get("fssai_number"), "company_website", src_url=candidate_url)
-                    _set_field("contact_number", c_data.get("contact_number"), "company_website", src_url=candidate_url)
-                    _set_field("email", c_data.get("email"), "company_website", src_url=candidate_url)
-                    _set_field("owner_name", c_data.get("owner_name"), "company_website", src_url=candidate_url)
-                    if c_data.get("gst_number"):
-                        derived_gst = derive_from_gstin(c_data["gst_number"])
-                        if derived_gst.get("pan_number") and not merged.get("pan_number"):
-                            _set_field("pan_number", derived_gst["pan_number"], "filing_registry", src_url="Derived from verified GSTIN")
-                        if derived_gst.get("state") and not merged.get("state"):
-                            _set_field("state", derived_gst["state"], "filing_registry", src_url="Derived from GST State Code")
-                            state = derived_gst["state"]
-                    if c_data.get("address"):
-                        c_addr = normalize_address_text(c_data["address"])
-                        matched, score, reason = match_address_to_seller(
-                            seller_name=seller_name,
-                            address_text=c_addr,
-                            url=candidate_url,
-                            snippet=str(c_data),
-                            city=city,
-                            state=state,
-                            location=location,
-                            pincode=pincode,
-                            gst_number=merged.get("gst_number"),
-                        )
-                        if matched:
-                            _set_field("raw_address", c_addr, "company_website", src_url=candidate_url)
-                    break
+            except Exception as exc:
+                logger.warning(f"[WEBSITE INSPECT ERROR] url={candidate_url} error={exc}")
+                continue
+
+            # Any usable company website candidate is retained, even if this specific
+            # page does not contain credentials.
+            _set_field("website_url", candidate_url, "company_website", src_url=candidate_url)
+
+            for website_field in (
+                "gst_number",
+                "pan_number",
+                "fssai_number",
+                "contact_number",
+                "email",
+                "owner_name",
+            ):
+                _set_field(
+                    website_field,
+                    c_data.get(website_field),
+                    "company_website",
+                    src_url=candidate_url,
+                )
+
+            website_gst = validate_gst(str(c_data.get("gst_number") or ""))
+            if website_gst:
+                derived_gst = derive_from_gstin(website_gst)
+                if derived_gst.get("pan_number"):
+                    _set_field(
+                        "pan_number",
+                        derived_gst["pan_number"],
+                        "filing_registry",
+                        src_url="Derived from verified GSTIN",
+                    )
+                if derived_gst.get("state"):
+                    _set_field(
+                        "state",
+                        derived_gst["state"],
+                        "filing_registry",
+                        src_url="Derived from GST State Code",
+                    )
+                    state = derived_gst["state"]
+
+            if c_data.get("address"):
+                c_addr = normalize_address_text(str(c_data["address"]))
+                matched, score, reason = match_address_to_seller(
+                    seller_name=seller_name,
+                    address_text=c_addr,
+                    url=candidate_url,
+                    snippet=str(c_data),
+                    city=city,
+                    state=state,
+                    location=location,
+                    pincode=pincode,
+                    gst_number=merged.get("gst_number"),
+                )
+                if matched:
+                    _set_field("raw_address", c_addr, "company_website", src_url=candidate_url)
+                    parsed_web_addr = parse_raw_address(
+                        c_addr, gst_number=merged.get("gst_number")
+                    )
+                    for addr_field in ("city", "state", "pincode"):
+                        if parsed_web_addr.get(addr_field):
+                            _set_field(
+                                addr_field,
+                                parsed_web_addr[addr_field],
+                                "company_website",
+                                src_url=candidate_url,
+                            )
+            else:
+                logger.debug(f"[WEBSITE NO ADDRESS] url={candidate_url}")
+
+            # Keep inspecting other candidates so fields from a second official
+            # presence can fill gaps left by the first.
+            primary_website_url = primary_website_url or candidate_url
 
         # Step 3: Targeted Search for missing fields using Identity Queries
         fields_to_search = [
@@ -4173,8 +4399,9 @@ class WebResearchEngine:
                     logger.debug(f"[FSSAI SKIPPED] Non-food category: {cat_lower or 'N/A'}")
                     continue
 
-            # If already confidently filled, skip
-            if merged.get(field_attr):
+            # Skip only when the existing value is actually valid. Invalid or
+            # placeholder marketplace values must still be enriched.
+            if _field_value_is_valid(field_attr, merged.get(field_attr)):
                 continue
 
             # Dedicated GST Enrichment flow
@@ -4272,8 +4499,19 @@ class WebResearchEngine:
                     )
                     if pin_val:
                         _set_field("pincode", pin_val, "targeted_search", src_url=pin_src)
-                        if merged.get("raw_address") and pin_val not in str(merged["raw_address"]):
-                            merged["raw_address"] = f"{merged['raw_address']}, {pin_val}"
+                        if (
+                            merged.get("raw_address")
+                            and _field_value_is_valid("raw_address", merged.get("raw_address"))
+                            and pin_val not in str(merged["raw_address"])
+                        ):
+                            # Keep the validated address and append only a missing
+                            # postal code; do not bypass source/provenance tracking.
+                            _set_field(
+                                "raw_address",
+                                f"{merged['raw_address']}, {pin_val}",
+                                field_sources.get("raw_address", "targeted_search"),
+                                src_url=field_source_urls.get("raw_address") or pin_src,
+                            )
                 continue
 
             # Phase A: Bing queries
@@ -4527,8 +4765,30 @@ class WebResearchEngine:
             "seller_confidence": seller_confidence,
         }
 
-        # Cache in memory
-        self.seller_enrichment_cache[cache_key] = final_record
+        # Cache only sufficiently enriched results. Partial rows are intentionally
+        # not cached because they otherwise become a permanent short-circuit for
+        # duplicate products using the same seller.
+        if _is_enrichment_cache_usable(final_record):
+            self.seller_enrichment_cache[cache_key] = dict(final_record)
+            logger.info(
+                f"[ENRICHMENT CACHE STORED] seller={seller_name} "
+                f"filled={_count_enrichment_fields(final_record)} status={status}"
+            )
+        else:
+            logger.info(
+                f"[ENRICHMENT CACHE SKIPPED] seller={seller_name} "
+                f"filled={_count_enrichment_fields(final_record)} status={status}"
+            )
+
+        logger.info(
+            f"[ENRICHMENT COMPLETE] seller={seller_name} "
+            f"filled={_count_enrichment_fields(final_record)} "
+            f"website={'YES' if final_record.get('website_url') else 'NO'} "
+            f"gst={'YES' if final_record.get('gst_number') else 'NO'} "
+            f"phone={'YES' if final_record.get('contact_number') else 'NO'} "
+            f"email={'YES' if final_record.get('email') else 'NO'} "
+            f"address={'YES' if final_record.get('billing_address') else 'NO'}"
+        )
         return final_record
 
     async def research_seller(
