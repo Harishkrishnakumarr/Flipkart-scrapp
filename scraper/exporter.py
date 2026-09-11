@@ -68,13 +68,13 @@ EXCEL_FIELD_MAPPING: Dict[str, List[str]] = {
     "Pincode":          ["Pincode", "pincode", "postal_code", "zip"],
     "Country":          ["Country", "country"],
     "Website URL":      ["Website URL", "website_url", "website", "official_website"],
-    # Verification status pill
-    "Status Source":    ["Status Source", "Status", "status", "verification_status"],
-    "Status":           ["Status", "Status Source", "status", "verification_status"],
-    # Seller rating & product rating
-    "Rating":           ["Rating", "Source rating", "source_rating", "star_rating", "seller_rating"],
-    "Seller Rating":    ["Seller Rating", "seller_rating", "star_rating", "Rating", "Source rating"],
     "Product Rating":   ["Product Rating", "product_rating", "aggregatedRating", "ratingValue"],
+    "Seller Rating":    ["Seller Rating", "seller_rating", "star_rating", "Rating", "Source rating"],
+    "Status":           ["Status", "Status Source", "status", "verification_status"],
+    "Source":           ["Source", "source", "seller_source_type", "seller_source", "sources"],
+    # Backward compatibility
+    "Status Source":    ["Status", "Status Source", "status", "verification_status"],
+    "Rating":           ["Seller Rating", "Rating", "Source rating", "source_rating", "star_rating", "seller_rating"],
 }
 
 
@@ -93,6 +93,8 @@ def _extract_column_value(col_name: str, seller_data: Dict[str, Any]) -> Any:
     for k in candidate_keys:
         if k in seller_data and seller_data[k] is not None:
             val = seller_data[k]
+            if isinstance(val, list):
+                val = ", ".join(str(item) for item in val if item)
             if str(val).strip() not in ("", "NOT FOUND", "N/A"):
                 return val
 
@@ -101,13 +103,20 @@ def _extract_column_value(col_name: str, seller_data: Dict[str, Any]) -> Any:
         return "India"
     if col_name in ("Rating", "Seller Rating"):
         return (
-            seller_data.get("star_rating")
-            or seller_data.get("seller_rating")
+            seller_data.get("seller_rating")
+            or seller_data.get("star_rating")
             or seller_data.get("source_rating")
             or seller_data.get("Rating")
         )
     if col_name == "Product Rating":
         return seller_data.get("product_rating")
+    if col_name in ("Status", "Status Source"):
+        return seller_data.get("status") or seller_data.get("Status") or "ENRICHMENT_PENDING"
+    if col_name == "Source":
+        src = seller_data.get("source") or seller_data.get("seller_source_type") or seller_data.get("seller_source")
+        if isinstance(src, list):
+            return ", ".join(str(s) for s in src if s)
+        return src
     return None
 
 
@@ -347,15 +356,18 @@ class LiveExcelManager:
                 "PAN Number",
                 "FSSAI Number",
                 "Pincode",
+                "Product Rating",
+                "Seller Rating",
                 "Rating",
+                "Status",
                 "Status Source",
             ]:
                 cell.alignment = Alignment(horizontal="center", vertical="center")
             else:
                 cell.alignment = Alignment(horizontal="left", vertical="center")
 
-            # Status Source cell special highlight (keyed by value, not column name)
-            if col_name == "Status Source":
+            # Status cell special highlight (keyed by value)
+            if col_name in ("Status", "Status Source"):
                 status_str = str(val).strip() if val else ""
                 if status_str in STATUS_STYLES:
                     cell.fill = STATUS_STYLES[status_str]["fill"]
@@ -421,18 +433,18 @@ class LiveExcelManager:
                         f"Business Name mismatch at row {target_sheet_row}: expected '{expected_seller}', found '{saved_seller}'",
                     )
 
-            # 2. Verify Status Source
+            # 2. Verify Status
             expected_status = (
-                expected_data.get("Status Source")
-                or expected_data.get("Status")
+                expected_data.get("Status")
+                or expected_data.get("Status Source")
                 or expected_data.get("status")
             )
             if expected_status:
-                saved_status = str(saved_values.get("Status Source") or "").strip()
+                saved_status = str(saved_values.get("Status") or saved_values.get("Status Source") or "").strip()
                 if saved_status != str(expected_status).strip():
                     return (
                         False,
-                        f"Status Source mismatch at row {target_sheet_row}: expected '{expected_status}', found '{saved_status}'",
+                        f"Status mismatch at row {target_sheet_row}: expected '{expected_status}', found '{saved_status}'",
                     )
 
             # 3. Verify key credentials if provided

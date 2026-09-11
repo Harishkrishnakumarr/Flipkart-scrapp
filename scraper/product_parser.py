@@ -25,21 +25,198 @@ import json
 import logging
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from bs4 import BeautifulSoup, Tag
 
-from scraper.config import DEBUG_DIR
-from scraper.address_parser import parse_raw_address
+from scraper.config import DEBUG_DIR, GST_STATE_CODES, INDIAN_STATES
+from scraper.address_parser import (
+    extract_city_from_text,
+    match_state_from_text,
+    parse_raw_address,
+)
 from scraper.validator import (
     EMAIL_REGEX,
     GST_REGEX,
     PHONE_REGEX,
+    PINCODE_REGEX,
     validate_email,
     validate_gst,
     validate_phone,
 )
 
 logger = logging.getLogger("FlipkartScraper.ProductParser")
+
+GSTIN_REGEX = re.compile(r'\b([0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1})\b')
+
+
+def parse_address_fields(raw_address: str, gst_number: Optional[str] = None) -> Dict[str, Optional[str]]:
+    """Splits raw Indian address strings into Billing Address, City, State, and Pincode."""
+    if not raw_address:
+        return {"billing_address": None, "city": None, "state": None, "pincode": None}
+
+    clean_addr = " ".join(raw_address.split())
+    parsed = parse_raw_address(clean_addr, gst_number=gst_number)
+
+    pincode = parsed.get("pincode")
+    if not pincode:
+        pin_match = PINCODE_REGEX.search(clean_addr)
+        pincode = pin_match.group(1) if pin_match else None
+
+    # Detect state
+    detected_state = parsed.get("state")
+    if not detected_state:
+        detected_state = match_state_from_text(clean_addr)
+    if not detected_state and gst_number and len(gst_number) >= 2:
+        st_code = gst_number[:2]
+        detected_state = GST_STATE_CODES.get(st_code)
+
+    # Extract City
+    city = parsed.get("city")
+    if not city:
+        city = extract_city_from_text(clean_addr)
+    if not city:
+        candidate = clean_addr.split(",")[-2].strip() if "," in clean_addr else ""
+        candidate = re.sub(r'\b\d{6}\b', '', candidate).strip()
+        if candidate and len(candidate) < 35:
+            city = candidate
+    if city and city.isupper():
+        city = city.title()
+
+    return {
+        "billing_address": clean_addr,
+        "city": city,
+        "state": detected_state,
+        "pincode": pincode
+    }
+
+
+def _find_key_in_dict(obj: Any, target_key: str) -> List[Any]:
+    """Recursively search for values associated with target_key in nested dict/list."""
+    results = []
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k.lower() == target_key.lower() and v:
+                results.append(v)
+            if isinstance(v, (dict, list)):
+                results.extend(_find_key_in_dict(v, target_key))
+    elif isinstance(obj, list):
+        for item in obj:
+            if isinstance(item, (dict, list)):
+                results.extend(_find_key_in_dict(item, target_key))
+    return results
+
+
+def extract_seller_and_ratings(soup: Union[BeautifulSoup, str], page_html: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Extracts native Flipkart seller info, GSTIN, ratings, and addresses
+    using window.__INITIAL_STATE__ and scoped DOM elements.
+    """
+    if isinstance(soup, str):
+        raw_html = soup
+        soup = BeautifulSoup(raw_html, "lxml")
+        if not page_html or page_html.startswith("http"):
+            page_html = raw_html
+    elif page_html is None:
+        page_html = str(soup)
+
+    details: Dict[str, Any] = {
+        "seller_name": None,
+        "legal_name": None,
+        "gst_number": None,
+        "billing_address": None,
+        "city": None,
+        "state": None,
+        "pincode": None,
+        "product_rating": None,
+        "seller_rating": None,
+        "is_f_assured": False
+    }
+
+    # 1. State JSON Inspection
+    state_match = re.search(r'window\.__INITIAL_STATE__\s*=\s*({.+?});</script>', page_html, re.DOTALL)
+    if not state_match:
+        state_match = re.search(r'window\.__INITIAL_STATE__\s*=\s*({.+?})[\s;]*<', page_html, re.DOTALL)
+    if not state_match:
+        state_match = re.search(r'window\.__PRELOADED_STATE__\s*=\s*({.+?})[\s;]*<', page_html, re.DOTALL)
+    if not state_match:
+        state_match = re.search(r'window\.__PAGE_DATA__\s*=\s*({.+?})[\s;]*<', page_html, re.DOTALL)
+
+    if state_match:
+        try:
+            state_data = json.loads(state_match.group(1))
+
+            # Direct check for sellerInfo or seller dicts
+            seller_infos = _find_key_in_dict(state_data, "sellerInfo") + _find_key_in_dict(state_data, "seller")
+            for s_info in seller_infos:
+                if isinstance(s_info, dict):
+                    details["seller_name"] = s_info.get("sellerName") or s_info.get("name") or details["seller_name"]
+                    details["legal_name"] = s_info.get("legalName") or s_info.get("legal_name") or details["legal_name"]
+                    details["gst_number"] = s_info.get("gstin") or s_info.get("gstNumber") or details["gst_number"]
+                    addr = s_info.get("address") or s_info.get("billingAddress") or s_info.get("registeredAddress")
+                    if addr and isinstance(addr, str):
+                        details["billing_address"] = addr
+                    s_rat = s_info.get("sellerRating") or s_info.get("rating")
+                    if s_rat and details["seller_rating"] is None:
+                        try:
+                            details["seller_rating"] = float(s_rat)
+                        except (ValueError, TypeError):
+                            pass
+
+            # Also check text values in renderable components
+            text_values = _find_key_in_dict(state_data, "text")
+            for val_text in text_values:
+                if isinstance(val_text, str):
+                    gst_m = GSTIN_REGEX.search(val_text)
+                    if gst_m and not details["gst_number"]:
+                        details["gst_number"] = gst_m.group(1)
+                    if any(w in val_text.lower() for w in ["address", "office", "pincode"]) and not details["billing_address"]:
+                        details["billing_address"] = val_text
+        except Exception:
+            pass
+
+    # 2. Scoped DOM Extraction for Seller Name & Rating
+    seller_card = soup.select_one("#sellerName, div._1RLviY, div.V3C51r, div[data-testid='seller-badge']")
+    if seller_card:
+        if not details["seller_name"]:
+            name_tag = seller_card.select_one("span, a") or seller_card
+            details["seller_name"] = name_tag.get_text(strip=True)
+
+        if not details["seller_rating"]:
+            # Only match the badge inside the seller card
+            badge = seller_card.select_one("div.XQDdHH, div._3LWZlK, div._1lRcqv, div._1RLviY, div.V3C51r, span._1lRcqv, div._1D-8DK")
+            if badge:
+                m = re.search(r"(\d+(?:\.\d+)?)", badge.get_text(strip=True))
+                if m:
+                    details["seller_rating"] = float(m.group(1))
+            else:
+                m = re.search(r"(\d+(?:\.\d+)?)", seller_card.get_text(strip=True))
+                if m:
+                    details["seller_rating"] = float(m.group(1))
+
+    # 3. Product Rating (Avoid matching the seller badge)
+    if not details["product_rating"]:
+        for prod_sel in ["div.XQDdHH", "div._3LWZlK", "div._2d4LTz"]:
+            badge = soup.select_one(prod_sel)
+            if badge:
+                if seller_card and badge in seller_card.descendants:
+                    continue
+                m = re.search(r"(\d+(?:\.\d+)?)", badge.get_text(strip=True))
+                if m:
+                    details["product_rating"] = float(m.group(1))
+                    break
+
+    # 4. F-Assured Fulfillment Badge
+    if soup.select_one("img[src*='fa_'], span[data-testid='f-assured'], img[alt*='Plus'], img[src*='plus']"):
+        details["is_f_assured"] = True
+
+    # 5. Normalize Address
+    if details.get("billing_address"):
+        addr_parts = parse_address_fields(details["billing_address"], gst_number=details.get("gst_number"))
+        for k, v in addr_parts.items():
+            if v and not details.get(k):
+                details[k] = v
+
+    return details
 
 # Hard list of invalid seller names / Flipkart UI labels & CTAs
 INVALID_SELLER_NAMES = {
@@ -1236,12 +1413,17 @@ def parse_product_page(
 
     soup = BeautifulSoup(html_content, "lxml")
 
+    # Native Flipkart extraction (State JSON + Scoped DOM elements)
+    native_data = extract_seller_and_ratings(soup, html_content)
+
     # Step 1: Extract Fulfillment Entity separately
     fulfilled_by_seller = extract_fulfillment_seller(soup, html_content)
-    is_f_assured = extract_is_f_assured(soup, html_content)
+    is_f_assured = native_data.get("is_f_assured") or extract_is_f_assured(soup, html_content)
 
     # Step 2: Extract Product Rating details separately (from Ratings & Reviews / JSON-LD / DOM)
     product_rating, product_rating_count, product_review_count = extract_product_rating_details(soup, html_content)
+    if native_data.get("product_rating") is not None:
+        product_rating = native_data["product_rating"]
 
     # Step 3: Extract and score all valid seller candidates
     candidates = find_seller_candidates_with_scores(soup, html_content)
@@ -1253,29 +1435,38 @@ def parse_product_page(
     selected_candidate: Optional[CandidateScore] = candidates[0] if candidates else None
 
     # Determine primary seller_name
-    seller_name: Optional[str] = None
-    seller_rating: Optional[float] = None
-    seller_source: Optional[str] = None
-    seller_confidence = 0.0
+    seller_name: Optional[str] = native_data.get("seller_name")
+    seller_rating: Optional[float] = native_data.get("seller_rating")
+    seller_source: Optional[str] = "native_state_json" if seller_name else None
+    seller_confidence = 1.0 if seller_name else 0.0
 
-    if selected_candidate:
-        seller_name = selected_candidate.name
-        seller_rating = selected_candidate.rating
-        seller_source = selected_candidate.source
-        seller_confidence = selected_candidate.score / 100.0
-    elif fulfilled_by_seller:
-        # Fallback to fulfillment seller if no explicit Seller: label
-        seller_name = fulfilled_by_seller
-        seller_source = "fulfillment_label"
-        seller_confidence = 0.85
+    if not seller_name:
+        if selected_candidate:
+            seller_name = selected_candidate.name
+            seller_rating = selected_candidate.rating
+            seller_source = selected_candidate.source
+            seller_confidence = selected_candidate.score / 100.0
+        elif fulfilled_by_seller:
+            # Fallback to fulfillment seller if no explicit Seller: label
+            seller_name = fulfilled_by_seller
+            seller_source = "fulfillment_label"
+            seller_confidence = 0.85
 
     # Final seller rating resolution
-    final_seller_rating = seller_rating or seller_meta.get("seller_rating")
+    final_seller_rating = native_data.get("seller_rating") or seller_rating or seller_meta.get("seller_rating")
     if final_seller_rating is not None:
         try:
             final_seller_rating = round(float(final_seller_rating), 1)
         except (ValueError, TypeError):
             final_seller_rating = None
+
+    # Harmonize native address and metadata
+    final_billing_addr = native_data.get("billing_address") or seller_meta.get("raw_address") or seller_meta.get("seller_location")
+    final_city = native_data.get("city") or seller_meta.get("city")
+    final_state = native_data.get("state") or seller_meta.get("state")
+    final_pincode = native_data.get("pincode") or seller_meta.get("pincode")
+    final_gst = native_data.get("gst_number") or seller_meta.get("gst_number")
+    final_legal_name = native_data.get("legal_name")
 
     # Build list of unique seller values found
     seller_values_found: List[str] = []
@@ -1283,11 +1474,13 @@ def parse_product_page(
         seller_values_found.append(fulfilled_by_seller)
     if seller_name and seller_name not in seller_values_found:
         seller_values_found.append(seller_name)
+    if final_legal_name and final_legal_name not in seller_values_found:
+        seller_values_found.append(final_legal_name)
 
     # Diagnostic logging
     has_json_ld = bool(soup.find("script", type="application/ld+json"))
     has_next_data = "__INITIAL_STATE__" in html_content or "__PRELOADED_STATE__" in html_content or "__NEXT_DATA__" in html_content
-    has_seller_json = any(c.source.startswith("state_") or c.source == "json_ld" for c in candidates)
+    has_seller_json = bool(native_data.get("seller_name") or native_data.get("gst_number")) or any(c.source.startswith("state_") or c.source == "json_ld" for c in candidates)
     has_seller_html = any(c.source.startswith("html_") or c.source.startswith("dom_") for c in candidates)
 
     logger.info(
@@ -1301,13 +1494,14 @@ def parse_product_page(
         f"Seller JSON Found: {'YES' if has_seller_json else 'NO'}\n"
         f"Seller HTML Found: {'YES' if has_seller_html else 'NO'}\n"
         f"Extracted Seller: {seller_name or 'NOT_FOUND'}\n"
+        f"Legal Name: {final_legal_name or 'N/A'}\n"
         f"Fulfilled By Seller: {fulfilled_by_seller or 'N/A'}\n"
         f"F-Assured: {'YES' if is_f_assured else 'NO'}\n"
         f"Product Rating: {product_rating if product_rating is not None else 'N/A'}\n"
         f"Seller Rating: {final_seller_rating if final_seller_rating is not None else 'N/A'}\n"
-        f"Flipkart GST: {seller_meta.get('gst_number') or 'NOT_FOUND'}\n"
+        f"Flipkart GST: {final_gst or 'NOT_FOUND'}\n"
         f"Flipkart Phone: {seller_meta.get('phone') or 'NOT_FOUND'}\n"
-        f"Flipkart Location: {seller_meta.get('seller_location') or 'NOT_FOUND'}"
+        f"Flipkart Location: {final_billing_addr or 'NOT_FOUND'}"
     )
 
     if not seller_name:
@@ -1322,6 +1516,7 @@ def parse_product_page(
 
     return {
         "seller_name": seller_name or "",
+        "legal_name": final_legal_name,
         "fulfilled_by_seller": fulfilled_by_seller,
         "fulfillment_by": fulfilled_by_seller,
         "is_f_assured": is_f_assured,
@@ -1335,21 +1530,22 @@ def parse_product_page(
         "product_review_count": product_review_count,
         "seller_source": seller_source,
         "seller_name_source": seller_source,
-        "rating_source": "seller_section" if seller_rating else ("state_json" if seller_meta.get("seller_rating") else None),
+        "rating_source": "seller_section" if final_seller_rating else ("state_json" if seller_meta.get("seller_rating") else None),
         "seller_confidence": seller_confidence,
         "rating_confidence": 0.95 if final_seller_rating else 0.0,
         "page_status": page_status,
         "seller_url": seller_meta.get("seller_url"),
-        "seller_location": seller_meta.get("seller_location"),
-        "raw_address": seller_meta.get("raw_address"),
-        "city": seller_meta.get("city"),
-        "state": seller_meta.get("state"),
-        "pincode": seller_meta.get("pincode"),
+        "seller_location": final_billing_addr,
+        "raw_address": final_billing_addr,
+        "billing_address": final_billing_addr,
+        "city": final_city,
+        "state": final_state,
+        "pincode": final_pincode,
         "contact_number": seller_meta.get("phone"),
         "phone": seller_meta.get("phone"),
         "email": seller_meta.get("email"),
-        "gst_number": seller_meta.get("gst_number"),
-        "gst": seller_meta.get("gst_number"),
+        "gst_number": final_gst,
+        "gst": final_gst,
         # Extended identifiers
         "seller_id": seller_meta.get("seller_id"),
         "marketplace_seller_id": seller_meta.get("marketplace_seller_id"),

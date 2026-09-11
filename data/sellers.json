@@ -84747,5 +84747,32 @@
       },
       "seller_confidence": 0.85
     }
+  },
+  "flipkart::boat lifestyle": {
+    "seller_name": "Boat Lifestyle",
+    "canonical_id": "boat lifestyle",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/boat-airdopes-131-bluetooth-headset/p/itm123"
+    ],
+    "categories": [
+      "Electronics > Audio > Headphones > Wireless Earbuds"
+    ],
+    "star_rating": 4.5,
+    "product_rating": null,
+    "seller_source_type": "flipkart_product",
+    "seller_confidence": 0.95,
+    "seller_url": null,
+    "seller_location": null,
+    "city": null,
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "pending",
+    "first_seen": "2026-09-11T10:17:24.326937+00:00",
+    "last_seen": "2026-09-11T10:17:24.326937+00:00"
   }
 }

@@ -54,6 +54,8 @@ from scraper.config import (
     DEFAULT_HEADERS,
     GST_STATE_CODES,
     HTTP_TIMEOUT_SECONDS,
+    INDIAN_STATES,
+    MAJOR_INDIAN_CITIES,
     STATUS_NOT_FOUND,
     USER_AGENTS,
 )
@@ -92,51 +94,40 @@ FIELD_TIMEOUT_SECONDS: float = 30.0
 MAX_BING_QUERIES_PER_FIELD: int = 3
 MAX_BRAVE_QUERIES_PER_FIELD: int = 2
 
-SOURCE_PRIORITY: Dict[str, int] = {
-    "marketplace_profile": 100,  # Flipkart direct
-    "filing_registry": 90,       # Government GST/filings
-    "company_website": 80,       # Official website
-    "official_contact_page": 75, # Official contact page
-    "business_directory": 60,    # Trusted directory
-    "targeted_search": 50,       # Search snippet
-    "search_snippet": 40,
-    "seller_location": 30,
-    "not_found": 0,
+# Blacklisted junk domains: OS login, gaming wikis, adult content, generic social
+DISALLOWED_DOMAINS: Set[str] = {
+    # Microsoft / OS / Login
+    "microsoft.com", "live.com", "office.com", "office365.com", "login.microsoftonline.com",
+    "msn.com", "outlook.com", "bing.com", "google.com", "yahoo.com", "apple.com", "login.live.com",
+    # Gaming / Game Wikis / Cheat Guides
+    "game8.co", "maxroll.gg", "mobalytics.gg", "fandom.com", "ign.com", "steampowered.com",
+    "roblox.com", "twitch.tv", "pathofexile.com", "poewiki.net", "gamefaqs.gamespot.com",
+    "polygon.com", "gamespot.com", "destructoid.com",
+    # Adult sites
+    "pornhub.com", "myporntube.com", "xvideos.com", "xnxx.com", "redtube.com", "youporn.com",
+    "chaturbate.com", "stripchat.com", "livejasmin.com", "cam4.com", "adultwork.com", "tube8.com",
+    # Social media & forums
+    "reddit.com", "youtube.com", "wikipedia.org", "wiktionary.org", "quora.com", "zhihu.com",
+    "baidu.com", "pinterest.com", "tiktok.com", "tumblr.com", "facebook.com", "instagram.com",
+    "twitter.com", "x.com", "medium.com", "blogspot.com", "wordpress.com", "github.com",
+    "stackoverflow.com", "stackexchange.com", "52pojie.cn", "sohu.com", "bilibili.com", "weibo.com",
+    "androidguias.com", "commentcamarche.net", "dafont.com", "imdb.com",
 }
 
 # Domains that are generic platforms or social networks, not individual seller official websites
-EXCLUDED_WEBSITE_DOMAINS = {
+EXCLUDED_WEBSITE_DOMAINS = DISALLOWED_DOMAINS | {
     "flipkart.com",
     "amazon.in",
     "amazon.com",
     "snapdeal.com",
     "meesho.com",
     "myntra.com",
-    "facebook.com",
-    "instagram.com",
-    "twitter.com",
-    "x.com",
-    "youtube.com",
-    "linkedin.com",
-    "pinterest.com",
     "play.google.com",
     "apps.apple.com",
-    "wikipedia.org",
-    "quora.com",
-    "reddit.com",
-    "duckduckgo.com",
-    "google.com",
-    "bing.com",
-    "yahoo.com",
     "uscourts.gov",
     "gov.in",
     "nic.in",
     "scribd.com",
-    "github.com",
-    "stackoverflow.com",
-    "medium.com",
-    "blogspot.com",
-    "wordpress.com",
 }
 
 # High-authority company registry / business directories
@@ -193,78 +184,60 @@ FIELD_KEYWORDS: Dict[str, List[str]] = {
     "website_url": ["website", "official", "store", "shop", "online"],
 }
 
-# Field-Specific Bing Query Templates (Max 5 per field)
+# Field-Specific Bing Query Templates (Max 3 prioritized per field)
 FIELD_BING_QUERIES: Dict[str, List[str]] = {
     "gst": [
-        '"{seller}" GST',
+        '"{seller}" GSTIN site:zaubacorp.com OR site:tofler.in OR site:thecompanycheck.com OR site:indiamart.com',
         '"{seller}" GSTIN',
-        '"{seller}" "GST number"',
-        '"{seller}" "GSTIN number"',
-        '"{seller}" GST India',
-        '"{seller}" "GST registration"',
+        '"{seller}" "GST number" India',
     ],
     "pan": [
-        '"{seller}" PAN',
-        '"{seller}" "PAN number"',
+        '"{seller}" PAN site:zaubacorp.com OR site:tofler.in',
         '"{seller}" "company PAN"',
-        '"{seller}" "PAN card"',
-        '"{seller}" India PAN',
-        '"{seller}" proprietor PAN',
-        '"{seller}" director PAN',
+        '"{seller}" "PAN card" India',
     ],
     "fssai": [
-        '"{seller}" FSSAI',
+        '"{seller}" FSSAI license India',
         '"{seller}" "FSSAI number"',
-        '"{seller}" "FSSAI license"',
-        '"{seller}" "FSSAI registration"',
-        '"{seller}" food license',
+        '"{seller}" food license registration India',
     ],
     "owner": [
-        '"{seller}" owner',
-        '"{seller}" founder',
-        '"{seller}" proprietor',
+        '"{seller}" owner site:zaubacorp.com OR site:tofler.in',
         '"{seller}" director',
-        '"{seller}" "managing director"',
+        '"{seller}" proprietor India',
     ],
     "address": [
-        '"{seller}" address',
-        '"{seller}" "registered address"',
-        '"{seller}" "registered office"',
-        '"{seller}" "corporate office"',
-        '"{seller}" "business address"',
+        '"{seller}" "registered address" OR "corporate office" India',
+        '"{seller}" address site:zaubacorp.com OR site:tofler.in',
+        '"{seller}" "business address" India',
     ],
     "pincode": [
-        '"{seller}" pincode',
-        '"{seller}" "postal code"',
+        '"{seller}" pincode site:zaubacorp.com OR site:tofler.in',
+        '"{seller}" "postal code" India',
         '"{seller}" PIN code India',
-        '"{seller}" location pincode',
     ],
     "phone": [
-        '"{seller}" phone',
-        '"{seller}" mobile',
-        '"{seller}" "contact number"',
-        '"{seller}" phone number India',
+        '"{seller}" "registered address" OR "mobile" OR "contact" India',
+        '"{seller}" "phone number" site:indiamart.com OR site:justdial.com',
+        '"{seller}" customer care contact India',
     ],
     "email": [
-        '"{seller}" email',
-        '"{seller}" "email address"',
-        '"{seller}" "contact email"',
-        '"{seller}" official email India',
+        '"{seller}" "official email" OR "contact email" India',
+        '"{seller}" email site:zaubacorp.com OR site:tofler.in',
+        '"{seller}" contact email',
     ],
     "website": [
+        '"{seller}" official website contact OR "about us"',
         '"{seller}" official website',
-        '"{seller}" brand website',
-        '"{seller}" online store',
-        '"{seller}" company website',
+        '"{seller}" brand website India',
     ],
 }
 
-# Field-Specific Brave Query Templates (Max 3 fallback per field)
+# Field-Specific Brave Query Templates (Max 2 fallback per field)
 FIELD_BRAVE_QUERIES: Dict[str, List[str]] = {
     "gst": [
-        '"{seller}" GST number India',
-        '"{seller}" GSTIN registration',
-        '"{seller}" GST tax filing India',
+        '"{seller}" GSTIN site:zaubacorp.com OR site:tofler.in',
+        '"{seller}" GSTIN registration India',
     ],
     "pan": [
         '"{seller}" PAN card number India',
@@ -279,7 +252,7 @@ FIELD_BRAVE_QUERIES: Dict[str, List[str]] = {
         '"{seller}" postal code India',
     ],
     "phone": [
-        '"{seller}" phone number India',
+        '"{seller}" "registered address" OR "mobile" OR "contact" India',
         '"{seller}" customer care contact',
     ],
     "email": [
@@ -291,11 +264,11 @@ FIELD_BRAVE_QUERIES: Dict[str, List[str]] = {
         '"{seller}" managing director India',
     ],
     "fssai": [
-        '"{seller}" FSSAI license number India',
+        '"{seller}" FSSAI license India',
         '"{seller}" food license registration India',
     ],
     "website": [
-        '"{seller}" official store website',
+        '"{seller}" official website contact OR "about us"',
         '"{seller}" company website India',
     ],
 }
@@ -305,7 +278,7 @@ FIELD_BRAVE_QUERIES: Dict[str, List[str]] = {
 FIELD_SEARCH_QUERIES: Dict[str, List[str]] = {
     "gst": [
         # Site-dork priority: government company registries
-        '"{seller}" GSTIN site:zaubacorp.com OR site:tofler.in OR site:thecompanycheck.com',
+        '"{seller}" GSTIN site:zaubacorp.com OR site:tofler.in OR site:thecompanycheck.com OR site:indiamart.com',
         '"{seller}" GSTIN site:zaubacorp.com',
         '"{seller}" GSTIN site:tofler.in',
         '"{seller}" GSTIN site:thecompanycheck.com',
@@ -326,6 +299,7 @@ FIELD_SEARCH_QUERIES: Dict[str, List[str]] = {
     ],
     "address": [
         # Registered address via company registries
+        '"{seller}" "registered address" OR "corporate office" India',
         '"{seller}" address site:zaubacorp.com OR site:tofler.in OR site:thecompanycheck.com',
         '"{seller}" "registered address" site:zaubacorp.com',
         '"{seller}" "registered address" site:tofler.in',
@@ -340,7 +314,7 @@ FIELD_SEARCH_QUERIES: Dict[str, List[str]] = {
     ],
     "phone": [
         # Contact/phone from official presence or directories
-        '"{seller}" "contact us" OR "phone" OR "mobile" India',
+        '"{seller}" "registered address" OR "mobile" OR "contact" India',
         '"{seller}" "phone number" site:indiamart.com OR site:justdial.com',
         '"{seller}" phone India',
         '"{seller}" mobile India',
@@ -348,6 +322,7 @@ FIELD_SEARCH_QUERIES: Dict[str, List[str]] = {
     ],
     "email": [
         # Email from official pages
+        '"{seller}" "official email" OR "contact email" India',
         '"{seller}" "contact us" OR "email" OR "FSSAI" India',
         '"{seller}" email India',
         '"{seller}" "email address" India',
@@ -361,13 +336,14 @@ FIELD_SEARCH_QUERIES: Dict[str, List[str]] = {
         '"{seller}" founder India',
     ],
     "fssai": [
-        '"{seller}" FSSAI',
+        '"{seller}" FSSAI license India',
         '"{seller}" "FSSAI license" India',
         '"{seller}" "FSSAI number" India',
         '"{seller}" "FSSAI registration" India',
         '"{seller}" food license India',
     ],
     "website": [
+        '"{seller}" official website contact OR "about us"',
         '"{seller}" official website',
         '"{seller}" brand website',
         '"{seller}" online store India',
@@ -598,13 +574,199 @@ def strip_html_boilerplate(html_text: str, max_chars: int = 5000) -> str:
     return text[:max_chars]
 
 
+def clean_seller_name(raw_name: Optional[str]) -> str:
+    """Normalize and clean raw marketplace seller names for accurate external research.
+
+    Transformations:
+      1. Strip marketplace / vendor prefixes ('seller:', 'sold by:', 'about seller:', 'retailer:', 'store:', etc.)
+      2. Strip trailing ratings/badges ('4.5', '4.2 ★', etc.)
+      3. Strip emojis, special characters, and vendor/database numeric slugs (e.g. 'SiyaEnterprises0164' -> 'Siya Enterprises')
+      4. Split PascalCase and camelCase ('SiyaEnterprises' -> 'Siya Enterprises', 'CheneCloth' -> 'Chene Cloth')
+      5. Split UPPERCASE concatenated words and known suffixes ('REDTAPELIMITED' -> 'RED TAPE LIMITED', 'REEPREECREATION' -> 'REEPREE CREATION')
+      6. Standardize legal suffixes ('Pvt Ltd', 'Private Limited', 'LLP', 'Enterprises', etc.)
+      7. Collapse whitespace and format cleanly.
+
+    Args:
+        raw_name: Raw seller name string.
+
+    Returns:
+        Clean business name string.
+    """
+    if not raw_name or not isinstance(raw_name, str):
+        return ""
+
+    s = str(raw_name).strip()
+
+    # 1. Strip leading marketplace prefixes
+    s = re.sub(
+        r"^(?:Seller\s*:?|Sold\s*By\s*:?|Seller\s*Details\s*:?|About\s*Seller\s*:?|Retailer\s*:?|Store\s*:?)",
+        "",
+        s,
+        flags=re.IGNORECASE,
+    ).strip()
+
+    # 2. Strip trailing UI / rating badges e.g. "4.5 ★", "4.4", "Rating", "Show all dealers"
+    s = re.sub(
+        r"(?i)\s+(?:Show\s+all(?:\s+dealers)?|See\s+other(?:\s+sellers)?|Rating|Ratings|About|Services|Delivery|7\s*Days|10\s*Days|GST).*$",
+        "",
+        s,
+    ).strip()
+    s = re.sub(r"\s+[1-5]\.[0-9]\s*★?$", "", s).strip()
+    s = re.sub(r"[★☆]", "", s).strip()
+
+    # 3. Strip leading/trailing non-alphanumeric punctuation
+    s = re.sub(r"^[^\w]+|[^\w\.\)&]+$", "", s).strip()
+
+    # 4. Strip trailing vendor/database numeric slugs (e.g. 'SiyaEnterprises0164' -> 'SiyaEnterprises', 'Store_0012' -> 'Store')
+    num_suffix_m = re.search(r"^(.*?[a-zA-Z]{3,})[_\-\s]*(\d{2,6})$", s)
+    if num_suffix_m:
+        prefix_part = num_suffix_m.group(1).strip()
+        s = prefix_part
+
+    # 5. CamelCase / PascalCase splitting (e.g., 'SiyaEnterprises' -> 'Siya Enterprises')
+    if re.search(r"[a-z][A-Z]", s) or re.search(r"[A-Z]{2,}[a-z]", s):
+        s = re.sub(r"([a-z])([A-Z])", r"\1 \2", s)
+        s = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", s).strip()
+
+    # 6. UPPERCASE compound tokenization (e.g. 'REDTAPELIMITED' -> 'RED TAPE LIMITED', 'REEPREECREATION' -> 'REEPREE CREATION')
+    if s.isupper():
+        upper_s = s.upper().replace(" ", "")
+        suffix_matched = False
+        for suffix in COMMON_SELLER_SUFFIXES:
+            if upper_s.endswith(suffix) and len(upper_s) > len(suffix) + 1:
+                pref = upper_s[:-len(suffix)].strip()
+                pref_split = pref
+                for w in KNOWN_WORDS:
+                    if pref.startswith(w) and len(pref) > len(w) + 2:
+                        rest_w = pref[len(w):]
+                        pref_split = f"{w} {rest_w}"
+                        break
+                s = f"{pref_split} {suffix}"
+                suffix_matched = True
+                break
+
+        # 7. Compound word split on known words (e.g. 'REDTAPE' -> 'RED TAPE')
+        if not suffix_matched:
+            upper_s2 = s.upper().replace(" ", "")
+            for w in KNOWN_WORDS:
+                if upper_s2.startswith(w) and len(upper_s2) > len(w) + 2:
+                    rest_w = upper_s2[len(w):]
+                    if rest_w in KNOWN_WORDS or any(rest_w.endswith(suf) for suf in COMMON_SELLER_SUFFIXES) or len(rest_w) >= 3:
+                        s = f"{w} {rest_w}"
+                        break
+
+    # 8. Clean legal abbreviations
+    legal_replacements = [
+        (r"(?i)\bPVT\s*LTD\b", "Pvt Ltd"),
+        (r"(?i)\bPRIVATE\s*LIMITED\b", "Private Limited"),
+        (r"(?i)\bLTD\b", "Ltd"),
+        (r"(?i)\bLLP\b", "LLP"),
+        (r"(?i)\bINC\b", "Inc"),
+        (r"(?i)\bCORP\b", "Corp"),
+        (r"(?i)\bCO\b", "Co"),
+    ]
+    for pat, rep in legal_replacements:
+        s = re.sub(pat, rep, s)
+
+    # Collapse multiple spaces and trim
+    s = re.sub(r"\s+", " ", s).strip()
+    return s
+
+
+PAN_BUSINESS_MODELS: Dict[str, str] = {
+    "C": "Private Limited Company",
+    "P": "Proprietorship / Individual",
+    "F": "Partnership / LLP",
+    "H": "Hindu Undivided Family",
+    "A": "Association of Persons",
+    "T": "Trust",
+    "B": "Body of Individuals",
+    "G": "Government Agency",
+    "J": "Artificial Juridical Person",
+    "L": "Local Authority",
+}
+
+
+def derive_from_gstin(gst_number: Optional[str]) -> Dict[str, Any]:
+    """Auto-derive PAN, State, and Business Model from a validated Indian GSTIN.
+
+    GSTIN format: \b[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}\b
+    - Digits 1-2: 2-digit state code (mapped via GST_STATE_CODES)
+    - Digits 3-12: 10-char PAN
+    - 4th letter of PAN (6th char of GSTIN): Business Model entity type
+    """
+    res: Dict[str, Any] = {
+        "pan_number": None,
+        "state": None,
+        "business_model": None,
+    }
+    if not gst_number:
+        return res
+
+    v_gst = validate_gst(str(gst_number).strip())
+    if not v_gst:
+        return res
+
+    # 1. State from Digits 1-2
+    state_code = v_gst[:2]
+    res["state"] = GST_STATE_CODES.get(state_code)
+
+    # 2. PAN from Digits 3-12
+    pan = v_gst[2:12]
+    res["pan_number"] = pan
+
+    # 3. Business Model from 4th char of PAN
+    if len(pan) >= 4:
+        entity_type_char = pan[3].upper()
+        res["business_model"] = PAN_BUSINESS_MODELS.get(entity_type_char, "Registered Business")
+
+    return res
+
+
+def _sanitize_location_term(val: Optional[str]) -> Optional[str]:
+    """Validate and sanitize location parameter, ensuring product/category keywords are rejected."""
+    if not val or not isinstance(val, str):
+        return None
+    val_str = str(val).strip()
+    if len(val_str) < 3 or len(val_str) > 40:
+        return None
+    cleaned = re.sub(r"[^\w\s,]", "", val_str).strip(" ,.-")
+    cleaned_lower = cleaned.lower()
+
+    # Reject product / category keywords mistakenly passed as location
+    product_keywords = {
+        "begonia", "plant", "plants", "flower", "flowers", "shoe", "shoes", "shirt",
+        "shirts", "tshirt", "tshirts", "dress", "dresses", "saree", "sarees", "curtain",
+        "curtains", "electronics", "fashion", "mobiles", "mobile", "appliances",
+        "grocery", "toy", "toys", "watch", "watches", "jewellery", "beauty", "furniture",
+        "home", "clothing", "cloth", "footwear", "cable", "case", "cover", "decor"
+    }
+    if cleaned_lower in product_keywords:
+        return None
+    if any(cleaned_lower == pk or cleaned_lower.startswith(f"{pk} ") or cleaned_lower.endswith(f" {pk}") for pk in product_keywords):
+        return None
+
+    # Check if matches known Indian cities or states
+    if cleaned_lower in MAJOR_INDIAN_CITIES:
+        return cleaned.title()
+    for state_name, aliases in INDIAN_STATES.items():
+        if cleaned_lower == state_name.lower() or cleaned_lower in aliases:
+            return state_name
+
+    # If it is alphabetic with optional spaces and commas, accept as potential location/city/locality
+    if re.match(r"^[A-Za-z\s,]+$", cleaned):
+        return cleaned
+    return None
+
+
 def generate_seller_variations(seller_name: str) -> List[str]:
     """Generate smart search variations and tokenized forms of a seller name.
 
     Handles:
+      - 'SiyaEnterprises0164' -> ['SiyaEnterprises0164', 'Siya Enterprises', 'SiyaEnterprises']
       - 'REDTAPELIMITED' -> ['REDTAPELIMITED', 'RED TAPE LIMITED', 'REDTAPE LIMITED', 'RED TAPE', 'REDTAPE']
       - 'REEPREECREATION' -> ['REEPREECREATION', 'REEPREE CREATION', 'REEPREE']
-      - 'KSCOLLECTION07' -> ['KSCOLLECTION07', 'KS COLLECTION 07']
+      - 'KSCOLLECTION07' -> ['KSCOLLECTION07', 'KS COLLECTION 07', 'KS COLLECTION']
       - 'CheneCloth' -> ['CheneCloth', 'Chene Cloth']
 
     Args:
@@ -618,7 +780,12 @@ def generate_seller_variations(seller_name: str) -> List[str]:
 
     variations: List[str] = []
     raw = seller_name.strip()
-    variations.append(raw)
+    clean = clean_seller_name(raw)
+
+    if raw:
+        variations.append(raw)
+    if clean and clean not in variations:
+        variations.append(clean)
 
     # 1. Cleaned alphanumeric
     cleaned = re.sub(r"[^\w\s]", " ", raw).strip()
@@ -715,7 +882,7 @@ def generate_targeted_queries_for_field(seller_name: str, field_key: str) -> Lis
         field_key: Key in FIELD_SEARCH_QUERIES ('gst', 'pincode', 'phone', 'email', 'owner', 'pan', 'fssai', 'address', 'city', 'state', 'website')
 
     Returns:
-        List of targeted Bing search queries across seller name variations.
+        List of targeted search queries across seller name variations.
     """
     key_mapping = {
         "gst_number": "gst",
@@ -815,11 +982,12 @@ def generate_bing_queries_for_field(seller_name: str, field_key: str) -> List[st
     Returns:
         List of at most 3 Bing search queries.
     """
+    clean_name = clean_seller_name(seller_name)
     canonical_key = _normalize_field_key(field_key)
-    templates = FIELD_BING_QUERIES.get(canonical_key, [f'"{seller_name}" {field_key}'])
+    templates = FIELD_BING_QUERIES.get(canonical_key, [f'"{clean_name}" {field_key}'])
     queries: List[str] = []
     for tmpl in templates[:MAX_BING_QUERIES_PER_FIELD]:
-        q = tmpl.format(seller=seller_name)
+        q = tmpl.format(seller=clean_name)
         if q not in queries:
             queries.append(q)
     return queries[:MAX_BING_QUERIES_PER_FIELD]
@@ -835,11 +1003,12 @@ def generate_brave_queries_for_field(seller_name: str, field_key: str) -> List[s
     Returns:
         List of at most 2 Brave search queries.
     """
+    clean_name = clean_seller_name(seller_name)
     canonical_key = _normalize_field_key(field_key)
-    templates = FIELD_BRAVE_QUERIES.get(canonical_key, [f'"{seller_name}" {field_key} India'])
+    templates = FIELD_BRAVE_QUERIES.get(canonical_key, [f'"{clean_name}" {field_key} India'])
     queries: List[str] = []
     for tmpl in templates[:MAX_BRAVE_QUERIES_PER_FIELD]:
-        q = tmpl.format(seller=seller_name)
+        q = tmpl.format(seller=clean_name)
         if q not in queries:
             queries.append(q)
     return queries[:MAX_BRAVE_QUERIES_PER_FIELD]
@@ -931,6 +1100,8 @@ def score_search_result_relevance(seller_name: str, result: Dict[str, str]) -> i
 
     Scoring:
       - Unrelated spam / forum / software docs   : 0 (Discard)
+      - Blacklisted junk domains (gaming/adult)  : 0 (Discard)
+      - Missing core seller name tokens          : 0 (Discard)
       - No seller name association               : 0 (Discard)
       - Exact seller name in title               : +40
       - Exact seller name in URL                 : +20
@@ -945,39 +1116,39 @@ def score_search_result_relevance(seller_name: str, result: Dict[str, str]) -> i
     Returns:
         Integer score (0 if irrelevant, >= 20 if relevant).
     """
-    clean_seller = seller_name.strip().lower()
+    clean_seller = clean_seller_name(seller_name).lower()
     title = result.get("title", "").strip()
     snippet = result.get("snippet", "").strip()
     url = result.get("url", "").strip()
     combined_text = f"{title} {snippet}".lower()
     url_lower = url.lower()
 
-    # Immediate rejection for unrelated domains and platforms
-    excluded_domains = [
-        "zhihu.com",
-        "baidu.com",
-        "dafont.com",
-        "52pojie.cn",
-        "stackoverflow.com",
-        "github.com",
-        "youtube.com",
-        "microsoft.com",
-        "office.com",
-        "imdb.com",
-        "wikipedia.org",
-        "wiktionary.org",
-        "quora.com",
-        "reddit.com",
-        "sohu.com",
-        "androidguias.com",
-        "commentcamarche.net",
-        "bilibili.com",
-        "weibo.com",
-    ]
-    if any(ed in url_lower for ed in excluded_domains):
+    # 1. Immediate rejection for disallowed / blacklisted domains
+    if any(ed in url_lower for ed in DISALLOWED_DOMAINS):
         return 0
 
-    # MUST pass seller association check
+    # 2. Core Distinctive Token Check
+    stopwords = {
+        "pvt", "ltd", "limited", "private", "enterprises", "enterprise", "company",
+        "india", "retail", "store", "online", "shop", "trading", "group", "the",
+        "and", "co", "corp", "corporation", "llp", "industries", "industry",
+        "collection", "collections", "creation", "creations", "fashion", "fashions",
+        "clothing", "cloth", "textiles", "textile", "international", "products", "services"
+    }
+    raw_tokens = re.findall(r"[a-zA-Z0-9]+", clean_seller)
+    core_tokens = [t for t in raw_tokens if len(t) >= 3 and t not in stopwords]
+    if not core_tokens:
+        core_tokens = [t for t in raw_tokens if len(t) >= 3]
+
+    if core_tokens:
+        has_core_token = any(re.search(r"\b" + re.escape(t) + r"\b", combined_text) or t in url_lower for t in core_tokens)
+        if not has_core_token:
+            return 0
+    elif clean_seller:
+        if clean_seller not in combined_text and clean_seller.replace(" ", "") not in url_lower:
+            return 0
+
+    # 3. MUST pass seller association check
     if not validate_seller_association(seller_name, f"{title} {snippet}", url):
         return 0
 
@@ -985,7 +1156,7 @@ def score_search_result_relevance(seller_name: str, result: Dict[str, str]) -> i
     # Exact seller name bonuses
     if clean_seller in title.lower():
         score += 30
-    if clean_seller in url_lower:
+    if clean_seller in url_lower or clean_seller.replace(" ", "") in url_lower:
         score += 20
     if clean_seller in snippet.lower():
         score += 15
@@ -1268,48 +1439,33 @@ def generate_targeted_phone_queries(
     gst_number: Optional[str] = None,
     website_url: Optional[str] = None,
 ) -> List[str]:
-    """Generate prioritized targeted phone search queries (Requirement 5).
+    """Generate prioritized targeted phone search queries (Requirement 5)."""
+    clean_name = clean_seller_name(seller_name)
+    clean_city = _sanitize_location_term(city)
+    clean_state = _sanitize_location_term(state)
+    clean_loc = _sanitize_location_term(location)
 
-    Primary:
-      - "{seller_name}" "{city}" phone
-      - "{seller_name}" "{city}" mobile
-      - "{seller_name}" "{city}" contact
-      - "{seller_name}" "{location}" phone
-      - "{seller_name}" "{location}" contact number
-      - "{seller_name}" "{state}" phone
-    If GST already exists:
-      - "{seller_name}" "{GSTIN}" phone
-      - "{GSTIN}" phone
-      - "{GSTIN}" contact
-    If seller URL/domain is known:
-      - "{seller_name}" "{domain}" phone
-    General / variation queries:
-      - "{seller_name}" phone
-      - "{seller_name}" mobile
-      - "{seller_name}" "contact number"
-      - "{seller_name}" phone India
-    """
     queries: List[str] = []
 
     # 1. Location-anchored primary queries
-    if city:
-        queries.append(f'"{seller_name}" "{city}" phone')
-        queries.append(f'"{seller_name}" "{city}" mobile')
-        queries.append(f'"{seller_name}" "{city}" contact')
+    if clean_city:
+        queries.append(f'"{clean_name}" "{clean_city}" phone')
+        queries.append(f'"{clean_name}" "{clean_city}" mobile')
+        queries.append(f'"{clean_name}" "{clean_city}" contact')
 
-    loc_val = location or city
-    if loc_val and (not city or loc_val.lower() != city.lower()):
-        queries.append(f'"{seller_name}" "{loc_val}" phone')
-        queries.append(f'"{seller_name}" "{loc_val}" contact number')
+    loc_val = clean_loc or clean_city
+    if loc_val and (not clean_city or loc_val.lower() != clean_city.lower()):
+        queries.append(f'"{clean_name}" "{loc_val}" phone')
+        queries.append(f'"{clean_name}" "{loc_val}" contact number')
 
-    if state and (not city or state.lower() != city.lower()) and (not location or state.lower() != location.lower()):
-        queries.append(f'"{seller_name}" "{state}" phone')
+    if clean_state and (not clean_city or clean_state.lower() != clean_city.lower()) and (not clean_loc or clean_state.lower() != clean_loc.lower()):
+        queries.append(f'"{clean_name}" "{clean_state}" phone')
 
     # 2. GST-anchored queries
     if gst_number:
         valid_gst = validate_gst(gst_number)
         if valid_gst:
-            queries.append(f'"{seller_name}" "{valid_gst}" phone')
+            queries.append(f'"{clean_name}" "{valid_gst}" phone')
             queries.append(f'"{valid_gst}" phone')
             queries.append(f'"{valid_gst}" contact')
 
@@ -1319,15 +1475,16 @@ def generate_targeted_phone_queries(
             parsed = urllib.parse.urlparse(website_url)
             domain = parsed.netloc.lower().replace("www.", "")
             if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
-                queries.append(f'"{seller_name}" "{domain}" phone')
+                queries.append(f'"{clean_name}" "{domain}" phone')
         except Exception:
             pass
 
     # 4. Fallback queries
-    queries.append(f'"{seller_name}" phone')
-    queries.append(f'"{seller_name}" mobile')
-    queries.append(f'"{seller_name}" "contact number"')
-    queries.append(f'"{seller_name}" phone India')
+    queries.append(f'"{clean_name}" "registered address" OR "mobile" OR "contact" India')
+    queries.append(f'"{clean_name}" phone')
+    queries.append(f'"{clean_name}" mobile')
+    queries.append(f'"{clean_name}" "contact number"')
+    queries.append(f'"{clean_name}" phone India')
 
     variations = generate_seller_variations(seller_name)
     for var in variations[1:3]:
@@ -1354,63 +1511,40 @@ def generate_targeted_gst_queries(
     email: Optional[str] = None,
     pan: Optional[str] = None,
 ) -> List[str]:
-    """Generate prioritized targeted GSTIN search queries (Requirement 7).
+    """Generate prioritized targeted GSTIN search queries (Requirement 7)."""
+    clean_name = clean_seller_name(seller_name)
+    clean_city = _sanitize_location_term(city)
+    clean_state = _sanitize_location_term(state)
+    clean_loc = _sanitize_location_term(location)
 
-    Queries generated:
-      - Basic:
-        "{seller_name}" GST
-        "{seller_name}" GSTIN
-        "{seller_name}" "GST number"
-        "{seller_name}" "GSTIN number"
-
-      - Location anchored:
-        "{seller_name}" "{city}" GSTIN
-        "{seller_name}" "{city}" GST
-        "{seller_name}" "{city}" "{state}" GSTIN
-        "{seller_name}" "{city}" "{pincode}" GSTIN
-        "{seller_name}" "{state}" GSTIN
-        "{seller_name}" "{location}" GSTIN
-        "{seller_name}" "{pincode}" GSTIN
-
-      - Website anchored:
-        "{seller_name}" "{domain}" GST
-        "{domain}" GSTIN
-
-      - PAN anchored (if available):
-        "{pan}" GST
-        "{pan}" GSTIN
-
-      - Phone anchored (if available):
-        "{seller_name}" "{phone}" GST
-
-      - Email anchored (if available):
-        "{seller_name}" "{email}" GST
-    """
     queries: List[str] = []
 
+    # Priority 0: Registry site dork search vector
+    queries.append(f'"{clean_name}" GSTIN site:zaubacorp.com OR site:tofler.in OR site:thecompanycheck.com OR site:indiamart.com')
+
     # 1. Location-anchored queries (Highest precision)
-    if city and state:
-        queries.append(f'"{seller_name}" "{city}" "{state}" GSTIN')
-        queries.append(f'"{seller_name}" "{city}" "{state}" GST')
-    if city and pincode:
-        queries.append(f'"{seller_name}" "{city}" "{pincode}" GSTIN')
-    if city:
-        queries.append(f'"{seller_name}" "{city}" GSTIN')
-        queries.append(f'"{seller_name}" "{city}" GST')
-        queries.append(f'"{seller_name}" "{city}" "GST number"')
+    if clean_city and clean_state:
+        queries.append(f'"{clean_name}" "{clean_city}" "{clean_state}" GSTIN')
+        queries.append(f'"{clean_name}" "{clean_city}" "{clean_state}" GST')
+    if clean_city and pincode:
+        queries.append(f'"{clean_name}" "{clean_city}" "{pincode}" GSTIN')
+    if clean_city:
+        queries.append(f'"{clean_name}" "{clean_city}" GSTIN')
+        queries.append(f'"{clean_name}" "{clean_city}" GST')
+        queries.append(f'"{clean_name}" "{clean_city}" "GST number"')
 
-    loc_val = location or city
-    if loc_val and (not city or loc_val.lower() != city.lower()):
-        queries.append(f'"{seller_name}" "{loc_val}" GSTIN')
-        queries.append(f'"{seller_name}" "{loc_val}" GST')
+    loc_val = clean_loc or clean_city
+    if loc_val and (not clean_city or loc_val.lower() != clean_city.lower()):
+        queries.append(f'"{clean_name}" "{loc_val}" GSTIN')
+        queries.append(f'"{clean_name}" "{loc_val}" GST')
 
-    if state and (not city or state.lower() != city.lower()) and (not location or state.lower() != location.lower()):
-        queries.append(f'"{seller_name}" "{state}" GSTIN')
-        queries.append(f'"{seller_name}" "{state}" GST')
+    if clean_state and (not clean_city or clean_state.lower() != clean_city.lower()) and (not clean_loc or clean_state.lower() != clean_loc.lower()):
+        queries.append(f'"{clean_name}" "{clean_state}" GSTIN')
+        queries.append(f'"{clean_name}" "{clean_state}" GST')
 
-    if pincode and (not city or pincode not in str(city)):
-        queries.append(f'"{seller_name}" "{pincode}" GSTIN')
-        queries.append(f'"{seller_name}" "{pincode}" GST')
+    if pincode and (not clean_city or pincode not in str(clean_city)):
+        queries.append(f'"{clean_name}" "{pincode}" GSTIN')
+        queries.append(f'"{clean_name}" "{pincode}" GST')
 
     # 2. Domain / Website anchored queries
     if website_url:
@@ -1418,7 +1552,7 @@ def generate_targeted_gst_queries(
             parsed = urllib.parse.urlparse(website_url)
             domain = parsed.netloc.lower().replace("www.", "")
             if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
-                queries.append(f'"{seller_name}" "{domain}" GST')
+                queries.append(f'"{clean_name}" "{domain}" GST')
                 queries.append(f'"{domain}" GSTIN')
                 queries.append(f'"{domain}" "GST"')
         except Exception:
@@ -1430,27 +1564,27 @@ def generate_targeted_gst_queries(
         if valid_p:
             queries.append(f'"{valid_p}" GST')
             queries.append(f'"{valid_p}" GSTIN')
-            queries.append(f'"{seller_name}" "{valid_p}" GST')
+            queries.append(f'"{clean_name}" "{valid_p}" GST')
 
     # 4. Phone anchored queries (if Phone already exists)
     if phone:
         valid_ph = validate_phone(phone)
         if valid_ph:
-            queries.append(f'"{seller_name}" "{valid_ph}" GST')
+            queries.append(f'"{clean_name}" "{valid_ph}" GST')
             queries.append(f'"{valid_ph}" GSTIN')
 
     # 5. Email anchored queries (if Email already exists)
     if email:
         valid_em = validate_email(email)
         if valid_em:
-            queries.append(f'"{seller_name}" "{valid_em}" GST')
+            queries.append(f'"{clean_name}" "{valid_em}" GST')
 
     # 6. Basic fallback queries
-    queries.append(f'"{seller_name}" GSTIN')
-    queries.append(f'"{seller_name}" GST')
-    queries.append(f'"{seller_name}" "GST number"')
-    queries.append(f'"{seller_name}" "GSTIN number"')
-    queries.append(f'"{seller_name}" GST registration')
+    queries.append(f'"{clean_name}" GSTIN')
+    queries.append(f'"{clean_name}" GST')
+    queries.append(f'"{clean_name}" "GST number"')
+    queries.append(f'"{clean_name}" "GSTIN number"')
+    queries.append(f'"{clean_name}" GST registration')
 
     variations = generate_seller_variations(seller_name)
     for var in variations[1:3]:
@@ -1474,62 +1608,39 @@ def generate_targeted_email_queries(
     gst_number: Optional[str] = None,
     website_url: Optional[str] = None,
 ) -> List[str]:
-    """Generate prioritized targeted email search queries (Requirement 5).
+    """Generate prioritized targeted email search queries (Requirement 5)."""
+    clean_name = clean_seller_name(seller_name)
+    clean_city = _sanitize_location_term(city)
+    clean_state = _sanitize_location_term(state)
+    clean_loc = _sanitize_location_term(location)
 
-    Primary:
-      - "{seller_name}" "{city}" email
-      - "{seller_name}" "{city}" contact
-      - "{seller_name}" "{city}" contact email
-      - "{seller_name}" "{location}" email
-      - "{seller_name}" "{location}" contact
-      - "{seller_name}" "{state}" email
-      - "{seller_name}" "{state}" contact email
-      - "{seller_name}" official email
-      - "{seller_name}" contact us
-      - "{seller_name}" sales email
-
-    If GSTIN exists:
-      - "{seller_name}" "{GSTIN}" email
-      - "{GSTIN}" email
-      - "{GSTIN}" contact
-      - "{GSTIN}" "@"
-
-    If official website/domain exists:
-      - "{seller_name}" "{domain}" email
-      - "@{domain}"
-      - "{domain}" contact
-
-    General / variation queries:
-      - "{seller_name}" email
-      - "{seller_name}" "email address"
-      - "{seller_name}" contact email
-    """
     queries: List[str] = []
 
     # 1. Location-anchored primary queries
-    if city:
-        queries.append(f'"{seller_name}" "{city}" email')
-        queries.append(f'"{seller_name}" "{city}" contact')
-        queries.append(f'"{seller_name}" "{city}" contact email')
+    if clean_city:
+        queries.append(f'"{clean_name}" "{clean_city}" email')
+        queries.append(f'"{clean_name}" "{clean_city}" contact')
+        queries.append(f'"{clean_name}" "{clean_city}" contact email')
 
-    loc_val = location or city
-    if loc_val and (not city or loc_val.lower() != city.lower()):
-        queries.append(f'"{seller_name}" "{loc_val}" email')
-        queries.append(f'"{seller_name}" "{loc_val}" contact')
+    loc_val = clean_loc or clean_city
+    if loc_val and (not clean_city or loc_val.lower() != clean_city.lower()):
+        queries.append(f'"{clean_name}" "{loc_val}" email')
+        queries.append(f'"{clean_name}" "{loc_val}" contact')
 
-    if state and (not city or state.lower() != city.lower()) and (not location or state.lower() != location.lower()):
-        queries.append(f'"{seller_name}" "{state}" email')
-        queries.append(f'"{seller_name}" "{state}" contact email')
+    if clean_state and (not clean_city or clean_state.lower() != clean_city.lower()) and (not clean_loc or clean_state.lower() != clean_loc.lower()):
+        queries.append(f'"{clean_name}" "{clean_state}" email')
+        queries.append(f'"{clean_name}" "{clean_state}" contact email')
 
-    queries.append(f'"{seller_name}" official email')
-    queries.append(f'"{seller_name}" contact us')
-    queries.append(f'"{seller_name}" sales email')
+    queries.append(f'"{clean_name}" "official email" OR "contact email" India')
+    queries.append(f'"{clean_name}" official email')
+    queries.append(f'"{clean_name}" contact us')
+    queries.append(f'"{clean_name}" sales email')
 
     # 2. GST-anchored queries
     if gst_number:
         valid_gst = validate_gst(gst_number)
         if valid_gst:
-            queries.append(f'"{seller_name}" "{valid_gst}" email')
+            queries.append(f'"{clean_name}" "{valid_gst}" email')
             queries.append(f'"{valid_gst}" email')
             queries.append(f'"{valid_gst}" contact')
             queries.append(f'"{valid_gst}" "@"')
@@ -1540,16 +1651,16 @@ def generate_targeted_email_queries(
             parsed = urllib.parse.urlparse(website_url)
             domain = parsed.netloc.lower().replace("www.", "")
             if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
-                queries.append(f'"{seller_name}" "{domain}" email')
+                queries.append(f'"{clean_name}" "{domain}" email')
                 queries.append(f'"@{domain}"')
                 queries.append(f'"{domain}" contact')
         except Exception:
             pass
 
     # 4. Fallback queries
-    queries.append(f'"{seller_name}" email')
-    queries.append(f'"{seller_name}" "email address"')
-    queries.append(f'"{seller_name}" contact email')
+    queries.append(f'"{clean_name}" email')
+    queries.append(f'"{clean_name}" "email address"')
+    queries.append(f'"{clean_name}" contact email')
 
     variations = generate_seller_variations(seller_name)
     for var in variations[1:3]:
@@ -1573,58 +1684,41 @@ def generate_targeted_address_queries(
     gst_number: Optional[str] = None,
     website_url: Optional[str] = None,
 ) -> List[str]:
-    """Generate prioritized targeted address search queries (Requirements 2, 8).
+    """Generate prioritized targeted address search queries (Requirements 2, 8)."""
+    clean_name = clean_seller_name(seller_name)
+    clean_city = _sanitize_location_term(city)
+    clean_state = _sanitize_location_term(state)
+    clean_loc = _sanitize_location_term(location)
 
-    Location-anchored:
-      - "{seller_name}" "{city}" "{state}" address
-      - "{seller_name}" "{city}" address
-      - "{seller_name}" "{location}" address
-      - "{seller_name}" "{city}" office address
-      - "{seller_name}" "{city}" billing address
-      - "{seller_name}" "{city}" contact
-      - "{seller_name}" "{state}" address
-
-    GST-anchored (if GSTIN exists):
-      - "{seller_name}" "{GSTIN}" address
-      - "{GSTIN}" address
-      - "{GSTIN}" registered address
-      - "{GSTIN}" billing address
-
-    Domain-anchored (if website exists):
-      - "{seller_name}" "{domain}" address
-      - "{domain}" contact address
-
-    General / variations:
-      - "{seller_name}" address
-      - "{seller_name}" office address
-      - "{seller_name}" contact us address
-    """
     queries: List[str] = []
 
+    # Priority 0: Registry site dork
+    queries.append(f'"{clean_name}" "registered address" OR "corporate office" India')
+
     # 1. Location-anchored queries
-    if city and state and city.lower() != state.lower():
-        queries.append(f'"{seller_name}" "{city}" "{state}" address')
-        queries.append(f'"{seller_name}" "{city}" "{state}" billing address')
-    if city:
-        queries.append(f'"{seller_name}" "{city}" address')
-        queries.append(f'"{seller_name}" "{city}" office address')
-        queries.append(f'"{seller_name}" "{city}" billing address')
-        queries.append(f'"{seller_name}" "{city}" contact')
+    if clean_city and clean_state and clean_city.lower() != clean_state.lower():
+        queries.append(f'"{clean_name}" "{clean_city}" "{clean_state}" address')
+        queries.append(f'"{clean_name}" "{clean_city}" "{clean_state}" billing address')
+    if clean_city:
+        queries.append(f'"{clean_name}" "{clean_city}" address')
+        queries.append(f'"{clean_name}" "{clean_city}" office address')
+        queries.append(f'"{clean_name}" "{clean_city}" billing address')
+        queries.append(f'"{clean_name}" "{clean_city}" contact')
 
-    loc_val = location or city
-    if loc_val and (not city or loc_val.lower() != city.lower()):
-        queries.append(f'"{seller_name}" "{loc_val}" address')
-        queries.append(f'"{seller_name}" "{loc_val}" office address')
+    loc_val = clean_loc or clean_city
+    if loc_val and (not clean_city or loc_val.lower() != clean_city.lower()):
+        queries.append(f'"{clean_name}" "{loc_val}" address')
+        queries.append(f'"{clean_name}" "{loc_val}" office address')
 
-    if state and (not city or state.lower() != city.lower()):
-        queries.append(f'"{seller_name}" "{state}" address')
-        queries.append(f'"{seller_name}" "{state}" billing address')
+    if clean_state and (not clean_city or clean_state.lower() != clean_city.lower()):
+        queries.append(f'"{clean_name}" "{clean_state}" address')
+        queries.append(f'"{clean_name}" "{clean_state}" billing address')
 
     # 2. GST-anchored queries
     if gst_number:
         valid_gst = validate_gst(gst_number)
         if valid_gst:
-            queries.append(f'"{seller_name}" "{valid_gst}" address')
+            queries.append(f'"{clean_name}" "{valid_gst}" address')
             queries.append(f'"{valid_gst}" address')
             queries.append(f'"{valid_gst}" registered address')
             queries.append(f'"{valid_gst}" billing address')
@@ -1635,22 +1729,23 @@ def generate_targeted_address_queries(
             parsed = urllib.parse.urlparse(website_url)
             domain = parsed.netloc.lower().replace("www.", "")
             if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
-                queries.append(f'"{seller_name}" "{domain}" address')
+                queries.append(f'"{clean_name}" "{domain}" address')
                 queries.append(f'"{domain}" contact address')
         except Exception:
             pass
 
     # 4. General / variation queries
-    queries.append(f'"{seller_name}" address')
-    queries.append(f'"{seller_name}" office address')
-    queries.append(f'"{seller_name}" billing address')
-    queries.append(f'"{seller_name}" contact us address')
+    queries.append(f'"{clean_name}" address site:zaubacorp.com OR site:tofler.in')
+    queries.append(f'"{clean_name}" address')
+    queries.append(f'"{clean_name}" office address')
+    queries.append(f'"{clean_name}" billing address')
+    queries.append(f'"{clean_name}" contact us address')
 
     variations = generate_seller_variations(seller_name)
     for var in variations[1:3]:
         if len(var) >= 5:
-            if city:
-                queries.append(f'"{var}" "{city}" address')
+            if clean_city:
+                queries.append(f'"{var}" "{clean_city}" address')
             queries.append(f'"{var}" address')
 
     deduped: List[str] = []
@@ -1671,16 +1766,12 @@ def generate_targeted_pincode_queries(
     gst_number: Optional[str] = None,
     website_url: Optional[str] = None,
 ) -> List[str]:
-    """Generate prioritized targeted pincode search queries (Requirement 8).
+    """Generate prioritized targeted pincode search queries (Requirement 8)."""
+    clean_name = clean_seller_name(seller_name)
+    clean_city = _sanitize_location_term(city)
+    clean_state = _sanitize_location_term(state)
+    clean_loc = _sanitize_location_term(location)
 
-    - "{seller_name}" "{city}" "{state}" pincode
-    - "{seller_name}" "{city}" pincode
-    - "{address}" pincode
-    - "{street}" "{city}" pincode
-    - "{locality}" "{city}" "{state}" pincode
-    - If GSTIN exists: "{GSTIN}" address pincode, "{GSTIN}" pincode
-    - If domain exists: "{seller_name}" "{domain}" address, "{domain}" pincode
-    """
     queries: List[str] = []
 
     # 1. Address / Street / Locality specific queries (Most targeted)
@@ -1692,23 +1783,23 @@ def generate_targeted_pincode_queries(
             short_addr = clean_addr[:60].strip(" ,.-")
             queries.append(f'"{short_addr}" pincode')
 
-    if street and city:
-        queries.append(f'"{street}" "{city}" pincode')
-    if locality and city:
-        if state:
-            queries.append(f'"{locality}" "{city}" "{state}" pincode')
-        queries.append(f'"{locality}" "{city}" pincode')
+    if street and clean_city:
+        queries.append(f'"{street}" "{clean_city}" pincode')
+    if locality and clean_city:
+        if clean_state:
+            queries.append(f'"{locality}" "{clean_city}" "{clean_state}" pincode')
+        queries.append(f'"{locality}" "{clean_city}" pincode')
 
     # 2. Seller + City + State queries
-    if city and state and city.lower() != state.lower():
-        queries.append(f'"{seller_name}" "{city}" "{state}" pincode')
-    if city:
-        queries.append(f'"{seller_name}" "{city}" pincode')
-        queries.append(f'"{seller_name}" "{city}" postal code')
+    if clean_city and clean_state and clean_city.lower() != clean_state.lower():
+        queries.append(f'"{clean_name}" "{clean_city}" "{clean_state}" pincode')
+    if clean_city:
+        queries.append(f'"{clean_name}" "{clean_city}" pincode')
+        queries.append(f'"{clean_name}" "{clean_city}" postal code')
 
-    loc_val = location or city
-    if loc_val and (not city or loc_val.lower() != city.lower()):
-        queries.append(f'"{seller_name}" "{loc_val}" pincode')
+    loc_val = clean_loc or clean_city
+    if loc_val and (not clean_city or loc_val.lower() != clean_city.lower()):
+        queries.append(f'"{clean_name}" "{loc_val}" pincode')
 
     # 3. GSTIN-anchored queries
     if gst_number:
@@ -1716,7 +1807,7 @@ def generate_targeted_pincode_queries(
         if valid_gst:
             queries.append(f'"{valid_gst}" address pincode')
             queries.append(f'"{valid_gst}" pincode')
-            queries.append(f'"{seller_name}" "{valid_gst}" pincode')
+            queries.append(f'"{clean_name}" "{valid_gst}" pincode')
 
     # 4. Domain-anchored queries
     if website_url:
@@ -1724,15 +1815,16 @@ def generate_targeted_pincode_queries(
             parsed = urllib.parse.urlparse(website_url)
             domain = parsed.netloc.lower().replace("www.", "")
             if domain and not any(ed in domain for ed in EXCLUDED_WEBSITE_DOMAINS):
-                queries.append(f'"{seller_name}" "{domain}" address')
+                queries.append(f'"{clean_name}" "{domain}" address')
                 queries.append(f'"{domain}" pincode')
         except Exception:
             pass
 
     # 5. General fallback
-    if state and (not city or state.lower() != city.lower()):
-        queries.append(f'"{seller_name}" "{state}" pincode')
-    queries.append(f'"{seller_name}" pincode')
+    if clean_state and (not clean_city or clean_state.lower() != clean_city.lower()):
+        queries.append(f'"{clean_name}" "{clean_state}" pincode')
+    queries.append(f'"{clean_name}" pincode site:zaubacorp.com OR site:tofler.in')
+    queries.append(f'"{clean_name}" pincode')
 
     deduped: List[str] = []
     for q in queries:
@@ -1750,52 +1842,54 @@ def generate_identity_queries_for_field(
     gst_number: Optional[str] = None,
     website_url: Optional[str] = None,
 ) -> List[str]:
-    """Generate prioritized identity-anchored search queries using seller signals.
+    """Generate prioritized identity-anchored search queries using seller signals."""
+    clean_name = clean_seller_name(seller_name)
+    clean_city = _sanitize_location_term(city)
+    clean_state = _sanitize_location_term(state)
+    clean_loc = _sanitize_location_term(location)
 
-    Incorporates seller location (city, state, location) and known GSTIN.
-    """
     canonical_key = _normalize_field_key(field_key)
     if canonical_key == "gst":
         return generate_targeted_gst_queries(
             seller_name=seller_name,
-            city=city,
-            state=state,
-            location=location,
+            city=clean_city,
+            state=clean_state,
+            location=clean_loc,
             website_url=website_url,
         )
     if canonical_key == "phone":
         return generate_targeted_phone_queries(
             seller_name=seller_name,
-            city=city,
-            state=state,
-            location=location,
+            city=clean_city,
+            state=clean_state,
+            location=clean_loc,
             gst_number=gst_number,
             website_url=website_url,
         )
     if canonical_key == "email":
         return generate_targeted_email_queries(
             seller_name=seller_name,
-            city=city,
-            state=state,
-            location=location,
+            city=clean_city,
+            state=clean_state,
+            location=clean_loc,
             gst_number=gst_number,
             website_url=website_url,
         )
     if canonical_key in ("address", "billing_address", "raw_address"):
         return generate_targeted_address_queries(
             seller_name=seller_name,
-            city=city,
-            state=state,
-            location=location,
+            city=clean_city,
+            state=clean_state,
+            location=clean_loc,
             gst_number=gst_number,
             website_url=website_url,
         )
     if canonical_key in ("pincode", "postal_code"):
         return generate_targeted_pincode_queries(
             seller_name=seller_name,
-            city=city,
-            state=state,
-            location=location,
+            city=clean_city,
+            state=clean_state,
+            location=clean_loc,
             gst_number=gst_number,
             website_url=website_url,
         )
@@ -1807,43 +1901,43 @@ def generate_identity_queries_for_field(
         valid_gst = validate_gst(gst_number)
         if canonical_key == "email":
             queries.extend([
-                f'"{seller_name}" "{valid_gst}" email',
+                f'"{clean_name}" "{valid_gst}" email',
                 f'"{valid_gst}" email',
                 f'"{valid_gst}" contact',
                 f'"{valid_gst}" website',
-                f'"{valid_gst}" "{seller_name}" contact',
+                f'"{valid_gst}" "{clean_name}" contact',
             ])
         elif canonical_key == "address":
             queries.extend([
-                f'"{seller_name}" "{valid_gst}" address',
+                f'"{clean_name}" "{valid_gst}" address',
                 f'"{valid_gst}" address',
             ])
         elif canonical_key == "website":
             queries.extend([
-                f'"{seller_name}" "{valid_gst}" website',
+                f'"{clean_name}" "{valid_gst}" website',
                 f'"{valid_gst}" website',
             ])
 
     # 2. Location-anchored queries (City / State / Location known)
-    loc_val = city or location
+    loc_val = clean_city or clean_loc
     if loc_val:
         if canonical_key == "gst":
-            queries.append(f'"{seller_name}" "{loc_val}" GST')
-            if state and state.lower() != loc_val.lower():
-                queries.append(f'"{seller_name}" "{state}" GST')
-            queries.append(f'"{seller_name}" "{loc_val}" GSTIN')
+            queries.append(f'"{clean_name}" "{loc_val}" GST')
+            if clean_state and clean_state.lower() != loc_val.lower():
+                queries.append(f'"{clean_name}" "{clean_state}" GST')
+            queries.append(f'"{clean_name}" "{loc_val}" GSTIN')
         elif canonical_key == "email":
-            queries.append(f'"{seller_name}" "{loc_val}" email')
-            queries.append(f'"{seller_name}" "{loc_val}" contact email')
-            if state and state.lower() != loc_val.lower():
-                queries.append(f'"{seller_name}" "{state}" contact')
+            queries.append(f'"{clean_name}" "{loc_val}" email')
+            queries.append(f'"{clean_name}" "{loc_val}" contact email')
+            if clean_state and clean_state.lower() != loc_val.lower():
+                queries.append(f'"{clean_name}" "{clean_state}" contact')
         elif canonical_key == "address":
-            queries.append(f'"{seller_name}" "{loc_val}" address')
-            if state and state.lower() != loc_val.lower():
-                queries.append(f'"{seller_name}" "{state}" address')
+            queries.append(f'"{clean_name}" "{loc_val}" address')
+            if clean_state and clean_state.lower() != loc_val.lower():
+                queries.append(f'"{clean_name}" "{clean_state}" address')
         elif canonical_key == "website":
-            queries.append(f'"{seller_name}" "{loc_val}" official website')
-            queries.append(f'"{seller_name}" "{loc_val}" website')
+            queries.append(f'"{clean_name}" "{loc_val}" official website')
+            queries.append(f'"{clean_name}" "{loc_val}" website')
 
     # 3. Add base targeted queries
     base_queries = generate_targeted_queries_for_field(seller_name, canonical_key)
@@ -1884,15 +1978,70 @@ def evaluate_result_candidate(
     combined = f"{text} {url}".lower()
     url_lower = url.lower()
 
-    # 1. Source Classification
+    # 1. Immediate rejection for disallowed / blacklisted domains
+    if any(ed in url_lower for ed in DISALLOWED_DOMAINS):
+        return {
+            "title": title,
+            "url": url,
+            "snippet": snippet,
+            "source_type": "BLACKLISTED",
+            "seller_match_score": 0,
+            "match_reason": "DISALLOWED_DOMAIN",
+            "matched_var": seller_name,
+            "field_relevance_score": 0,
+            "candidate_validity_score": 0,
+            "source_quality_score": 0,
+            "total_confidence": 0,
+            "raw_candidate": None,
+            "valid_candidate_val": None,
+            "decision": "REJECT",
+            "reject_reason": "DISALLOWED_DOMAIN",
+        }
+
+    # 2. Core Distinctive Token Check
+    clean_seller_val = clean_seller_name(seller_name).lower()
+    stopwords = {
+        "pvt", "ltd", "limited", "private", "enterprises", "enterprise", "company",
+        "india", "retail", "store", "online", "shop", "trading", "group", "the",
+        "and", "co", "corp", "corporation", "llp", "industries", "industry",
+        "collection", "collections", "creation", "creations", "fashion", "fashions",
+        "clothing", "cloth", "textiles", "textile", "international", "products", "services"
+    }
+    raw_tokens = re.findall(r"[a-zA-Z0-9]+", clean_seller_val)
+    core_tokens = [t for t in raw_tokens if len(t) >= 3 and t not in stopwords]
+    if not core_tokens:
+        core_tokens = [t for t in raw_tokens if len(t) >= 3]
+
+    if core_tokens:
+        has_core = any(re.search(r"\b" + re.escape(t) + r"\b", combined) or t in url_lower for t in core_tokens)
+        if not has_core:
+            return {
+                "title": title,
+                "url": url,
+                "snippet": snippet,
+                "source_type": "UNASSOCIATED",
+                "seller_match_score": 0,
+                "match_reason": "SELLER_MISMATCH",
+                "matched_var": seller_name,
+                "field_relevance_score": 0,
+                "candidate_validity_score": 0,
+                "source_quality_score": 0,
+                "total_confidence": 0,
+                "raw_candidate": None,
+                "valid_candidate_val": None,
+                "decision": "REJECT",
+                "reject_reason": "SELLER_MISMATCH",
+            }
+
+    # 3. Source Classification
     source_type, source_quality_score = classify_source_type(url, title, snippet)
 
-    # 2. Seller Association Matching
+    # 4. Seller Association Matching
     seller_match_score, match_reason, matched_var = calculate_seller_match_score(
         seller_name, text, url
     )
 
-    # 3. Disallowed Source Rejection
+    # 5. Disallowed Source Rejection
     disallowed, dis_reason = is_disallowed_source(source_type, seller_match_score, seller_name, url)
     if disallowed:
         return {
@@ -1916,7 +2065,7 @@ def evaluate_result_candidate(
     # Normalize field key
     field_norm = _normalize_field_key(field_attr)
 
-    # 4. Field Keyword Relevance Check
+    # 6. Field Keyword Relevance Check
     kw_list = FIELD_KEYWORDS.get(field_attr, []) or FIELD_KEYWORDS.get(field_norm, [])
     has_field_kw = any(re.search(r"\b" + re.escape(kw) + r"\b", combined) or kw in combined for kw in kw_list) if kw_list else True
     field_relevance_score = 90 if has_field_kw else 25
@@ -1927,7 +2076,7 @@ def evaluate_result_candidate(
     elif seller_match_score >= 80 and not any(d in url_lower for d in EXCLUDED_WEBSITE_DOMAINS):
         source_quality_score = max(source_quality_score, 85)
 
-    # 5. Extract Candidate & Validity Score
+    # 7. Extract Candidate & Validity Score
     raw_candidate = None
     valid_candidate_val = None
     candidate_validity_score = 0
@@ -2069,7 +2218,7 @@ def evaluate_result_candidate(
     if valid_candidate_val:
         field_relevance_score = max(field_relevance_score, 90)
 
-    # 6. Composite Confidence Score
+    # 8. Composite Confidence Score
     total_confidence = int(
         seller_match_score * 0.40
         + field_relevance_score * 0.20
@@ -2077,7 +2226,7 @@ def evaluate_result_candidate(
         + source_quality_score * 0.15
     )
 
-    # 7. Decision & Reject Reason
+    # 9. Decision & Reject Reason
     if candidate_reject_reason:
         decision = "REJECT"
         reject_reason = candidate_reject_reason
@@ -2175,7 +2324,7 @@ class WebResearchEngine:
                 "Sec-Fetch-User": "?1",
                 "Upgrade-Insecure-Requests": "1",
             }
-            url = f"https://www.google.com/search?q={urllib.parse.quote_plus(query)}&hl=en&gl=in&num=10"
+            url = f"https://www.google.com/search?q={urllib.parse.quote_plus(query)}&hl=en&gl=in&num=10&safe=active"
             resp = await self.client.get(url, headers=headers, timeout=8.0)
             status_code = resp.status_code
 
@@ -2246,7 +2395,7 @@ class WebResearchEngine:
                 "Sec-Fetch-User": "?1",
                 "Upgrade-Insecure-Requests": "1",
             }
-            bing_url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(query)}&setlang=en-in&count=10"
+            bing_url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(query)}&setlang=en-in&count=10&safeSearch=Strict&adlt=strict"
             resp = await self.client.get(bing_url, headers=headers, timeout=8.0)
             status_code = resp.status_code
             if resp.status_code == 200:
@@ -2309,7 +2458,7 @@ class WebResearchEngine:
                     "Accept-Encoding": "gzip",
                     "X-Subscription-Token": brave_api_key,
                 }
-                resp = await self.client.get(api_url, params={"q": query, "count": 10}, headers=headers, timeout=8.0)
+                resp = await self.client.get(api_url, params={"q": query, "count": 10, "safesearch": "strict"}, headers=headers, timeout=8.0)
                 status_code = resp.status_code
                 if resp.status_code == 429:
                     retry_hdr = resp.headers.get("Retry-After", "")
@@ -2356,7 +2505,7 @@ class WebResearchEngine:
                 "Sec-Fetch-User": "?1",
                 "Upgrade-Insecure-Requests": "1",
             }
-            brave_url = f"https://search.brave.com/search?q={urllib.parse.quote_plus(query)}&source=web"
+            brave_url = f"https://search.brave.com/search?q={urllib.parse.quote_plus(query)}&source=web&safesearch=strict"
             resp = await self.client.get(brave_url, headers=headers, timeout=8.0)
             status_code = resp.status_code
             if resp.status_code == 429:
@@ -2429,7 +2578,7 @@ class WebResearchEngine:
             try:
                 def _do_ddgs():
                     with DDGS() as ddgs_client:
-                        return list(ddgs_client.text(query, max_results=8))
+                        return list(ddgs_client.text(query, max_results=8, safesearch="on"))
 
                 loop = asyncio.get_running_loop()
                 raw_items = await loop.run_in_executor(None, _do_ddgs)
@@ -2444,11 +2593,11 @@ class WebResearchEngine:
             except Exception as e:
                 logger.debug(f"DDGS query '{query}' exception: {e}")
 
-        # Fallback 1: DuckDuckGo HTML endpoint (POST)
+        # Fallback 1: DuckDuckGo HTML endpoint (POST) with kp=1 for SafeSearch
         try:
             resp = await self.client.post(
                 "https://html.duckduckgo.com/html/",
-                data={"q": query, "b": ""},
+                data={"q": query, "b": "", "kp": "1"},
                 headers={
                     "User-Agent": random.choice(USER_AGENTS),
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -2475,11 +2624,11 @@ class WebResearchEngine:
         except Exception as e:
             logger.debug(f"HTTP DDG HTML post fallback error: {e}")
 
-        # Fallback 2: DuckDuckGo Lite endpoint (POST/GET)
+        # Fallback 2: DuckDuckGo Lite endpoint (POST/GET) with kp=1 for SafeSearch
         try:
             resp_lite = await self.client.post(
                 "https://lite.duckduckgo.com/lite/",
-                data={"q": query},
+                data={"q": query, "kp": "1"},
                 headers={
                     "User-Agent": random.choice(USER_AGENTS),
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -3820,9 +3969,12 @@ class WebResearchEngine:
         field_source_urls: Dict[str, str] = {}
 
         # Extract anchor identity signals from seller_record if already present
-        city = seller_record.get("city")
-        state = seller_record.get("state")
-        location = seller_record.get("location") or seller_record.get("seller_location")
+        raw_city = seller_record.get("city")
+        raw_state = seller_record.get("state")
+        raw_location = seller_record.get("location") or seller_record.get("seller_location")
+        city = _sanitize_location_term(raw_city)
+        state = _sanitize_location_term(raw_state)
+        location = _sanitize_location_term(raw_location)
         pincode = seller_record.get("pincode")
 
         merged: Dict[str, Any] = {
@@ -3857,6 +4009,15 @@ class WebResearchEngine:
                 if src_url:
                     field_source_urls[field] = src_url
                 sources_used.add(src)
+
+        # Auto-derive PAN, State, and Business Model from GSTIN if present initially
+        if merged.get("gst_number"):
+            derived_gst = derive_from_gstin(merged["gst_number"])
+            if derived_gst.get("pan_number") and not merged.get("pan_number"):
+                _set_field("pan_number", derived_gst["pan_number"], "filing_registry", src_url="Derived from verified GSTIN")
+            if derived_gst.get("state") and not merged.get("state"):
+                _set_field("state", derived_gst["state"], "filing_registry", src_url="Derived from GST State Code")
+                state = derived_gst["state"]
 
         # Step 1: Find Official Website First
         candidate_urls: List[str] = []
@@ -3934,6 +4095,13 @@ class WebResearchEngine:
                     _set_field("contact_number", c_data.get("contact_number"), "company_website", src_url=candidate_url)
                     _set_field("email", c_data.get("email"), "company_website", src_url=candidate_url)
                     _set_field("owner_name", c_data.get("owner_name"), "company_website", src_url=candidate_url)
+                    if c_data.get("gst_number"):
+                        derived_gst = derive_from_gstin(c_data["gst_number"])
+                        if derived_gst.get("pan_number") and not merged.get("pan_number"):
+                            _set_field("pan_number", derived_gst["pan_number"], "filing_registry", src_url="Derived from verified GSTIN")
+                        if derived_gst.get("state") and not merged.get("state"):
+                            _set_field("state", derived_gst["state"], "filing_registry", src_url="Derived from GST State Code")
+                            state = derived_gst["state"]
                     if c_data.get("address"):
                         c_addr = normalize_address_text(c_data["address"])
                         matched, score, reason = match_address_to_seller(
@@ -4008,13 +4176,16 @@ class WebResearchEngine:
                 if gst_val:
                     _set_field("gst_number", gst_val, "marketplace_profile" if gst_src and "Flipkart" in gst_src else "targeted_search", src_url=gst_src)
                     v_g = validate_gst(gst_val)
-                    if v_g and not merged.get("pan_number"):
-                        pan_val = extract_pan_from_gstin(v_g)
-                        if pan_val:
-                            logger.info(f"\n[PAN FROM GST]\ngstin={v_g}\npan={pan_val}")
-                            logger.info(f"\n[PAN VALIDATION]\ngstin={v_g}\npan={pan_val}\nvalid=true")
-                            logger.info(f"\n[PAN ACCEPTED]\npan={pan_val}\nsource=verified_gstin")
-                            _set_field("pan_number", pan_val, "filing_registry", src_url="Derived from verified GSTIN")
+                    if v_g:
+                        derived_gst = derive_from_gstin(v_g)
+                        if derived_gst.get("pan_number") and not merged.get("pan_number"):
+                            logger.info(f"\n[PAN FROM GST]\ngstin={v_g}\npan={derived_gst['pan_number']}")
+                            logger.info(f"\n[PAN VALIDATION]\ngstin={v_g}\npan={derived_gst['pan_number']}\nvalid=true")
+                            logger.info(f"\n[PAN ACCEPTED]\npan={derived_gst['pan_number']}\nsource=verified_gstin")
+                            _set_field("pan_number", derived_gst["pan_number"], "filing_registry", src_url="Derived from verified GSTIN")
+                        if derived_gst.get("state") and not merged.get("state"):
+                            _set_field("state", derived_gst["state"], "filing_registry", src_url="Derived from GST State Code")
+                            state = derived_gst["state"]
                 continue
 
             # Dedicated Phone Enrichment flow
@@ -4131,9 +4302,12 @@ class WebResearchEngine:
                     if field_attr == "gst_number":
                         v_g = validate_gst(accepted_candidate)
                         if v_g:
-                            pan_val = extract_pan_from_gstin(v_g)
-                            if pan_val:
-                                _set_field("pan_number", pan_val, "filing_registry", src_url="Derived from verified GSTIN")
+                            derived_gst = derive_from_gstin(v_g)
+                            if derived_gst.get("pan_number") and not merged.get("pan_number"):
+                                _set_field("pan_number", derived_gst["pan_number"], "filing_registry", src_url="Derived from verified GSTIN")
+                            if derived_gst.get("state") and not merged.get("state"):
+                                _set_field("state", derived_gst["state"], "filing_registry", src_url="Derived from GST State Code")
+                                state = derived_gst["state"]
                     if field_attr == "raw_address":
                         parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
                         if parsed_addr.get("city") and not merged.get("city"):
@@ -4193,9 +4367,12 @@ class WebResearchEngine:
                         if field_attr == "gst_number":
                             v_g = validate_gst(accepted_candidate)
                             if v_g:
-                                pan_val = extract_pan_from_gstin(v_g)
-                                if pan_val:
-                                    _set_field("pan_number", pan_val, "filing_registry", src_url="Derived from verified GSTIN")
+                                derived_gst = derive_from_gstin(v_g)
+                                if derived_gst.get("pan_number") and not merged.get("pan_number"):
+                                    _set_field("pan_number", derived_gst["pan_number"], "filing_registry", src_url="Derived from verified GSTIN")
+                                if derived_gst.get("state") and not merged.get("state"):
+                                    _set_field("state", derived_gst["state"], "filing_registry", src_url="Derived from GST State Code")
+                                    state = derived_gst["state"]
                         if field_attr == "raw_address":
                             parsed_addr = parse_raw_address(str(accepted_candidate), gst_number=merged.get("gst_number"))
                             if parsed_addr.get("city") and not merged.get("city"):
@@ -4225,7 +4402,8 @@ class WebResearchEngine:
         business_model = "B2C / Retail"
         seller_lower = seller_name.lower()
         if merged.get("gst_number"):
-            business_model = "Proprietorship / Registered Business"
+            derived_gst = derive_from_gstin(merged["gst_number"])
+            business_model = derived_gst.get("business_model") or "Proprietorship / Registered Business"
         if "pvt ltd" in seller_lower or "private limited" in seller_lower:
             business_model = "Private Limited Company"
         elif "limited" in seller_lower or "ltd" in seller_lower:
@@ -4267,10 +4445,12 @@ class WebResearchEngine:
         }
         status = determine_seller_status(partial_record, confidence_dict)
 
-        # Assemble final record with internal keys AND the 18 EXACT required Excel columns
+        clean_name = clean_seller_name(seller_name) or seller_name
+
+        # Assemble final record with internal keys AND the 19 EXACT required Excel columns
         final_record: Dict[str, Any] = {
-            # 18 Exact Excel Headers
-            "Business Name": seller_name,
+            # 19 Exact Excel Headers
+            "Business Name": clean_name,
             "Business Model": business_model,
             "Business Category": business_category,
             "Owner Name": merged.get("owner_name"),
@@ -4280,17 +4460,22 @@ class WebResearchEngine:
             "PAN Number": merged.get("pan_number"),
             "FSSAI Number": merged.get("fssai_number"),
             "Billing Address": billing_address,
-            "x": seller_record.get("x") or seller_record.get("x_coord") or "",
             "City": final_city,
             "State": final_state,
             "Pincode": final_pincode,
             "Country": country,
             "Website URL": merged.get("website_url"),
+            "Product Rating": product_rating,
+            "Seller Rating": star_rating,
             "Status": status,
+            "Source": list(sources_used) if sources_used else ["search_query"],
+            "Rating": star_rating,
+            "Status Source": status,
             "Source rating": star_rating or seller_record.get("Source rating"),
 
             # Standard internal keys for backward compatibility
-            "seller_name": seller_name,
+            "seller_name": clean_name,
+            "raw_seller_name": seller_name,
             "marketplace": marketplace,
             "fulfillment_by": fulfillment_by,
             "product_url": product_url,

@@ -32,7 +32,7 @@ def test_live_excel_manager_immediate_save_and_update(tmp_path: Path):
     ws = wb.active
     assert ws.max_row == 2
     assert ws.cell(row=2, column=manager.header_col_map["Business Name"]).value == "IKAGIFOOTWEAR"
-    assert ws.cell(row=2, column=manager.header_col_map["Status Source"]).value == "ENRICHMENT_PENDING"
+    assert ws.cell(row=2, column=manager.header_col_map["Status"]).value == "ENRICHMENT_PENDING"
 
     # 2. Another seller added
     seller_2 = {
@@ -66,7 +66,7 @@ def test_live_excel_manager_immediate_save_and_update(tmp_path: Path):
 
     # Check updated fields
     assert ws2.cell(row=2, column=manager.header_col_map["GST Number"]).value == "27AAPFU0939F1ZV"
-    assert ws2.cell(row=2, column=manager.header_col_map["Status Source"]).value == "VERIFIED"
+    assert ws2.cell(row=2, column=manager.header_col_map["Status"]).value == "VERIFIED"
     assert ws2.cell(row=2, column=manager.header_col_map["Email Address"]).value == "contact@ikagi.in"
     assert ws2.cell(row=2, column=manager.header_col_map["Website URL"]).value == "https://ikagi.in"
 

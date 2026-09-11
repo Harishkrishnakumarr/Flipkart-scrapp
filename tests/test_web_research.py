@@ -336,11 +336,76 @@ def test_bing_and_brave_query_generation_bounds():
     for field in ["gst", "pan", "address", "phone", "email", "owner", "fssai", "website", "pincode"]:
         bing_qs = generate_bing_queries_for_field("CHARLIEINTERNATIONAL", field)
         assert len(bing_qs) == MAX_BING_QUERIES_PER_FIELD == 3
-        assert all("CHARLIEINTERNATIONAL" in q for q in bing_qs)
+        assert all("CHARLIE" in q and "INTERNATIONAL" in q for q in bing_qs)
 
         brave_qs = generate_brave_queries_for_field("CHARLIEINTERNATIONAL", field)
         assert len(brave_qs) == MAX_BRAVE_QUERIES_PER_FIELD == 2
-        assert all("CHARLIEINTERNATIONAL" in q for q in brave_qs)
+        assert all("CHARLIE" in q and "INTERNATIONAL" in q for q in brave_qs)
+
+
+def test_clean_seller_name_normalization():
+    """Verify seller name normalization strips vendor IDs, split camelCase, and cleans legal suffixes."""
+    from scraper.web_research import clean_seller_name
+
+    assert clean_seller_name("SiyaEnterprises0164") == "Siya Enterprises"
+    assert clean_seller_name("KSCOLLECTION07") == "KS COLLECTION"
+    assert clean_seller_name("REEPREECREATION") == "REEPREE CREATION"
+    assert clean_seller_name("REDTAPELIMITED") == "RED TAPE LIMITED"
+    assert clean_seller_name("Seller: Super Retailers 4.5 ★") == "Super Retailers"
+    assert clean_seller_name("sold by: Alpha Traders Pvt Ltd") == "Alpha Traders Pvt Ltd"
+
+
+def test_location_sanitization_and_product_keyword_rejection():
+    """Verify location parameter sanitization rejects product titles and categories."""
+    from scraper.web_research import _sanitize_location_term, generate_targeted_gst_queries
+
+    assert _sanitize_location_term("Begonia") is None
+    assert _sanitize_location_term("Plants") is None
+    assert _sanitize_location_term("shoes") is None
+    assert _sanitize_location_term("Surat") == "Surat"
+    assert _sanitize_location_term("Maharashtra") == "Maharashtra"
+    assert _sanitize_location_term("Delhi") == "Delhi"
+
+    # Ensure query generator does not inject product names into queries
+    queries = generate_targeted_gst_queries("SiyaEnterprises0164", city="Begonia", location="Plants")
+    assert not any("Begonia" in q for q in queries)
+    assert not any("Plants" in q for q in queries)
+    assert any('"Siya Enterprises"' in q for q in queries)
+
+
+def test_disallowed_domain_and_gaming_adult_blacklisting():
+    """Verify gaming wikis, OS sign-in pages, and adult websites are rejected early."""
+    from scraper.web_research import evaluate_result_candidate, score_search_result_relevance
+
+    disallowed_samples = [
+        {"title": "Microsoft Account Sign-In", "url": "https://login.live.com/login.srf", "snippet": "Sign in to your Microsoft account."},
+        {"title": "Path of Exile Wiki - Build Guide", "url": "https://poewiki.net/wiki/Begonia", "snippet": "Begonia is an item in PoE."},
+        {"title": "Game8 Walkthrough", "url": "https://game8.co/games/rpg/archives/123", "snippet": "Full boss strategy guide."},
+        {"title": "Adult Content Video", "url": "https://www.pornhub.com/view_video.php?viewkey=123", "snippet": "Watch online free videos."},
+    ]
+
+    for item in disallowed_samples:
+        score = score_search_result_relevance("Siya Enterprises", item)
+        assert score == 0
+
+        eval_res = evaluate_result_candidate("Siya Enterprises", "gst_number", item)
+        assert eval_res["decision"] == "REJECT"
+        assert eval_res["reject_reason"] in ("DISALLOWED_DOMAIN", "MISSING_CORE_TOKEN")
+
+
+def test_entity_relevance_core_token_requirement():
+    """Verify that search results missing any core tokens of the cleaned seller name are rejected."""
+    from scraper.web_research import evaluate_result_candidate
+
+    irrelevant_item = {
+        "title": "Universal Logistics and Cargo Services India",
+        "url": "https://www.universallogistics.in/about",
+        "snippet": "We provide domestic shipping and cargo across India. GSTIN 27AAACU1234F1ZV.",
+    }
+
+    eval_res = evaluate_result_candidate("Siya Enterprises", "gst_number", irrelevant_item)
+    assert eval_res["decision"] == "REJECT"
+    assert eval_res["reject_reason"] in ("MISSING_CORE_TOKEN", "SELLER_MISMATCH", "GST_SELLER_MISMATCH")
 
 
 @pytest.mark.asyncio

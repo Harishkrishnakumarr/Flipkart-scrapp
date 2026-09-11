@@ -354,10 +354,20 @@ class ScraperPipeline:
                                     p_url, input_row=task
                                 )
                                 seller_name = seller_info.get("seller_name")
-                                fulfillment_by = seller_info.get("fulfillment_by")
+                                legal_name = seller_info.get("legal_name")
+                                fulfillment_by = seller_info.get("fulfillment_by") or seller_info.get("fulfilled_by_seller")
                                 star_rating = seller_info.get("star_rating")
+                                seller_rating = seller_info.get("seller_rating") or star_rating
                                 product_rating = seller_info.get("product_rating")
-                                source_type = seller_info.get("seller_source_type")
+                                source_type = seller_info.get("seller_source_type") or "flipkart_product"
+                                billing_address = seller_info.get("billing_address") or seller_info.get("seller_location")
+                                city = seller_info.get("city")
+                                state = seller_info.get("state")
+                                pincode = seller_info.get("pincode")
+                                gst_num = seller_info.get("gst_number") or seller_info.get("gst")
+                                phone_num = seller_info.get("contact_number") or seller_info.get("phone")
+                                email_addr = seller_info.get("email")
+                                is_f_assured = seller_info.get("is_f_assured", False)
 
                                 if not seller_name:
                                     continue
@@ -370,19 +380,19 @@ class ScraperPipeline:
                                     raw_seller_name=seller_name,
                                     product_url=p_url,
                                     category_hierarchy=hierarchy,
-                                    star_rating=star_rating,
+                                    star_rating=seller_rating,
                                     fulfillment_by=fulfillment_by,
                                     marketplace="flipkart",
                                     product_rating=product_rating,
                                     seller_source_type=source_type,
                                     seller_url=seller_info.get("seller_url"),
-                                    seller_location=seller_info.get("seller_location"),
-                                    city=seller_info.get("city"),
-                                    state=seller_info.get("state"),
-                                    pincode=seller_info.get("pincode"),
-                                    contact_number=seller_info.get("contact_number") or seller_info.get("phone"),
-                                    email=seller_info.get("email"),
-                                    gst_number=seller_info.get("gst_number") or seller_info.get("gst"),
+                                    seller_location=billing_address,
+                                    city=city,
+                                    state=state,
+                                    pincode=pincode,
+                                    contact_number=phone_num,
+                                    email=email_addr,
+                                    gst_number=gst_num,
                                 )
 
                                 # 2. Check if this seller was already enriched in a previous run
@@ -394,34 +404,44 @@ class ScraperPipeline:
 
                                 # 3. Immediately write initial record to Excel (Status: ENRICHMENT_PENDING)
                                 initial_excel_data = {
+                                    "Business Name": seller_name,
                                     "seller_name": seller_name,
+                                    "legal_name": legal_name,
                                     "fulfillment_by": fulfillment_by,
                                     "marketplace": "flipkart",
+                                    "Status": STATUS_ENRICHMENT_PENDING,
                                     "status": STATUS_ENRICHMENT_PENDING,
                                     "product_url": p_url,
                                     "category": cat,
                                     "sub_category": sub_cat,
                                     "sub_sub_category": sub_sub_cat,
                                     "sub_sub_subcategory": sub_sub_sub_cat,
+                                    "Business Category": f"{cat} > {sub_cat}" if (cat and sub_cat) else (cat or ""),
+                                    "Product Rating": product_rating,
+                                    "Seller Rating": seller_rating,
                                     "product_rating": product_rating,
-                                    "seller_rating": star_rating,
-                                    "star_rating": star_rating,
+                                    "seller_rating": seller_rating,
+                                    "star_rating": seller_rating,
                                     "seller_source_url": p_url,
-                                    "seller_source_type": source_type or "flipkart_product",
+                                    "seller_source_type": source_type,
+                                    "Source": source_type,
                                     "seller_url": seller_info.get("seller_url"),
-                                    "seller_location": seller_info.get("seller_location"),
-                                    "city": seller_info.get("city"),
-                                    "state": seller_info.get("state"),
-                                    "pincode": seller_info.get("pincode"),
-                                    "contact_number": seller_info.get("contact_number") or seller_info.get("phone"),
-                                    "phone": seller_info.get("contact_number") or seller_info.get("phone"),
-                                    "Phone Number": seller_info.get("contact_number") or seller_info.get("phone"),
-                                    "email": seller_info.get("email"),
-                                    "Email Address": seller_info.get("email"),
-                                    "City": seller_info.get("city"),
-                                    "State": seller_info.get("state"),
-                                    "Pincode": seller_info.get("pincode"),
-                                    "Billing Address": seller_info.get("seller_location"),
+                                    "seller_location": billing_address,
+                                    "Billing Address": billing_address,
+                                    "city": city,
+                                    "City": city,
+                                    "state": state,
+                                    "State": state,
+                                    "pincode": pincode,
+                                    "Pincode": pincode,
+                                    "contact_number": phone_num,
+                                    "phone": phone_num,
+                                    "Phone Number": phone_num,
+                                    "email": email_addr,
+                                    "Email Address": email_addr,
+                                    "gst_number": gst_num,
+                                    "GST Number": gst_num,
+                                    "Country": "India",
                                 }
 
                                 row_num = self.excel_manager.write_or_update_seller(initial_excel_data)
@@ -436,29 +456,37 @@ class ScraperPipeline:
                                 generic_record = {
                                     "marketplace": "flipkart",
                                     "seller_name": seller_name,
+                                    "legal_name": legal_name,
                                     "fulfillment_by": fulfillment_by,
                                     "product_url": p_url,
                                     "seller_source_url": p_url,
-                                    "seller_source_type": source_type or "flipkart_product",
+                                    "seller_source_type": source_type,
                                     "category": cat or "E-Commerce Retail",
                                     "sub_category": sub_cat,
                                     "sub_sub_category": sub_sub_cat,
                                     "sub_sub_subcategory": sub_sub_sub_cat,
-                                    "star_rating": star_rating,
+                                    "star_rating": seller_rating,
+                                    "seller_rating": seller_rating,
                                     "product_rating": product_rating,
                                     "seller_confidence": seller_info.get("seller_confidence", 0.95),
                                     "seller_url": seller_info.get("seller_url"),
-                                    "seller_location": seller_info.get("seller_location"),
-                                    "city": seller_info.get("city"),
-                                    "state": seller_info.get("state"),
-                                    "pincode": seller_info.get("pincode"),
-                                    "contact_number": seller_info.get("contact_number") or seller_info.get("phone"),
-                                    "phone": seller_info.get("contact_number") or seller_info.get("phone"),
-                                    "Phone Number": seller_info.get("contact_number") or seller_info.get("phone"),
-                                    "email": seller_info.get("email"),
-                                    "Email Address": seller_info.get("email"),
-                                    "gst_number": seller_info.get("gst_number") or seller_info.get("gst"),
-                                    "GST Number": seller_info.get("gst_number") or seller_info.get("gst"),
+                                    "seller_location": billing_address,
+                                    "billing_address": billing_address,
+                                    "Billing Address": billing_address,
+                                    "city": city,
+                                    "City": city,
+                                    "state": state,
+                                    "State": state,
+                                    "pincode": pincode,
+                                    "Pincode": pincode,
+                                    "contact_number": phone_num,
+                                    "phone": phone_num,
+                                    "Phone Number": phone_num,
+                                    "email": email_addr,
+                                    "Email Address": email_addr,
+                                    "gst_number": gst_num,
+                                    "GST Number": gst_num,
+                                    "is_f_assured": is_f_assured,
                                 }
 
                                 enriched_data = await self.enrich_seller(generic_record)

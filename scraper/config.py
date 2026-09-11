@@ -48,8 +48,10 @@ OUTPUT_EXCEL_COLUMNS: List[str] = [
     "Pincode",             # 13 — 6-digit Indian postal code
     "Country",             # 14 — Default: India
     "Website URL",         # 15 — Official company website
-    "Status Source",       # 16 — VERIFIED / PARTIALLY_VERIFIED / NEEDS_REVIEW / NOT_FOUND
-    "Rating",              # 17 — Flipkart seller star rating (e.g. 4.2)
+    "Product Rating",      # 16 — Flipkart product rating (e.g. 4.2)
+    "Seller Rating",       # 17 — Flipkart seller rating (e.g. 4.5)
+    "Status",              # 18 — ENRICHMENT_PENDING / VERIFIED / PARTIALLY_VERIFIED
+    "Source",              # 19 — Source platforms used
 ]
 
 # Verification Statuses

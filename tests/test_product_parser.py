@@ -442,3 +442,64 @@ def test_modern_flipkart_product_and_seller_rating():
     assert res["is_f_assured"] is True
 
 
+def test_parse_address_fields_direct():
+    """Verify parse_address_fields correctly extracts state, pincode, and city."""
+    from scraper.product_parser import parse_address_fields
+
+    raw = "FLAT NO 402, GREEN VALLEY APARTMENTS, WHITEFIELD, BENGALURU, KARNATAKA - 560066"
+    parsed = parse_address_fields(raw)
+    assert parsed["pincode"] == "560066"
+    assert parsed["state"] == "Karnataka"
+    assert parsed["city"] == "Bengaluru"
+    assert parsed["billing_address"] == raw
+
+    # Fallback to GSTIN state when address string lacks state name
+    raw_no_state = "SHOP NO 12, MARKET ROAD - 400001"
+    parsed2 = parse_address_fields(raw_no_state, gst_number="27AAPFU0939F1ZV")
+    assert parsed2["pincode"] == "400001"
+    assert parsed2["state"] == "Maharashtra"
+
+
+def test_extract_seller_and_ratings_from_page():
+    """Verify extract_seller_and_ratings extracts all required fields without contamination."""
+    from scraper.product_parser import extract_seller_and_ratings
+
+    html = """
+    <html>
+      <body>
+        <div class="product-title">Nike Air Max</div>
+        <div class="XQDdHH">4.5 ★</div>
+        <span class="Wphh3K">5,000 Ratings</span>
+        <div id="sellerName">
+          <span>RetailKing Pvt Ltd</span>
+          <div class="_1RLviY">4.7 ★</div>
+        </div>
+        <img src="/plus_badge.png" alt="Plus" />
+        <script>
+          window.__INITIAL_STATE__ = {
+            "pageDataV4": {
+              "sellerInfo": {
+                "legalName": "RetailKing Private Limited",
+                "gstin": "29ABCDE1234F1Z5",
+                "sellerRating": 4.7,
+                "address": "Brigade Road, Bengaluru, Karnataka 560001"
+              }
+            }
+          };
+        </script>
+      </body>
+    </html>
+    """
+    res = extract_seller_and_ratings(html, "https://www.flipkart.com/nike/p/itm123")
+    assert res["seller_name"] == "RetailKing Pvt Ltd"
+    assert res["legal_name"] == "RetailKing Private Limited"
+    assert res["gst_number"] == "29ABCDE1234F1Z5"
+    assert res["product_rating"] == 4.5
+    assert res["seller_rating"] == 4.7
+    assert res["is_f_assured"] is True
+    assert res["state"] == "Karnataka"
+    assert res["pincode"] == "560001"
+    assert res["city"] == "Bengaluru"
+
+
+

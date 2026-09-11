@@ -1056,7 +1056,7 @@ SOURCE_TYPE_WEIGHTS: Dict[str, int] = {
 
 # Domains mapped directly to their source type
 _DISALLOWED_DOMAIN_MAP: Dict[str, str] = {
-    # Tools / translate
+    # Tools / translate / portals
     "translate.google.com": "TOOL_OR_UTILITY",
     "translate.google.co.in": "TOOL_OR_UTILITY",
     "google.com": "TOOL_OR_UTILITY",
@@ -1065,6 +1065,13 @@ _DISALLOWED_DOMAIN_MAP: Dict[str, str] = {
     "yahoo.com": "TOOL_OR_UTILITY",
     "duckduckgo.com": "TOOL_OR_UTILITY",
     "wolfram.com": "TOOL_OR_UTILITY",
+    "microsoft.com": "TOOL_OR_UTILITY",
+    "live.com": "TOOL_OR_UTILITY",
+    "office.com": "TOOL_OR_UTILITY",
+    "office365.com": "TOOL_OR_UTILITY",
+    "login.microsoftonline.com": "TOOL_OR_UTILITY",
+    "msn.com": "TOOL_OR_UTILITY",
+    "outlook.com": "TOOL_OR_UTILITY",
     # US/non-India government — unrelated to Indian business registration
     "uscourts.gov": "UNRELATED_COMPANY",
     "pacer.uscourts.gov": "UNRELATED_COMPANY",
@@ -1072,10 +1079,31 @@ _DISALLOWED_DOMAIN_MAP: Dict[str, str] = {
     "wikipedia.org": "WIKIPEDIA",
     "wikimedia.org": "WIKIPEDIA",
     "wikidata.org": "WIKIPEDIA",
+    # Gaming & wikis
+    "game8.co": "TOOL_OR_UTILITY",
+    "maxroll.gg": "TOOL_OR_UTILITY",
+    "mobalytics.gg": "TOOL_OR_UTILITY",
+    "fandom.com": "TOOL_OR_UTILITY",
+    "ign.com": "TOOL_OR_UTILITY",
+    "steampowered.com": "TOOL_OR_UTILITY",
+    "roblox.com": "TOOL_OR_UTILITY",
+    "twitch.tv": "TOOL_OR_UTILITY",
+    "pathofexile.com": "TOOL_OR_UTILITY",
+    "poewiki.net": "TOOL_OR_UTILITY",
+    "gamefaqs.gamespot.com": "TOOL_OR_UTILITY",
+    # Adult sites
+    "pornhub.com": "UNRELATED_COMPANY",
+    "myporntube.com": "UNRELATED_COMPANY",
+    "xvideos.com": "UNRELATED_COMPANY",
+    "xnxx.com": "UNRELATED_COMPANY",
+    "redtube.com": "UNRELATED_COMPANY",
+    "youporn.com": "UNRELATED_COMPANY",
+    "chaturbate.com": "UNRELATED_COMPANY",
+    "stripchat.com": "UNRELATED_COMPANY",
+    "adultwork.com": "UNRELATED_COMPANY",
     # Major unrelated tech / corporate companies
     "logitech.com": "UNRELATED_COMPANY",
     "apple.com": "UNRELATED_COMPANY",
-    "microsoft.com": "UNRELATED_COMPANY",
     "samsung.com": "UNRELATED_COMPANY",
     "sony.com": "UNRELATED_COMPANY",
     "intel.com": "UNRELATED_COMPANY",
