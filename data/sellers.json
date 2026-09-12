@@ -18026,12 +18026,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "VParents",
     "product_urls": [
-      "https://www.flipkart.com/vparents-romper-baby-boys-girls-printed-striped-pure-cotton/p/itmdcd7d43dbdf0e?pid=KDRGASVPEMWCADMD"
+      "https://www.flipkart.com/vparents-romper-baby-boys-girls-printed-striped-pure-cotton/p/itmdcd7d43dbdf0e?pid=KDRGASVPEMWCADMD",
+      "https://www.flipkart.com/vparents-underwear-baby-3layer-padded-pottytraining-diaper-free-time/p/itm856dcc308be0e?pid=NPYH6WKY5959YZZB"
     ],
     "categories": [
-      "Snowsuits"
+      "Snowsuits",
+      "Swim Nappies"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -18045,7 +18047,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T19:00:31.820611+00:00",
-    "last_seen": "2026-09-08T19:00:31.820611+00:00",
+    "last_seen": "2026-09-12T15:13:00.410911+00:00",
     "last_enriched": "2026-09-08T19:00:44.211944+00:00",
     "enriched_data": {
       "Business Name": "VParents",
@@ -49559,12 +49561,14 @@
     "product_urls": [
       "https://www.flipkart.com/mje-men-women-solid-ankle-length-peds-footie-no-show/p/itm9534cff284dcd?pid=SOCHF6TFVJHZRQW2",
       "https://www.flipkart.com/mje-men-solid-low-cut/p/itm7b3291a144da8?pid=SOCHF3ZGMCYCQRUD",
-      "https://www.flipkart.com/mje-men-solid-low-cut/p/itm6433dc715b6c3?pid=SOCHF3ZFZZGTVWGV"
+      "https://www.flipkart.com/mje-men-solid-low-cut/p/itm6433dc715b6c3?pid=SOCHF3ZFZZGTVWGV",
+      "https://www.flipkart.com/mje-men-women-solid-ankle-length-peds-footie-no-show/p/itmd0ddedaa339fb?pid=SOCHF6TQHYJZCC57"
     ],
     "categories": [
-      "Socks"
+      "Socks",
+      "Accessories > Socks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.6,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -49578,7 +49582,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:20:20.846514+00:00",
-    "last_seen": "2026-09-09T10:23:43.137323+00:00",
+    "last_seen": "2026-09-12T15:21:51.120872+00:00",
     "last_enriched": "2026-09-09T10:20:41.548050+00:00",
     "enriched_data": {
       "Business Name": "MjeSocks",
@@ -49916,26 +49920,29 @@
     "fulfillment_by": "Bahuzo",
     "product_urls": [
       "https://www.flipkart.com/bahuzo-men-checkered-striped-ankle-length/p/itm8179cbb872a0d?pid=SOCHGAGFMWJBXSAB",
-      "https://www.flipkart.com/bahuzo-men-color-block-ankle-length-low-cut/p/itm37c72ea0cf6bb?pid=SOCH8MSZNVPYJWQG"
+      "https://www.flipkart.com/bahuzo-men-color-block-ankle-length-low-cut/p/itm37c72ea0cf6bb?pid=SOCH8MSZNVPYJWQG",
+      "https://www.flipkart.com/bahuzo-men-printed-ankle-length/p/itm2f989c2b0f932?pid=SOCHZY7XESNBSB4P",
+      "https://www.flipkart.com/bahuzo-unisex-self-design-solid-ankle-length/p/itm57409aacf566a?pid=SOCHCGRZMVCP9M24"
     ],
     "categories": [
-      "Socks"
+      "Socks",
+      "Accessories > Socks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.8,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
     "seller_url": "https://www.flipkart.com/sellers?pid=SOCHGAGFMWJBXSAB",
     "seller_location": "Flipkart Internet Private Limited, Buildings Alyssa, Begonia",
     "city": "Begonia",
-    "state": null,
+    "state": "Uttarakhand",
     "pincode": null,
     "contact_number": null,
     "phone": null,
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:21:56.127654+00:00",
-    "last_seen": "2026-09-09T10:26:11.136873+00:00",
+    "last_seen": "2026-09-12T15:22:02.698368+00:00",
     "last_enriched": "2026-09-09T10:22:16.291567+00:00",
     "enriched_data": {
       "Business Name": "Bahuzo",
@@ -50393,12 +50400,14 @@
     "marketplace": "flipkart",
     "fulfillment_by": "oddpair",
     "product_urls": [
-      "https://www.flipkart.com/oddpair-men-women-ankle-length/p/itm1afaf0990af9f?pid=SOCHZWGYARHFQT5N"
+      "https://www.flipkart.com/oddpair-men-women-ankle-length/p/itm1afaf0990af9f?pid=SOCHZWGYARHFQT5N",
+      "https://www.flipkart.com/oddpair-men-women-solid-ankle-length/p/itmd9b3d61f12613?pid=SOCHZZM8XBNMTX5D"
     ],
     "categories": [
-      "Socks"
+      "Socks",
+      "Accessories > Socks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 3.7,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -50412,7 +50421,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:24:30.645208+00:00",
-    "last_seen": "2026-09-09T10:24:30.645208+00:00",
+    "last_seen": "2026-09-12T15:22:14.219122+00:00",
     "last_enriched": "2026-09-09T10:24:51.233000+00:00",
     "enriched_data": {
       "Business Name": "oddpair",
@@ -50519,9 +50528,10 @@
       "https://www.flipkart.com/hicode-unisex-graphic-print-printed-mid-calf-crew/p/itm7647a5c0a6f71?pid=SOCHF7C7RWBZY77B"
     ],
     "categories": [
-      "Socks"
+      "Socks",
+      "Accessories > Socks"
     ],
-    "star_rating": null,
+    "star_rating": 1.0,
     "product_rating": 4.0,
     "seller_source_type": "fulfillment_label",
     "seller_confidence": 0.95,
@@ -50535,7 +50545,7 @@
     "email": null,
     "enrichment_status": "completed",
     "first_seen": "2026-09-09T10:25:03.388667+00:00",
-    "last_seen": "2026-09-09T10:27:07.149197+00:00",
+    "last_seen": "2026-09-12T15:20:18.429211+00:00",
     "last_enriched": "2026-09-09T10:25:24.520996+00:00",
     "enriched_data": {
       "Business Name": "parishitradingcompany",
@@ -85182,9 +85192,107 @@
     "contact_number": null,
     "phone": null,
     "email": null,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-09-11T10:17:24.326937+00:00",
-    "last_seen": "2026-09-11T10:17:24.326937+00:00"
+    "last_seen": "2026-09-11T10:17:24.326937+00:00",
+    "last_enriched": "2026-09-12T15:23:59.727490+00:00",
+    "enriched_data": {
+      "Business Name": "Boat Lifestyle",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": "careers@imaginemarketingindia.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Road, Mumbai, Maharashtra-400093",
+      "City": "Mumbai",
+      "State": "Maharashtra",
+      "Pincode": "400093",
+      "Country": "India",
+      "Website URL": "https://www.boat-lifestyle.com",
+      "Product Rating": null,
+      "Seller Rating": 4.5,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "company_website"
+      ],
+      "Rating": 4.5,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 4.5,
+      "seller_name": "Boat Lifestyle",
+      "raw_seller_name": "Boat Lifestyle",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/boat-airdopes-131-bluetooth-headset/p/itm123",
+      "seller_source_url": "https://www.flipkart.com/boat-airdopes-131-bluetooth-headset/p/itm123",
+      "seller_source_type": "flipkart_product",
+      "category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": null,
+      "seller_rating": 4.5,
+      "star_rating": 4.5,
+      "business_model": "B2C / Retail",
+      "business_category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "owner_name": null,
+      "contact_number": null,
+      "email": "careers@imaginemarketingindia.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Road, Mumbai, Maharashtra-400093",
+      "shipping_address": "Road, Mumbai, Maharashtra-400093",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400093",
+      "country": "India",
+      "website_url": "https://www.boat-lifestyle.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": "careers@imaginemarketingindia.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://www.boat-lifestyle.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Road, Mumbai, Maharashtra-400093",
+          "confidence": 0.85,
+          "source": "company_website"
+        }
+      },
+      "seller_confidence": 0.95
+    }
   },
   "flipkart::ethnic4you": {
     "seller_name": "Ethnic4You",
@@ -122188,6 +122296,2648 @@
         },
         "address": {
           "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::babepanda": {
+    "seller_name": "Babepanda",
+    "canonical_id": "babepanda",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm4d4303c7e5466?pid=NPYHZFYPAGAJTGN2",
+      "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm6f8930cc31ca7?pid=NPYHZFYPYREVPJYA",
+      "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itmef033f70c629a?pid=NPYHZFYQFSNXHDMK",
+      "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm3d7c0bffd2e4f?pid=NPYHZFYQSEKXWZCZ",
+      "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itmade61e85a2b00?pid=NPYHZFYDZGABHT89",
+      "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itmc21297e38d097?pid=NPYHZFYXP46GZBUH"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHZFYPAGAJTGN2",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:07:25.262025+00:00",
+    "last_seen": "2026-09-12T15:13:12.059592+00:00",
+    "last_enriched": "2026-09-12T15:07:45.940461+00:00",
+    "enriched_data": {
+      "Business Name": "Babe Panda",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": "partnerships@tubi.tv",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://tubitv.com",
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "company_website",
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 1.0,
+      "seller_name": "Babe Panda",
+      "raw_seller_name": "BabePanda",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm4d4303c7e5466?pid=NPYHZFYPAGAJTGN2",
+      "seller_source_url": "https://www.flipkart.com/babepanda-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm4d4303c7e5466?pid=NPYHZFYPAGAJTGN2",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": "partnerships@tubi.tv",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://tubitv.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "company_website",
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": "partnerships@tubi.tv",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://tubitv.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::babystation": {
+    "seller_name": "Babystation",
+    "canonical_id": "babystation",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/baby-station-waterproof-reusable-adjustable-swim-diaper-one-size-nappy-0-24-months-purple/p/itm1d837e2b1e53d?pid=DPRFBG42MK5FFRNG"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.5,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=DPRFBG42MK5FFRNG",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:07:57.779930+00:00",
+    "last_seen": "2026-09-12T15:07:57.779930+00:00",
+    "last_enriched": "2026-09-12T15:08:08.564280+00:00",
+    "enriched_data": {
+      "Business Name": "BABY STATION",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.5,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "BABY STATION",
+      "raw_seller_name": "BABYSTATION",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/baby-station-waterproof-reusable-adjustable-swim-diaper-one-size-nappy-0-24-months-purple/p/itm1d837e2b1e53d?pid=DPRFBG42MK5FFRNG",
+      "seller_source_url": "https://www.flipkart.com/baby-station-waterproof-reusable-adjustable-swim-diaper-one-size-nappy-0-24-months-purple/p/itm1d837e2b1e53d?pid=DPRFBG42MK5FFRNG",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.5,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::doncarestore": {
+    "seller_name": "Doncarestore",
+    "canonical_id": "doncarestore",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/don-care-new-born-baby-hosiery-cotton-single-layer-nappies-pack-10-0-6-months/p/itm8acac8a145947?pid=NPYH2EF8UUGZEGYK"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.2,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYH2EF8UUGZEGYK",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:08:32.057408+00:00",
+    "last_seen": "2026-09-12T15:08:32.057408+00:00",
+    "last_enriched": "2026-09-12T15:08:42.051878+00:00",
+    "enriched_data": {
+      "Business Name": "DONCARE STORE",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.2,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "DONCARE STORE",
+      "raw_seller_name": "DONCARESTORE",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/don-care-new-born-baby-hosiery-cotton-single-layer-nappies-pack-10-0-6-months/p/itm8acac8a145947?pid=NPYH2EF8UUGZEGYK",
+      "seller_source_url": "https://www.flipkart.com/don-care-new-born-baby-hosiery-cotton-single-layer-nappies-pack-10-0-6-months/p/itm8acac8a145947?pid=NPYH2EF8UUGZEGYK",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.2,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::sanatrendzz": {
+    "seller_name": "Sanatrendzz",
+    "canonical_id": "sanatrendzz",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/sana-cloth-brief-diaper-babies-reusable-washable-cotton-training/p/itmf52ac9927788f?pid=NPYHZZE6M9H3AFVA",
+      "https://www.flipkart.com/sana-premium-panty-diapers-toddlers-soft-leak-proof-comfortable/p/itmbb5112b7e401f?pid=NPYHPBYC9AXYGG7G",
+      "https://www.flipkart.com/sana-cloth-brief-diaper-babies-reusable-washable-cotton-training/p/itm4bc1821d4f39f?pid=NPYHZZE5XRXHVBMV"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.3,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHZZE6M9H3AFVA",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:08:53.968778+00:00",
+    "last_seen": "2026-09-12T15:09:53.892531+00:00",
+    "last_enriched": "2026-09-12T15:09:09.200842+00:00",
+    "enriched_data": {
+      "Business Name": "Sana Trendzz",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://www.workday.com",
+      "Product Rating": 3.3,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "company_website",
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Sana Trendzz",
+      "raw_seller_name": "SanaTrendzz",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/sana-cloth-brief-diaper-babies-reusable-washable-cotton-training/p/itmf52ac9927788f?pid=NPYHZZE6M9H3AFVA",
+      "seller_source_url": "https://www.flipkart.com/sana-cloth-brief-diaper-babies-reusable-washable-cotton-training/p/itmf52ac9927788f?pid=NPYHZZE6M9H3AFVA",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.3,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://www.workday.com",
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "company_website",
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://www.workday.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::shyfulislam": {
+    "seller_name": "Shyfulislam",
+    "canonical_id": "shyfulislam",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/shyful-cotton-nappy/p/itm14ce5ff2c8266?pid=NPYHQK9HNRH4AQEP",
+      "https://www.flipkart.com/safelap-cloth-diaper-pack-3/p/itmeae11344995dc?pid=NPYHQTG7JM6KYF7A"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHQK9HNRH4AQEP",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:09:21.169170+00:00",
+    "last_seen": "2026-09-12T15:11:00.169556+00:00",
+    "last_enriched": "2026-09-12T15:09:30.296751+00:00",
+    "enriched_data": {
+      "Business Name": "shyfulislam",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "shyfulislam",
+      "raw_seller_name": "shyfulislam",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/shyful-cotton-nappy/p/itm14ce5ff2c8266?pid=NPYHQK9HNRH4AQEP",
+      "seller_source_url": "https://www.flipkart.com/shyful-cotton-nappy/p/itm14ce5ff2c8266?pid=NPYHQK9HNRH4AQEP",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::aasatha": {
+    "seller_name": "Aasatha",
+    "canonical_id": "aasatha",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/bluespun-swimming-diapers-babies-toddlers-washable-reusable-adjustable-pack-1/p/itm92bc8503562fe?pid=NPYHNSB6FSWNEDRQ"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.7,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHNSB6FSWNEDRQ",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:10:17.161492+00:00",
+    "last_seen": "2026-09-12T15:10:17.161492+00:00",
+    "last_enriched": "2026-09-12T15:10:26.958833+00:00",
+    "enriched_data": {
+      "Business Name": "AASATHA",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.7,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "AASATHA",
+      "raw_seller_name": "AASATHA",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/bluespun-swimming-diapers-babies-toddlers-washable-reusable-adjustable-pack-1/p/itm92bc8503562fe?pid=NPYHNSB6FSWNEDRQ",
+      "seller_source_url": "https://www.flipkart.com/bluespun-swimming-diapers-babies-toddlers-washable-reusable-adjustable-pack-1/p/itm92bc8503562fe?pid=NPYHNSB6FSWNEDRQ",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.7,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::superbottoms": {
+    "seller_name": "Superbottoms",
+    "canonical_id": "superbottoms",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/superbottoms-swimming-diapers-babies-toddlers-washable-reusable-adjustable-pack-1/p/itm83f0a4f259620?pid=NPYHAE8XCXZZWQZK"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.1,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHAE8XCXZZWQZK",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:10:39.008705+00:00",
+    "last_seen": "2026-09-12T15:10:39.008705+00:00",
+    "last_enriched": "2026-09-12T15:10:48.083772+00:00",
+    "enriched_data": {
+      "Business Name": "Superbottoms",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.1,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Superbottoms",
+      "raw_seller_name": "Superbottoms",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/superbottoms-swimming-diapers-babies-toddlers-washable-reusable-adjustable-pack-1/p/itm83f0a4f259620?pid=NPYHAE8XCXZZWQZK",
+      "seller_source_url": "https://www.flipkart.com/superbottoms-swimming-diapers-babies-toddlers-washable-reusable-adjustable-pack-1/p/itm83f0a4f259620?pid=NPYHAE8XCXZZWQZK",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::ecohug": {
+    "seller_name": "Ecohug",
+    "canonical_id": "ecohug",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/ineffable-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm6617d02f34f42?pid=NPYGJKAPRCFGCNNS"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 2.9,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYGJKAPRCFGCNNS",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:11:24.094431+00:00",
+    "last_seen": "2026-09-12T15:11:24.094431+00:00",
+    "last_enriched": "2026-09-12T15:11:33.117181+00:00",
+    "enriched_data": {
+      "Business Name": "Ecohug",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 2.9,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Ecohug",
+      "raw_seller_name": "Ecohug",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/ineffable-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm6617d02f34f42?pid=NPYGJKAPRCFGCNNS",
+      "seller_source_url": "https://www.flipkart.com/ineffable-baby-reusable-cloth-diaper-nappy-multi-layered-microfiber-insert-free-size/p/itm6617d02f34f42?pid=NPYGJKAPRCFGCNNS",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 2.9,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::jaydisonstore": {
+    "seller_name": "Jaydisonstore",
+    "canonical_id": "jaydisonstore",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/house-common-smart-padded-baby-printed-nappy-langot-gentle-elastic-super-dry-feel-layerhoc/p/itmc134757ca3f72?pid=NPYHHK9PWNA5KUSN"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHHK9PWNA5KUSN",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:11:45.368388+00:00",
+    "last_seen": "2026-09-12T15:11:45.368388+00:00",
+    "last_enriched": "2026-09-12T15:11:54.658831+00:00",
+    "enriched_data": {
+      "Business Name": "Jaydisonstore",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Jaydisonstore",
+      "raw_seller_name": "Jaydisonstore",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/house-common-smart-padded-baby-printed-nappy-langot-gentle-elastic-super-dry-feel-layerhoc/p/itmc134757ca3f72?pid=NPYHHK9PWNA5KUSN",
+      "seller_source_url": "https://www.flipkart.com/house-common-smart-padded-baby-printed-nappy-langot-gentle-elastic-super-dry-feel-layerhoc/p/itmc134757ca3f72?pid=NPYHHK9PWNA5KUSN",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::snevarafashion": {
+    "seller_name": "Snevarafashion",
+    "canonical_id": "snevarafashion",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/nightjar-reusable-baby-diaper-skin-friendly-langot-type-kids/p/itm935b7c00d0267?pid=NPYHQRUEMKHPHEWZ"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHQRUEMKHPHEWZ",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:12:18.150598+00:00",
+    "last_seen": "2026-09-12T15:12:18.150598+00:00",
+    "last_enriched": "2026-09-12T15:12:27.285902+00:00",
+    "enriched_data": {
+      "Business Name": "SNEVARA FASHION",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "SNEVARA FASHION",
+      "raw_seller_name": "SNEVARAFASHION",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/nightjar-reusable-baby-diaper-skin-friendly-langot-type-kids/p/itm935b7c00d0267?pid=NPYHQRUEMKHPHEWZ",
+      "seller_source_url": "https://www.flipkart.com/nightjar-reusable-baby-diaper-skin-friendly-langot-type-kids/p/itm935b7c00d0267?pid=NPYHQRUEMKHPHEWZ",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::glitterbox1": {
+    "seller_name": "Glitterbox1",
+    "canonical_id": "glitterbox1",
+    "marketplace": "flipkart",
+    "fulfillment_by": null,
+    "product_urls": [
+      "https://www.flipkart.com/shukan-baby-reusable-cloth-diaper-nappies-multi-layered-microfiber-insert-pad/p/itm18efe4a28a193?pid=NPYHZWFMT3EPDNER"
+    ],
+    "categories": [
+      "Swim Nappies"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "html_seller_regex",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=NPYHZWFMT3EPDNER",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:12:39.224312+00:00",
+    "last_seen": "2026-09-12T15:12:39.224312+00:00",
+    "last_enriched": "2026-09-12T15:12:48.451535+00:00",
+    "enriched_data": {
+      "Business Name": "GLITTERBOX1",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Swim Nappies",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "GLITTERBOX1",
+      "raw_seller_name": "GLITTERBOX1",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/shukan-baby-reusable-cloth-diaper-nappies-multi-layered-microfiber-insert-pad/p/itm18efe4a28a193?pid=NPYHZWFMT3EPDNER",
+      "seller_source_url": "https://www.flipkart.com/shukan-baby-reusable-cloth-diaper-nappies-multi-layered-microfiber-insert-pad/p/itm18efe4a28a193?pid=NPYHZWFMT3EPDNER",
+      "seller_source_type": "html_seller_regex",
+      "category": "Swim Nappies",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Swim Nappies",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::vanditenterprise": {
+    "seller_name": "Vanditenterprise",
+    "canonical_id": "vanditenterprise",
+    "marketplace": "flipkart",
+    "fulfillment_by": "VANDITENTERPRISE",
+    "product_urls": [
+      "https://www.flipkart.com/quddy-men-self-design-peds-footie-no-show/p/itm5c3d11d421822?pid=SOCHNT6DQNHFWBFZ",
+      "https://www.flipkart.com/quddy-men-self-design-peds-footie-no-show/p/itm8823f73b05ef3?pid=SOCHNT6DYFYYQYZM",
+      "https://www.flipkart.com/quddy-men-self-design-peds-footie-no-show/p/itm61e4d52e912ff?pid=SOCHNT6DGHNZWAN3",
+      "https://www.flipkart.com/quddy-men-self-design-peds-footie-no-show/p/itmda836ac10ed63?pid=SOCHNT6DEJFGCHQ3"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCHNT6DQNHFWBFZ",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:13:31.112836+00:00",
+    "last_seen": "2026-09-12T15:16:20.052606+00:00",
+    "last_enriched": "2026-09-12T15:13:39.580778+00:00",
+    "enriched_data": {
+      "Business Name": "VANDIT ENTERPRISE",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "VANDIT ENTERPRISE",
+      "raw_seller_name": "VANDITENTERPRISE",
+      "marketplace": "flipkart",
+      "fulfillment_by": "VANDITENTERPRISE",
+      "product_url": "https://www.flipkart.com/quddy-men-self-design-peds-footie-no-show/p/itm5c3d11d421822?pid=SOCHNT6DQNHFWBFZ",
+      "seller_source_url": "https://www.flipkart.com/quddy-men-self-design-peds-footie-no-show/p/itm5c3d11d421822?pid=SOCHNT6DQNHFWBFZ",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::akshit enterprise": {
+    "seller_name": "Akshit Enterprise",
+    "canonical_id": "akshit enterprise",
+    "marketplace": "flipkart",
+    "fulfillment_by": "Akshit Enterprise",
+    "product_urls": [
+      "https://www.flipkart.com/oddeven-men-women-solid-peds-footie-no-show/p/itmb562d596a355f?pid=SOCF9D4DXRG6MKKF"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.9,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCF9D4DXRG6MKKF",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:13:51.715031+00:00",
+    "last_seen": "2026-09-12T15:13:51.715031+00:00",
+    "last_enriched": "2026-09-12T15:14:01.587979+00:00",
+    "enriched_data": {
+      "Business Name": "Akshit Enterprise",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Akshit Enterprise",
+      "raw_seller_name": "Akshit Enterprise",
+      "marketplace": "flipkart",
+      "fulfillment_by": "Akshit Enterprise",
+      "product_url": "https://www.flipkart.com/oddeven-men-women-solid-peds-footie-no-show/p/itmb562d596a355f?pid=SOCF9D4DXRG6MKKF",
+      "seller_source_url": "https://www.flipkart.com/oddeven-men-women-solid-peds-footie-no-show/p/itmb562d596a355f?pid=SOCF9D4DXRG6MKKF",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.9,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::feetmotiononline": {
+    "seller_name": "Feetmotiononline",
+    "canonical_id": "feetmotiononline",
+    "marketplace": "flipkart",
+    "fulfillment_by": "FeetMotionOnline",
+    "product_urls": [
+      "https://www.flipkart.com/socksy-men-women-low-cut-ankle-length-peds-footie-no-show/p/itmf4c5a4e312ffb?pid=SOCGTG8ZYZWHX9MG"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCGTG8ZYZWHX9MG",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:14:48.811600+00:00",
+    "last_seen": "2026-09-12T15:14:48.811600+00:00",
+    "last_enriched": "2026-09-12T15:14:59.390601+00:00",
+    "enriched_data": {
+      "Business Name": "Feet Motion Online",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Feet Motion Online",
+      "raw_seller_name": "FeetMotionOnline",
+      "marketplace": "flipkart",
+      "fulfillment_by": "FeetMotionOnline",
+      "product_url": "https://www.flipkart.com/socksy-men-women-low-cut-ankle-length-peds-footie-no-show/p/itmf4c5a4e312ffb?pid=SOCGTG8ZYZWHX9MG",
+      "seller_source_url": "https://www.flipkart.com/socksy-men-women-low-cut-ankle-length-peds-footie-no-show/p/itmf4c5a4e312ffb?pid=SOCGTG8ZYZWHX9MG",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::mechnotech": {
+    "seller_name": "Mechnotech",
+    "canonical_id": "mechnotech",
+    "marketplace": "flipkart",
+    "fulfillment_by": "Mechnotech",
+    "product_urls": [
+      "https://www.flipkart.com/vishal-co-men-women-solid-peds-footie-no-show/p/itma756d1591e634?pid=SOCFZY6P32BDGBPR"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.5,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCFZY6P32BDGBPR",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:15:11.711592+00:00",
+    "last_seen": "2026-09-12T15:15:11.711592+00:00",
+    "last_enriched": "2026-09-12T15:16:07.745544+00:00",
+    "enriched_data": {
+      "Business Name": "Mechnotech",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.5,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Mechnotech",
+      "raw_seller_name": "Mechnotech",
+      "marketplace": "flipkart",
+      "fulfillment_by": "Mechnotech",
+      "product_url": "https://www.flipkart.com/vishal-co-men-women-solid-peds-footie-no-show/p/itma756d1591e634?pid=SOCFZY6P32BDGBPR",
+      "seller_source_url": "https://www.flipkart.com/vishal-co-men-women-solid-peds-footie-no-show/p/itma756d1591e634?pid=SOCFZY6P32BDGBPR",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.5,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::pivantaproducts": {
+    "seller_name": "Pivantaproducts",
+    "canonical_id": "pivantaproducts",
+    "marketplace": "flipkart",
+    "fulfillment_by": "PivantaProducts",
+    "product_urls": [
+      "https://www.flipkart.com/pivantaproducts-women-solid-ankle-length/p/itmc21ceccf5b2be?pid=SOCHPAP2TMWZXQ4W"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCHPAP2TMWZXQ4W",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:16:31.642437+00:00",
+    "last_seen": "2026-09-12T15:16:31.642437+00:00",
+    "last_enriched": "2026-09-12T15:16:41.423236+00:00",
+    "enriched_data": {
+      "Business Name": "Pivanta Products",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": "North Europe Pivatic Oy",
+      "Phone Number": "9764709783",
+      "Email Address": "info@pivatic.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://pivatic.com",
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "company_website",
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 1.0,
+      "seller_name": "Pivanta Products",
+      "raw_seller_name": "PivantaProducts",
+      "marketplace": "flipkart",
+      "fulfillment_by": "PivantaProducts",
+      "product_url": "https://www.flipkart.com/pivantaproducts-women-solid-ankle-length/p/itmc21ceccf5b2be?pid=SOCHPAP2TMWZXQ4W",
+      "seller_source_url": "https://www.flipkart.com/pivantaproducts-women-solid-ankle-length/p/itmc21ceccf5b2be?pid=SOCHPAP2TMWZXQ4W",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": "North Europe Pivatic Oy",
+      "contact_number": "9764709783",
+      "email": "info@pivatic.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://pivatic.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "company_website",
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": "9764709783",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "email": {
+          "value": "info@pivatic.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://pivatic.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::mlenterprisessales": {
+    "seller_name": "Mlenterprisessales",
+    "canonical_id": "mlenterprisessales",
+    "marketplace": "flipkart",
+    "fulfillment_by": "MLENTERPRISESSALES",
+    "product_urls": [
+      "https://www.flipkart.com/ml-enterprises-sales-men-women-solid-peds-footie-no-show/p/itme30fb83a74df5?pid=SOCHNEVWW7H4MZPG"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCHNEVWW7H4MZPG",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:16:53.352245+00:00",
+    "last_seen": "2026-09-12T15:16:53.352245+00:00",
+    "last_enriched": "2026-09-12T15:17:35.582699+00:00",
+    "enriched_data": {
+      "Business Name": "MLENTERPRISESSALES",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "MLENTERPRISESSALES",
+      "raw_seller_name": "MLENTERPRISESSALES",
+      "marketplace": "flipkart",
+      "fulfillment_by": "MLENTERPRISESSALES",
+      "product_url": "https://www.flipkart.com/ml-enterprises-sales-men-women-solid-peds-footie-no-show/p/itme30fb83a74df5?pid=SOCHNEVWW7H4MZPG",
+      "seller_source_url": "https://www.flipkart.com/ml-enterprises-sales-men-women-solid-peds-footie-no-show/p/itme30fb83a74df5?pid=SOCHNEVWW7H4MZPG",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::samriddhitra": {
+    "seller_name": "Samriddhitra",
+    "canonical_id": "samriddhitra",
+    "marketplace": "flipkart",
+    "fulfillment_by": "SAMRIDDHITRA",
+    "product_urls": [
+      "https://www.flipkart.com/samriddhi-traders-men-solid-ankle-length/p/itm0c2cdfea37930?pid=SOCHHR8PFAYQ7BUB"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCHHR8PFAYQ7BUB",
+    "seller_location": "Experience all-day comfort with these premium quality ankle socks designed for men. Made from soft and breathable fabric, these socks provide excellent comfort while keeping your feet fresh and sweat-free throughout the day. The lightweight and stretchable design ensures a perfect fit that stays in place, making them ideal for daily wear, sports, and casual use. Whether you're heading to the gym, office, or outdoors, these socks offer durability, flexibility, and comfort in every step. Perfectly suited for sneakers and casual shoes, these ankle socks are an essential addition to every man's wardrobe. men socks pack ankle socks men cotton socks daily wear socks breathable socks gym socks men sports socks casual socks comfortable socks stretchable socks lightweight socks everyday use",
+    "city": "Flexibility",
+    "state": "Odisha",
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:17:47.620257+00:00",
+    "last_seen": "2026-09-12T15:17:47.620257+00:00",
+    "last_enriched": "2026-09-12T15:18:44.745432+00:00",
+    "enriched_data": {
+      "Business Name": "SAMRIDDHITRA",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Experience all-day comfort with these premium quality ankle socks designed for men. Made from soft and breathable fabric, these socks provide excellent comfort while keeping your feet fresh and sweat-free throughout the day. The lightweight and stretchable design ensures a perfect fit that stays in place, making them ideal for daily wear, sports, and casual use. Whether you're heading to the gym, office, or outdoors, these socks offer durability, flexibility, and comfort in every step. Perfectly suited for sneakers and casual shoes, these ankle socks are an essential addition to every man's wardrobe. men socks pack ankle socks men cotton socks daily wear socks breathable socks gym socks men sports socks casual socks comfortable socks stretchable socks lightweight socks everyday use",
+      "City": "Flexibility",
+      "State": "Odisha",
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "SAMRIDDHITRA",
+      "raw_seller_name": "SAMRIDDHITRA",
+      "marketplace": "flipkart",
+      "fulfillment_by": "SAMRIDDHITRA",
+      "product_url": "https://www.flipkart.com/samriddhi-traders-men-solid-ankle-length/p/itm0c2cdfea37930?pid=SOCHHR8PFAYQ7BUB",
+      "seller_source_url": "https://www.flipkart.com/samriddhi-traders-men-solid-ankle-length/p/itm0c2cdfea37930?pid=SOCHHR8PFAYQ7BUB",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Experience all-day comfort with these premium quality ankle socks designed for men. Made from soft and breathable fabric, these socks provide excellent comfort while keeping your feet fresh and sweat-free throughout the day. The lightweight and stretchable design ensures a perfect fit that stays in place, making them ideal for daily wear, sports, and casual use. Whether you're heading to the gym, office, or outdoors, these socks offer durability, flexibility, and comfort in every step. Perfectly suited for sneakers and casual shoes, these ankle socks are an essential addition to every man's wardrobe. men socks pack ankle socks men cotton socks daily wear socks breathable socks gym socks men sports socks casual socks comfortable socks stretchable socks lightweight socks everyday use",
+      "shipping_address": "Experience all-day comfort with these premium quality ankle socks designed for men. Made from soft and breathable fabric, these socks provide excellent comfort while keeping your feet fresh and sweat-free throughout the day. The lightweight and stretchable design ensures a perfect fit that stays in place, making them ideal for daily wear, sports, and casual use. Whether you're heading to the gym, office, or outdoors, these socks offer durability, flexibility, and comfort in every step. Perfectly suited for sneakers and casual shoes, these ankle socks are an essential addition to every man's wardrobe. men socks pack ankle socks men cotton socks daily wear socks breathable socks gym socks men sports socks casual socks comfortable socks stretchable socks lightweight socks everyday use",
+      "city": "Flexibility",
+      "state": "Odisha",
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Experience all-day comfort with these premium quality ankle socks designed for men. Made from soft and breathable fabric, these socks provide excellent comfort while keeping your feet fresh and sweat-free throughout the day. The lightweight and stretchable design ensures a perfect fit that stays in place, making them ideal for daily wear, sports, and casual use. Whether you're heading to the gym, office, or outdoors, these socks offer durability, flexibility, and comfort in every step. Perfectly suited for sneakers and casual shoes, these ankle socks are an essential addition to every man's wardrobe. men socks pack ankle socks men cotton socks daily wear socks breathable socks gym socks men sports socks casual socks comfortable socks stretchable socks lightweight socks everyday use",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::haberian": {
+    "seller_name": "Haberian",
+    "canonical_id": "haberian",
+    "marketplace": "flipkart",
+    "fulfillment_by": "HABERIAN",
+    "product_urls": [
+      "https://www.flipkart.com/bahuzo-men-striped-ankle-length/p/itme354ccf85cc5f?pid=SOCHPZ42H9ZYYUGV"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCHPZ42H9ZYYUGV",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:19:08.763448+00:00",
+    "last_seen": "2026-09-12T15:19:08.763448+00:00",
+    "last_enriched": "2026-09-12T15:20:06.477293+00:00",
+    "enriched_data": {
+      "Business Name": "HABERIAN",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "HABERIAN",
+      "raw_seller_name": "HABERIAN",
+      "marketplace": "flipkart",
+      "fulfillment_by": "HABERIAN",
+      "product_url": "https://www.flipkart.com/bahuzo-men-striped-ankle-length/p/itme354ccf85cc5f?pid=SOCHPZ42H9ZYYUGV",
+      "seller_source_url": "https://www.flipkart.com/bahuzo-men-striped-ankle-length/p/itme354ccf85cc5f?pid=SOCHPZ42H9ZYYUGV",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::bajranghosieries": {
+    "seller_name": "Bajranghosieries",
+    "canonical_id": "bajranghosieries",
+    "marketplace": "flipkart",
+    "fulfillment_by": "BajrangHosieries",
+    "product_urls": [
+      "https://www.flipkart.com/basketship-men-self-design-ankle-length/p/itm6b85df613cd35?pid=SOCHQHMBQHV44UQF"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCHQHMBQHV44UQF",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:20:42.254010+00:00",
+    "last_seen": "2026-09-12T15:20:42.254010+00:00",
+    "last_enriched": "2026-09-12T15:21:39.219710+00:00",
+    "enriched_data": {
+      "Business Name": "Bajrang Hosieries",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Bajrang Hosieries",
+      "raw_seller_name": "BajrangHosieries",
+      "marketplace": "flipkart",
+      "fulfillment_by": "BajrangHosieries",
+      "product_url": "https://www.flipkart.com/basketship-men-self-design-ankle-length/p/itm6b85df613cd35?pid=SOCHQHMBQHV44UQF",
+      "seller_source_url": "https://www.flipkart.com/basketship-men-self-design-ankle-length/p/itm6b85df613cd35?pid=SOCHQHMBQHV44UQF",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::rohinienterprises": {
+    "seller_name": "Rohinienterprises",
+    "canonical_id": "rohinienterprises",
+    "marketplace": "flipkart",
+    "fulfillment_by": "RohiniEnterprises",
+    "product_urls": [
+      "https://www.flipkart.com/rohini-enterprises-men-peds-footie-no-show/p/itm04b31233a063b?pid=SOCHPJDAMNHUNZWD"
+    ],
+    "categories": [
+      "Accessories > Socks"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SOCHPJDAMNHUNZWD",
+    "seller_location": "Step up your sock game with our premium men socks built for style and comfort. Crafted from breathable cotton, these socks for men keep you fresh from boardroom to gym. Whether you need sleek ankle socks for sneakers, sharp formal socks for office, or cushioned sports socks for workouts, we’ve got you covered. Rock the no-show look with no show socks, go classic with crew socks, or stay warm with winter socks. Grab the men socks pack of 3 and match every outfit without trying.Soft feel. Anti-odor. All-day confidence. Your shoes deserve better.",
+    "city": "go classic with crew socks",
+    "state": "Odisha",
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-12T15:22:26.145955+00:00",
+    "last_seen": "2026-09-12T15:22:26.145955+00:00",
+    "last_enriched": "2026-09-12T15:23:23.405331+00:00",
+    "enriched_data": {
+      "Business Name": "Rohini Enterprises",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Accessories",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Step up your sock game with our premium men socks built for style and comfort. Crafted from breathable cotton, these socks for men keep you fresh from boardroom to gym. Whether you need sleek ankle socks for sneakers, sharp formal socks for office, or cushioned sports socks for workouts, we’ve got you covered. Rock the no-show look with no show socks, go classic with crew socks, or stay warm with winter socks. Grab the men socks pack of 3 and match every outfit without trying.Soft feel. Anti-odor. All-day confidence. Your shoes deserve better.",
+      "City": "go classic with crew socks",
+      "State": "Odisha",
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Rohini Enterprises",
+      "raw_seller_name": "RohiniEnterprises",
+      "marketplace": "flipkart",
+      "fulfillment_by": "RohiniEnterprises",
+      "product_url": "https://www.flipkart.com/rohini-enterprises-men-peds-footie-no-show/p/itm04b31233a063b?pid=SOCHPJDAMNHUNZWD",
+      "seller_source_url": "https://www.flipkart.com/rohini-enterprises-men-peds-footie-no-show/p/itm04b31233a063b?pid=SOCHPJDAMNHUNZWD",
+      "seller_source_type": "fulfillment_label",
+      "category": "Accessories",
+      "sub_category": "Socks",
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Accessories",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Step up your sock game with our premium men socks built for style and comfort. Crafted from breathable cotton, these socks for men keep you fresh from boardroom to gym. Whether you need sleek ankle socks for sneakers, sharp formal socks for office, or cushioned sports socks for workouts, we’ve got you covered. Rock the no-show look with no show socks, go classic with crew socks, or stay warm with winter socks. Grab the men socks pack of 3 and match every outfit without trying.Soft feel. Anti-odor. All-day confidence. Your shoes deserve better.",
+      "shipping_address": "Step up your sock game with our premium men socks built for style and comfort. Crafted from breathable cotton, these socks for men keep you fresh from boardroom to gym. Whether you need sleek ankle socks for sneakers, sharp formal socks for office, or cushioned sports socks for workouts, we’ve got you covered. Rock the no-show look with no show socks, go classic with crew socks, or stay warm with winter socks. Grab the men socks pack of 3 and match every outfit without trying.Soft feel. Anti-odor. All-day confidence. Your shoes deserve better.",
+      "city": "go classic with crew socks",
+      "state": "Odisha",
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Step up your sock game with our premium men socks built for style and comfort. Crafted from breathable cotton, these socks for men keep you fresh from boardroom to gym. Whether you need sleek ankle socks for sneakers, sharp formal socks for office, or cushioned sports socks for workouts, we’ve got you covered. Rock the no-show look with no show socks, go classic with crew socks, or stay warm with winter socks. Grab the men socks pack of 3 and match every outfit without trying.Soft feel. Anti-odor. All-day confidence. Your shoes deserve better.",
           "confidence": 0.45,
           "source": "marketplace_profile"
         }
