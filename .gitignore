@@ -7,3 +7,12 @@ venv/
 .env
 *.log
 .pytest_cache/
+storage_state*.json
+cookies*.json
+session*.json
+auth_state*.json
+*.session
+debug/*.png
+debug/*.html
+*.code-workspace
+

@@ -171,7 +171,7 @@ INDIAN_STATES: Dict[str, List[str]] = {
     "Meghalaya": ["meghalaya", "ml"],
     "Mizoram": ["mizoram", "mz"],
     "Nagaland": ["nagaland", "nl"],
-    "Odisha": ["odisha", "orissa", "or", "od"],
+    "Odisha": ["odisha", "orissa", "od"],
     "Punjab": ["punjab", "pb"],
     "Rajasthan": ["rajasthan", "rj"],
     "Sikkim": ["sikkim", "sk"],

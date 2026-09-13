@@ -453,8 +453,16 @@ async def test_20_21_generic_seller_name_and_wrong_city_rejection(monkeypatch):
     async def mock_bing_wrong(query: str):
         return wrong_city_result, 200
 
+    async def mock_brave(query: str):
+        return [], 500
+
+    async def mock_ddg(query: str):
+        return []
+
     monkeypatch.setattr(engine, "_query_google", mock_google)
     monkeypatch.setattr(engine, "_query_bing", mock_bing_wrong)
+    monkeypatch.setattr(engine, "_query_brave", mock_brave)
+    monkeypatch.setattr(engine, "_query_ddg", mock_ddg)
 
     # Scenario A: Searching for Ahmedabad seller with only Delhi result -> Rejected
     email_rej, _ = await engine.enrich_seller_email(
@@ -499,8 +507,16 @@ async def test_22_wrong_company_email_rejection(monkeypatch):
     async def mock_bing(query: str):
         return unrelated_result, 200
 
+    async def mock_brave(query: str):
+        return [], 500
+
+    async def mock_ddg(query: str):
+        return []
+
     monkeypatch.setattr(engine, "_query_google", mock_google)
     monkeypatch.setattr(engine, "_query_bing", mock_bing)
+    monkeypatch.setattr(engine, "_query_brave", mock_brave)
+    monkeypatch.setattr(engine, "_query_ddg", mock_ddg)
 
     email, _ = await engine.enrich_seller_email(
         seller_name="ABC Enterprises",
@@ -561,9 +577,20 @@ async def test_24_temporary_search_failure_not_permanently_cached(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_25_final_output_mapping_to_email_address():
+async def test_25_final_output_mapping_to_email_address(monkeypatch):
     """25. Output dictionary correctly contains 'Email Address' and matches 'email'."""
     engine = WebResearchEngine()
+
+    async def mock_search(*args, **kwargs):
+        return [], 500
+
+    async def mock_ddg(*args, **kwargs):
+        return []
+
+    monkeypatch.setattr(engine, "_query_google", mock_search)
+    monkeypatch.setattr(engine, "_query_bing", mock_search)
+    monkeypatch.setattr(engine, "_query_brave", mock_search)
+    monkeypatch.setattr(engine, "_query_ddg", mock_ddg)
 
     seller_record = {
         "marketplace": "flipkart",
@@ -578,3 +605,4 @@ async def test_25_final_output_mapping_to_email_address():
 
     assert enriched["Email Address"] == "sales@kalyanenterprises.co.in"
     assert enriched["email"] == "sales@kalyanenterprises.co.in"
+

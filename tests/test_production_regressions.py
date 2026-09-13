@@ -172,10 +172,17 @@ async def test_regression_8_email_missing_triggers_external_enrichment(monkeypat
             }], 200
         return [], 200
 
+    async def mock_ddg(query: str):
+        return []
+
+    async def mock_inspect(*args, **kwargs):
+        return {}
+
     monkeypatch.setattr(engine, "_query_google", mock_fail)
-    monkeypatch.setattr(engine, "_query_ddg", lambda query: [])
+    monkeypatch.setattr(engine, "_query_ddg", mock_ddg)
     monkeypatch.setattr(engine, "_query_brave", mock_fail)
     monkeypatch.setattr(engine, "_query_bing", mock_bing)
+    monkeypatch.setattr(engine.website_parser, "inspect_website", mock_inspect)
 
     seller_record = {
         "seller_name": "Sidh India Plastics",
@@ -205,8 +212,11 @@ async def test_regression_9_google_429_falls_back_to_bing(monkeypatch):
             "url": "https://alphatech.in",
         }], 200
 
+    async def mock_ddg(query: str):
+        return []
+
     monkeypatch.setattr(engine, "_query_google", mock_fail)
-    monkeypatch.setattr(engine, "_query_ddg", lambda query: [])
+    monkeypatch.setattr(engine, "_query_ddg", mock_ddg)
     monkeypatch.setattr(engine, "_query_brave", mock_fail)
     monkeypatch.setattr(engine, "_query_bing", mock_bing)
 
@@ -236,8 +246,11 @@ async def test_regression_10_bing_failure_falls_back_to_brave(monkeypatch):
             "url": "https://betafootwear.in",
         }], 200
 
+    async def mock_ddg(query: str):
+        return []
+
     monkeypatch.setattr(engine, "_query_google", mock_fail_500)
-    monkeypatch.setattr(engine, "_query_ddg", lambda query: [])
+    monkeypatch.setattr(engine, "_query_ddg", mock_ddg)
     monkeypatch.setattr(engine, "_query_bing", mock_fail_500)
     monkeypatch.setattr(engine, "_query_brave", mock_brave)
 

@@ -35,11 +35,21 @@ FSSAI_REGEX = re.compile(r"\b([1-2][0-9]{13})\b")
 # real seller address. Any candidate address containing these (case-insensitive)
 # must be rejected before being written to the Billing Address column.
 ADDRESS_BLACKLIST_PHRASES: List[str] = [
-    # Flipkart corporate boilerplate
+    # Importer label and Flipkart corporate boilerplate
+    "name and address of the importer",
+    "name and address of importer",
+    "name & address of the importer",
+    "name & address of importer",
     "flipkart internet private limited",
     "flipkart india private limited",
     "flipkart india pvt",
     "flipkart internet pvt",
+    "buildings alyssa",
+    "begonia",
+    "embassy tech village",
+    "devarabeesanahalli",
+    "bellandur",
+    "outer ring road",
     "walmart",
     # Cache / crawl artefacts
     "google cache",
@@ -137,6 +147,16 @@ DISALLOWED_EMAIL_DOMAINS = {
     "bing.com",
     "microsoft.com",
     "cloudflare.com",
+    "figma.com",
+    "spanishdict.com",
+    "ahima.org",
+    "wbztv.com",
+    "quora.com",
+    "reddit.com",
+    "facebook.com",
+    "instagram.com",
+    "youtube.com",
+    "wikipedia.org",
     "godaddy.com",
     "gravatar.com",
     "w3.org",
@@ -387,6 +407,9 @@ def validate_phone(phone_str: Optional[str]) -> Optional[str]:
 
     # Valid Indian mobile is 10 digits starting with 6, 7, 8, or 9
     if len(digits) == 10 and digits[0] in {"6", "7", "8", "9"}:
+        # Reject repeated single digits (e.g. 9999999999, 8888888888, 7777777777, 6666666666)
+        if len(set(digits)) <= 1:
+            return None
         return digits
 
     return None
@@ -433,7 +456,7 @@ def validate_fssai(fssai_str: Optional[str]) -> Optional[str]:
 # Generic business words that must not alone satisfy seller identity matching
 GENERIC_SELLER_WORDS = {
     "india", "retail", "retails", "enterprise", "enterprises", "trading", "traders",
-    "trader", "store", "stores", "shop", "shops", "online", "pvt", "ltd", "limited",
+    "trader", "store", "stores", "shop", "shops", "online", "pvt", "ltd", "limited", "private",
     "llp", "co", "company", "corp", "corporation", "inc", "ind", "solutions",
     "international", "group", "services", "hub", "mart", "bazaar", "bazar",
     "wholesalers", "wholesaler", "distributor", "distributors", "fashion", "fashions",
@@ -1066,6 +1089,11 @@ _DISALLOWED_DOMAIN_MAP: Dict[str, str] = {
     "duckduckgo.com": "TOOL_OR_UTILITY",
     "wolfram.com": "TOOL_OR_UTILITY",
     "microsoft.com": "TOOL_OR_UTILITY",
+    "cloudflare.com": "TOOL_OR_UTILITY",
+    "figma.com": "TOOL_OR_UTILITY",
+    "spanishdict.com": "TOOL_OR_UTILITY",
+    "ahima.org": "UNRELATED_COMPANY",
+    "wbztv.com": "NEWS",
     "live.com": "TOOL_OR_UTILITY",
     "office.com": "TOOL_OR_UTILITY",
     "office365.com": "TOOL_OR_UTILITY",

@@ -325,7 +325,7 @@ def test_req19_9_random_six_digit_number_rejected():
 
 
 def test_bing_and_brave_query_generation_bounds():
-    """Verify strictly 3 Bing queries and 2 Brave queries per field."""
+    """Verify strictly 3 Bing queries and 2 Brave queries per field, with PAN queries eliminated."""
     from scraper.web_research import (
         MAX_BING_QUERIES_PER_FIELD,
         MAX_BRAVE_QUERIES_PER_FIELD,
@@ -333,7 +333,11 @@ def test_bing_and_brave_query_generation_bounds():
         generate_brave_queries_for_field,
     )
 
-    for field in ["gst", "pan", "address", "phone", "email", "owner", "fssai", "website", "pincode"]:
+    # Hard Rule: PAN queries are strictly eliminated
+    assert generate_bing_queries_for_field("CHARLIEINTERNATIONAL", "pan") == []
+    assert generate_brave_queries_for_field("CHARLIEINTERNATIONAL", "pan") == []
+
+    for field in ["gst", "address", "phone", "email", "owner", "fssai", "website", "pincode"]:
         bing_qs = generate_bing_queries_for_field("CHARLIEINTERNATIONAL", field)
         assert len(bing_qs) == MAX_BING_QUERIES_PER_FIELD == 3
         assert all("CHARLIE" in q and "INTERNATIONAL" in q for q in bing_qs)

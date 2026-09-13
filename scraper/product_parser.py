@@ -998,24 +998,34 @@ def save_debug_artifact(html_content: str, product_id: str) -> Path:
     return out_path
 
 
-def detect_flipkart_page_status(html_content: str, http_status: int = 200) -> str:
-    """Detect whether Flipkart returned a valid product page, CAPTCHA, block, or redirect.
+def detect_flipkart_page_status(
+    html_content: str,
+    page_url: str = "",
+    http_status: int = 200,
+) -> str:
+    """Detect whether Flipkart returned a valid product page, CAPTCHA, block, login, or redirect.
 
     Statuses:
       - 'PRODUCT_PAGE': Normal product page with content
       - 'CAPTCHA': Robot verification / CAPTCHA challenge
       - 'BLOCKED': Access denied / 403 / 429 rate limit
+      - 'LOGIN_REQUIRED': Redirection to login / account page
+      - 'PRODUCT_PAGE_INVALID': Non-product page (cart, search, etc.)
       - 'REDIRECTED': Page redirected or search fallback
       - 'EMPTY_RESPONSE': Empty or malformed HTML
+      - 'REQUEST_FAILED': HTTP 5xx error
 
     Args:
         html_content: Raw HTML text.
+        page_url: Current page URL.
         http_status: HTTP status code.
 
     Returns:
         String status identifier.
     """
-    if http_status in [403, 429]:
+    if http_status == 401:
+        return "LOGIN_REQUIRED"
+    if http_status in (403, 429):
         return "BLOCKED"
     if http_status >= 500:
         return "REQUEST_FAILED"
@@ -1023,20 +1033,88 @@ def detect_flipkart_page_status(html_content: str, http_status: int = 200) -> st
     if not html_content or not html_content.strip():
         return "EMPTY_RESPONSE"
 
+    url_lower = (page_url or "").lower()
+    if "/account/login" in url_lower or "login.flipkart.com" in url_lower:
+        return "LOGIN_REQUIRED"
+    if "/viewcart" in url_lower or "/checkout" in url_lower:
+        return "PRODUCT_PAGE_INVALID"
+
     lower = html_content.lower()
 
-    # If it contains product state / multiWidgetState / initial state / ratings, it is a PRODUCT_PAGE
-    if "__initial_state__" in lower or "__preloaded_state__" in lower or 'id="sellername"' in lower or "ratings & reviews" in lower or 'class="product' in lower:
-        return "PRODUCT_PAGE"
-
-    # Check for actual CAPTCHA challenge in page title or visible text
-    if "robot or human" in lower or "please solve this captcha" in lower or "enter the characters you see below" in lower:
+    # Check for actual CAPTCHA challenge in page title, scripts, or visible text
+    if any(sig in lower for sig in [
+        "px-captcha",
+        "perimeterx",
+        "robot or human",
+        "please solve this captcha",
+        "enter the characters you see below",
+        "verify you are human",
+        "human verification",
+        "bot check",
+    ]) or "captcha" in url_lower:
         return "CAPTCHA"
 
-    if "access denied" in lower or "you do not have permission to access" in lower or "blocked" in lower:
+    # Access denied detection
+    if any(sig in lower for sig in [
+        "access denied",
+        "you don't have permission to access",
+        "you do not have permission to access",
+        "403 forbidden",
+        "request blocked",
+    ]):
         return "BLOCKED"
 
+    # Login required detection
+    if ("please log in to continue" in lower or "login to flipkart" in lower) and "sellername" not in lower and "__initial_state__" not in lower:
+        return "LOGIN_REQUIRED"
+
+    # If it contains product state / multiWidgetState / initial state / ratings / seller container, it is a PRODUCT_PAGE
+    if (
+        "__initial_state__" in lower
+        or "__preloaded_state__" in lower
+        or 'id="sellername"' in lower
+        or "ratings & reviews" in lower
+        or 'class="product' in lower
+        or "/p/" in url_lower
+    ):
+        return "PRODUCT_PAGE"
+
+    # Check search result page
+    if "/search" in url_lower or "results for" in lower:
+        return "PRODUCT_PAGE_INVALID"
+
     return "PRODUCT_PAGE"
+
+
+def is_valid_flipkart_product_page(
+    html_content: str,
+    page_url: str = "",
+    http_status: int = 200,
+) -> Tuple[bool, str]:
+    """Verify that the page content genuinely represents a Flipkart product page.
+
+    Rejects:
+      - Login pages
+      - Search pages
+      - Cart / Checkout pages
+      - Account pages
+      - Access-denied / 403 / 429 pages
+      - CAPTCHA / Bot challenge pages
+      - Generic error / 404 / 500 pages
+      - Degraded / empty responses
+
+    Args:
+        html_content: Raw HTML content.
+        page_url: Page URL.
+        http_status: HTTP response status code.
+
+    Returns:
+        Tuple of (is_valid_bool, status_str).
+    """
+    status = detect_flipkart_page_status(html_content, page_url=page_url, http_status=http_status)
+    if status in ("CAPTCHA", "BLOCKED", "LOGIN_REQUIRED", "EMPTY_RESPONSE", "REQUEST_FAILED", "PRODUCT_PAGE_INVALID"):
+        return False, status
+    return True, status
 
 
 # ---------------------------------------------------------------------------
@@ -1409,7 +1487,43 @@ def parse_product_page(
     Returns:
         Structured Dict containing seller_name, fulfilled_by_seller, star_rating, status, etc.
     """
-    page_status = detect_flipkart_page_status(html_content, http_status=http_status)
+    is_valid, page_status = is_valid_flipkart_product_page(html_content, page_url=page_url, http_status=http_status)
+
+    if not is_valid:
+        return {
+            "seller_name": "",
+            "legal_name": None,
+            "fulfilled_by_seller": None,
+            "fulfillment_by": None,
+            "is_f_assured": False,
+            "seller_values_found": [],
+            "star_rating": None,
+            "seller_rating": None,
+            "rating_count": None,
+            "product_rating": None,
+            "product_rating_count": None,
+            "product_review_count": None,
+            "seller_source": None,
+            "seller_name_source": None,
+            "rating_source": None,
+            "seller_confidence": 0.0,
+            "rating_confidence": 0.0,
+            "page_status": page_status,
+            "seller_url": None,
+            "seller_location": None,
+            "raw_address": None,
+            "billing_address": None,
+            "city": None,
+            "state": None,
+            "pincode": None,
+            "contact_number": None,
+            "phone": None,
+            "email": None,
+            "gst_number": None,
+            "gst": None,
+            "seller_id": None,
+            "marketplace_seller_id": None,
+        }
 
     soup = BeautifulSoup(html_content, "lxml")
 

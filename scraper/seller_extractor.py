@@ -156,6 +156,11 @@ class SellerRepository:
         now_iso = datetime.now(timezone.utc).isoformat()
         phone_val = contact_number or phone
 
+        if seller_location and (is_junk_address(seller_location) or "buildings alyssa" in seller_location.lower() or "begonia" in seller_location.lower()):
+            seller_location = None
+        if city and (city.lower() in {"begonia", "tablets", "india"} or is_junk_address(city)):
+            city = None
+
         if storage_key in self.sellers:
             seller = self.sellers[storage_key]
             if product_url and product_url not in seller["product_urls"]:
@@ -217,29 +222,11 @@ class SellerRepository:
         return list(self.sellers.values())
 
     def mark_enriched(self, storage_key: str, enriched_data: Dict[str, Any]) -> None:
-        """Mark seller as enriched and store timestamp, merging enriched fields safely."""
+        """Mark seller as enriched and store authoritative newly validated enriched data."""
         if storage_key in self.sellers:
-            # Retrieve any existing enriched data
-            existing = self.sellers[storage_key].get("enriched_data", {}) or {}
-            merged: Dict[str, Any] = {}
-            for k, new_val in enriched_data.items():
-                # Determine if the new value is considered valid
-                is_valid = new_val is not None and new_val != "" and new_val != "NOT FOUND" and new_val != "N/A"
-                old_val = existing.get(k)
-                old_valid = old_val is not None and old_val != "" and old_val != "NOT FOUND" and old_val != "N/A"
-                if is_valid:
-                    # Prefer new valid value only if there is no existing valid value
-                    if not old_valid:
-                        merged[k] = new_val
-                    else:
-                        merged[k] = old_val
-                else:
-                    # New value not valid – keep existing if it is valid
-                    merged[k] = old_val if old_valid else new_val
             self.sellers[storage_key]["enrichment_status"] = "completed"
             self.sellers[storage_key]["last_enriched"] = datetime.now(timezone.utc).isoformat()
-            self.sellers[storage_key]["enriched_data"] = merged
-            logger.debug(f"Merged enriched data for {storage_key}: {merged}")
+            self.sellers[storage_key]["enriched_data"] = dict(enriched_data)
             self.save()
 
     def get_all_pending_sellers(self) -> List[Tuple[str, Dict[str, Any]]]:

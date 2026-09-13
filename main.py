@@ -41,6 +41,7 @@ from scraper.excel_reader import (
 from scraper.exporter import LiveExcelManager, export_sellers_to_excel
 from scraper.flipkart_search import FlipkartSearchScraper
 from scraper.seller_extractor import SellerRepository, seller_key
+from scraper.validator import is_junk_address
 from scraper.web_research import WebResearchEngine
 
 
@@ -403,6 +404,13 @@ class ScraperPipeline:
                                         continue
 
                                 # 3. Immediately write initial record to Excel (Status: ENRICHMENT_PENDING)
+                                loc_addr = billing_address
+                                if loc_addr and (is_junk_address(loc_addr) or "buildings alyssa" in str(loc_addr).lower() or "begonia" in str(loc_addr).lower()):
+                                    loc_addr = None
+                                city_cand = city
+                                if city_cand and (str(city_cand).strip().lower() in {"begonia", "tablets", "india"} or is_junk_address(str(city_cand))):
+                                    city_cand = None
+
                                 initial_excel_data = {
                                     "Business Name": seller_name,
                                     "seller_name": seller_name,
@@ -426,10 +434,10 @@ class ScraperPipeline:
                                     "seller_source_type": source_type,
                                     "Source": source_type,
                                     "seller_url": seller_info.get("seller_url"),
-                                    "seller_location": billing_address,
-                                    "Billing Address": billing_address,
-                                    "city": city,
-                                    "City": city,
+                                    "seller_location": loc_addr,
+                                    "Billing Address": loc_addr,
+                                    "city": city_cand,
+                                    "City": city_cand,
                                     "state": state,
                                     "State": state,
                                     "pincode": pincode,
@@ -441,7 +449,7 @@ class ScraperPipeline:
                                     "Email Address": email_addr,
                                     "gst_number": gst_num,
                                     "GST Number": gst_num,
-                                    "Country": "India",
+                                    "Country": "India" if loc_addr else None,
                                 }
 
                                 row_num = self.excel_manager.write_or_update_seller(initial_excel_data)
@@ -470,11 +478,11 @@ class ScraperPipeline:
                                     "product_rating": product_rating,
                                     "seller_confidence": seller_info.get("seller_confidence", 0.95),
                                     "seller_url": seller_info.get("seller_url"),
-                                    "seller_location": billing_address,
-                                    "billing_address": billing_address,
-                                    "Billing Address": billing_address,
-                                    "city": city,
-                                    "City": city,
+                                    "seller_location": loc_addr,
+                                    "billing_address": loc_addr,
+                                    "Billing Address": loc_addr,
+                                    "city": city_cand,
+                                    "City": city_cand,
                                     "state": state,
                                     "State": state,
                                     "pincode": pincode,
@@ -487,6 +495,7 @@ class ScraperPipeline:
                                     "gst_number": gst_num,
                                     "GST Number": gst_num,
                                     "is_f_assured": is_f_assured,
+                                    "force_enrich": self.force_enrich,
                                 }
 
                                 enriched_data = await self.enrich_seller(generic_record)
@@ -575,6 +584,13 @@ class ScraperPipeline:
                     product_urls = seller.get("product_urls", [])
                     p_url = product_urls[0] if product_urls else ""
 
+                    loc_addr = seller.get("seller_location")
+                    if loc_addr and (is_junk_address(loc_addr) or "buildings alyssa" in str(loc_addr).lower() or "begonia" in str(loc_addr).lower()):
+                        loc_addr = None
+                    city_cand = seller.get("city")
+                    if city_cand and (str(city_cand).strip().lower() in {"begonia", "tablets", "india"} or is_junk_address(str(city_cand))):
+                        city_cand = None
+
                     generic_record = {
                         "marketplace": marketplace,
                         "seller_name": seller_name,
@@ -587,8 +603,8 @@ class ScraperPipeline:
                         "product_rating": product_rating,
                         "seller_confidence": seller.get("seller_confidence", 0.95),
                         "seller_url": seller.get("seller_url"),
-                        "seller_location": seller.get("seller_location"),
-                        "city": seller.get("city"),
+                        "seller_location": loc_addr,
+                        "city": city_cand,
                         "state": seller.get("state"),
                         "pincode": seller.get("pincode"),
                         "contact_number": seller.get("contact_number") or seller.get("phone"),
@@ -596,6 +612,7 @@ class ScraperPipeline:
                         "email": seller.get("email"),
                         "gst_number": seller.get("gst_number"),
                         "GST Number": seller.get("gst_number"),
+                        "force_enrich": self.force_enrich,
                     }
 
                     enriched_data = await self.enrich_seller(generic_record)

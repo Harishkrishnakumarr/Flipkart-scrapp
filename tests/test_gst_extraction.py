@@ -211,9 +211,8 @@ def test_11_direct_flipkart_gst_extraction_full_page():
     html = """
     <html>
       <body>
-        <div class="_1RLviY">
-          <span>Seller:</span>
-          <a href="/seller/royal-textiles">Royal Textiles</a>
+        <div id="sellerName">
+          <span>Royal Textiles</span>
         </div>
         <div class="seller-details">
           <p>GST No: 24AAIHD1204K1ZQ</p>
@@ -608,7 +607,9 @@ async def test_29_temporary_failure_must_not_become_permanent_not_found():
         }
     ]
     with patch.object(engine, "_query_google", new=AsyncMock(return_value=([], 429))), \
-         patch.object(engine, "_query_bing", new=AsyncMock(return_value=(valid_results, 200))):
+         patch.object(engine, "_query_bing", new=AsyncMock(return_value=(valid_results, 200))), \
+         patch.object(engine, "_query_brave", new=AsyncMock(return_value=([], 500))), \
+         patch.object(engine, "_query_ddg", new=AsyncMock(return_value=[])):
         res2, _ = await engine.enrich_seller_gst(seller_name="Test Store", city="Surat", state="Gujarat")
         assert res2 == "24AAIHD1204K1ZQ"
 
@@ -628,7 +629,12 @@ async def test_30_final_output_mapping_to_gst_number(tmp_path):
         "gst_number": "33AAECS5412Q1ZM",  # Verified Flipkart GST
     }
 
-    enriched = await engine.enrich_seller(seller_record)
+    with patch.object(engine, "_query_google", new=AsyncMock(return_value=([], 500))), \
+         patch.object(engine, "_query_bing", new=AsyncMock(return_value=([], 500))), \
+         patch.object(engine, "_query_brave", new=AsyncMock(return_value=([], 500))), \
+         patch.object(engine, "_query_ddg", new=AsyncMock(return_value=[])):
+        enriched = await engine.enrich_seller(seller_record)
+
     assert enriched["GST Number"] == "33AAECS5412Q1ZM"
     assert enriched["gst_number"] == "33AAECS5412Q1ZM"
 

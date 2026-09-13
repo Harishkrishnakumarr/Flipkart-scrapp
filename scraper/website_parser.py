@@ -2,6 +2,7 @@
 
 import json
 import logging
+import os
 import re
 import urllib.parse
 from typing import Any, Dict, List, Optional, Set
@@ -10,12 +11,15 @@ import httpx
 
 from scraper.config import DEFAULT_HEADERS, HTTP_TIMEOUT_SECONDS
 from scraper.validator import (
+    DISALLOWED_EMAIL_DOMAINS,
+    DISALLOWED_EMAIL_PREFIXES,
     EMAIL_REGEX,
     FSSAI_REGEX,
     GST_REGEX,
     PAN_REGEX,
     PHONE_REGEX,
     PINCODE_REGEX,
+    extract_pan_from_gstin,
     validate_email,
     validate_fssai,
     validate_gst,
@@ -25,6 +29,29 @@ from scraper.validator import (
 )
 
 logger = logging.getLogger("FlipkartScraper.WebsiteParser")
+
+
+def _is_matching_site_email(email_str: Optional[str], site_domain: str) -> bool:
+    """Validate that an email extracted from a website matches the website's domain or subdomain."""
+    if not email_str or not site_domain:
+        return False
+    v_email = validate_email(email_str)
+    if not v_email:
+        return False
+    user_part, em_dom = v_email.split("@", 1)
+    if user_part in DISALLOWED_EMAIL_PREFIXES:
+        return False
+    if em_dom in DISALLOWED_EMAIL_DOMAINS or any(em_dom.endswith("." + d) for d in DISALLOWED_EMAIL_DOMAINS):
+        return False
+    site_dom = site_domain.lower().replace("www.", "").strip()
+    if not site_dom:
+        return False
+    # Accept exact domain match or valid subdomain
+    return em_dom == site_dom or em_dom.endswith("." + site_dom) or site_dom.endswith("." + em_dom)
+
+
+# Maximum response size to parse (5MB safety limit against oversized downloads)
+MAX_RESPONSE_BYTES = 5 * 1024 * 1024
 
 # Relevant same-domain pages to inspect for business identity/legal/contact data.
 # Keep this bounded so one seller cannot cause an unbounded crawl.
@@ -59,27 +86,71 @@ MAX_PRIORITY_PAGES = 15
 class WebsiteParser:
     """Crawls company websites and extracts business and contact information."""
 
-    def __init__(self, timeout: int = HTTP_TIMEOUT_SECONDS) -> None:
+    def __init__(
+        self,
+        timeout: int = HTTP_TIMEOUT_SECONDS,
+        verify_ssl: Optional[bool] = None,
+    ) -> None:
         self.timeout = timeout
+        if verify_ssl is not None:
+            self.verify_ssl = verify_ssl
+        else:
+            # Default to secure TLS certificate verification in production
+            self.verify_ssl = os.environ.get("FLIPKART_DEV_INSECURE_TLS", "0").strip().lower() not in ("1", "true", "yes")
+
         self.client = httpx.AsyncClient(
             headers=DEFAULT_HEADERS,
             timeout=self.timeout,
             follow_redirects=True,
-            verify=False,
+            verify=self.verify_ssl,
+            max_redirects=5,
         )
 
     async def close(self) -> None:
         await self.client.aclose()
 
     async def fetch_html(self, url: str) -> Optional[str]:
-        """Safely fetch HTML content of a webpage."""
+        """Safely fetch HTML content of a webpage with content-type and size guards."""
+        if not url or not isinstance(url, str):
+            return None
+        clean_url = url.strip()
+        if not clean_url.startswith(("http://", "https://")):
+            clean_url = f"https://{clean_url}"
+
         try:
-            response = await self.client.get(url)
+            response = await self.client.get(clean_url)
+            if response.status_code != 200:
+                logger.debug(f"HTTP {response.status_code} fetching {clean_url}")
+                return None
+
             content_type = response.headers.get("content-type", "").lower()
-            if response.status_code == 200 and (not content_type or "html" in content_type):
-                return response.text
+            if content_type and not any(ct in content_type for ct in ("text/html", "application/xhtml+xml", "text/plain")):
+                logger.debug(f"Skipping non-HTML content-type '{content_type}' at {clean_url}")
+                return None
+
+            content_length = response.headers.get("content-length")
+            if content_length:
+                try:
+                    if int(content_length) > MAX_RESPONSE_BYTES:
+                        logger.debug(f"Skipping oversized response ({content_length} bytes) at {clean_url}")
+                        return None
+                except ValueError:
+                    pass
+
+            text = response.text
+            if len(text) > MAX_RESPONSE_BYTES:
+                return text[:MAX_RESPONSE_BYTES]
+            return text
+        except httpx.TimeoutException:
+            logger.debug(f"Timeout fetching {clean_url}")
+        except httpx.TooManyRedirects:
+            logger.debug(f"Too many redirects fetching {clean_url}")
+        except httpx.ConnectError as e:
+            logger.debug(f"Connection error fetching {clean_url}: {e}")
+        except httpx.RequestError as e:
+            logger.debug(f"HTTP request error fetching {clean_url}: {e}")
         except Exception as e:
-            logger.debug(f"Failed to fetch {url}: {e}")
+            logger.debug(f"Failed to fetch {clean_url}: {e}")
         return None
 
     @staticmethod
@@ -168,6 +239,7 @@ class WebsiteParser:
     ) -> Dict[str, Any]:
         """Extract structured business credentials, contacts, and addresses from HTML."""
         soup = BeautifulSoup(html_content, "lxml")
+        site_host = urllib.parse.urlparse(source_url).netloc.lower().replace("www.", "").split(":", 1)[0]
 
         email_candidates: List[str] = []
         jsonld_gst = None
@@ -181,9 +253,11 @@ class WebsiteParser:
             if item.get("name") and not jsonld_company:
                 jsonld_company = str(item["name"]).strip()
             if item.get("email"):
-                v = validate_email(str(item["email"]))
-                if v and v not in email_candidates:
-                    email_candidates.append(v)
+                cand_em = str(item["email"])
+                if _is_matching_site_email(cand_em, site_host):
+                    v = validate_email(cand_em)
+                    if v and v not in email_candidates:
+                        email_candidates.append(v)
             for phone_key in ("telephone", "phone"):
                 if item.get(phone_key) and not jsonld_phone:
                     v = validate_phone(str(item[phone_key]))
@@ -219,9 +293,11 @@ class WebsiteParser:
                 if not isinstance(cp, dict):
                     continue
                 if cp.get("email"):
-                    v = validate_email(str(cp["email"]))
-                    if v and v not in email_candidates:
-                        email_candidates.append(v)
+                    cand_em = str(cp["email"])
+                    if _is_matching_site_email(cand_em, site_host):
+                        v = validate_email(cand_em)
+                        if v and v not in email_candidates:
+                            email_candidates.append(v)
                 if cp.get("telephone") and not jsonld_phone:
                     v = validate_phone(str(cp["telephone"]))
                     if v:
@@ -269,13 +345,9 @@ class WebsiteParser:
                     break
 
         if extracted["gst_number"]:
-            extracted["pan_number"] = validate_pan(None, extracted["gst_number"])
+            extracted["pan_number"] = extract_pan_from_gstin(extracted["gst_number"])
         else:
-            for match in PAN_REGEX.findall(plain_text):
-                valid = validate_pan(match)
-                if valid:
-                    extracted["pan_number"] = valid
-                    break
+            extracted["pan_number"] = None
 
         fssai_matches = re.findall(r"(?:FSSAI|Lic(?:ense)?\s*(?:No\.?)?|Food\s+License)[:\s#-]*([1-2][0-9]{13})", plain_text, re.I)
         fssai_matches += FSSAI_REGEX.findall(plain_text)
@@ -287,13 +359,15 @@ class WebsiteParser:
 
         for mailto in soup.select("a[href^='mailto:']"):
             candidate = str(mailto.get("href", "")).replace("mailto:", "").split("?")[0].strip()
-            valid = validate_email(candidate)
-            if valid and valid not in email_candidates:
-                email_candidates.append(valid)
+            if _is_matching_site_email(candidate, site_host):
+                valid = validate_email(candidate)
+                if valid and valid not in email_candidates:
+                    email_candidates.append(valid)
         for em in EMAIL_REGEX.findall(plain_text):
-            valid = validate_email(em)
-            if valid and valid not in email_candidates:
-                email_candidates.append(valid)
+            if _is_matching_site_email(em, site_host):
+                valid = validate_email(em)
+                if valid and valid not in email_candidates:
+                    email_candidates.append(valid)
         if email_candidates:
             def _email_rank(e: str) -> int:
                 user = e.split("@")[0].lower()

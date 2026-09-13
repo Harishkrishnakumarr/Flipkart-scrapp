@@ -27,27 +27,35 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:41:14.304916+00:00",
     "last_seen": "2026-09-09T12:52:47.569825+00:00",
-    "last_enriched": "2026-09-08T17:41:22.319284+00:00",
+    "last_enriched": "2026-09-11T21:13:19.409561+00:00",
     "enriched_data": {
       "Business Name": "Foxter",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
       "Owner Name": null,
-      "Phone Number": null,
-      "Email Address": null,
+      "Phone Number": "6012345299",
+      "Email Address": "foxterbicycle22@gmail.com",
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
-      "Billing Address": "d’un bateau de remplacement ou d’un véhicule, de taxi ou de transport …",
-      "x": "",
-      "City": "Begonia",
+      "Billing Address": null,
+      "Shipping Address": null,
+      "City": null,
       "State": null,
       "Pincode": null,
-      "Country": "India",
+      "Country": null,
       "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "company_website"
+      ],
+      "Rating": null,
+      "Status Source": "NEEDS_REVIEW",
       "Source rating": null,
       "seller_name": "Foxter",
+      "raw_seller_name": "Foxter",
       "marketplace": "flipkart",
       "fulfillment_by": "Foxter",
       "product_url": "https://www.flipkart.com/foxter-men-pyjama/p/itm3327c88a469d6?pid=PYJHERZ3QXGGCQFK",
@@ -63,22 +71,22 @@
       "business_model": "B2C / Retail",
       "business_category": "Pyjamas & Lounge Pants",
       "owner_name": null,
-      "contact_number": null,
-      "email": null,
+      "contact_number": "6012345299",
+      "phone": "6012345299",
+      "email": "foxterbicycle22@gmail.com",
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
-      "billing_address": "d’un bateau de remplacement ou d’un véhicule, de taxi ou de transport …",
-      "shipping_address": "d’un bateau de remplacement ou d’un véhicule, de taxi ou de transport …",
-      "city": "Begonia",
+      "billing_address": null,
+      "shipping_address": null,
+      "city": null,
       "state": null,
       "pincode": null,
-      "country": "India",
+      "country": null,
       "website_url": null,
       "status": "NEEDS_REVIEW",
       "source": [
-        "targeted_search",
-        "marketplace_profile"
+        "company_website"
       ],
       "confidence": {
         "gst_number": {
@@ -92,14 +100,14 @@
           "source": "not_found"
         },
         "contact_number": {
-          "value": null,
-          "confidence": 0.0,
-          "source": "not_found"
+          "value": "6012345299",
+          "confidence": 0.85,
+          "source": "company_website"
         },
         "email": {
-          "value": null,
-          "confidence": 0.0,
-          "source": "not_found"
+          "value": "foxterbicycle22@gmail.com",
+          "confidence": 0.85,
+          "source": "company_website"
         },
         "fssai_number": {
           "value": null,
@@ -112,12 +120,12 @@
           "source": "not_found"
         },
         "address": {
-          "value": "d’un bateau de remplacement ou d’un véhicule, de taxi ou de transport …",
-          "confidence": 0.45,
-          "source": "targeted_search"
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
         }
       },
-      "seller_confidence": 0.85
+      "seller_confidence": 0.95
     }
   },
   "flipkart::jk fashion house": {
@@ -146,9 +154,9 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:41:33.755762+00:00",
     "last_seen": "2026-09-08T17:41:33.755762+00:00",
-    "last_enriched": "2026-09-08T17:41:41.071488+00:00",
+    "last_enriched": "2026-09-11T21:13:44.167575+00:00",
     "enriched_data": {
-      "Business Name": "JK FASHION HOUSE",
+      "Business Name": "Jk Fashion House",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
       "Owner Name": null,
@@ -158,15 +166,23 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": null,
-      "x": "",
-      "City": "Begonia",
+      "Shipping Address": null,
+      "City": null,
       "State": null,
       "Pincode": null,
-      "Country": "India",
+      "Country": null,
       "Website URL": null,
-      "Status": "NEEDS_REVIEW",
+      "Product Rating": 4.1,
+      "Seller Rating": null,
+      "Status": "NOT_FOUND",
+      "Source": [
+        "targeted_search"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
-      "seller_name": "JK FASHION HOUSE",
+      "seller_name": "Jk Fashion House",
+      "raw_seller_name": "Jk Fashion House",
       "marketplace": "flipkart",
       "fulfillment_by": "JK FASHION HOUSE",
       "product_url": "https://www.flipkart.com/ajh-fashion-indi-men-pyjama/p/itmb692a1027045e?pid=PYJHGH3TGHDARNGV",
@@ -183,20 +199,21 @@
       "business_category": "Pyjamas & Lounge Pants",
       "owner_name": null,
       "contact_number": null,
+      "phone": null,
       "email": null,
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
       "billing_address": null,
       "shipping_address": null,
-      "city": "Begonia",
+      "city": null,
       "state": null,
       "pincode": null,
-      "country": "India",
+      "country": null,
       "website_url": null,
-      "status": "NEEDS_REVIEW",
+      "status": "NOT_FOUND",
       "source": [
-        "marketplace_profile"
+        "targeted_search"
       ],
       "confidence": {
         "gst_number": {
@@ -235,7 +252,7 @@
           "source": "not_found"
         }
       },
-      "seller_confidence": 0.85
+      "seller_confidence": 0.95
     }
   },
   "flipkart::joven": {
@@ -267,27 +284,34 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:41:52.541640+00:00",
     "last_seen": "2026-09-09T13:00:33.683462+00:00",
-    "last_enriched": "2026-09-08T17:42:16.647621+00:00",
+    "last_enriched": "2026-09-11T20:48:21.190673+00:00",
     "enriched_data": {
       "Business Name": "JOVEN",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
-      "Owner Name": null,
+      "Owner Name": "ship details",
       "Phone Number": null,
       "Email Address": "support@spanishdict.com",
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
-      "Billing Address": null,
-      "x": "",
+      "Billing Address": "Buy Cellphones, Wearables, etc, securely online. | CaCellular Shop securely online for cellphones, TVs, laptops, and kitchen appliances from top brands like Apple and Samsung, all at unbeatable …",
       "City": "Begonia",
       "State": null,
       "Pincode": null,
       "Country": "India",
       "Website URL": "https://www.spanishdict.com",
+      "Product Rating": 4.2,
+      "Seller Rating": null,
       "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "targeted_search"
+      ],
+      "Rating": null,
+      "Status Source": "NEEDS_REVIEW",
       "Source rating": null,
       "seller_name": "JOVEN",
+      "raw_seller_name": "Joven",
       "marketplace": "flipkart",
       "fulfillment_by": "JOVEN",
       "product_url": "https://www.flipkart.com/joven-indi-men-pyjama/p/itm0b575a9d44c61?pid=PYJHME3NYMHSQH22",
@@ -302,14 +326,14 @@
       "star_rating": null,
       "business_model": "B2C / Retail",
       "business_category": "Pyjamas & Lounge Pants",
-      "owner_name": null,
+      "owner_name": "ship details",
       "contact_number": null,
       "email": "support@spanishdict.com",
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
-      "billing_address": null,
-      "shipping_address": null,
+      "billing_address": "Buy Cellphones, Wearables, etc, securely online. | CaCellular Shop securely online for cellphones, TVs, laptops, and kitchen appliances from top brands like Apple and Samsung, all at unbeatable …",
+      "shipping_address": "Buy Cellphones, Wearables, etc, securely online. | CaCellular Shop securely online for cellphones, TVs, laptops, and kitchen appliances from top brands like Apple and Samsung, all at unbeatable …",
       "city": "Begonia",
       "state": null,
       "pincode": null,
@@ -387,27 +411,34 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:42:28.241205+00:00",
     "last_seen": "2026-09-09T13:02:40.391121+00:00",
-    "last_enriched": "2026-09-08T17:42:35.120270+00:00",
+    "last_enriched": "2026-09-11T20:48:45.171238+00:00",
     "enriched_data": {
       "Business Name": "VastraEnterprises",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
       "Owner Name": null,
-      "Phone Number": null,
-      "Email Address": null,
+      "Phone Number": "9319953367",
+      "Email Address": "vastraofficial123@gmail.com",
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "unity - Google Help Fehlercode 105403",
-      "x": "",
       "City": "Begonia",
-      "State": null,
+      "State": "Delhi",
       "Pincode": "105403",
       "Country": "India",
-      "Website URL": null,
+      "Website URL": "https://www.vastraindia.com",
+      "Product Rating": 3.8,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "search_query"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
       "seller_name": "VastraEnterprises",
+      "raw_seller_name": "Vastraenterprises",
       "marketplace": "flipkart",
       "fulfillment_by": "VastraEnterprises",
       "product_url": "https://www.flipkart.com/bliez-indi-women-pyjama/p/itm491af6f924dc1?pid=PYJHZC7EUMHZTUVB",
@@ -423,18 +454,18 @@
       "business_model": "B2C / Retail",
       "business_category": "Pyjamas & Lounge Pants",
       "owner_name": null,
-      "contact_number": null,
-      "email": null,
+      "contact_number": "9319953367",
+      "email": "vastraofficial123@gmail.com",
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
       "billing_address": "unity - Google Help Fehlercode 105403",
       "shipping_address": "unity - Google Help Fehlercode 105403",
       "city": "Begonia",
-      "state": null,
+      "state": "Delhi",
       "pincode": "105403",
       "country": "India",
-      "website_url": null,
+      "website_url": "https://www.vastraindia.com",
       "status": "NEEDS_REVIEW",
       "source": [
         "targeted_search",
@@ -511,27 +542,35 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:42:46.532797+00:00",
     "last_seen": "2026-09-09T10:39:29.341292+00:00",
-    "last_enriched": "2026-09-08T17:42:53.923072+00:00",
+    "last_enriched": "2026-09-11T20:49:10.414151+00:00",
     "enriched_data": {
       "Business Name": "INDICLUB",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
-      "Owner Name": null,
+      "Owner Name": "at INDICLUB",
       "Phone Number": null,
-      "Email Address": null,
+      "Email Address": "info@indiclub.shop",
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "Solved 1.11 LAB: Input and formatted output: House real - Chegg Question: 1.11 LAB: Input and formatted output: House real estate summarySites like Zillow get input about house prices from a …",
-      "x": "",
       "City": "Begonia",
-      "State": null,
-      "Pincode": null,
+      "State": "Gujarat",
+      "Pincode": "395013",
       "Country": "India",
-      "Website URL": null,
+      "Website URL": "https://indiclub.shop",
+      "Product Rating": 4.0,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search",
+        "company_website"
+      ],
+      "Rating": null,
+      "Status Source": "PARTIALLY_VERIFIED",
       "Source rating": null,
       "seller_name": "INDICLUB",
+      "raw_seller_name": "Indiclub",
       "marketplace": "flipkart",
       "fulfillment_by": "INDICLUB",
       "product_url": "https://www.flipkart.com/indiclub-men-pyjama/p/itm7ff9ce91b7f65?pid=PYJHMTTXJPF3SAAX",
@@ -546,19 +585,19 @@
       "star_rating": null,
       "business_model": "B2C / Retail",
       "business_category": "Pyjamas & Lounge Pants",
-      "owner_name": null,
+      "owner_name": "at INDICLUB",
       "contact_number": null,
-      "email": null,
+      "email": "info@indiclub.shop",
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
       "billing_address": "Solved 1.11 LAB: Input and formatted output: House real - Chegg Question: 1.11 LAB: Input and formatted output: House real estate summarySites like Zillow get input about house prices from a …",
       "shipping_address": "Solved 1.11 LAB: Input and formatted output: House real - Chegg Question: 1.11 LAB: Input and formatted output: House real estate summarySites like Zillow get input about house prices from a …",
       "city": "Begonia",
-      "state": null,
-      "pincode": null,
+      "state": "Gujarat",
+      "pincode": "395013",
       "country": "India",
-      "website_url": null,
+      "website_url": "https://indiclub.shop",
       "status": "NEEDS_REVIEW",
       "source": [
         "targeted_search",
@@ -632,27 +671,35 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:43:05.380100+00:00",
     "last_seen": "2026-09-09T11:52:46.561151+00:00",
-    "last_enriched": "2026-09-08T17:43:24.039898+00:00",
+    "last_enriched": "2026-09-11T20:49:33.521499+00:00",
     "enriched_data": {
       "Business Name": "Bewakoof",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
-      "Owner Name": null,
+      "Owner Name": "CEO at Bewakoof",
       "Phone Number": null,
       "Email Address": null,
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "Online Fashion Shopping for Men, Women, Accessories ... Online Shopping Site for Men, Women & Accessories. Choose from the best in Men Clothing and Women Fashion Wear. Trendiest …",
-      "x": "",
       "City": "Women",
-      "State": null,
-      "Pincode": null,
+      "State": "Maharashtra",
+      "Pincode": "421302",
       "Country": "India",
-      "Website URL": null,
+      "Website URL": "https://bewakoof-eight.vercel.app",
+      "Product Rating": 4.1,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search",
+        "company_website"
+      ],
+      "Rating": null,
+      "Status Source": "NEEDS_REVIEW",
       "Source rating": null,
       "seller_name": "Bewakoof",
+      "raw_seller_name": "Bewakoof",
       "marketplace": "flipkart",
       "fulfillment_by": "Bewakoof",
       "product_url": "https://www.flipkart.com/bewakoof-indi-men-pyjama/p/itm23131eeb08d24?pid=PYJGYCPFNZ6DYNU6",
@@ -667,7 +714,7 @@
       "star_rating": null,
       "business_model": "B2C / Retail",
       "business_category": "Pyjamas & Lounge Pants",
-      "owner_name": null,
+      "owner_name": "CEO at Bewakoof",
       "contact_number": null,
       "email": null,
       "gst_number": null,
@@ -676,10 +723,10 @@
       "billing_address": "Online Fashion Shopping for Men, Women, Accessories ... Online Shopping Site for Men, Women & Accessories. Choose from the best in Men Clothing and Women Fashion Wear. Trendiest …",
       "shipping_address": "Online Fashion Shopping for Men, Women, Accessories ... Online Shopping Site for Men, Women & Accessories. Choose from the best in Men Clothing and Women Fashion Wear. Trendiest …",
       "city": "Women",
-      "state": null,
-      "pincode": null,
+      "state": "Maharashtra",
+      "pincode": "421302",
       "country": "India",
-      "website_url": null,
+      "website_url": "https://bewakoof-eight.vercel.app",
       "status": "NEEDS_REVIEW",
       "source": [
         "targeted_search",
@@ -751,27 +798,35 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:43:54.533870+00:00",
     "last_seen": "2026-09-08T17:43:54.533870+00:00",
-    "last_enriched": "2026-09-08T17:44:01.309455+00:00",
+    "last_enriched": "2026-09-11T20:50:05.673412+00:00",
     "enriched_data": {
       "Business Name": "VIMUDA",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
       "Owner Name": null,
       "Phone Number": null,
-      "Email Address": null,
+      "Email Address": "info@xminimal.com",
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
-      "Billing Address": null,
-      "x": "",
+      "Billing Address": "IndiaMART- Indian Manufacturers Suppliers Exporters Directory, India ... IndiaMART.com is India's largest online marketplace that assists manufacturers, suppliers & exporters to trade with each other at a …",
       "City": "Begonia",
       "State": null,
       "Pincode": null,
       "Country": "India",
-      "Website URL": null,
+      "Website URL": "https://www.indiamart.com",
+      "Product Rating": 4.3,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search",
+        "company_website"
+      ],
+      "Rating": null,
+      "Status Source": "PARTIALLY_VERIFIED",
       "Source rating": null,
       "seller_name": "VIMUDA",
+      "raw_seller_name": "Vimuda",
       "marketplace": "flipkart",
       "fulfillment_by": "VIMUDA",
       "product_url": "https://www.flipkart.com/vimuda-lifestyle-indi-women-pyjama/p/itm8ac28244c878a?pid=PYJHGWPRDFFNCMKN",
@@ -788,17 +843,17 @@
       "business_category": "Pyjamas & Lounge Pants",
       "owner_name": null,
       "contact_number": null,
-      "email": null,
+      "email": "info@xminimal.com",
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
-      "billing_address": null,
-      "shipping_address": null,
+      "billing_address": "IndiaMART- Indian Manufacturers Suppliers Exporters Directory, India ... IndiaMART.com is India's largest online marketplace that assists manufacturers, suppliers & exporters to trade with each other at a …",
+      "shipping_address": "IndiaMART- Indian Manufacturers Suppliers Exporters Directory, India ... IndiaMART.com is India's largest online marketplace that assists manufacturers, suppliers & exporters to trade with each other at a …",
       "city": "Begonia",
       "state": null,
       "pincode": null,
       "country": "India",
-      "website_url": null,
+      "website_url": "https://www.indiamart.com",
       "status": "NEEDS_REVIEW",
       "source": [
         "marketplace_profile"
@@ -869,7 +924,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:44:12.787531+00:00",
     "last_seen": "2026-09-08T17:44:12.787531+00:00",
-    "last_enriched": "2026-09-08T17:44:20.236203+00:00",
+    "last_enriched": "2026-09-11T20:50:28.436235+00:00",
     "enriched_data": {
       "Business Name": "AANAMENTERPRISE",
       "Business Model": "B2C / Retail",
@@ -881,15 +936,22 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "Makeup Sale | Beauty Sale |Sephora Makeup sales are always on at Sephora. Shop discounted makeup, skincare, fragrance and hair care products at Sephora today. …",
-      "x": "",
       "City": "Skincare",
-      "State": null,
+      "State": "Delhi",
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search"
+      ],
+      "Rating": null,
+      "Status Source": "NEEDS_REVIEW",
       "Source rating": null,
       "seller_name": "AANAMENTERPRISE",
+      "raw_seller_name": "Aanamenterprise",
       "marketplace": "flipkart",
       "fulfillment_by": "AANAMENTERPRISE",
       "product_url": "https://www.flipkart.com/renz-indi-men-pyjama/p/itm2a71f02c080b0?pid=PYJFX8XWZGGFAFJ3",
@@ -913,7 +975,7 @@
       "billing_address": "Makeup Sale | Beauty Sale |Sephora Makeup sales are always on at Sephora. Shop discounted makeup, skincare, fragrance and hair care products at Sephora today. …",
       "shipping_address": "Makeup Sale | Beauty Sale |Sephora Makeup sales are always on at Sephora. Shop discounted makeup, skincare, fragrance and hair care products at Sephora today. …",
       "city": "Skincare",
-      "state": null,
+      "state": "Delhi",
       "pincode": null,
       "country": "India",
       "website_url": null,
@@ -991,27 +1053,34 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:44:31.951639+00:00",
     "last_seen": "2026-09-09T13:02:52.007264+00:00",
-    "last_enriched": "2026-09-08T17:44:39.048618+00:00",
+    "last_enriched": "2026-09-11T20:50:54.279177+00:00",
     "enriched_data": {
       "Business Name": "BHAVAY",
       "Business Model": "B2C / Retail",
       "Business Category": "Pyjamas & Lounge Pants",
-      "Owner Name": null,
-      "Phone Number": null,
+      "Owner Name": "of Sevakar",
+      "Phone Number": "9873378238",
       "Email Address": null,
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "Soccer, Baseball, Football, Basketball Gear | Epic Sports Shop Epic Sports for the largest selection of soccer equipment, baseball jerseys, football gear, basketball uniforms, volleyballs, and …",
-      "x": "",
       "City": "And …",
       "State": null,
       "Pincode": null,
       "Country": "India",
-      "Website URL": null,
+      "Website URL": "https://bhavay.com",
+      "Product Rating": 4.1,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
       "seller_name": "BHAVAY",
+      "raw_seller_name": "Bhavay",
       "marketplace": "flipkart",
       "fulfillment_by": "BHAVAY",
       "product_url": "https://www.flipkart.com/9lkha-men-pyjama/p/itmc444f173cd72e?pid=PYJHGZ76U8TWVSYY",
@@ -1026,8 +1095,8 @@
       "star_rating": null,
       "business_model": "B2C / Retail",
       "business_category": "Pyjamas & Lounge Pants",
-      "owner_name": null,
-      "contact_number": null,
+      "owner_name": "of Sevakar",
+      "contact_number": "9873378238",
       "email": null,
       "gst_number": null,
       "pan_number": null,
@@ -1038,7 +1107,7 @@
       "state": null,
       "pincode": null,
       "country": "India",
-      "website_url": null,
+      "website_url": "https://bhavay.com",
       "status": "NEEDS_REVIEW",
       "source": [
         "targeted_search",
@@ -1110,7 +1179,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:44:50.439449+00:00",
     "last_seen": "2026-09-08T17:44:50.439449+00:00",
-    "last_enriched": "2026-09-08T17:44:57.877918+00:00",
+    "last_enriched": "2026-09-11T20:51:13.533007+00:00",
     "enriched_data": {
       "Business Name": "UrbanScottish",
       "Business Model": "B2C / Retail",
@@ -1121,16 +1190,23 @@
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
-      "Billing Address": null,
-      "x": "",
+      "Billing Address": "Microsoft– AI, Cloud, Productivity, Computing, Gaming & Apps Explore Microsoft products and services and support for your home or business. Shop Microsoft 365, Copilot, Teams, Xbox, …",
       "City": "Begonia",
-      "State": null,
+      "State": "Odisha",
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search"
+      ],
+      "Rating": null,
+      "Status Source": "NEEDS_REVIEW",
       "Source rating": null,
       "seller_name": "UrbanScottish",
+      "raw_seller_name": "Urbanscottish",
       "marketplace": "flipkart",
       "fulfillment_by": "UrbanScottish",
       "product_url": "https://www.flipkart.com/urban-scottish-men-pyjama/p/itm611779153fb8c?pid=PYJG9BMQ2JVFCXHH",
@@ -1151,10 +1227,10 @@
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
-      "billing_address": null,
-      "shipping_address": null,
+      "billing_address": "Microsoft– AI, Cloud, Productivity, Computing, Gaming & Apps Explore Microsoft products and services and support for your home or business. Shop Microsoft 365, Copilot, Teams, Xbox, …",
+      "shipping_address": "Microsoft– AI, Cloud, Productivity, Computing, Gaming & Apps Explore Microsoft products and services and support for your home or business. Shop Microsoft 365, Copilot, Teams, Xbox, …",
       "city": "Begonia",
-      "state": null,
+      "state": "Odisha",
       "pincode": null,
       "country": "India",
       "website_url": null,
@@ -1228,7 +1304,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:45:09.254666+00:00",
     "last_seen": "2026-09-08T17:45:09.254666+00:00",
-    "last_enriched": "2026-09-08T17:45:16.933430+00:00",
+    "last_enriched": "2026-09-11T20:51:37.168474+00:00",
     "enriched_data": {
       "Business Name": "KIRDARFASHIONHOUSE",
       "Business Model": "B2C / Retail",
@@ -1239,16 +1315,23 @@
       "GST Number": null,
       "PAN Number": null,
       "FSSAI Number": null,
-      "Billing Address": null,
-      "x": "",
+      "Billing Address": "The Best SmallArmchairsTo Buy In 2026: Shop Our Top Picks 14 Jul, 2026· Whether you're styling an empty corner, creating a cosy reading nook or squeezing in extra seating for guests, a small …",
       "City": "Begonia",
-      "State": null,
+      "State": "Odisha",
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search"
+      ],
+      "Rating": null,
+      "Status Source": "NEEDS_REVIEW",
       "Source rating": null,
       "seller_name": "KIRDARFASHIONHOUSE",
+      "raw_seller_name": "Kirdarfashionhouse",
       "marketplace": "flipkart",
       "fulfillment_by": "KIRDARFASHIONHOUSE",
       "product_url": "https://www.flipkart.com/j-s-world-fashion-indi-men-pyjama/p/itmf0225ff4f2d07?pid=PYJG9PATAWCX7GDV",
@@ -1269,10 +1352,10 @@
       "gst_number": null,
       "pan_number": null,
       "fssai_number": null,
-      "billing_address": null,
-      "shipping_address": null,
+      "billing_address": "The Best SmallArmchairsTo Buy In 2026: Shop Our Top Picks 14 Jul, 2026· Whether you're styling an empty corner, creating a cosy reading nook or squeezing in extra seating for guests, a small …",
+      "shipping_address": "The Best SmallArmchairsTo Buy In 2026: Shop Our Top Picks 14 Jul, 2026· Whether you're styling an empty corner, creating a cosy reading nook or squeezing in extra seating for guests, a small …",
       "city": "Begonia",
-      "state": null,
+      "state": "Odisha",
       "pincode": null,
       "country": "India",
       "website_url": null,
@@ -1346,7 +1429,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:45:28.439881+00:00",
     "last_seen": "2026-09-08T17:45:28.439881+00:00",
-    "last_enriched": "2026-09-08T17:45:35.670299+00:00",
+    "last_enriched": "2026-09-11T20:52:00.976039+00:00",
     "enriched_data": {
       "Business Name": "JKKALPENTERPRISE",
       "Business Model": "B2C / Retail",
@@ -1358,15 +1441,22 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "REPUBLIC SERVICES INDIANAPOLIS NORTH TRANSFER STATION- Updated ... -Yelp Republic Services delivers comprehensive recycling, waste and environmental services to support your business, home and …",
-      "x": "",
       "City": "Begonia",
       "State": null,
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 3.5,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "search_query"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
       "seller_name": "JKKALPENTERPRISE",
+      "raw_seller_name": "Jkkalpenterprise",
       "marketplace": "flipkart",
       "fulfillment_by": "JKKALPENTERPRISE",
       "product_url": "https://www.flipkart.com/kalpenterprise-women-pyjama/p/itm204fcf7a07e31?pid=PYJHPHCURXXQCKNR",
@@ -1465,7 +1555,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:45:47.111417+00:00",
     "last_seen": "2026-09-08T17:45:47.111417+00:00",
-    "last_enriched": "2026-09-08T17:45:54.007910+00:00",
+    "last_enriched": "2026-09-11T20:52:37.262789+00:00",
     "enriched_data": {
       "Business Name": "TRENDEFY",
       "Business Model": "B2C / Retail",
@@ -1477,15 +1567,22 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "AAA Carmel OfficeinCarmel, IN 46032 - (317) 8... - Chamber of … AAA Carmel Office located at 1438 W. Main Street, Carmel, IN 46032 - reviews, ratings, hours, phone number, directions, and more",
-      "x": "",
       "City": "And More",
       "State": null,
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 3.8,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "search_query"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
       "seller_name": "TRENDEFY",
+      "raw_seller_name": "Trendefy",
       "marketplace": "flipkart",
       "fulfillment_by": "TRENDEFY",
       "product_url": "https://www.flipkart.com/layzee-indi-women-pyjama/p/itm36bd182adac0f?pid=PYJHKG4NHKA9E8CZ",
@@ -1587,7 +1684,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:46:05.585399+00:00",
     "last_seen": "2026-09-09T13:01:08.385234+00:00",
-    "last_enriched": "2026-09-08T17:46:12.688855+00:00",
+    "last_enriched": "2026-09-11T20:53:14.905442+00:00",
     "enriched_data": {
       "Business Name": "RRCreationDli",
       "Business Model": "B2C / Retail",
@@ -1599,15 +1696,22 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "Index's Room @Chaturbate- Chat in a Live Adult Video Chat Room … 15 Jan, 1990· Enjoy free webcams broadcasted live from amateurs around the world! - Join 100% Free",
-      "x": "",
       "City": "Begonia",
       "State": null,
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 4.1,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "search_query"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
       "seller_name": "RRCreationDli",
+      "raw_seller_name": "Rrcreationdli",
       "marketplace": "flipkart",
       "fulfillment_by": "RRCreationDli",
       "product_url": "https://www.flipkart.com/gys-indi-men-pyjama/p/itm10f0b3b50a54a?pid=PYJH57PMJFVZRFPY",
@@ -1718,7 +1822,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:46:24.142202+00:00",
     "last_seen": "2026-09-10T18:58:09.161212+00:00",
-    "last_enriched": "2026-09-08T17:46:31.139649+00:00",
+    "last_enriched": "2026-09-11T20:54:00.115861+00:00",
     "enriched_data": {
       "Business Name": "HSAtlastradeFashion",
       "Business Model": "B2C / Retail",
@@ -1730,15 +1834,22 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "Millcreek Mall At Millcreek Mall Complex you'll find an impressive selection of retail stores, services and restaurants to make your shopping …",
-      "x": "",
       "City": "Begonia",
       "State": "Andaman and Nicobar Islands",
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 4.1,
+      "Seller Rating": 1.0,
       "Status": "NEEDS_REVIEW",
-      "Source rating": null,
+      "Source": [
+        "search_query"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NOT_FOUND",
+      "Source rating": 1.0,
       "seller_name": "HSAtlastradeFashion",
+      "raw_seller_name": "Hsatlastradefashion",
       "marketplace": "flipkart",
       "fulfillment_by": "HSAtlastradeFashion",
       "product_url": "https://www.flipkart.com/jockey-indi-women-pyjama/p/itm90685284dcdee?pid=PYJFHHZ9FC2YTZJ2",
@@ -1749,8 +1860,8 @@
       "sub_sub_category": null,
       "sub_sub_subcategory": null,
       "product_rating": 4.1,
-      "seller_rating": null,
-      "star_rating": null,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
       "business_model": "B2C / Retail",
       "business_category": "Pyjamas & Lounge Pants",
       "owner_name": null,
@@ -1839,7 +1950,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:46:42.585403+00:00",
     "last_seen": "2026-09-09T13:04:34.952373+00:00",
-    "last_enriched": "2026-09-08T17:46:49.999470+00:00",
+    "last_enriched": "2026-09-11T20:54:42.271704+00:00",
     "enriched_data": {
       "Business Name": "VPENETERPRISE",
       "Business Model": "B2C / Retail",
@@ -1851,15 +1962,22 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "to you! With new stores being opened frequently, chances are, we have a location nearby",
-      "x": "",
       "City": "Chances Are",
       "State": null,
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 4.1,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "search_query"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
       "seller_name": "VPENETERPRISE",
+      "raw_seller_name": "Vpeneterprise",
       "marketplace": "flipkart",
       "fulfillment_by": "VPENETERPRISE",
       "product_url": "https://www.flipkart.com/vpsales-indi-women-pyjama/p/itm8e0452a82616c?pid=PYJHBHKFBW6AYPWF",
@@ -1958,7 +2076,7 @@
     "enrichment_status": "completed",
     "first_seen": "2026-09-08T17:47:01.734236+00:00",
     "last_seen": "2026-09-08T17:47:01.734236+00:00",
-    "last_enriched": "2026-09-08T17:47:10.363129+00:00",
+    "last_enriched": "2026-09-11T20:55:17.000279+00:00",
     "enriched_data": {
       "Business Name": "RADHERADHEJI108",
       "Business Model": "B2C / Retail",
@@ -1970,15 +2088,22 @@
       "PAN Number": null,
       "FSSAI Number": null,
       "Billing Address": "you used to register. If you're not sure which email address you used, search …",
-      "x": "",
       "City": "Search …",
       "State": null,
       "Pincode": null,
       "Country": "India",
       "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": null,
       "Status": "NEEDS_REVIEW",
+      "Source": [
+        "search_query"
+      ],
+      "Rating": null,
+      "Status Source": "NOT_FOUND",
       "Source rating": null,
       "seller_name": "RADHERADHEJI108",
+      "raw_seller_name": "Radheradheji108",
       "marketplace": "flipkart",
       "fulfillment_by": "RADHERADHEJI108",
       "product_url": "https://www.flipkart.com/beastrends-women-pyjama/p/itmf1a6f7b5948eb?pid=PYJHC7GSZZKVZFHH",
@@ -85038,8 +85163,2498 @@
     "contact_number": null,
     "phone": null,
     "email": null,
-    "enrichment_status": "pending",
+    "enrichment_status": "completed",
     "first_seen": "2026-09-11T10:17:24.326937+00:00",
-    "last_seen": "2026-09-11T10:17:24.326937+00:00"
+    "last_seen": "2026-09-13T17:48:54.436394+00:00",
+    "last_enriched": "2026-09-11T19:42:04.618695+00:00",
+    "enriched_data": {
+      "Business Name": "Boat Lifestyle",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": "careers@imaginemarketingindia.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Road, Mumbai, Maharashtra-400093",
+      "City": "Mumbai",
+      "State": "Maharashtra",
+      "Pincode": "400093",
+      "Country": "India",
+      "Website URL": "https://www.boat-lifestyle.com",
+      "Product Rating": null,
+      "Seller Rating": 4.5,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "company_website"
+      ],
+      "Rating": 4.5,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 4.5,
+      "seller_name": "Boat Lifestyle",
+      "raw_seller_name": "Boat Lifestyle",
+      "marketplace": "flipkart",
+      "fulfillment_by": null,
+      "product_url": "https://www.flipkart.com/boat-airdopes-131-bluetooth-headset/p/itm123",
+      "seller_source_url": "https://www.flipkart.com/boat-airdopes-131-bluetooth-headset/p/itm123",
+      "seller_source_type": "flipkart_product",
+      "category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": null,
+      "seller_rating": 4.5,
+      "star_rating": 4.5,
+      "business_model": "B2C / Retail",
+      "business_category": "Electronics > Audio > Headphones > Wireless Earbuds",
+      "owner_name": null,
+      "contact_number": null,
+      "email": "careers@imaginemarketingindia.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Road, Mumbai, Maharashtra-400093",
+      "shipping_address": "Road, Mumbai, Maharashtra-400093",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pincode": "400093",
+      "country": "India",
+      "website_url": "https://www.boat-lifestyle.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": "careers@imaginemarketingindia.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://www.boat-lifestyle.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Road, Mumbai, Maharashtra-400093",
+          "confidence": 0.85,
+          "source": "company_website"
+        }
+      },
+      "seller_confidence": 0.95
+    }
+  },
+  "flipkart::sangouri": {
+    "seller_name": "Sangouri",
+    "canonical_id": "sangouri",
+    "marketplace": "flipkart",
+    "fulfillment_by": "SANGOURI",
+    "product_urls": [
+      "https://www.flipkart.com/sangouri-printed-kurta-patiala-dupatta-set/p/itm938b8ad55f0a9?pid=SWDHPR8AHYYGZSAK",
+      "https://www.flipkart.com/sangouri-printed-kurta-salwar-dupatta-set/p/itm3c51062becee1?pid=SWDHPS7KMG83MEAH"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.8,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHPR8AHYYGZSAK",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:26:04.607785+00:00",
+    "last_seen": "2026-09-11T19:26:55.415778+00:00",
+    "last_enriched": "2026-09-11T19:26:43.898738+00:00",
+    "enriched_data": {
+      "Business Name": "SANGOURI",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": "of SANGOURI",
+      "Phone Number": "9782732440",
+      "Email Address": "tanucreations20@gmail.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://www.sangouri.com",
+      "Product Rating": 3.8,
+      "Seller Rating": 1.0,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "targeted_search",
+        "marketplace_profile",
+        "company_website"
+      ],
+      "Rating": 1.0,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 1.0,
+      "seller_name": "SANGOURI",
+      "raw_seller_name": "SANGOURI",
+      "marketplace": "flipkart",
+      "fulfillment_by": "SANGOURI",
+      "product_url": "https://www.flipkart.com/sangouri-printed-kurta-patiala-dupatta-set/p/itm938b8ad55f0a9?pid=SWDHPR8AHYYGZSAK",
+      "seller_source_url": "https://www.flipkart.com/sangouri-printed-kurta-patiala-dupatta-set/p/itm938b8ad55f0a9?pid=SWDHPR8AHYYGZSAK",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.8,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": "of SANGOURI",
+      "contact_number": "9782732440",
+      "email": "tanucreations20@gmail.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://www.sangouri.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "targeted_search",
+        "marketplace_profile",
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": "9782732440",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "email": {
+          "value": "tanucreations20@gmail.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://www.sangouri.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::srhenterprise2025": {
+    "seller_name": "Srhenterprise2025",
+    "canonical_id": "srhenterprise2025",
+    "marketplace": "flipkart",
+    "fulfillment_by": "SRHENTERPRISE2025",
+    "product_urls": [
+      "https://www.flipkart.com/salzox-embroidered-anarkali-kurta-bottom-dupatta-set/p/itm081fc941696d6?pid=SWDHKJCXPKNTJH7S"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.1,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHKJCXPKNTJH7S",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:27:06.901173+00:00",
+    "last_seen": "2026-09-11T19:27:06.901173+00:00",
+    "last_enriched": "2026-09-11T19:27:42.504750+00:00",
+    "enriched_data": {
+      "Business Name": "SRH ENTERPRISE",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.1,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "SRH ENTERPRISE",
+      "raw_seller_name": "SRHENTERPRISE2025",
+      "marketplace": "flipkart",
+      "fulfillment_by": "SRHENTERPRISE2025",
+      "product_url": "https://www.flipkart.com/salzox-embroidered-anarkali-kurta-bottom-dupatta-set/p/itm081fc941696d6?pid=SWDHKJCXPKNTJH7S",
+      "seller_source_url": "https://www.flipkart.com/salzox-embroidered-anarkali-kurta-bottom-dupatta-set/p/itm081fc941696d6?pid=SWDHKJCXPKNTJH7S",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::harihercollection": {
+    "seller_name": "Harihercollection",
+    "canonical_id": "harihercollection",
+    "marketplace": "flipkart",
+    "fulfillment_by": "HARIHERCOLLECTION",
+    "product_urls": [
+      "https://www.flipkart.com/shyam-krishna-fashion-self-design-solid-kurta-salwar-dupatta-set/p/itm1e94bbc59f630?pid=SWDHK2QETCFEHDHN"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.2,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHK2QETCFEHDHN",
+    "seller_location": "&quot;Welcome to &quot;HARIHERCOLLECTION&quot;, your one-stop destination for premium Kurti Sets on Flipkart. We specialize in crafting elegant ethnic wear that combines traditional craftsmanship with modern silhouettes. Our Kurti Sets are made from high-quality, breathable fabrics like pure cotton and rayon, ensuring all-day comfort and a perfect fit. Whether it&#x27;s for office wear, daily outings, or festive occasions, &quot;HARIHERCOLLECTION&quot; offers designs that make every woman feel confident and beautiful. Shop our latest collection for trendy patterns and vibrant colors.",
+    "city": "Daily Outings",
+    "state": "Odisha",
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:27:54.167694+00:00",
+    "last_seen": "2026-09-11T19:27:54.167694+00:00",
+    "last_enriched": "2026-09-11T19:28:30.120977+00:00",
+    "enriched_data": {
+      "Business Name": "HARIHER COLLECTION",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "\"Welcome to \"HARIHERCOLLECTION\", your one-stop destination for premium Kurti Sets on Flipkart. We specialize in crafting elegant ethnic wear that combines traditional craftsmanship with modern silhouettes. Our Kurti Sets are made from high-quality, breathable fabrics like pure cotton and rayon, ensuring all-day comfort and a perfect fit. Whether it's for office wear, daily outings, or festive occasions, \"HARIHERCOLLECTION\" offers designs that make every woman feel confident and beautiful. Shop our latest collection for trendy patterns and vibrant colors.",
+      "City": "Daily Outings",
+      "State": "Odisha",
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.2,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "HARIHER COLLECTION",
+      "raw_seller_name": "HARIHERCOLLECTION",
+      "marketplace": "flipkart",
+      "fulfillment_by": "HARIHERCOLLECTION",
+      "product_url": "https://www.flipkart.com/shyam-krishna-fashion-self-design-solid-kurta-salwar-dupatta-set/p/itm1e94bbc59f630?pid=SWDHK2QETCFEHDHN",
+      "seller_source_url": "https://www.flipkart.com/shyam-krishna-fashion-self-design-solid-kurta-salwar-dupatta-set/p/itm1e94bbc59f630?pid=SWDHK2QETCFEHDHN",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.2,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "\"Welcome to \"HARIHERCOLLECTION\", your one-stop destination for premium Kurti Sets on Flipkart. We specialize in crafting elegant ethnic wear that combines traditional craftsmanship with modern silhouettes. Our Kurti Sets are made from high-quality, breathable fabrics like pure cotton and rayon, ensuring all-day comfort and a perfect fit. Whether it's for office wear, daily outings, or festive occasions, \"HARIHERCOLLECTION\" offers designs that make every woman feel confident and beautiful. Shop our latest collection for trendy patterns and vibrant colors.",
+      "shipping_address": "\"Welcome to \"HARIHERCOLLECTION\", your one-stop destination for premium Kurti Sets on Flipkart. We specialize in crafting elegant ethnic wear that combines traditional craftsmanship with modern silhouettes. Our Kurti Sets are made from high-quality, breathable fabrics like pure cotton and rayon, ensuring all-day comfort and a perfect fit. Whether it's for office wear, daily outings, or festive occasions, \"HARIHERCOLLECTION\" offers designs that make every woman feel confident and beautiful. Shop our latest collection for trendy patterns and vibrant colors.",
+      "city": "Daily Outings",
+      "state": "Odisha",
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "\"Welcome to \"HARIHERCOLLECTION\", your one-stop destination for premium Kurti Sets on Flipkart. We specialize in crafting elegant ethnic wear that combines traditional craftsmanship with modern silhouettes. Our Kurti Sets are made from high-quality, breathable fabrics like pure cotton and rayon, ensuring all-day comfort and a perfect fit. Whether it's for office wear, daily outings, or festive occasions, \"HARIHERCOLLECTION\" offers designs that make every woman feel confident and beautiful. Shop our latest collection for trendy patterns and vibrant colors.",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::pschoice": {
+    "seller_name": "Pschoice",
+    "canonical_id": "pschoice",
+    "marketplace": "flipkart",
+    "fulfillment_by": "PSCHOICE",
+    "product_urls": [
+      "https://www.flipkart.com/pschoice-women-kurta-pant-dupatta-set/p/itmb326efc0dc9ca?pid=ETHGYBPPSYF6FF5J"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.9,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=ETHGYBPPSYF6FF5J",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:28:41.459395+00:00",
+    "last_seen": "2026-09-11T19:28:41.459395+00:00",
+    "last_enriched": "2026-09-11T19:29:21.355391+00:00",
+    "enriched_data": {
+      "Business Name": "PS CHOICE",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "PS CHOICE",
+      "raw_seller_name": "PSCHOICE",
+      "marketplace": "flipkart",
+      "fulfillment_by": "PSCHOICE",
+      "product_url": "https://www.flipkart.com/pschoice-women-kurta-pant-dupatta-set/p/itmb326efc0dc9ca?pid=ETHGYBPPSYF6FF5J",
+      "seller_source_url": "https://www.flipkart.com/pschoice-women-kurta-pant-dupatta-set/p/itmb326efc0dc9ca?pid=ETHGYBPPSYF6FF5J",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.9,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::c4afashion": {
+    "seller_name": "C4Afashion",
+    "canonical_id": "c4afashion",
+    "marketplace": "flipkart",
+    "fulfillment_by": "C4AFASHION",
+    "product_urls": [
+      "https://www.flipkart.com/c4a-embroidered-kurta-trouser-pant-dupatta-set/p/itm8bb910c9382e8?pid=SWDHZGHUSMZGXYUZ"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.9,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHZGHUSMZGXYUZ",
+    "seller_location": "kurta palazzo set, kurta set women, suit for women, cord set women, kurti set, women kurta set, sharara suit, kurti pant set, kurta set, suit set for women, party wear suits for women, frock suit, sharara for wedding, anarkali kurta set, ethnic set for women, suit, sharara suits, ethnic wear for women, ethnic set, salwar suit set, wedding suits for women, kurta set with dupatta, kurti palazzo set for women, kurti pant for women, embroidered kurta set, kurti for women with pants, daily wear kurta set, frock women with dupatta, office wear kurta set for women, party suit for women, women kurta set, suit set, kurti set, Womens Ethnic Wear, Women Suit Set, Women Pant Suits, Long Kurti With Palazzo, Kurti With Pant, Long Kurti With Banarasi Dupatta, Pants For Kurtis, Festive Kurta Set, Dhoti Kurtis, Angrakha Suit, Kurta Pant Set, Patiala Kurta Set, Kurta Pajama, Anarkali Suits, Dhoti Salwar Suit, Designer Kurta Pajama, Frock Salwar Suit, Kurta",
+    "city": "Kurta",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:29:32.925360+00:00",
+    "last_seen": "2026-09-11T19:29:32.925360+00:00",
+    "last_enriched": "2026-09-11T19:30:17.125931+00:00",
+    "enriched_data": {
+      "Business Name": "C4A FASHION",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": "Group",
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "kurta palazzo set, kurta set women, suit for women, cord set women, kurti set, women kurta set, sharara suit, kurti pant set, kurta set, suit set for women, party wear suits for women, frock suit, sharara for wedding, anarkali kurta set, ethnic set for women, suit, sharara suits, ethnic wear for women, ethnic set, salwar suit set, wedding suits for women, kurta set with dupatta, kurti palazzo set for women, kurti pant for women, embroidered kurta set, kurti for women with pants, daily wear kurta set, frock women with dupatta, office wear kurta set for women, party suit for women, women kurta set, suit set, kurti set, Womens Ethnic Wear, Women Suit Set, Women Pant Suits, Long Kurti With Palazzo, Kurti With Pant, Long Kurti With Banarasi Dupatta, Pants For Kurtis, Festive Kurta Set, Dhoti Kurtis, Angrakha Suit, Kurta Pant Set, Patiala Kurta Set, Kurta Pajama, Anarkali Suits, Dhoti Salwar Suit, Designer Kurta Pajama, Frock Salwar Suit, Kurta",
+      "City": "Kurta",
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search",
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "C4A FASHION",
+      "raw_seller_name": "C4AFASHION",
+      "marketplace": "flipkart",
+      "fulfillment_by": "C4AFASHION",
+      "product_url": "https://www.flipkart.com/c4a-embroidered-kurta-trouser-pant-dupatta-set/p/itm8bb910c9382e8?pid=SWDHZGHUSMZGXYUZ",
+      "seller_source_url": "https://www.flipkart.com/c4a-embroidered-kurta-trouser-pant-dupatta-set/p/itm8bb910c9382e8?pid=SWDHZGHUSMZGXYUZ",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.9,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": "Group",
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "kurta palazzo set, kurta set women, suit for women, cord set women, kurti set, women kurta set, sharara suit, kurti pant set, kurta set, suit set for women, party wear suits for women, frock suit, sharara for wedding, anarkali kurta set, ethnic set for women, suit, sharara suits, ethnic wear for women, ethnic set, salwar suit set, wedding suits for women, kurta set with dupatta, kurti palazzo set for women, kurti pant for women, embroidered kurta set, kurti for women with pants, daily wear kurta set, frock women with dupatta, office wear kurta set for women, party suit for women, women kurta set, suit set, kurti set, Womens Ethnic Wear, Women Suit Set, Women Pant Suits, Long Kurti With Palazzo, Kurti With Pant, Long Kurti With Banarasi Dupatta, Pants For Kurtis, Festive Kurta Set, Dhoti Kurtis, Angrakha Suit, Kurta Pant Set, Patiala Kurta Set, Kurta Pajama, Anarkali Suits, Dhoti Salwar Suit, Designer Kurta Pajama, Frock Salwar Suit, Kurta",
+      "shipping_address": "kurta palazzo set, kurta set women, suit for women, cord set women, kurti set, women kurta set, sharara suit, kurti pant set, kurta set, suit set for women, party wear suits for women, frock suit, sharara for wedding, anarkali kurta set, ethnic set for women, suit, sharara suits, ethnic wear for women, ethnic set, salwar suit set, wedding suits for women, kurta set with dupatta, kurti palazzo set for women, kurti pant for women, embroidered kurta set, kurti for women with pants, daily wear kurta set, frock women with dupatta, office wear kurta set for women, party suit for women, women kurta set, suit set, kurti set, Womens Ethnic Wear, Women Suit Set, Women Pant Suits, Long Kurti With Palazzo, Kurti With Pant, Long Kurti With Banarasi Dupatta, Pants For Kurtis, Festive Kurta Set, Dhoti Kurtis, Angrakha Suit, Kurta Pant Set, Patiala Kurta Set, Kurta Pajama, Anarkali Suits, Dhoti Salwar Suit, Designer Kurta Pajama, Frock Salwar Suit, Kurta",
+      "city": "Kurta",
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "targeted_search",
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "kurta palazzo set, kurta set women, suit for women, cord set women, kurti set, women kurta set, sharara suit, kurti pant set, kurta set, suit set for women, party wear suits for women, frock suit, sharara for wedding, anarkali kurta set, ethnic set for women, suit, sharara suits, ethnic wear for women, ethnic set, salwar suit set, wedding suits for women, kurta set with dupatta, kurti palazzo set for women, kurti pant for women, embroidered kurta set, kurti for women with pants, daily wear kurta set, frock women with dupatta, office wear kurta set for women, party suit for women, women kurta set, suit set, kurti set, Womens Ethnic Wear, Women Suit Set, Women Pant Suits, Long Kurti With Palazzo, Kurti With Pant, Long Kurti With Banarasi Dupatta, Pants For Kurtis, Festive Kurta Set, Dhoti Kurtis, Angrakha Suit, Kurta Pant Set, Patiala Kurta Set, Kurta Pajama, Anarkali Suits, Dhoti Salwar Suit, Designer Kurta Pajama, Frock Salwar Suit, Kurta",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::anushansa": {
+    "seller_name": "Anushansa",
+    "canonical_id": "anushansa",
+    "marketplace": "flipkart",
+    "fulfillment_by": "anushansa",
+    "product_urls": [
+      "https://www.flipkart.com/anushansa-women-kurta-palazzo-dupatta-set/p/itmb70ef00ecbc2b?pid=ETHHJHYG2GVBRJAF"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.8,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=ETHHJHYG2GVBRJAF",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:30:28.357606+00:00",
+    "last_seen": "2026-09-11T19:30:28.357606+00:00",
+    "last_enriched": "2026-09-11T19:31:27.776869+00:00",
+    "enriched_data": {
+      "Business Name": "anushansa",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": "of SEQUELSTRING SOLUTIONS AND CONSULTANCY",
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.8,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "targeted_search",
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "anushansa",
+      "raw_seller_name": "anushansa",
+      "marketplace": "flipkart",
+      "fulfillment_by": "anushansa",
+      "product_url": "https://www.flipkart.com/anushansa-women-kurta-palazzo-dupatta-set/p/itmb70ef00ecbc2b?pid=ETHHJHYG2GVBRJAF",
+      "seller_source_url": "https://www.flipkart.com/anushansa-women-kurta-palazzo-dupatta-set/p/itmb70ef00ecbc2b?pid=ETHHJHYG2GVBRJAF",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.8,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": "of SEQUELSTRING SOLUTIONS AND CONSULTANCY",
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "targeted_search",
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::royal export": {
+    "seller_name": "Royal Export",
+    "canonical_id": "royal export",
+    "marketplace": "flipkart",
+    "fulfillment_by": "Royal Export",
+    "product_urls": [
+      "https://www.flipkart.com/divastri-women-kurta-palazzo-dupatta-set/p/itmcd4871761862a?pid=ETHHMVXJ8AFYWYHA"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.2,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=ETHHMVXJ8AFYWYHA",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:31:39.167390+00:00",
+    "last_seen": "2026-09-11T19:31:39.167390+00:00",
+    "last_enriched": "2026-09-11T19:32:07.974327+00:00",
+    "enriched_data": {
+      "Business Name": "Royal Export",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": "support@royalenfield.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://www.royalenfield.com",
+      "Product Rating": 4.2,
+      "Seller Rating": 1.0,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "Rating": 1.0,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 1.0,
+      "seller_name": "Royal Export",
+      "raw_seller_name": "Royal Export",
+      "marketplace": "flipkart",
+      "fulfillment_by": "Royal Export",
+      "product_url": "https://www.flipkart.com/divastri-women-kurta-palazzo-dupatta-set/p/itmcd4871761862a?pid=ETHHMVXJ8AFYWYHA",
+      "seller_source_url": "https://www.flipkart.com/divastri-women-kurta-palazzo-dupatta-set/p/itmcd4871761862a?pid=ETHHMVXJ8AFYWYHA",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.2,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": "support@royalenfield.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://www.royalenfield.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": "support@royalenfield.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://www.royalenfield.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::fabempirekurtis": {
+    "seller_name": "Fabempirekurtis",
+    "canonical_id": "fabempirekurtis",
+    "marketplace": "flipkart",
+    "fulfillment_by": "FabEmpireKurtis",
+    "product_urls": [
+      "https://www.flipkart.com/fab-empire-women-kurta-salwar-dupatta-set/p/itm03bc033cbc958?pid=ETHHPNYNZQ24JUEA"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=ETHHPNYNZQ24JUEA",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:32:19.331361+00:00",
+    "last_seen": "2026-09-11T19:32:19.331361+00:00",
+    "last_enriched": "2026-09-11T19:32:52.605731+00:00",
+    "enriched_data": {
+      "Business Name": "Fab Empire Kurtis",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": "asksecurity@bankfab.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://www.bankfab.bank.in",
+      "Product Rating": 4.0,
+      "Seller Rating": 1.0,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "Rating": 1.0,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 1.0,
+      "seller_name": "Fab Empire Kurtis",
+      "raw_seller_name": "FabEmpireKurtis",
+      "marketplace": "flipkart",
+      "fulfillment_by": "FabEmpireKurtis",
+      "product_url": "https://www.flipkart.com/fab-empire-women-kurta-salwar-dupatta-set/p/itm03bc033cbc958?pid=ETHHPNYNZQ24JUEA",
+      "seller_source_url": "https://www.flipkart.com/fab-empire-women-kurta-salwar-dupatta-set/p/itm03bc033cbc958?pid=ETHHPNYNZQ24JUEA",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": "asksecurity@bankfab.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://www.bankfab.bank.in",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": "asksecurity@bankfab.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://www.bankfab.bank.in",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::shreeramkrishnafab": {
+    "seller_name": "Shreeramkrishnafab",
+    "canonical_id": "shreeramkrishnafab",
+    "marketplace": "flipkart",
+    "fulfillment_by": "ShreeRamkrishnaFab",
+    "product_urls": [
+      "https://www.flipkart.com/shree-ramkrishna-fab-women-kurti-pant-dupatta-set/p/itm7d360c2b86f27?pid=ETHHPFZ7Z8MZB3VH"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.1,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=ETHHPFZ7Z8MZB3VH",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:33:04.118235+00:00",
+    "last_seen": "2026-09-11T19:33:04.118235+00:00",
+    "last_enriched": "2026-09-11T19:33:28.407017+00:00",
+    "enriched_data": {
+      "Business Name": "Shree Ramkrishna Fab",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": "7827990062",
+      "Email Address": "support@byshree.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://byshree.com",
+      "Product Rating": 4.1,
+      "Seller Rating": 1.0,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "Rating": 1.0,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 1.0,
+      "seller_name": "Shree Ramkrishna Fab",
+      "raw_seller_name": "ShreeRamkrishnaFab",
+      "marketplace": "flipkart",
+      "fulfillment_by": "ShreeRamkrishnaFab",
+      "product_url": "https://www.flipkart.com/shree-ramkrishna-fab-women-kurti-pant-dupatta-set/p/itm7d360c2b86f27?pid=ETHHPFZ7Z8MZB3VH",
+      "seller_source_url": "https://www.flipkart.com/shree-ramkrishna-fab-women-kurti-pant-dupatta-set/p/itm7d360c2b86f27?pid=ETHHPFZ7Z8MZB3VH",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": "7827990062",
+      "email": "support@byshree.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://byshree.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": "7827990062",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "email": {
+          "value": "support@byshree.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://byshree.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::simplyethnic": {
+    "seller_name": "Simplyethnic",
+    "canonical_id": "simplyethnic",
+    "marketplace": "flipkart",
+    "fulfillment_by": "SIMPLYETHNIC",
+    "product_urls": [
+      "https://www.flipkart.com/simplyethnic-printed-kurta-salwar-dupatta-set/p/itmeddda67584d84?pid=SWDH6MC8RTUYG5EF"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.5,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDH6MC8RTUYG5EF",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:33:39.794088+00:00",
+    "last_seen": "2026-09-11T19:33:39.794088+00:00",
+    "last_enriched": "2026-09-11T19:34:14.912934+00:00",
+    "enriched_data": {
+      "Business Name": "SIMPLYETHNIC",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.5,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "SIMPLYETHNIC",
+      "raw_seller_name": "SIMPLYETHNIC",
+      "marketplace": "flipkart",
+      "fulfillment_by": "SIMPLYETHNIC",
+      "product_url": "https://www.flipkart.com/simplyethnic-printed-kurta-salwar-dupatta-set/p/itmeddda67584d84?pid=SWDH6MC8RTUYG5EF",
+      "seller_source_url": "https://www.flipkart.com/simplyethnic-printed-kurta-salwar-dupatta-set/p/itmeddda67584d84?pid=SWDH6MC8RTUYG5EF",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.5,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::aneritexarc": {
+    "seller_name": "Aneritexarc",
+    "canonical_id": "aneritexarc",
+    "marketplace": "flipkart",
+    "fulfillment_by": "ANERITEXARC",
+    "product_urls": [
+      "https://www.flipkart.com/aneritexarc-embroidered-kurta-trouser-pant-dupatta-set/p/itmb5b20b551248a?pid=SWDHBNQCV3MWGTGP"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.1,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHBNQCV3MWGTGP",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:34:27.144428+00:00",
+    "last_seen": "2026-09-11T19:34:27.144428+00:00",
+    "last_enriched": "2026-09-11T19:34:59.139048+00:00",
+    "enriched_data": {
+      "Business Name": "ANERITEXARC",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.1,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "ANERITEXARC",
+      "raw_seller_name": "ANERITEXARC",
+      "marketplace": "flipkart",
+      "fulfillment_by": "ANERITEXARC",
+      "product_url": "https://www.flipkart.com/aneritexarc-embroidered-kurta-trouser-pant-dupatta-set/p/itmb5b20b551248a?pid=SWDHBNQCV3MWGTGP",
+      "seller_source_url": "https://www.flipkart.com/aneritexarc-embroidered-kurta-trouser-pant-dupatta-set/p/itmb5b20b551248a?pid=SWDHBNQCV3MWGTGP",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::ishvella": {
+    "seller_name": "Ishvella",
+    "canonical_id": "ishvella",
+    "marketplace": "flipkart",
+    "fulfillment_by": "ISHVELLA",
+    "product_urls": [
+      "https://www.flipkart.com/ishvella-embroidered-kurta-salwar-dupatta-set/p/itm466b62c9a2331?pid=SWDHPY7G8M97RRTH"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 1.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHPY7G8M97RRTH",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:35:11.076520+00:00",
+    "last_seen": "2026-09-11T19:35:11.076520+00:00",
+    "last_enriched": "2026-09-11T19:35:44.186648+00:00",
+    "enriched_data": {
+      "Business Name": "ISHVELLA",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 1.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "ISHVELLA",
+      "raw_seller_name": "ISHVELLA",
+      "marketplace": "flipkart",
+      "fulfillment_by": "ISHVELLA",
+      "product_url": "https://www.flipkart.com/ishvella-embroidered-kurta-salwar-dupatta-set/p/itm466b62c9a2331?pid=SWDHPY7G8M97RRTH",
+      "seller_source_url": "https://www.flipkart.com/ishvella-embroidered-kurta-salwar-dupatta-set/p/itm466b62c9a2331?pid=SWDHPY7G8M97RRTH",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 1.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::aksharfab13": {
+    "seller_name": "Aksharfab13",
+    "canonical_id": "aksharfab13",
+    "marketplace": "flipkart",
+    "fulfillment_by": "AKSHARFAB13",
+    "product_urls": [
+      "https://www.flipkart.com/aneritexarc-embroidered-kurta-trouser-pant-dupatta-set/p/itmb5b20b551248a?pid=SWDHBNQCNWZ3QHC7"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.1,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHBNQCNWZ3QHC7",
+    "seller_location": "Kurti || Indian Kurti || Ethnic Kurti || Traditional Kurti || Designer Kurti || Casual Kurti || Party Wear Kurti || Office Wear Kurti || Festive Kurti || Formal Kurti || Boho Kurti || Cotton Kurti || Silk Kurti || Linen Kurti || Georgette Kurti || Rayon Kurti || Chanderi Kurti || Printed Kurti || Embroidered Kurti || Floral Kurti || Block Print Kurti || Solid Color Kurti || Striped Kurti || Short Kurti || Anarkali Kurti || A-Line Kurti || Straight Cut Kurti || High Low Kurti || Asymmetric Kurti || 3/4 Sleeve Kurti || Full Sleeve Kurti || V-Neck Kurti || Daily Wear Kurti || Office Kurti || Casual Wear Kurti || Affordable Kurti || High-Quality Kurti || New Arrival Kurti || Handcrafted Kurti || Traditional Wear",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:35:56.320014+00:00",
+    "last_seen": "2026-09-11T19:35:56.320014+00:00",
+    "last_enriched": "2026-09-11T19:36:24.585685+00:00",
+    "enriched_data": {
+      "Business Name": "AKSHAR FAB",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Kurti || Indian Kurti || Ethnic Kurti || Traditional Kurti || Designer Kurti || Casual Kurti || Party Wear Kurti || Office Wear Kurti || Festive Kurti || Formal Kurti || Boho Kurti || Cotton Kurti || Silk Kurti || Linen Kurti || Georgette Kurti || Rayon Kurti || Chanderi Kurti || Printed Kurti || Embroidered Kurti || Floral Kurti || Block Print Kurti || Solid Color Kurti || Striped Kurti || Short Kurti || Anarkali Kurti || A-Line Kurti || Straight Cut Kurti || High Low Kurti || Asymmetric Kurti || 3/4 Sleeve Kurti || Full Sleeve Kurti || V-Neck Kurti || Daily Wear Kurti || Office Kurti || Casual Wear Kurti || Affordable Kurti || High-Quality Kurti || New Arrival Kurti || Handcrafted Kurti || Traditional Wear",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.1,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "AKSHAR FAB",
+      "raw_seller_name": "AKSHARFAB13",
+      "marketplace": "flipkart",
+      "fulfillment_by": "AKSHARFAB13",
+      "product_url": "https://www.flipkart.com/aneritexarc-embroidered-kurta-trouser-pant-dupatta-set/p/itmb5b20b551248a?pid=SWDHBNQCNWZ3QHC7",
+      "seller_source_url": "https://www.flipkart.com/aneritexarc-embroidered-kurta-trouser-pant-dupatta-set/p/itmb5b20b551248a?pid=SWDHBNQCNWZ3QHC7",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.1,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Kurti || Indian Kurti || Ethnic Kurti || Traditional Kurti || Designer Kurti || Casual Kurti || Party Wear Kurti || Office Wear Kurti || Festive Kurti || Formal Kurti || Boho Kurti || Cotton Kurti || Silk Kurti || Linen Kurti || Georgette Kurti || Rayon Kurti || Chanderi Kurti || Printed Kurti || Embroidered Kurti || Floral Kurti || Block Print Kurti || Solid Color Kurti || Striped Kurti || Short Kurti || Anarkali Kurti || A-Line Kurti || Straight Cut Kurti || High Low Kurti || Asymmetric Kurti || 3/4 Sleeve Kurti || Full Sleeve Kurti || V-Neck Kurti || Daily Wear Kurti || Office Kurti || Casual Wear Kurti || Affordable Kurti || High-Quality Kurti || New Arrival Kurti || Handcrafted Kurti || Traditional Wear",
+      "shipping_address": "Kurti || Indian Kurti || Ethnic Kurti || Traditional Kurti || Designer Kurti || Casual Kurti || Party Wear Kurti || Office Wear Kurti || Festive Kurti || Formal Kurti || Boho Kurti || Cotton Kurti || Silk Kurti || Linen Kurti || Georgette Kurti || Rayon Kurti || Chanderi Kurti || Printed Kurti || Embroidered Kurti || Floral Kurti || Block Print Kurti || Solid Color Kurti || Striped Kurti || Short Kurti || Anarkali Kurti || A-Line Kurti || Straight Cut Kurti || High Low Kurti || Asymmetric Kurti || 3/4 Sleeve Kurti || Full Sleeve Kurti || V-Neck Kurti || Daily Wear Kurti || Office Kurti || Casual Wear Kurti || Affordable Kurti || High-Quality Kurti || New Arrival Kurti || Handcrafted Kurti || Traditional Wear",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Kurti || Indian Kurti || Ethnic Kurti || Traditional Kurti || Designer Kurti || Casual Kurti || Party Wear Kurti || Office Wear Kurti || Festive Kurti || Formal Kurti || Boho Kurti || Cotton Kurti || Silk Kurti || Linen Kurti || Georgette Kurti || Rayon Kurti || Chanderi Kurti || Printed Kurti || Embroidered Kurti || Floral Kurti || Block Print Kurti || Solid Color Kurti || Striped Kurti || Short Kurti || Anarkali Kurti || A-Line Kurti || Straight Cut Kurti || High Low Kurti || Asymmetric Kurti || 3/4 Sleeve Kurti || Full Sleeve Kurti || V-Neck Kurti || Daily Wear Kurti || Office Kurti || Casual Wear Kurti || Affordable Kurti || High-Quality Kurti || New Arrival Kurti || Handcrafted Kurti || Traditional Wear",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::kurticraze": {
+    "seller_name": "Kurticraze",
+    "canonical_id": "kurticraze",
+    "marketplace": "flipkart",
+    "fulfillment_by": "Kurticraze",
+    "product_urls": [
+      "https://www.flipkart.com/aimca-printed-kurta-salwar-dupatta-set/p/itm83f8dbedb6a37?pid=SWDHGVJ6XRTUZJXW"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.9,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHGVJ6XRTUZJXW",
+    "seller_location": "Fabric: Premium Rayon Style: Floral Printed Anarkali Kurta Set Set Includes: Kurta, Palazzo Pants & Dupatta Yeh beautiful orange floral rayon kurta set summer wear ke liye perfect choice hai. Soft aur breathable rayon fabric skin-friendly hota hai jo pure din comfort deta hai. Iska elegant floral print aur flowy Anarkali pattern traditional aur modern look ka perfect combination hai. Matching palazzo pants aur printed dupatta is outfit ko festive, casual aur daily wear ke liye ideal banate hain. Occasion: Casual wear, festive wear, office wear, day outings Season: Summer / Spring",
+    "city": "Office Wear",
+    "state": "Karnataka",
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:36:36.238105+00:00",
+    "last_seen": "2026-09-11T19:36:36.238105+00:00",
+    "last_enriched": "2026-09-11T19:37:04.522791+00:00",
+    "enriched_data": {
+      "Business Name": "Kurticraze",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Fabric: Premium Rayon Style: Floral Printed Anarkali Kurta Set Set Includes: Kurta, Palazzo Pants & Dupatta Yeh beautiful orange floral rayon kurta set summer wear ke liye perfect choice hai. Soft aur breathable rayon fabric skin-friendly hota hai jo pure din comfort deta hai. Iska elegant floral print aur flowy Anarkali pattern traditional aur modern look ka perfect combination hai. Matching palazzo pants aur printed dupatta is outfit ko festive, casual aur daily wear ke liye ideal banate hain. Occasion: Casual wear, festive wear, office wear, day outings Season: Summer / Spring",
+      "City": "Office Wear",
+      "State": "Karnataka",
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "Kurticraze",
+      "raw_seller_name": "Kurticraze",
+      "marketplace": "flipkart",
+      "fulfillment_by": "Kurticraze",
+      "product_url": "https://www.flipkart.com/aimca-printed-kurta-salwar-dupatta-set/p/itm83f8dbedb6a37?pid=SWDHGVJ6XRTUZJXW",
+      "seller_source_url": "https://www.flipkart.com/aimca-printed-kurta-salwar-dupatta-set/p/itm83f8dbedb6a37?pid=SWDHGVJ6XRTUZJXW",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.9,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Fabric: Premium Rayon Style: Floral Printed Anarkali Kurta Set Set Includes: Kurta, Palazzo Pants & Dupatta Yeh beautiful orange floral rayon kurta set summer wear ke liye perfect choice hai. Soft aur breathable rayon fabric skin-friendly hota hai jo pure din comfort deta hai. Iska elegant floral print aur flowy Anarkali pattern traditional aur modern look ka perfect combination hai. Matching palazzo pants aur printed dupatta is outfit ko festive, casual aur daily wear ke liye ideal banate hain. Occasion: Casual wear, festive wear, office wear, day outings Season: Summer / Spring",
+      "shipping_address": "Fabric: Premium Rayon Style: Floral Printed Anarkali Kurta Set Set Includes: Kurta, Palazzo Pants & Dupatta Yeh beautiful orange floral rayon kurta set summer wear ke liye perfect choice hai. Soft aur breathable rayon fabric skin-friendly hota hai jo pure din comfort deta hai. Iska elegant floral print aur flowy Anarkali pattern traditional aur modern look ka perfect combination hai. Matching palazzo pants aur printed dupatta is outfit ko festive, casual aur daily wear ke liye ideal banate hain. Occasion: Casual wear, festive wear, office wear, day outings Season: Summer / Spring",
+      "city": "Office Wear",
+      "state": "Karnataka",
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Fabric: Premium Rayon Style: Floral Printed Anarkali Kurta Set Set Includes: Kurta, Palazzo Pants & Dupatta Yeh beautiful orange floral rayon kurta set summer wear ke liye perfect choice hai. Soft aur breathable rayon fabric skin-friendly hota hai jo pure din comfort deta hai. Iska elegant floral print aur flowy Anarkali pattern traditional aur modern look ka perfect combination hai. Matching palazzo pants aur printed dupatta is outfit ko festive, casual aur daily wear ke liye ideal banate hain. Occasion: Casual wear, festive wear, office wear, day outings Season: Summer / Spring",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::orriya": {
+    "seller_name": "Orriya",
+    "canonical_id": "orriya",
+    "marketplace": "flipkart",
+    "fulfillment_by": "ORRIYA",
+    "product_urls": [
+      "https://www.flipkart.com/orriya-embroidered-kurta-trouser-pant-dupatta-set/p/itm48948c3085ba0?pid=SWDHH3X6QEJVEUBH"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 4.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHH3X6QEJVEUBH",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:37:16.157672+00:00",
+    "last_seen": "2026-09-11T19:37:16.157672+00:00",
+    "last_enriched": "2026-09-11T19:38:05.807485+00:00",
+    "enriched_data": {
+      "Business Name": "ORRIYA",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 4.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "ORRIYA",
+      "raw_seller_name": "ORRIYA",
+      "marketplace": "flipkart",
+      "fulfillment_by": "ORRIYA",
+      "product_url": "https://www.flipkart.com/orriya-embroidered-kurta-trouser-pant-dupatta-set/p/itm48948c3085ba0?pid=SWDHH3X6QEJVEUBH",
+      "seller_source_url": "https://www.flipkart.com/orriya-embroidered-kurta-trouser-pant-dupatta-set/p/itm48948c3085ba0?pid=SWDHH3X6QEJVEUBH",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 4.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::kumkumtrend": {
+    "seller_name": "Kumkumtrend",
+    "canonical_id": "kumkumtrend",
+    "marketplace": "flipkart",
+    "fulfillment_by": "KUMKUMTREND",
+    "product_urls": [
+      "https://www.flipkart.com/aesthetic-enterprise-embroidered-kurta-trouser-pant-dupatta-set/p/itm9f70fe8b7a6a8?pid=SWDHKMTFX3YAN8P5"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.9,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHKMTFX3YAN8P5",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:38:17.456352+00:00",
+    "last_seen": "2026-09-11T19:38:17.456352+00:00",
+    "last_enriched": "2026-09-11T19:38:45.612131+00:00",
+    "enriched_data": {
+      "Business Name": "KUMKUM TREND",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.9,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "KUMKUM TREND",
+      "raw_seller_name": "KUMKUMTREND",
+      "marketplace": "flipkart",
+      "fulfillment_by": "KUMKUMTREND",
+      "product_url": "https://www.flipkart.com/aesthetic-enterprise-embroidered-kurta-trouser-pant-dupatta-set/p/itm9f70fe8b7a6a8?pid=SWDHKMTFX3YAN8P5",
+      "seller_source_url": "https://www.flipkart.com/aesthetic-enterprise-embroidered-kurta-trouser-pant-dupatta-set/p/itm9f70fe8b7a6a8?pid=SWDHKMTFX3YAN8P5",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.9,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::kevijafashion": {
+    "seller_name": "Kevijafashion",
+    "canonical_id": "kevijafashion",
+    "marketplace": "flipkart",
+    "fulfillment_by": "KEVIJAFASHION",
+    "product_urls": [
+      "https://www.flipkart.com/vestiva-embroidered-kurta-salwar-dupatta-set/p/itm5d8584c246a0e?pid=SWDHHC7ZKYJFGXDZ"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.7,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHHC7ZKYJFGXDZ",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:38:57.500446+00:00",
+    "last_seen": "2026-09-11T19:38:57.500446+00:00",
+    "last_enriched": "2026-09-11T19:39:30.990954+00:00",
+    "enriched_data": {
+      "Business Name": "KEVIJA FASHION",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.7,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "KEVIJA FASHION",
+      "raw_seller_name": "KEVIJAFASHION",
+      "marketplace": "flipkart",
+      "fulfillment_by": "KEVIJAFASHION",
+      "product_url": "https://www.flipkart.com/vestiva-embroidered-kurta-salwar-dupatta-set/p/itm5d8584c246a0e?pid=SWDHHC7ZKYJFGXDZ",
+      "seller_source_url": "https://www.flipkart.com/vestiva-embroidered-kurta-salwar-dupatta-set/p/itm5d8584c246a0e?pid=SWDHHC7ZKYJFGXDZ",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.7,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::rajnandini": {
+    "seller_name": "Rajnandini",
+    "canonical_id": "rajnandini",
+    "marketplace": "flipkart",
+    "fulfillment_by": "RAJNANDINI",
+    "product_urls": [
+      "https://www.flipkart.com/rajnandini-printed-kurta-patiala-dupatta-set/p/itmcd3292cb10737?pid=SWDH2VZFYZTWKMCX"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.7,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDH2VZFYZTWKMCX",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:39:43.033336+00:00",
+    "last_seen": "2026-09-11T19:39:43.033336+00:00",
+    "last_enriched": "2026-09-11T19:40:13.903438+00:00",
+    "enriched_data": {
+      "Business Name": "RAJNANDINI",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": "support@rajnandinifashion.com",
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": "https://rajnandinifashion.com",
+      "Product Rating": 3.7,
+      "Seller Rating": 1.0,
+      "Status": "PARTIALLY_VERIFIED",
+      "Source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "Rating": 1.0,
+      "Status Source": "PARTIALLY_VERIFIED",
+      "Source rating": 1.0,
+      "seller_name": "RAJNANDINI",
+      "raw_seller_name": "RAJNANDINI",
+      "marketplace": "flipkart",
+      "fulfillment_by": "RAJNANDINI",
+      "product_url": "https://www.flipkart.com/rajnandini-printed-kurta-patiala-dupatta-set/p/itmcd3292cb10737?pid=SWDH2VZFYZTWKMCX",
+      "seller_source_url": "https://www.flipkart.com/rajnandini-printed-kurta-patiala-dupatta-set/p/itmcd3292cb10737?pid=SWDH2VZFYZTWKMCX",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.7,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": "support@rajnandinifashion.com",
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": "https://rajnandinifashion.com",
+      "status": "PARTIALLY_VERIFIED",
+      "source": [
+        "marketplace_profile",
+        "company_website"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": "support@rajnandinifashion.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": "https://rajnandinifashion.com",
+          "confidence": 0.85,
+          "source": "company_website"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
+  },
+  "flipkart::bhagvati88": {
+    "seller_name": "Bhagvati88",
+    "canonical_id": "bhagvati88",
+    "marketplace": "flipkart",
+    "fulfillment_by": "BHAGVATI88",
+    "product_urls": [
+      "https://www.flipkart.com/bhagwati-embroidered-kurta-trouser-pant-dupatta-set/p/itm286d1ea30724f?pid=SWDHPNYEZ4ZNYBDY"
+    ],
+    "categories": [
+      "Salwar Suit Sets"
+    ],
+    "star_rating": 1.0,
+    "product_rating": 3.0,
+    "seller_source_type": "fulfillment_label",
+    "seller_confidence": 0.95,
+    "seller_url": "https://www.flipkart.com/sellers?pid=SWDHPNYEZ4ZNYBDY",
+    "seller_location": "Name and address of the Importer",
+    "city": "Begonia",
+    "state": null,
+    "pincode": null,
+    "contact_number": null,
+    "phone": null,
+    "email": null,
+    "enrichment_status": "completed",
+    "first_seen": "2026-09-11T19:40:25.468835+00:00",
+    "last_seen": "2026-09-11T19:40:25.468835+00:00",
+    "last_enriched": "2026-09-11T19:41:03.936504+00:00",
+    "enriched_data": {
+      "Business Name": "BHAGVATI",
+      "Business Model": "B2C / Retail",
+      "Business Category": "Salwar Suit Sets",
+      "Owner Name": null,
+      "Phone Number": null,
+      "Email Address": null,
+      "GST Number": null,
+      "PAN Number": null,
+      "FSSAI Number": null,
+      "Billing Address": "Name and address of the Importer",
+      "City": null,
+      "State": null,
+      "Pincode": null,
+      "Country": "India",
+      "Website URL": null,
+      "Product Rating": 3.0,
+      "Seller Rating": 1.0,
+      "Status": "NEEDS_REVIEW",
+      "Source": [
+        "marketplace_profile"
+      ],
+      "Rating": 1.0,
+      "Status Source": "NEEDS_REVIEW",
+      "Source rating": 1.0,
+      "seller_name": "BHAGVATI",
+      "raw_seller_name": "BHAGVATI88",
+      "marketplace": "flipkart",
+      "fulfillment_by": "BHAGVATI88",
+      "product_url": "https://www.flipkart.com/bhagwati-embroidered-kurta-trouser-pant-dupatta-set/p/itm286d1ea30724f?pid=SWDHPNYEZ4ZNYBDY",
+      "seller_source_url": "https://www.flipkart.com/bhagwati-embroidered-kurta-trouser-pant-dupatta-set/p/itm286d1ea30724f?pid=SWDHPNYEZ4ZNYBDY",
+      "seller_source_type": "fulfillment_label",
+      "category": "Salwar Suit Sets",
+      "sub_category": null,
+      "sub_sub_category": null,
+      "sub_sub_subcategory": null,
+      "product_rating": 3.0,
+      "seller_rating": 1.0,
+      "star_rating": 1.0,
+      "business_model": "B2C / Retail",
+      "business_category": "Salwar Suit Sets",
+      "owner_name": null,
+      "contact_number": null,
+      "email": null,
+      "gst_number": null,
+      "pan_number": null,
+      "fssai_number": null,
+      "billing_address": "Name and address of the Importer",
+      "shipping_address": "Name and address of the Importer",
+      "city": null,
+      "state": null,
+      "pincode": null,
+      "country": "India",
+      "website_url": null,
+      "status": "NEEDS_REVIEW",
+      "source": [
+        "marketplace_profile"
+      ],
+      "confidence": {
+        "gst_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "pan_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "contact_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "email": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "fssai_number": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "website_url": {
+          "value": null,
+          "confidence": 0.0,
+          "source": "not_found"
+        },
+        "address": {
+          "value": "Name and address of the Importer",
+          "confidence": 0.45,
+          "source": "marketplace_profile"
+        }
+      },
+      "seller_confidence": 0.85
+    }
   }
 }
