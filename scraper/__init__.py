@@ -1,25 +1,22 @@
 """Flipkart Seller Scraper package.
 
-The package applies a small compatibility patch to the native product parser so
-Flipkart's label-only "Name and address of the Importer" node is never stored
-as an address.  The patch also extracts the adjacent importer value from the
-common table / sibling DOM layouts used by Flipkart product pages.
+Applies a compatibility layer around the existing parser so Flipkart's
+label-only importer field is never treated as an address.  It also invalidates
+legacy cached records containing that label so a subsequent scraper run can
+re-enrich them with the corrected extraction logic.
 """
 
-__version__ = "1.0.1"
+__version__ = "1.0.2"
 
 
 def _install_address_extraction_patch() -> None:
-    """Patch native product parsing without changing the public parser API.
-
-    Older Flipkart pages expose the importer label as a standalone text node.
-    The native parser used to treat that label as the address.  This wrapper
-    keeps the existing extraction strategies and only repairs invalid address
-    values after extraction, with a direct DOM lookup as the primary recovery.
-    """
+    """Patch native product parsing and legacy seller-cache handling."""
     try:
+        import re
         from bs4 import BeautifulSoup
         from . import product_parser as _product_parser
+        from . import validator as _validator
+        from . import seller_extractor as _seller_extractor
     except Exception:
         return
 
@@ -28,6 +25,15 @@ def _install_address_extraction_patch() -> None:
 
     original_extract = _product_parser.extract_seller_and_ratings
     original_parse = _product_parser.parse_product_page
+    original_pending = _seller_extractor.SellerRepository.get_all_pending_sellers
+    original_mark_enriched = _seller_extractor.SellerRepository.mark_enriched
+
+    # Make the broken marketplace label invalid everywhere address candidates
+    # are validated, including web-research extraction.
+    if "name and address of the importer" not in _validator.ADDRESS_BLACKLIST_PHRASES:
+        _validator.ADDRESS_BLACKLIST_PHRASES.append("name and address of the importer")
+    if "name & address of the importer" not in _validator.ADDRESS_BLACKLIST_PHRASES:
+        _validator.ADDRESS_BLACKLIST_PHRASES.append("name & address of the importer")
 
     IMPORTER_LABELS = {
         "name and address of the importer",
@@ -35,9 +41,9 @@ def _install_address_extraction_patch() -> None:
     }
     MARKETPLACE_LOCATION_MARKERS = (
         "flipkart internet private limited",
+        "flipkart internet pvt ltd",
         "buildings alyssa",
         "begonia",
-        "flipkart internet pvt ltd",
     )
 
     def clean(value):
@@ -46,8 +52,7 @@ def _install_address_extraction_patch() -> None:
         return " ".join(str(value).replace("\xa0", " ").split()).strip(" :,-")
 
     def is_importer_label(value):
-        normalized = clean(value).lower()
-        return normalized in IMPORTER_LABELS
+        return clean(value).lower() in IMPORTER_LABELS
 
     def looks_like_address(value):
         value = clean(value)
@@ -55,28 +60,25 @@ def _install_address_extraction_patch() -> None:
             return False
         if len(value) < 12 or len(value) > 500:
             return False
-        # Reject common marketplace-only location placeholders.
         low = value.lower()
         if any(marker in low for marker in MARKETPLACE_LOCATION_MARKERS):
             return False
-        # An address normally has either a postal code or a location/address
-        # token.  This deliberately accepts Indian addresses without a pin.
         return bool(
-            __import__("re").search(
+            re.search(
                 r"(?:\b[1-9][0-9]{5}\b|\broad\b|\bstreet\b|\bnagar\b|\bplot\b|"
                 r"\bbuilding\b|\bfloor\b|\bsector\b|\bestate\b|\bindustrial\b|"
                 r"\bmarket\b|\blane\b|\bavenue\b|\bindia\b|,)",
                 value,
-                __import__("re").IGNORECASE,
+                re.IGNORECASE,
             )
         )
 
     def find_importer_value(soup):
-        """Find the value adjacent to the importer label in common DOM shapes."""
+        """Find the value next to the importer label in common Flipkart DOM layouts."""
         if not soup:
             return None
 
-        # 1. Table layout: <tr><td>label</td><td>value</td></tr>.
+        # Table: <tr><td>label</td><td>address</td></tr>
         for row in soup.find_all("tr"):
             cells = row.find_all(["th", "td"], recursive=False)
             for idx, cell in enumerate(cells):
@@ -86,7 +88,7 @@ def _install_address_extraction_patch() -> None:
                         if looks_like_address(candidate):
                             return candidate
 
-        # 2. Label followed by sibling element(s).
+        # Sibling / definition-list / key-value layouts.
         for element in soup.find_all(["div", "span", "p", "li", "td", "th", "dt"]):
             if not is_importer_label(element.get_text(" ", strip=True)):
                 continue
@@ -100,7 +102,6 @@ def _install_address_extraction_patch() -> None:
                     return candidate
                 sibling = sibling.find_next_sibling()
 
-            # 3. Definition-list layout: <dt>label</dt><dd>value</dd>.
             parent = element.parent
             if parent:
                 children = [c for c in parent.find_all(recursive=False) if getattr(c, "name", None)]
@@ -114,11 +115,9 @@ def _install_address_extraction_patch() -> None:
                         if looks_like_address(candidate):
                             return candidate
 
-            # 4. Nearby parent container. Avoid returning the label itself.
-            parent = element.parent
-            if parent:
-                texts = [clean(c.get_text(" ", strip=True)) for c in parent.find_all(recursive=False)]
-                for candidate in texts:
+                # Last resort: inspect direct children but never return the label.
+                for candidate_el in children:
+                    candidate = clean(candidate_el.get_text(" ", strip=True))
                     if candidate and not is_importer_label(candidate) and looks_like_address(candidate):
                         return candidate
 
@@ -128,6 +127,7 @@ def _install_address_extraction_patch() -> None:
         details = dict(details or {})
         current = clean(details.get("billing_address"))
 
+        # The old parser's main defect: it copied the importer label itself.
         if is_importer_label(current) or not looks_like_address(current):
             recovered = find_importer_value(soup)
             if recovered:
@@ -141,11 +141,9 @@ def _install_address_extraction_patch() -> None:
             else:
                 details["billing_address"] = None
 
-        # The Flipkart corporate warehouse/location is not the seller's address.
         location = clean(details.get("seller_location"))
         if location and any(marker in location.lower() for marker in MARKETPLACE_LOCATION_MARKERS):
             details["seller_location"] = None
-            # Do not leave marketplace-only city data behind.
             if not details.get("billing_address"):
                 details["city"] = None
                 details["state"] = None
@@ -155,21 +153,80 @@ def _install_address_extraction_patch() -> None:
 
     def patched_extract(soup, page_html=None):
         details = original_extract(soup, page_html)
-        return repair_details(details, soup if not isinstance(soup, str) else BeautifulSoup(soup, "lxml"))
+        if isinstance(soup, str):
+            soup_obj = BeautifulSoup(soup, "lxml")
+        else:
+            soup_obj = soup
+        return repair_details(details, soup_obj)
 
     def patched_parse(html_content, page_url="", http_status=200):
         result = original_parse(html_content, page_url=page_url, http_status=http_status)
         soup = BeautifulSoup(html_content or "", "lxml")
         result = repair_details(result, soup)
-
-        # Keep all address aliases synchronized after recovery / rejection.
         result["raw_address"] = result.get("billing_address")
-        result["seller_location"] = result.get("billing_address") or result.get("seller_location")
         result["shipping_address"] = result.get("billing_address")
+        if result.get("billing_address"):
+            result["seller_location"] = result["billing_address"]
+        elif result.get("seller_location") and any(
+            marker in clean(result["seller_location"]).lower()
+            for marker in MARKETPLACE_LOCATION_MARKERS
+        ):
+            result["seller_location"] = None
         return result
+
+    def is_bad_cached_address(value):
+        value = clean(value)
+        if not value:
+            return False
+        low = value.lower()
+        return is_importer_label(value) or any(marker in low for marker in MARKETPLACE_LOCATION_MARKERS)
+
+    def patched_pending(self):
+        pending = list(original_pending(self))
+        pending_keys = {key for key, _ in pending}
+        for key, seller in self.sellers.items():
+            enriched = seller.get("enriched_data", {}) or {}
+            candidates = [
+                seller.get("seller_location"),
+                enriched.get("Billing Address"),
+                enriched.get("billing_address"),
+                enriched.get("Shipping Address"),
+                enriched.get("shipping_address"),
+            ]
+            if any(is_bad_cached_address(v) for v in candidates) and key not in pending_keys:
+                pending.append((key, seller))
+        return pending
+
+    def patched_mark_enriched(self, storage_key, enriched_data):
+        # Remove invalid legacy address values before the original merge logic
+        # sees them; otherwise the old label would be treated as a valid value
+        # and preserved forever.
+        seller = self.sellers.get(storage_key)
+        if seller:
+            existing = seller.get("enriched_data", {}) or {}
+            if any(
+                is_bad_cached_address(existing.get(k))
+                for k in (
+                    "Billing Address", "billing_address", "Shipping Address", "shipping_address"
+                )
+            ):
+                for k in (
+                    "Billing Address", "billing_address", "Shipping Address", "shipping_address"
+                ):
+                    if is_bad_cached_address(existing.get(k)):
+                        existing.pop(k, None)
+                seller["enriched_data"] = existing
+
+            for k in ("seller_location", "city", "state", "pincode"):
+                if is_bad_cached_address(seller.get(k)):
+                    seller[k] = None
+
+        original_mark_enriched(self, storage_key, enriched_data)
 
     _product_parser.extract_seller_and_ratings = patched_extract
     _product_parser.parse_product_page = patched_parse
+    _seller_extractor.SellerRepository.get_all_pending_sellers = patched_pending
+    _seller_extractor.SellerRepository.mark_enriched = patched_mark_enriched
     _product_parser._IMPORTER_ADDRESS_PATCHED = True
 
 
